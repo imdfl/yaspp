@@ -150,7 +150,7 @@ async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
  */
 async function run(projectRoot: string): Promise<string> {
 	try {
-		const { error, result } = await loadYaspConfig(projectRoot);
+		const { error, result } = await loadYaspConfig(projectRoot,{ validate: true });
 		if (error) {
 			return error;
 		}

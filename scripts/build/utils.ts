@@ -19,6 +19,10 @@ export interface IYasppUtils {
 	validateConfig(projectRoot: string, config?: Partial<IYasppConfig>): Promise<IResponse<IYasppConfig>>;
 }
 
+export interface IYasppLoadOptions {
+	readonly validate: boolean;
+}
+
 function errorResult<TResult = IYasppConfig>(err: string): IResponse<TResult> {
 	return {
 		result: null,
@@ -170,7 +174,7 @@ class YasppUtils implements IYasppUtils {
 
 export const yasppUtils = new YasppUtils;
 
-export async function loadYaspConfig(projectRoot: string): Promise<IResponse<IYasppConfig>> {
+export async function loadYaspConfig(projectRoot: string, options: IYasppLoadOptions): Promise<IResponse<IYasppConfig>> {
 	try {
 		const configPath = fsPath.resolve(projectRoot, "yaspp.json");
 		if (!await fileUtils.isFile(configPath)) {
@@ -178,7 +182,7 @@ export async function loadYaspConfig(projectRoot: string): Promise<IResponse<IYa
 		}
 		const data = await fs.readFile(configPath, "utf-8");
 		const userConfig = parseJSON<Partial<IYasppConfig>>(data);
-		return yasppUtils.validateConfig(projectRoot, userConfig);
+		return options.validate ? yasppUtils.validateConfig(projectRoot, userConfig) : { result: userConfig as IYasppConfig};
 	}
 	catch (err) {
 		return {
@@ -188,9 +192,9 @@ export async function loadYaspConfig(projectRoot: string): Promise<IResponse<IYa
 	}
 }
 
-export async function loadYasppAppConfig(): Promise<IResponse<IYasppAppConfig>> {
+export async function loadYasppAppConfig(options:IYasppLoadOptions): Promise<IResponse<IYasppAppConfig>> {
 	const rootPath = fsPath.resolve(__dirname, "../..");
-	const { result, error } = await loadYaspConfig(rootPath);
+	const { result, error } = await loadYaspConfig(rootPath, options);
 	if (error) {
 		return errorResult(error);
 	}

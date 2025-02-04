@@ -8,7 +8,7 @@ const rootPath = fsPath.resolve(__dirname, "../..");
  */
 async function run(clean: boolean): Promise<string> {
 	try {
-		const { error, result} = await loadYasppAppConfig();
+		const { error, result} = await loadYasppAppConfig({ validate: false });
 		if (error) {
 			return error;
 		}
@@ -24,7 +24,7 @@ async function run(clean: boolean): Promise<string> {
 		if (locale?.root) {
 			const localeRoot = fsPath.resolve(projectRoot, locale.root),
 				targetPath = fsPath.resolve(rootPath, "public/locales");
-			return await yasppUtils.copyContent(contentPath, targetPath, clean);
+			return await yasppUtils.copyContent(localeRoot, targetPath, clean);
 		}
 		return "";
 	}

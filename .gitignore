@@ -13,6 +13,10 @@ node_modules
 # artifacts
 **/*.js.map
 
+# generated
+yaspp.json
+i18n.js
+
 # dev env
 .vscode/settings.json
 *.tsbuildinfo
