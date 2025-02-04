@@ -149,7 +149,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 						<LocaleSelect
 							defaultValue={lang}
 							options={localeItems}
-							onSelect={(id) => id !== lang && void setLocale(id as LocaleId)}
+							onSelect={(id) => id !== lang && void setLocale(id)}
 							className={styles.localeSelect}
 						/>
 						<Separator className={styles.separator} />
@@ -238,7 +238,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 									<LocaleSelect
 										defaultValue={lang}
 										options={localeItems}
-										onSelect={(id) => void setLocale(id as LocaleId)}
+										onSelect={(id) => void setLocale(id)}
 										className={styles.localeSelect}
 									/>
 									<ThemeSelect

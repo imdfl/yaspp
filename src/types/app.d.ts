@@ -3,10 +3,6 @@
  */
 export interface IYasppApp {
 	/**
-	 * The full root path of this app
-	 */
-	readonly rootPath: string;
-	/**
 	 * The full path of the content folder
 	 */
 	readonly contentPath: string;
@@ -20,19 +16,34 @@ export interface IYasppApp {
 	readonly isValid: boolean;
 }
 
-export interface IYasppLocaleConfig {
+export type LocaleLoader = (lang: string, ns?: string) => Promise<Record<string, string>>;
+export interface I18NConfig {
 	readonly langs: ReadonlyArray<string>;
-	readonly defaultLocale?: string;
+	readonly defaultLocale: string;
+	readonly pages: Record<string, ReadonlyArray<string>>;
 }
 
-export interface IYasppAppContentConfig {
+export interface IYasppLocaleConfig extends I18NConfig {
+	readonly root: string;
+}
+
+export interface IYasppContentConfig {
 	readonly root: string;
 	readonly index: string;
-
 }
 
-interface IYasppConfig {
-	readonly content: IYasppAppContentConfig;
-	readonly locales: IYasppLocaleConfig;
+/**
+ * Project configuration file
+ */
+export interface IYasppConfig {
+	readonly content: IYasppContentConfig;
+	readonly locale: IYasppLocaleConfig;
+}
+
+/**
+ * The configuration stored in the yaspp root
+ */
+export interface IYasppAppConfig extends IYasppConfig {
+	readonly root: string;
 }
 

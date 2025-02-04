@@ -3,7 +3,7 @@ import * as fsPath from 'path';
 import { promises as fs } from 'fs';
 import { fileUtils } from '../fileUtils';
 import { parse as parseJSON } from 'json5';
-import { IYasppApp, IYasppConfig } from 'types/app';
+import { IYasppApp, IYasppConfig, IYasppContentConfig, IYasppLocaleConfig } from 'types/app';
 
 
 const CONFIG_FILE = "yaspp.json";
@@ -21,7 +21,7 @@ class YasppApp implements IYasppApp {
 	public get isValid(): boolean {
 		return Boolean(this._indexPage)
 	}
-	public async init(cwd: string, useRoot: string | null): Promise<string> {
+	public async init(cwd: string, contentRoot: string): Promise<string> {
 		if (this._isLoading) {
 			throw new Error("Can't call yaspp app init when it's loading");
 		}
@@ -40,7 +40,7 @@ class YasppApp implements IYasppApp {
 			if (!config.content.root) {
 				return `Invalid content root in yaspp.json`;
 			}
-			const contentPath = fsPath.resolve(cwd, useRoot ?? config.content.root);
+			const contentPath = fsPath.resolve(cwd, contentRoot);
 			if (!await fileUtils.isFolder(contentPath)) {
 				return `Content path indicated by config not found: ${contentPath}`;
 			}
@@ -71,16 +71,21 @@ class YasppApp implements IYasppApp {
 
 	private _validateConfig(config: Partial<IYasppConfig>): IYasppConfig {
 		config = config ?? {};
-		const langs = Array.isArray(config.locales?.langs) ? config.locales.langs : ["en"];
+		const content = config.content || {} as Partial<IYasppContentConfig>,
+			locale = config.locale || {} as Partial<IYasppLocaleConfig>;
+		const langs = Array.isArray(locale.langs) ? locale.langs : ["en"];
 		return {
 			content: {
-				root: config?.content?.root || "",
-				index: config?.content?.index || ""
+				root: content.root || "",
+				index: content.index || ""
 			},
-			locales: {
-				langs: Array.isArray(config.locales?.langs) ? config.locales.langs : ["en"],
-				defaultLocale: config.locales?.defaultLocale && langs.includes(config.locales.defaultLocale) ?
-					config.locales.defaultLocale : undefined
+			locale: {
+				langs,
+				defaultLocale: locale.defaultLocale && langs.includes(locale.defaultLocale) ?
+					locale.defaultLocale : undefined,
+				pages: {},
+				root: locale.root || ""
+
 			}
 		};
 	}
@@ -111,7 +116,7 @@ export const initYaspp = async function (root?: string): Promise<IYasppApp> {
 		return p;
 	}
 	_instances.set(root, { app, resolvers });
-	const error = await app.init(root, process.env.NODE_ENV === "development" ? null : "public/content");
+	const error = await app.init(root, "public/content");
 	if (error) {
 		const err = `Error loading yaspp: ${error}`;
 		console.log(err);

@@ -1,84 +1,39 @@
+import fsPath from "path";
+import { yasppUtils, loadYasppAppConfig } from "./utils";
 
-
-const fs = require("fs").promises;
-const fsPath = require("path");
-const spawn = require("child_process").spawn;
-const parseJSON = require("json5").parse;
-
-interface IYasppConfig {
-	readonly content: {
-		readonly root: string;
-		readonly index: string;
-	}
-}
-
-async function isFolder(fspath: string): Promise<boolean> {
-	try {
-		const info = await fs.lstat(fspath);
-		return Boolean(info?.isDirectory());
-	}
-	catch (e) {
-		return false;
-	}
-}
-
-function runProcess(exe: string, argv: string[], cwd: string): Promise<number> {
-	return new Promise<number>(resolve => {
-		const proc = spawn(exe, argv, {
-			cwd
-		})
-
-		proc.on('close', function () {
-			const code = Number(proc.exitCode);
-			resolve(isNaN(code) ? 1 : code);
-		});
-	})
-
-}
-
-function copyContent(srcPath: string, targetPath: string): Promise<string> {
-	return new Promise<string>(async resolve => {
-		if (!await isFolder(srcPath)) {
-			return resolve(`Content Folder ${srcPath} not found`);
-		}
-		await fs.mkdir(targetPath, { recursive: true });
-		if (!await isFolder(targetPath)) {
-			return resolve(`Target Folder ${targetPath} not found`);
-		}
-		const rmargs = ["-rf", '*'];
-		const rmCode = await runProcess("rm", rmargs, targetPath);
-		if (rmCode !== 0) {
-			resolve(`Failed to delete content of ${targetPath}`);
-		}
-		const cpargs = ["-r", '*', targetPath]
-		const cpCode = await runProcess("cp", cpargs, srcPath);
-		resolve(cpCode ===0 ? "" : `Error copying content, exit code ${cpCode}`);
-	});
-}
+const rootPath = fsPath.resolve(__dirname, "../..");
 
 /**
  * Returns an error message, empty if no error
  */
-async function run(): Promise<string> {
+async function run(clean: boolean): Promise<string> {
 	try {
-		const rootPath = fsPath.resolve(__dirname, "../.."),
-			configPath = fsPath.resolve(rootPath, "yaspp.json");
-		const data = await fs.readFile(configPath, "utf-8");
-		const config = parseJSON(data) as IYasppConfig,
-			content = config.content?.root;
-		if (!content) {
-			return "Can't find content folder in yaspp.json";
+		const { error, result} = await loadYasppAppConfig();
+		if (error) {
+			return error;
 		}
-		const contentPath = fsPath.resolve(rootPath, content),
+		const config = result!;
+		const projectRoot= fsPath.resolve(rootPath, config.root)
+		const { content, locale } = config;
+		const contentPath = fsPath.resolve(projectRoot, content.root),
 			targetPath = fsPath.resolve(rootPath, "public/content");
-		return await copyContent(contentPath, targetPath);
+		const contentErr = await yasppUtils.copyContent(contentPath, targetPath, clean);
+		if (contentErr) {
+			return contentErr;
+		}
+		if (locale?.root) {
+			const localeRoot = fsPath.resolve(projectRoot, locale.root),
+				targetPath = fsPath.resolve(rootPath, "public/locales");
+			return await yasppUtils.copyContent(contentPath, targetPath, clean);
+		}
+		return "";
 	}
 	catch (e) {
 		return `Error loading yaspp.json: ${e}`;
 	}
 }
-
-run()
+const clean = yasppUtils.getArg(process.argv, "--clean");
+run(clean !== null)
 	.then(err => {
 		if (err) {
 			console.error(err);

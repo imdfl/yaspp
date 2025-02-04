@@ -20,7 +20,6 @@ import {
 } from './nodeTypes';
 import { IFigureInfo, ParsedNodeProcessor } from './types';
 import { mdUtils } from './markdownUtils';
-import { LocaleId } from '../../types';
 
 const INDEX_REGEXP = /%index%/i;
 
@@ -232,7 +231,7 @@ class MarkdownParser implements IMarkdownParser {
 
 		const text = tmpl ? 
 			mdUtils.translateString(
-				tmpl.template.replace(INDEX_REGEXP, String(target.sequence || 0)), context.mode.locale as LocaleId
+				tmpl.template.replace(INDEX_REGEXP, String(target.sequence || 0)), context.mode.locale
 			)
 			: String(target.sequence);
 
@@ -562,7 +561,7 @@ class MarkdownParser implements IMarkdownParser {
 				context.indexer.currentIndex('figure') + context.metaData.captions[MLNODE_TYPES.FIGURE].base;
 
 			const newText = mdUtils.translateString(
-				node.text.replace(INDEX_REGEXP, ind.toString()), context.mode.locale as LocaleId
+				node.text.replace(INDEX_REGEXP, ind.toString()), context.mode.locale
 			);
 
 			Object.assign(node, { text: newText });

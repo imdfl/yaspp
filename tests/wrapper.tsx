@@ -6,7 +6,7 @@ import commonEN from '../locales/en/common.json';
 import localeEN from '../locales/en/locale.json';
 import navEN from '../locales/en/nav.json';
 import pagesEN from '../locales/en/pages.json';
-import authorsEN from '../locales/en/authors.json';
+// import authorsEN from '../locales/en/authors.json';
 import { NextPage } from 'next';
 import { IPageProps } from 'types/models';
 
@@ -16,7 +16,7 @@ const translateEN = {
 	nav: navEN,
 	pages: pagesEN,
 	locale: localeEN,
-	authors: authorsEN,
+	// authors: authorsEN,
 };
 
 const Providers = ({ children: Component, ...props }) => (

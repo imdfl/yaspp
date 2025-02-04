@@ -1,0 +1,15 @@
+{
+	"locales": ["en"],
+	"defaultLocale": "en",
+	"logBuild": false,
+	"pages": {
+		"*": ["common", "locale", "nav", "pages", "authors"],
+		"/": ["glossary"],
+		"/contact": ["contact"],
+		"/glossary": ["glossary"],
+		"/glossary/[id]": ["glossary"],
+		"/pages/docs/[id]/codex": ["docs"],
+		"he/posts": ["blog"],
+		"/posts/[id]": ["blog"]
+	}
+}

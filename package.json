@@ -34,8 +34,9 @@
 	"scripts": {
 		"clean": "rm -rf .next",
 		"build": "next build",
-		"prebuild": "node scripts/build/copy-content.js",
+		"prebuild": "npx ts-node scripts/build/copy-content --clean",
 		"dev": "next dev",
+		"predev": "npx ts-node scripts/build/copy-content",
 		"start": "next start",
 		"build:sitemap": "next-sitemap",
 		"health": "yarn format:check && yarn lint && yarn lint:style && yarn test:unit && yarn test:e2e",

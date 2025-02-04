@@ -32,7 +32,6 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	`;
 
 
-	console.log("rendering app");
 	if (error) {
 		return <h2>{error}</h2>
 	}

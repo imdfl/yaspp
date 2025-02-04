@@ -1,6 +1,19 @@
+// ****************************************************************"
+// This is a GENERATED file, editing it is likely to break the build
+// ****************************************************************
+
 {
-	"content": {
-		"root": "../jehovascript-content",
-		"index": "docs/the-story-of-mel/codex"
-	}
+    "root": "../jehovascript-content",
+    "content": {
+        "root": "content",
+        "index": "docs/the-story-of-mel/codex"
+    },
+    "locale": {
+        "root": "locales",
+        "langs": [
+            "en"
+        ],
+        "defaultLocale": "en",
+        "pages": {}
+    }
 }

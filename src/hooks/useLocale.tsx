@@ -13,8 +13,8 @@ type LocaleProps = (id?: LocaleId) => {
 export const useLocale: LocaleProps = (id) => {
 	const { t, lang } = useTranslation();
 
-	const current = lang as LocaleId;
-	const locales = i18n['locales'] as LocaleId[];
+	const current = lang;
+	const locales = i18n['locales'] as string[];
 	const directions = i18n['direction'] as Record<LocaleId, TextDirection>;
 	const textDirection = directions[id || current];
 
