@@ -53,7 +53,8 @@
 		"sass:clean": "find src -type f \\( -name \"*.css\" -o -name \"*.css.map\" \\) -exec rm {} +",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"upload": "npx ts-node scripts/upload-files.ts"
+		"upload": "npx ts-node scripts/upload-files.ts",
+		"init-yaspp": "npx ts-node scripts/build/init-yaspp"
 	},
 	"dependencies": {
 		"@radix-ui/react-form": "0.0.3",

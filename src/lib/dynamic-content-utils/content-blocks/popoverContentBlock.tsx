@@ -6,9 +6,9 @@ import { PopoverProvider } from '@contexts/popoverContext';
 import { useLocale } from 'hooks/useLocale';
 import { useToolbar } from '../hooks/useToolbar';
 import { IPopoverContext } from '../types';
-import I18nProvider from 'next-translate/I18nProvider';
+// import I18nProvider from 'next-translate/I18nProvider';
 import { DynamicContentTypes } from 'types/content';
-import glossaryEN from '../../../../locales/en/glossary.json';
+// import glossaryEN from '../../../../locales/en/glossary.json';
 import { Popover } from 'components/index';
 import type {
 	ContentComponentProps,
@@ -61,9 +61,9 @@ export const PopoverContentBlock = ({
 				locale={lang}
 				data-testid={dataTestId}
 			>
-				<I18nProvider namespaces={{ glossaryEN }}>
+				{/* <I18nProvider namespaces={{ glossaryEN }}> */}
 					<DynamicContentBrowser node={node} />
-				</I18nProvider>
+				{/* </I18nProvider> */}
 			</Popover>
 		</PopoverProvider>
 	);

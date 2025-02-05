@@ -174,11 +174,11 @@ class YasppUtils implements IYasppUtils {
 
 export const yasppUtils = new YasppUtils;
 
-export async function loadYaspConfig(projectRoot: string, options: IYasppLoadOptions): Promise<IResponse<IYasppConfig>> {
+export async function loadYasppConfig(projectRoot: string, options: IYasppLoadOptions): Promise<IResponse<IYasppConfig>> {
 	try {
 		const configPath = fsPath.resolve(projectRoot, "yaspp.json");
 		if (!await fileUtils.isFile(configPath)) {
-			return { error: `Can't find ${configPath}`, result: null };
+			return { error: `Can't find yaspp configuration file (${configPath})`, result: null };
 		}
 		const data = await fs.readFile(configPath, "utf-8");
 		const userConfig = parseJSON<Partial<IYasppConfig>>(data);
@@ -194,7 +194,7 @@ export async function loadYaspConfig(projectRoot: string, options: IYasppLoadOpt
 
 export async function loadYasppAppConfig(options:IYasppLoadOptions): Promise<IResponse<IYasppAppConfig>> {
 	const rootPath = fsPath.resolve(__dirname, "../..");
-	const { result, error } = await loadYaspConfig(rootPath, options);
+	const { result, error } = await loadYasppConfig(rootPath, options);
 	if (error) {
 		return errorResult(error);
 	}

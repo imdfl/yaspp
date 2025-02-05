@@ -3,13 +3,9 @@
 	"defaultLocale": "en",
 	"logBuild": false,
 	"pages": {
-		"*": ["common", "locale", "nav", "pages", "authors"],
-		"/": ["glossary"],
+		"*": ["common", "locale", "nav", "pages"],
 		"/contact": ["contact"],
-		"/glossary": ["glossary"],
-		"/glossary/[id]": ["glossary"],
-		"/pages/docs/[id]/codex": ["docs"],
-		"he/posts": ["blog"],
-		"/posts/[id]": ["blog"]
+		"rgx:/pages/docs/*": ["docs"],
+		"rgx:/posts.*": ["blog"]
 	}
 }

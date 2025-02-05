@@ -1,8 +1,8 @@
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { parse as parseJSON } from "json5";
-import { loadYaspConfig, yasppUtils } from "./utils";
-import type { I18NConfig, IYasppAppConfig, IYasppLocaleConfig } from "../../src/types/app";
+import { loadYasppConfig, yasppUtils } from "./utils";
+import type { IProjectLocaleConfig, IYasppAppConfig, IYasppLocaleConfig } from "../../src/types/app";
 import { fileUtils } from "../../src/lib/fileUtils";
 
 const rootPath = fsPath.resolve(__dirname, "../..");
@@ -43,46 +43,34 @@ async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Pr
 		"%DEFAULT%": "en",
 		"%PAGES%": "",
 		"%SYSNS%": [] as ReadonlyArray<string>,
-		"%USERNS%": [] as ReadonlyArray<string>
+		"%USERNS%": [] as ReadonlyArray<string>,
+		"%DICTIONARIES%": ""
 	}
 	const outputTmpl = `
+const uns = new Set([%USERNS%]);
+const sns = new Set([%SYSNS%]);
 module.exports = {
 	locales: [%LANGS%],
 	defaultLocale: "%DEFAULT%",
 	logBuild: false,
 	pages: 	%PAGES%,
-	loadLocaleFrom: (function(sysNS, userNS) {
-		const uns = new Set(userNS);
-		const sns = new Set(sysNS);
-		async function load(path) {
-			try {
-				const m = await import(path);
-				return m.default;
-
-			} catch (err) {
-				console.log(\`Failed to load locale from \${path}\`);
-				return {};
-			}
+	dictionaries: %DICTIONARIES%,
+	loadLocaleFrom: async (lang, ns) => {
+		console.log(\`load ns \${ns} for locale \${lang}\`)
+		// You can use a dynamic import, fetch, whatever. You should
+		// return a Promise with the JSON file.
+		const ret = {};
+		if (sns.has(ns)) {
+			const m = await import(\`./locales/\${lang}/\${ns}.json\`);
+			Object.assign(ret, m.default);
 		}
-		return (async (lang, ns) => {
-				// You can use a dynamic import, fetch, whatever. You should
-				// return a Promise with the JSON file.
-				const ret = {};
-				if (sns.has(ns)) {
-					const m = await load(\`./locales/\${lang}/\${ns}.json\`);
-					Object.assign(ret, m.default);
-				}
-				if (uns.has(ns)) {
-					const m = await load(\`./public/locales/\${lang}/\${ns}.json\`);
-					Object.assign(ret, m.default);
-				}
+		if (uns.has(ns)) {
+			const m = await import(\`./public/locales/\${lang}/\${ns}.json\`);
+			Object.assign(ret, m.default);
+		}
 
-				return  ret;
-		});
-	})(
-		[%SYSNS%],
-		[%USERNS%]
-	)
+		return ret;
+	}
 }`;
 	const tmplPath = fsPath.resolve(process.cwd(), I18N_TMPL);
 	if (!await fileUtils.isFile(tmplPath)) {
@@ -91,16 +79,27 @@ module.exports = {
 	try {
 		function ts(s: string) { return `"${s}"`; }
 		const data = await fs.readFile(tmplPath, "utf-8");
-		const tmpl = parseJSON<I18NConfig>(data);
-		const sysNS = Object.entries(tmpl.pages).reduce((arr: Set<string>, [key, values]) => {
-			values.forEach(s => arr.add(s));
-			return arr
+		const tmpl = parseJSON<IProjectLocaleConfig>(data);
+		const sysNS = Object.entries(tmpl.pages).reduce((ns: Set<string>, [key, values]) => {
+			values.forEach(s => ns.add(s));
+			return ns
 		}, new Set<string>());
-		values["%SYSNS%"] = Array.from(sysNS.keys()).map(ts);
+		const nsArray = Array.from(sysNS.keys());
+		values["%SYSNS%"] = nsArray.map(ts);
+		const sysDict = nsArray.reduce((dict: Record<string, string>, ns) => {
+			dict[ns] = `./locales/%LANG%/${ns}.json`;
+			return dict;
+		}, {})
+		const dicts = {
+			system: sysDict,
+			project: {} as Record<string, string>
+		}
 		values["%DEFAULT%"] = config.defaultLocale;
 		values["%LANGS%"] = config.langs.map(ts);
 		const mergedPages = Object.entries(config.pages).reduce((pages, [key, values]) => {
-			pages[key] = values;
+			const sys = new Set(pages[key] || []);
+			values.forEach(s => sys.add(s));
+			pages[key] = Array.from(sys.keys());
 			return pages;
 		}, tmpl.pages);
 		values["%PAGES%"] = JSON.stringify(mergedPages, null, 4);
@@ -110,19 +109,26 @@ module.exports = {
 				return `Failed to find locale folder for ${config.defaultLocale} under ${config.root}`;
 			}
 			const list = await fs.readdir(nsPath, { withFileTypes: true });
-			values["%USERNS%"] = list
-				.filter(dirent => dirent.isFile())
-				.filter(dirent => /\.json$/.test(dirent.name))
-				.map(dirent => dirent.name)
-				.map(s => s.replace(/\.[^\.]+$/, ""))
-				.map(ts)
+			const userNS = list
+			.filter(dirent => dirent.isFile())
+			.filter(dirent => /\.json$/.test(dirent.name))
+			.map(dirent => dirent.name)
+			.map(s => s.replace(/\.[^\.]+$/, ""));
+			values["%USERNS%"] = userNS.map(ts);
+			const pDict = nsArray.reduce((dict: Record<string, string>, ns) => {
+				dict[ns] = `./public/locales/%LANG%/${ns}.json`;
+				return dict;
+			}, {})
+				dicts.project = pDict
 		}
+		values["%DICTIONARIES%"] = JSON.stringify(dicts, null, 4);
 		const output = Object.entries(values).reduce((html, [key, value]) => {
 			const re = new RegExp(key, "g");
 			return html.replace(re, String(value));
 		}, outputTmpl);
-		const outPath = fsPath.resolve(process.cwd(), "i18n-test.js");
+		const outPath = fsPath.resolve(process.cwd(), "i18n.js");
 		await fs.writeFile(outPath, GEN_HEADER + output);
+		console.log(`Generated ${yasppUtils.trimPath(outPath)}`);
 	}
 	catch (err) {
 		return `Error loading template file ${I18N_TMPL} (${tmplPath}): ${err}`;
@@ -138,6 +144,7 @@ async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
 			JSON.stringify(config, null, 4)
 		]
 		await fs.writeFile(fpath, data.join('\n'));
+		console.log(`Generated ${yasppUtils.trimPath(fpath)}`);
 		return "";
 	}
 	catch (err) {
@@ -150,7 +157,7 @@ async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
  */
 async function run(projectRoot: string): Promise<string> {
 	try {
-		const { error, result } = await loadYaspConfig(projectRoot,{ validate: true });
+		const { error, result } = await loadYasppConfig(projectRoot,{ validate: true });
 		if (error) {
 			return error;
 		}
@@ -184,7 +191,7 @@ function exitWith(err: string): void {
 
 const rootArg = yasppUtils.getArg(process.argv, "--project") || yasppUtils.getArg(process.argv, "-P");
 if (!rootArg) {
-	exitWith(`Please provide a single argument - the relative or absolute path of your project`);
+	exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../../mysite\nOR\n--project /users/me/projects/mysite`);
 }
 else {
 	const projectRoot = fsPath.resolve(process.cwd(), rootArg!);

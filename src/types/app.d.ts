@@ -17,18 +17,25 @@ export interface IYasppApp {
 }
 
 export type LocaleLoader = (lang: string, ns?: string) => Promise<Record<string, string>>;
-export interface I18NConfig {
+export interface IProjectLocaleConfig {
 	readonly langs: ReadonlyArray<string>;
 	readonly defaultLocale: string;
 	readonly pages: Record<string, ReadonlyArray<string>>;
 }
 
-export interface IYasppLocaleConfig extends I18NConfig {
+
+export interface IYasppLocaleConfig extends IProjectLocaleConfig {
 	readonly root: string;
 }
 
 export interface IYasppContentConfig {
+	/**
+	 * Relative to project root
+	 */
 	readonly root: string;
+	/**
+	 * Path to index document, defaults to pages/index.md
+	 */
 	readonly index: string;
 }
 

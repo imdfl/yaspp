@@ -9,8 +9,8 @@ export interface ILocaleContext {
 	// readonly textDirection: TextDirection;
 	// readonly meta: ILocaleMetaContext;
 	// readonly pages: ILocalePageContext;
-	translate: (s: string, lang?: string) => string;
-	getLocaleSymbol: (id: string) => string;
+	// translate: (s: string, lang?: string) => string;
+	// getLocaleSymbol: (id: string) => string;
 	getLocaleLabel: (id: string) => string;
 	setLocale: (id: LocaleId) => Promise<boolean>;
 	textDirection: (locale?: string) => TextDirection;

@@ -33,6 +33,7 @@ i18n.js
 
 # copied content
 /public/content
+/public/locales
 
 # misc
 .DS_Store
