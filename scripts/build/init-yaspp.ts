@@ -110,16 +110,16 @@ module.exports = {
 			}
 			const list = await fs.readdir(nsPath, { withFileTypes: true });
 			const userNS = list
-			.filter(dirent => dirent.isFile())
-			.filter(dirent => /\.json$/.test(dirent.name))
-			.map(dirent => dirent.name)
-			.map(s => s.replace(/\.[^\.]+$/, ""));
+				.filter(dirent => dirent.isFile())
+				.filter(dirent => /\.json$/.test(dirent.name))
+				.map(dirent => dirent.name)
+				.map(s => s.replace(/\.[^\.]+$/, ""));
 			values["%USERNS%"] = userNS.map(ts);
-			const pDict = nsArray.reduce((dict: Record<string, string>, ns) => {
+			const pDict = userNS.reduce((dict: Record<string, string>, ns) => {
 				dict[ns] = `./public/locales/%LANG%/${ns}.json`;
 				return dict;
 			}, {})
-				dicts.project = pDict
+			dicts.project = pDict
 		}
 		values["%DICTIONARIES%"] = JSON.stringify(dicts, null, 4);
 		const output = Object.entries(values).reduce((html, [key, value]) => {
@@ -157,7 +157,7 @@ async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
  */
 async function run(projectRoot: string): Promise<string> {
 	try {
-		const { error, result } = await loadYasppConfig(projectRoot,{ validate: true });
+		const { error, result } = await loadYasppConfig(projectRoot, { validate: true });
 		if (error) {
 			return error;
 		}

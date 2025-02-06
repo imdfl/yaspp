@@ -3,14 +3,17 @@ import { VALID_PARSE_MODES } from './parseModes';
 import { MLParseModes } from 'types/parser/modes';
 import type { IContentParseOptions } from 'types/parser/parser';
 import type { IMLParsedNode, IPageMetaData } from 'types/models';
+import type { IYasppApp } from 'types/app';
+import { wrapTranslate } from './locale/translate';
 
 export class MLParseContext {
-	private _linkDefs: { [key: string]: IMLParsedNode } = {};
+	private _linkDefs: Record<string, IMLParsedNode> = {};
 	private _indexer: NodeIndexer = new NodeIndexer();
 	private readonly _metaData: IPageMetaData;
 	private readonly _mode: IContentParseOptions;
+	private readonly _translate: (key: string) => string;
 
-	constructor(mode: IContentParseOptions, metaData: IPageMetaData) {
+	constructor(private readonly app: IYasppApp, mode: IContentParseOptions, metaData: IPageMetaData) {
 		const parseMode = mode.parseMode || metaData.parse_mode;
 
 		this._mode = {
@@ -21,6 +24,15 @@ export class MLParseContext {
 		};
 
 		this._metaData = clonePlainObject(metaData);
+		this._translate = wrapTranslate({
+			dictionary: app.dictionary,
+			locale: mode.locale,
+			defaultLocale: app.defaultLocale
+		})
+	}
+
+	public translate(text: string): string {
+		return this._translate(text);
 	}
 
 	public get mode(): IContentParseOptions {
@@ -33,7 +45,7 @@ export class MLParseContext {
 			mode
 		);
 
-		const ret = new MLParseContext(newMode, this._metaData);
+		const ret = new MLParseContext(this.app, newMode, this._metaData);
 
 		ret._indexer = this.indexer;
 		ret._linkDefs = this._linkDefs;
@@ -45,7 +57,7 @@ export class MLParseContext {
 		return this._metaData;
 	}
 
-	public get linkDefs(): { [key: string]: IMLParsedNode } {
+	public get linkDefs(): Record<string, IMLParsedNode> {
 		return this._linkDefs;
 	}
 

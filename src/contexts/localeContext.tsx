@@ -4,8 +4,6 @@ import {
 	ILocaleContextProps,
 	localeLabelPrefix,
 } from "./localeContext.d";
-// import { _translate } from "@lib/locale/translate";
-// import { Languages } from "@lib/locale";
 import { NextRouter } from "next/router";
 import { LocaleId, TextDirection } from "../types";
 

@@ -1,4 +1,5 @@
 import { IPageMetaData } from 'types/models';
+import { customMarkdownTags } from '@lib/customMarkdownTags';
 
 export default [
 	{
@@ -17,7 +18,7 @@ export default [
 			figures: {
 				auto: true,
 				base: 1,
-				template: '[[markdown:tags:figure:abbr]] %index%',
+				template: `[[${customMarkdownTags.figureAbbr}]] %index%`,
 			},
 		},
 		id: 'index.en.md',
@@ -59,7 +60,7 @@ export const mockContentDataWithProps = ({
 			figures: data.captions || {
 				auto: true,
 				base: 1,
-				template: '[[markdown:tags:figure:abbr]] %index%',
+				template: `[[${customMarkdownTags.figureAbbr}]] %index%`,
 			},
 		},
 		id,

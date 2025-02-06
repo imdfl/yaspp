@@ -47,6 +47,7 @@ class MLNextUtils implements IMLNextUtils {
 	): Promise<GetStaticPropsResult<IFolderStaticProps>> {
 		const app = await initYaspp();
 		const docData = await loadContentFolder({
+			app,
 			relativePath: folderPath,
 			loadMode,
 			locale,
@@ -75,6 +76,7 @@ class MLNextUtils implements IMLNextUtils {
 		for await (const locale of (locales || [])) {
 			const folderData = await loadContentFolder({
 				locale,
+				app,
 				relativePath: folderPath,
 				loadMode: LoadFolderModes.Children,
 				mode: {
@@ -103,6 +105,7 @@ class MLNextUtils implements IMLNextUtils {
 			for (let locale of options.locales) {
 				const folderData = await loadContentFolder({
 					locale,
+					app,
 					relativePath: rec.path,
 					loadMode: LoadFolderModes.Folder,
 					mode: {

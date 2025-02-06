@@ -1,3 +1,5 @@
+import { LocaleDictionary, LocaleId } from "./locale";
+
 /**
  * App object that contains data about the current build
  */
@@ -14,6 +16,16 @@ export interface IYasppApp {
 	 * True if this app was initialized successfully and found all its paths
 	 */
 	readonly isValid: boolean;
+
+	/**
+	 * Map of locale id (e.g. "en") to a map of namespace => key:value
+	 */
+	readonly dictionary: LocaleDictionary;
+
+	/**
+	 * Default locale to start with and use as fallback in translations
+	 */
+	readonly defaultLocale: LocaleId;
 }
 
 export type LocaleLoader = (lang: string, ns?: string) => Promise<Record<string, string>>;

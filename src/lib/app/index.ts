@@ -19,14 +19,24 @@ class YasppApp implements IYasppApp {
 	private _content = "";
 	private _indexPage = "";
 	private _isLoading = false;
+	private _dictionary: LocaleDictionary | null = null;
 
 	public get isLoading() {
 		return this._isLoading;
 	}
 
 	public get isValid(): boolean {
-		return Boolean(this._indexPage)
+		return Boolean(this._indexPage && this._dictionary)
 	}
+
+	public get dictionary(): LocaleDictionary {
+		return this._dictionary;
+	}
+
+	public get defaultLocale(): string {
+		return i18nconfig.defaultLocale;
+	}
+
 	public async init(cwd: string, contentRoot: string): Promise<string> {
 		if (this._isLoading) {
 			throw new Error("Can't call yaspp app init when it's loading");
@@ -56,9 +66,8 @@ class YasppApp implements IYasppApp {
 				return `Failed to find index pag/folder at ${indexPath}`;
 			}
 			this._indexPage = config.content.index;
-
-			const langs = await this.loadLocales();
-			if (!langs) {
+			this._dictionary = await this.loadLocales();
+			if (!this._dictionary) {
 				return "Failed to load locales";
 			}
 

@@ -7,9 +7,12 @@ export type TextDirection = 'rtl' | 'ltr';
  */
 export type LocaleNamespace = Record<string, string>;
 /**
- * a map of namespace => dictionary
+ * Single Language dictionary - a map of namespace => dictionary
  */
 export type LocaleLanguage = Map<string, LocaleNamespace>;
+/**
+ * A map of locale id (e.g. "fr") to a Language dictionary
+ */
 export type LocaleDictionary = Map<LocaleId, LocaleLanguage>;
 
 export interface IMutableLocaleConfig {
