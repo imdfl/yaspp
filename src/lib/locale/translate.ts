@@ -1,19 +1,41 @@
-import { LocaleId } from "../../types";
+import { ITranslateStringOptions } from "../markdown-utils/types";
 
-export const TRANS_DELIM = "%";
-export const wrapStr = (str: string) => `${TRANS_DELIM}${str}${TRANS_DELIM}`;
+export const _translate = ({ text, locale, dictionary, defaultLocale }: ITranslateStringOptions): string => {
+	const parts = text?.split(':');
+	function wrapStr() {
+		return `%${locale}_${text}$%`;
+	}
+	if (!(parts?.length > 1)) {
+		return wrapStr();
+	}
+	function tryDefault(): string {
+		if (defaultLocale && locale !== defaultLocale) {
+			return _translate({
+				text, locale: defaultLocale, dictionary
+			});
+		}
+		return wrapStr();
+	}
+	const lang = dictionary.get(locale);
+	if (!lang) {
+		return tryDefault();
+	}
+	const nsName = parts[0],
+		dict = lang.get(nsName);
+	if (!dict) {
+		return tryDefault();
+	}
+	const key = parts.slice(1).join(':'),
+		value = dict[key];
+	return value || tryDefault();
+};
 
-export const _translate =
-	(langRef: string, langs: Record<LocaleId, Record<string, string>>) =>
-	(key: string, lang?: string): string => {
-		if (!key) {
-			return;
-		}
-		const ref = lang || langRef;
-		if (!langs[ref]) {
-			return wrapStr(`${ref}_${key}`);
-		} else if (!langs[ref][key] || !langs[ref][key].length) {
-			return wrapStr(key);
-		}
-		return langs[ref][key] || wrapStr(key);
-	};
+export const wrapTranslate = ({ dictionary, locale, defaultLocale }: Omit<ITranslateStringOptions, "text">): ((text: string) => string) => {
+	// the params are saved locally so we don't ref an object that may change
+	return (text: string) => _translate({
+		text,
+		dictionary,
+		locale,
+		defaultLocale
+	})
+}

@@ -1,3 +1,3 @@
 export const customMarkdownTags = {
-	figureAbbr: 'markdown:tags:figure:abbr',
+	figureAbbr: 'common:markdown:tags:figure:abbr',
 };

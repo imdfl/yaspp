@@ -4,7 +4,7 @@ import matter from 'gray-matter';
 // import getConfig from 'next/config';
 // import { setContentRootDir } from './contentRootDir';
 import type { ICaptionConfiguration, IFolderContent, ILocaleMap, IMLParsedNode, IPageMetaData, IParsedPageData, PageSortField, ParsedNode } from 'types/models';
-import { markdownParser } from './markdown-utils/markdownParser';
+import { createMDParser } from './markdown-utils/markdownParser';
 import type { IContentParseOptions } from 'types/parser/parser';
 import {
 	LoadContentModes,
@@ -16,6 +16,7 @@ import { mdUtils } from './markdown-utils/markdownUtils';
 import { MLNODE_TYPES } from '../types';
 import { parseDate, safeMerge } from '../utils';
 import { fileUtils } from './fileUtils';
+import { customMarkdownTags } from './customMarkdownTags';
 
 /** Save setting for build time */
 // const { serverRuntimeConfig } = getConfig();
@@ -30,7 +31,7 @@ const DEFAULT_PARSE_OPTIONS: IContentParseOptions = {
 };
 
 export const loadContentFolder = async (
-	{ relativePath, mode, loadMode,locale, rootFolder }: ILoadContentOptions
+	{ relativePath, mode, loadMode,locale, rootFolder, app }: ILoadContentOptions
 ): Promise<IFolderContent> => {
 	if (!rootFolder) {
 		throw new Error(`can't load content folder with neither app nor root`);
@@ -64,6 +65,7 @@ export const loadContentFolder = async (
 	// console.log(`collect - sorted content in "${contentDir}" for locale "${options.locale}"`);
 
 	const targetFileName = mdUtils.getIndexFileName(locale);
+	const markdownParser = createMDParser(app);
 
 	for await (const rec of folderContent) {
 		const name = rec.name;
@@ -216,7 +218,7 @@ class PageMetaData implements IPageMetaData {
 			auto: true,
 			base: 1,
 //			template: `[[FIGURE_ABBR]] %index%`,
-			template: `[[markdown:tags:figure:abbr]] %index%`,
+			template: `[[${customMarkdownTags.figureAbbr}]] %index%`,
 			
 		}
 	} as const;

@@ -25,7 +25,16 @@
 			"name": "Copy Content",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "node scripts/build/copy-content.js",
+			"command": "npx ts-node scripts/build/copy-content",
+			"env": {
+				"NODE_OPTIONS": "--inspect"
+			}
+		},
+		{
+			"name": "Init Yaspp",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "npx ts-node scripts/build/init-yaspp --project ../jehovascript-content",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}

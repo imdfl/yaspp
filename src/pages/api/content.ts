@@ -12,7 +12,8 @@ import * as fsPath from 'path';
 import * as fileSystem from 'fs';
 import { arrayToMap } from 'utils/index';
 import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
-import { initYaspp, IYasppApp } from '../../lib/app';
+import { initYaspp } from '../../lib/app';
+import type { IYasppApp } from 'types/app';
 
 const TypeMap: { [key: string]: ContentTypes } = {
 	annotation: ContentTypes.Annotation,

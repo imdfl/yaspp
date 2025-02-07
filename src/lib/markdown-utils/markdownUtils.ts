@@ -10,9 +10,7 @@ import {
 } from './nodeTypes';
 import { MLParseModes } from 'types/parser/modes';
 import type { IMLParsedNode, ParsedNode } from 'types/models';
-import { _translate } from "lib/locale/translate";
-import { Languages } from "lib/locale"
-import { LocaleId } from '../../types';
+
 
 export interface IMarkdownUtils {
 	/**
@@ -30,9 +28,19 @@ export interface IMarkdownUtils {
 	): MLNODE_TYPES;
 	extractParseMode(node: ParsedNode, context: MLParseContext): MLParseModes;
 	removeNullChildren(node: IMLParsedNode): IMLParsedNode;
+	/**
+	 * returns the children array of the node, either under `content` or in the node itself, if it's
+	 * @param node 
+	 * @returns 
+	 */
 	findArrayPart(node: ParsedNode): Array<ParsedNode> | null;
 	collectMLNodeText(node: IMLParsedNode): string;
-	translateString(str: string, locale: LocaleId): string;
+	/**
+	 * Translates a string where the dictionary keys are wrapped in [[]]
+	 * @param text 
+	 * @param context 
+	 */
+	translateString(text: string, context: MLParseContext): string;
 	sanitizeHTML(node: ParsedNode): ParsedNode;
 	createHtmlMDParser(): mdParser.Parser;
 }
@@ -174,12 +182,12 @@ class MarkdownUtils implements IMarkdownUtils {
 		node.children.push(...validNodes);
 		return node;
 	}
-	public translateString(str: string, locale: string): string {
-		if (!str) {
+	public translateString(text: string, context: MLParseContext): string {
+		if (!text) {
 			return '';
 		}
-		return str.replace(TRANSLATED_STRING_REGEXP, function (m, key: string) {
-			return _translate(locale, Languages)(key);
+		return text.replace(TRANSLATED_STRING_REGEXP, function (_, key: string) {
+			return context.translate(key);
 		});
 	}
 	

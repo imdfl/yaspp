@@ -1,0 +1,11 @@
+{
+	"locales": ["en"],
+	"defaultLocale": "en",
+	"logBuild": false,
+	"pages": {
+		"*": ["common", "locale", "nav", "pages"],
+		"/contact": ["contact"],
+		"rgx:/pages/docs/*": ["docs"],
+		"rgx:/posts.*": ["blog"]
+	}
+}

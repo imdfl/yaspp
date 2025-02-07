@@ -1,9 +1,10 @@
-import { MLParseContext } from 'lib/parserContext';
 import { LoadFolderModes } from 'types/parser/modes';
-import type { IMLParsedNode, ParsedNode } from 'types/models';
 import type { IContentParseOptions } from 'types/parser/parser';
+import type { IYasppApp } from 'types/app';
+import type { LocaleDictionary, LocaleId } from 'types';
 
 export interface ILoadContentOptions {
+	readonly app: IYasppApp;
 	readonly rootFolder: string;
 	/** Defaults to FOLDER */
 	readonly loadMode: LoadFolderModes;
@@ -14,13 +15,23 @@ export interface ILoadContentOptions {
 	readonly mode?: Partial<IContentParseOptions>;
 }
 
-export type ParsedNodeProcessor = (
-	node: ParsedNode,
-	context: MLParseContext
-) => IMLParsedNode;
 
 export interface IFigureInfo {
 	readonly index: number;
 	readonly realIndex: number;
 	readonly id: string;
+}
+
+
+export interface ITranslateStringOptions {
+	/**
+	 * Must be prefixed by namespace, e.g. "myns:key"
+	 */
+	readonly text: string;
+	readonly locale: LocaleId;
+	readonly dictionary: LocaleDictionary;
+	/**
+	 * Optional default locale to use if the language or the text are not found in the designated locale
+	 */
+	readonly defaultLocale?: string;
 }

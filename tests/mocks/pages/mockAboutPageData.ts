@@ -1,3 +1,5 @@
+import { customMarkdownTags } from "@lib/customMarkdownTags";
+
 export default {
 	metaData: {
 		glossary_key: '',
@@ -14,7 +16,7 @@ export default {
 		figures: {
 			auto: true,
 			base: 1,
-			template: '[[markdown:tags:figure:abbr]] %index%',
+			template: `[[${customMarkdownTags.figureAbbr}]] %index%`,
 		},
 	},
 	id: 'index.en.md',

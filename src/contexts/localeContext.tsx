@@ -3,17 +3,15 @@ import {
 	ILocaleContext,
 	ILocaleContextProps,
 	localeLabelPrefix,
-	LocaleInfo,
 } from "./localeContext.d";
-import { _translate } from "@lib/locale/translate";
-import { Languages } from "@lib/locale";
 import { NextRouter } from "next/router";
-import { LocaleId } from "../types";
+import { LocaleId, TextDirection } from "../types";
 
+const RTL_LANGS = new Set<string>(["he", "ar"]);
 class LocaleContextImpl implements ILocaleContext {
 	private _locale: string;
 	private _locales: string[];
-	private _translate: (s: string, lang?: LocaleId) => string;
+	// private _translate: (s: string, lang?: LocaleId) => string;
 	private _router: NextRouter;
 	constructor(props: ILocaleContextProps) {
 		if (!props) {
@@ -24,7 +22,12 @@ class LocaleContextImpl implements ILocaleContext {
 		this._router = router;
 		this._locale = locale;
 		this._locales = locales;
-		this._translate = _translate(locale, Languages);
+		// this._translate = _translate(locale, Languages);
+	}
+
+	public textDirection(locale?: string): TextDirection {
+		locale = locale || this._locale;
+		return RTL_LANGS.has(locale) ? "rtl" : "ltr";
 	}
 
 	private get router() {
@@ -43,22 +46,14 @@ class LocaleContextImpl implements ILocaleContext {
 		return this._locales;
 	}
 
-	public get localeInfo() {
-		return LocaleInfo[this.locale];
-	}
-
-	public get textDirection() {
-		return this.localeInfo.direction;
-	}
-
 	public getLocaleLabel = (id: string) =>
 		[localeLabelPrefix, id].join("_").toUpperCase();
 
-	public getLocaleSymbol = (id: string) =>
-		this.translate(this.getLocaleLabel(id));
+	// public getLocaleSymbol = (id: string) =>
+	// 	this.translate(this.getLocaleLabel(id));
 
-	public translate = (key: string, lang?: LocaleId) =>
-		this._translate(key, lang);
+	// public translate = (key: string, lang?: LocaleId) =>
+	// 	this._translate(key, lang);
 
 	public setLocale = (locale: LocaleId) =>
 		this.router.push(this.asPath, this.asPath, {

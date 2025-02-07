@@ -18,11 +18,17 @@ import {
 	TEXT_CONTAINER_TYPES,
 	TEXT_NODE_TYPES,
 } from './nodeTypes';
-import { IFigureInfo, ParsedNodeProcessor } from './types';
+import { IFigureInfo } from './types';
 import { mdUtils } from './markdownUtils';
-import { LocaleId } from '../../types';
+import { IYasppApp } from '../../types/app';
 
 const INDEX_REGEXP = /%index%/i;
+
+type ParsedNodeProcessor = (
+	node: ParsedNode,
+	context: MLParseContext
+) => IMLParsedNode;
+
 
 interface IMarkdownParser {
 	/**
@@ -40,7 +46,7 @@ interface IMarkdownParser {
 class MarkdownParser implements IMarkdownParser {
 	private readonly nodeProcessorMap: { [name: string]: ParsedNodeProcessor };
 
-	constructor() {
+	constructor(public readonly app: IYasppApp) {
 		this.nodeProcessorMap = {
 			list: this.processListNode.bind(this),
 			def: this.processLinkDefinition.bind(this),
@@ -56,7 +62,7 @@ class MarkdownParser implements IMarkdownParser {
 			return [];
 		}
 
-		const ctx = new MLParseContext(mode, metaData);
+		const ctx = new MLParseContext(this.app, mode, metaData);
 		const ids = new CaseInsensitiveMap<IMLParsedNode>();
 
 		const result = nodes
@@ -231,9 +237,7 @@ class MarkdownParser implements IMarkdownParser {
 		const tmpl = context.metaData.captions[target.type];
 
 		const text = tmpl ? 
-			mdUtils.translateString(
-				tmpl.template.replace(INDEX_REGEXP, String(target.sequence || 0)), context.mode.locale as LocaleId
-			)
+			mdUtils.translateString(tmpl.template.replace(INDEX_REGEXP, String(target.sequence || 0)), context)
 			: String(target.sequence);
 
 		node.children.length = 0;
@@ -561,12 +565,11 @@ class MarkdownParser implements IMarkdownParser {
 			const ind =
 				context.indexer.currentIndex('figure') + context.metaData.captions[MLNODE_TYPES.FIGURE].base;
 
-			const newText = mdUtils.translateString(
-				node.text.replace(INDEX_REGEXP, ind.toString()), context.mode.locale as LocaleId
-			);
+			const newText = mdUtils.translateString(node.text.replace(INDEX_REGEXP, ind.toString()), context);
 
 			Object.assign(node, { text: newText });
-		} else if (node.children?.length) {
+		}
+		else if (node.children?.length) {
 			node.children.forEach((child) => this.processCaptionNode(child, context));
 		}
 
@@ -799,7 +802,7 @@ class MarkdownParser implements IMarkdownParser {
 	}
 }
 
-export const markdownParser: IMarkdownParser = new MarkdownParser();
+export const createMDParser = (app: IYasppApp): IMarkdownParser => new MarkdownParser(app);
 
 // private promoteFiguresInNode(
 // 	node: IMLParsedNode,
