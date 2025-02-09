@@ -5,7 +5,6 @@
 	"pages": {
 		"*": ["common", "locale", "nav", "pages"],
 		"/contact": ["contact"],
-		"rgx:/pages/docs/*": ["docs"],
 		"rgx:/posts.*": ["blog"]
 	}
 }

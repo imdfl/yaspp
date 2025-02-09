@@ -34,7 +34,7 @@
 			"name": "Init Yaspp",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/init-yaspp --project ../jehovascript-content",
+			"command": "npx ts-node scripts/build/init-yaspp --project ../mels-loop-content",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}

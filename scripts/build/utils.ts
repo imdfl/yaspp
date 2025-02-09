@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import fsPath from "path";
+import { rimraf, RimrafAsyncOptions } from "rimraf";
 import { spawn } from "child_process";
 import { parse as parseJSON } from "json5";
 
@@ -11,12 +12,45 @@ export interface IResponse<T> {
 	error?: string;
 }
 
+export interface IRemoveFolderOptions {
+	readonly path: string;
+	readonly removeRoot: boolean;
+	/**
+	 * If true, return an error if the folder does not  exist
+	 */
+	readonly mustExist?: boolean;
+}
+
 export interface IYasppUtils {
+	/**
+	 * Given an argv style argument array, tries to find the param following the given key, so
+	 * 
+	 * `init-yaspp --project ../mels-loop`
+	 * @param args 
+	 * @param key 
+	 */
 	getArg(args: string[], key: string): string | null;
+
 	runProcess(exe: string, argv: string[], cwd: string): Promise<number>;
+	/**
+	 * Returns a reasonably sized path of the path for display, e.g. users/docs/readme.md
+	 * @param path 
+	 */
 	trimPath(path: string): string;
 	copyContent(srcPath: string, targetPath: string, clean: boolean): Promise<string>;
+	removeFolder(options: IRemoveFolderOptions): Promise<boolean>;
+	/**
+	 * Validates on the file system the configuration contained in the provided config
+	 * @param projectRoot 
+	 * @param config 
+	 */
 	validateConfig(projectRoot: string, config?: Partial<IYasppConfig>): Promise<IResponse<IYasppConfig>>;
+	/**
+	 * Returns the relative path from `fromPath` to  `toPath`, e.g. ../../docs/content
+	 * @param fromPath 
+	 * @param toPath 
+	 */
+	diffPaths(fromPath: string, toPath: string): string;
 }
 
 export interface IYasppLoadOptions {
@@ -116,18 +150,62 @@ class YasppUtils implements IYasppUtils {
 			const proc = spawn(exe, argv, {
 				cwd
 			})
-	
+
 			proc.on('close', function () {
 				const code = Number(proc.exitCode);
 				resolve(isNaN(code) ? 1 : code);
 			});
 		})
-	
+
 	}
+
+	/**
+	* Both paths point to folders
+	* @param fromPath
+	* @param toPath 
+	*/
+   public diffPaths(fromPath: string, toPath: string): string {
+	   const fromParts = fromPath.split(/[\/\\]+/),
+		   toParts = toPath.split(/[\/\\]+/);
+	   let rest = "";
+	   const retParts = [] as string[];
+	   for (let ind = 0, len = fromParts.length, toLen = toParts.length; ind < len; ++ind) {
+		   if (rest || ind >= toLen) {
+			   retParts.push("..");
+		   }
+		   else if (fromParts[ind] !== toParts[ind]) {
+			   rest = toParts.slice(Math.min(ind, toParts.length - 1)).join('/');
+			   retParts.push("..");
+		   }
+	   }
+	   if (rest) {
+		   retParts.push(rest);
+	   }
+	   return retParts.join('/')
+   
+   }
+   
 
 	public trimPath(path: string): string {
 		const parts = path.split(/[\/\\]+/);
 		return parts.slice(Math.max(0, parts.length - 3)).join('/');
+	}
+
+	public async removeFolder({ path, removeRoot, mustExist = false }: IRemoveFolderOptions): Promise<boolean> {
+		if (!await fileUtils.isFolder(path)) {
+			return !mustExist;
+		}
+		const success = await rimraf(removeRoot ? path : `${path}/*`, {
+			glob: !removeRoot
+		});
+		return success;
+		// return new Promise<string>(async resolve => {
+		// 	const success = await rimraf.rimraf(removeRoot ? path : `${path}/*`);
+		// 	const rmargs = ["-rf", removeRoot ? '*' : fsPath.basename(path)];
+		// 	const cwd = removeRoot ? fsPath.dirname(path) : path;
+		// 	const rmCode = await yasppUtils.runProcess("rm", rmargs, cwd);
+		// 	resolve(rmCode !== 0 ? `Failed to delete content of ${path}` : "");
+		// });
 	}
 
 	public copyContent(srcPath: string, targetPath: string, clean: boolean): Promise<string> {
@@ -182,7 +260,7 @@ export async function loadYasppConfig(projectRoot: string, options: IYasppLoadOp
 		}
 		const data = await fs.readFile(configPath, "utf-8");
 		const userConfig = parseJSON<Partial<IYasppConfig>>(data);
-		return options.validate ? yasppUtils.validateConfig(projectRoot, userConfig) : { result: userConfig as IYasppConfig};
+		return options.validate ? yasppUtils.validateConfig(projectRoot, userConfig) : { result: userConfig as IYasppConfig };
 	}
 	catch (err) {
 		return {
@@ -192,7 +270,7 @@ export async function loadYasppConfig(projectRoot: string, options: IYasppLoadOp
 	}
 }
 
-export async function loadYasppAppConfig(options:IYasppLoadOptions): Promise<IResponse<IYasppAppConfig>> {
+export async function loadYasppAppConfig(options: IYasppLoadOptions): Promise<IResponse<IYasppAppConfig>> {
 	const rootPath = fsPath.resolve(__dirname, "../..");
 	const { result, error } = await loadYasppConfig(rootPath, options);
 	if (error) {

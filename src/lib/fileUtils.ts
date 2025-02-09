@@ -1,10 +1,20 @@
 import { parse as parseJSON } from 'json5';
 import { promises as fs } from 'fs';
 
+
+export type FileType = "" | "file"| "folder" | "other";
 /**
  * Helpers for ML API implementation
  */
 export interface IFileUtils {
+
+    /**
+     * Handles various scenarios and swallows errors
+     * @param path
+     */
+    mkdir(path: string): Promise<string>;
+
+    getFileType(fspath: string): Promise<FileType>;
     /**
      * resolves to true if the provided path points to an existing folder
      * @param fspath: file system path
@@ -41,33 +51,53 @@ class FileUtils implements IFileUtils {
         }
     }
 
-
-    public async isFolder(fspath: string): Promise<boolean> {
+    public async getFileType(fspath: string): Promise<FileType> {
         try {
             const info = await fs.lstat(fspath);
-            return Boolean(info?.isDirectory());
+            if (!info) {
+                return "";
+            }
+            if (info.isDirectory()) {
+                return "folder";
+            }
+            if (info.isFile()) {
+                return "file";
+            }
+            return "other";
         }
         catch (e) {
-            return false;
+            return "";
         }
     }
+
+    public async isFolder(fspath: string): Promise<boolean> {
+        const t = await this.getFileType(fspath);
+        return t === "folder";
+    }
     public async isFile(fspath: string): Promise<boolean> {
-        try {
-            const info = await fs.lstat(fspath);
-            return Boolean(info?.isFile());
-        }
-        catch (e) {
-            return false;
-        }
+        const t = await this.getFileType(fspath);
+        return t === "file";
     }
 
     public async isFileOrFolder(fspath: string): Promise<boolean> {
-        try {
-            const info = await fs.lstat(fspath);
-            return Boolean(info?.isFile() || info?.isDirectory());
+        const t = await this.getFileType(fspath);
+        return t === "folder" || t === "file";
+    }
+
+    public async mkdir(path: string): Promise<string> {
+        const t  = await this.getFileType(path);
+        if (t === "folder") {
+            return "";
         }
-        catch (e) {
-            return false;
+        if (t) {
+            return `file already exists at ${path}`;
+        }
+        try {
+            await fs.mkdir(path, { recursive: true});
+            return "";
+        }
+        catch(err) {
+            return `mkdir ${path} failed: ${err}`;
         }
     }
 }

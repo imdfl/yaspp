@@ -5,37 +5,15 @@ import { loadYasppConfig, yasppUtils } from "./utils";
 import type { IProjectLocaleConfig, IYasppAppConfig, IYasppLocaleConfig } from "../../src/types/app";
 import { fileUtils } from "../../src/lib/fileUtils";
 
-const rootPath = fsPath.resolve(__dirname, "../..");
+/**
+ * The root of the  yaspp module
+ */
+const ROOT_FOLDER = fsPath.resolve(__dirname, "../..");
 const I18N_TMPL = "i18n-tmpl.json";
 const GEN_HEADER = `// ****************************************************************"
 // This is a GENERATED file, editing it is likely to break the build
 // ****************************************************************\n`;
 
-/**
- * Both paths point to folders
- * @param fromPath
- * @param toPath 
- */
-function diffPaths(fromPath: string, toPath: string): string {
-	const fromParts = fromPath.split(/[\/\\]+/),
-		toParts = toPath.split(/[\/\\]+/);
-	let rest = "";
-	const retParts = [] as string[];
-	for (let ind = 0, len = fromParts.length, toLen = toParts.length; ind < len; ++ind) {
-		if (rest || ind >= toLen) {
-			retParts.push("..");
-		}
-		else if (fromParts[ind] !== toParts[ind]) {
-			rest = toParts.slice(Math.min(ind, toParts.length - 1)).join('/');
-			retParts.push("..");
-		}
-	}
-	if (rest) {
-		retParts.push(rest);
-	}
-	return retParts.join('/')
-
-}
 
 async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Promise<string> {
 	const values = {
@@ -137,7 +115,7 @@ module.exports = {
 }
 
 async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
-	const fpath = fsPath.resolve(rootPath, "yaspp.json");
+	const fpath = fsPath.resolve(ROOT_FOLDER, "yaspp.json");
 	try {
 		const data = [
 			GEN_HEADER,
@@ -152,6 +130,30 @@ async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
 	}
 
 }
+
+async function clean(): Promise<string> {
+	try {
+		const publicPath = fsPath.resolve(ROOT_FOLDER, "public");
+		if (!await fileUtils.isFolder(publicPath)) {
+			return "public folder not found";
+		}
+		await fileUtils.mkdir(fsPath.resolve(publicPath, "content"));
+		await fileUtils.mkdir(fsPath.resolve(publicPath, "locales"));
+		await yasppUtils.removeFolder({
+			path: fsPath.resolve(ROOT_FOLDER, "public/content"),
+			removeRoot: false
+		});
+		await yasppUtils.removeFolder({
+			path: fsPath.resolve(ROOT_FOLDER, "public/locales"),
+			removeRoot: false
+		})
+		console.log(`Cleaned public locales and content`);
+		return "";
+	}
+	catch (err) {
+		return (`Error cleaning project content ${err}`);
+	}
+}
 /**
  * Returns an error message, empty if no error
  */
@@ -163,7 +165,7 @@ async function run(projectRoot: string): Promise<string> {
 		}
 		const { content, locale } = result!;
 		const config: IYasppAppConfig = {
-			root: diffPaths(rootPath, projectRoot),
+			root: yasppUtils.diffPaths(ROOT_FOLDER, projectRoot),
 			content,
 			locale
 		}
@@ -175,7 +177,8 @@ async function run(projectRoot: string): Promise<string> {
 		if (i18err) {
 			return i18err;
 		}
-		return "";
+		const cleanErr = await clean();
+		return cleanErr;
 	}
 	catch (e) {
 		return `Error loading yaspp.json: ${e}`;
