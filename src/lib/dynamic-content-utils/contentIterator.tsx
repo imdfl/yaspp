@@ -15,7 +15,7 @@ export const ContentIterator = ({
 	className,
 }: ContentComponentProps): JSX.Element => {
 	const { node } = componentData;
-	const { attributes } = useComponentAttrs(node);
+	const { attributes, style } = useComponentAttrs(node);
 	const { children, text } = node;
 
 	if (!node) {
@@ -29,7 +29,7 @@ export const ContentIterator = ({
 	if (!elements?.length) {
 		if (Tag) {
 			return (
-				<Tag className={className} key={unique.id()} {...attributes}>
+				<Tag className={className} key={unique.id()} {...attributes} style={style}>
 					{text || ''}
 				</Tag>
 			);

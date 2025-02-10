@@ -1,8 +1,9 @@
-import React, { PropsWithChildren, type SyntheticEvent } from 'react';
+import React, { type SyntheticEvent } from 'react';
 import NextLink from 'next/link';
 import styles from './Link.module.scss';
 import { Slot } from '@radix-ui/react-slot';
 import classNames from 'classnames';
+import type { YSPComponentPropsWithChildren } from 'types/components';
 
 type LinkTargetProps = string;
 
@@ -20,12 +21,13 @@ const Link = ({
 	label,
 	title,
 	href,
+	style = {},
 	target,
 	asChild,
 	onClick,
 	children,
 	className,
-}: PropsWithChildren<LinkProps>): JSX.Element => {
+}: YSPComponentPropsWithChildren<LinkProps>): JSX.Element => {
 	const Comp = asChild ? Slot : 'span';
 
 	return (
@@ -34,7 +36,7 @@ const Link = ({
 			className={classNames(styles.root, className)}
 			title={title}
 		>
-			<NextLink href={href} target={target}>
+			<NextLink href={href} target={target} style={style}>
 				{children || label}
 			</NextLink>
 		</Comp>

@@ -1,11 +1,15 @@
 import React, { Context, createContext } from "react";
-import {
+import useTranslation from 'next-translate/useTranslation';
+import type {
 	ILocaleContext,
 	ILocaleContextProps,
+} from "./localeContext.d";
+import {
 	localeLabelPrefix,
 } from "./localeContext.d";
 import { NextRouter } from "next/router";
-import { LocaleId, TextDirection } from "../types";
+import type { LocaleId, TextDirection } from "../types";
+import { Translate } from "next-translate";
 
 const RTL_LANGS = new Set<string>(["he", "ar"]);
 class LocaleContextImpl implements ILocaleContext {
@@ -13,19 +17,29 @@ class LocaleContextImpl implements ILocaleContext {
 	private _locales: string[];
 	// private _translate: (s: string, lang?: LocaleId) => string;
 	private _router: NextRouter;
+	private _translate: Translate
 	constructor(props: ILocaleContextProps) {
 		if (!props) {
 			return;
 		}
 		const { router } = props;
-		const { locale, locales } = router;
+		this._translate = props.translate;
 		this._router = router;
-		this._locale = locale;
-		this._locales = locales;
+		this._locale = props.locale;
+		this._locales = router.locales;
 		// this._translate = _translate(locale, Languages);
 	}
 
-	public textDirection(locale?: string): TextDirection {
+	public get textDirection(): TextDirection {
+		// code repeated because this is called a lot
+		return RTL_LANGS.has(this._locale) ? "rtl" : "ltr";
+	}
+
+	public get t(): Translate {
+		return this._translate;
+	}
+
+	public getTextDirection(locale?: string): TextDirection {
 		locale = locale || this._locale;
 		return RTL_LANGS.has(locale) ? "rtl" : "ltr";
 	}
@@ -67,8 +81,9 @@ const ctx = createContext<ILocaleContext>(new LocaleContextImpl(null));
 export const LocaleContext: Context<ILocaleContext> = ctx;
 
 export const LocaleContextProvider = ({ children, router }) => {
+	const { t, lang } = useTranslation();
 	return (
-		<LocaleContext.Provider value={new LocaleContextImpl({ router })}>
+		<LocaleContext.Provider value={new LocaleContextImpl({ router, locale: lang, translate: t })}>
 			{children}
 		</LocaleContext.Provider>
 	);

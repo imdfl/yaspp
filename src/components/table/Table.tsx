@@ -1,6 +1,7 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import styles from './Table.module.scss';
+import type { YSPComponentPropsWithChildren } from '../../types/components';
 
 type TableProps = {
 	className?: string;
@@ -9,8 +10,9 @@ type TableProps = {
 export const Table = ({
 	children,
 	className,
-}: PropsWithChildren<TableProps>) => (
-	<table key={'dada'} className={classNames(styles.root, className)}>
+	style = {},
+}: YSPComponentPropsWithChildren<TableProps>) => (
+	<table key={'dada'} className={classNames(styles.root, className)} style={style}>
 		<tbody>{children}</tbody>
 	</table>
 );

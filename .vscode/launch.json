@@ -7,16 +7,25 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch Program",
+			"name": "Launch Current",
 			"skipFiles": ["<node_internals>/**"],
 			"program": "${file}",
 			"outFiles": ["${workspaceFolder}/**/*.js"]
 		},
 		{
-			"name": "Next.js: debug server-side",
+			"name": "Debug server side with pretask",
 			"type": "node-terminal",
 			"request": "launch",
 			"command": "yarn dev",
+			"env": {
+				"NODE_OPTIONS": "--inspect"
+			}
+		},
+		{
+			"name": "Debug server-side (no pre task)",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "yarn dev-only",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}
@@ -31,7 +40,16 @@
 			}
 		},
 		{
-			"name": "Init Yaspp",
+			"name": "Init Jehovascript",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "npx ts-node scripts/build/init-yaspp --project ../jehovascript-content",
+			"env": {
+				"NODE_OPTIONS": "--inspect"
+			}
+		},
+		{
+			"name": "Init Mel",
 			"type": "node-terminal",
 			"request": "launch",
 			"command": "npx ts-node scripts/build/init-yaspp --project ../mels-loop-content",

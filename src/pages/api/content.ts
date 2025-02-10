@@ -115,6 +115,7 @@ async function loadContent(
 			throw new Error(`No ${contentType} for ${clientPath}, or globally`);
 		}
 		const docData = await loadContentFolder({
+			app,
 			relativePath: docPath,
 			locale: params.locale,
 			loadMode: LoadFolderModes.Children,

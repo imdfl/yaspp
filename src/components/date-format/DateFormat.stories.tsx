@@ -17,9 +17,9 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
 	args: {
 		date: new Date(),
-		format: 'MM/dd/yy',
+		locale: "en",
 	},
-	render: function Render({ date, format }) {
-		return <DateFormat date={date} format={format} />;
+	render: function Render({ date, locale }) {
+		return <DateFormat date={date} locale={locale} />;
 	},
 };

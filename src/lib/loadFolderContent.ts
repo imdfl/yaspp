@@ -42,7 +42,7 @@ export const loadContentFolder = async (
 		locale,
 	};
 
-	const contentDir = fsPath.join(
+	const contentDir = fsPath.resolve(
 		// getContentRootDir(options.rootFolder),
 		rootFolder,
 		relativePath
@@ -77,14 +77,14 @@ export const loadContentFolder = async (
 			if (targetFileName !== name) {
 				continue;
 			}
-			fullPath = fsPath.join(contentDir, name);
+			fullPath = fsPath.resolve(contentDir, name);
 		}
 		else {
 			if (!rec.isDirectory()) {
 				continue;
 			}
 
-			fullPath = fsPath.join(contentDir, name, targetFileName);
+			fullPath = fsPath.resolve(contentDir, name, targetFileName);
 		}
 
 		if (!await fileUtils.isFile(fullPath)) {

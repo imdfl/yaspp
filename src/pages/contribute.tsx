@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import { ContentTypes } from 'types/content';
 import { mlNextUtils } from '../lib/next-utils/nextUtils';
@@ -8,13 +8,13 @@ import type { IPageProps } from 'types/models';
 import Layout from 'layout/Layout';
 import { getMetadata, renderElements } from 'lib/dynamicContentHelpers';
 import Head from 'next/head';
-import { useLocale } from 'hooks/useLocale';
 import { GenericContentLayout } from '../custom-layouts/generic-content-layout/GenericContentLayout';
+import { LocaleContext } from '../contexts/localeContext';
 
 const Contribute: NextPage<IPageProps> = (props) => {
 	const { pageData } = usePageData(props);
 	const [title] = getMetadata(['title'], pageData);
-	const { t } = useLocale();
+	const { t } = useContext(LocaleContext);
 	const pageTitle = `
 		${t('common:site:title')} – ${t('pages:contribute:title')}
 	`;

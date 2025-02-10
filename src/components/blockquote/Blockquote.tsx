@@ -1,6 +1,7 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import styles from './Blockquote.module.scss';
 import classNames from 'classnames';
+import type { YSPComponentPropsWithChildren } from 'types/components';
 
 type BlockquoteProps = {
 	className?: string;
@@ -9,7 +10,7 @@ type BlockquoteProps = {
 const Blockquote = ({
 	children,
 	className,
-}: PropsWithChildren<BlockquoteProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren<BlockquoteProps>): JSX.Element => (
 	<blockquote
 		className={classNames(styles.root, className)}
 	>

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-// import "!style-loader!css-loader!sass-loader!./../../src/styles/app.scss";
 import Link from './Link';
 
 const meta = {

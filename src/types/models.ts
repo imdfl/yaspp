@@ -124,6 +124,10 @@ export interface ILocaleMap {
 }
 
 export type NodeAttributeMap = { readonly [rekey: string]: string };
+export interface INodeAttributeData {
+	readonly style: NodeAttributeMap;
+	readonly attributes: NodeAttributeMap;
+}
 
 export type PageSortField = Omit<keyof IParsedPageData, 'parsed' | 'error'>;
 

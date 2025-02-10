@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { Text, Container } from 'components/index';
 import { DateFormat, Heading, TextLink } from 'components/index';
-import { localeDateFormat } from 'layout/consts';
 import classNames from 'classnames';
 import styles from './GenericContentLayout.module.scss';
 
@@ -64,7 +63,7 @@ export const GenericContentLayout = ({
 			<Container alignItemsCenter>
 				<DateFormat
 					date={date}
-					format={localeDateFormat[locale]}
+					locale={locale}
 					className={styles.date}
 				/>
 			</Container>

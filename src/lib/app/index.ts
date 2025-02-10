@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import { fileUtils } from '../fileUtils';
 import { parse as parseJSON } from 'json5';
 import i18nconfig from "@root/i18n";
-import type { IYasppApp, IYasppConfig, IYasppContentConfig, IYasppLocaleConfig } from 'types/app';
+import type { IYasppApp, IYasppConfig, IYasppContentConfig } from 'types/app';
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from '../../types';
 
 
@@ -112,23 +112,13 @@ class YasppApp implements IYasppApp {
 		return this._root;
 	}
 
-	private _validateConfig(config: Partial<IYasppConfig>): IYasppConfig {
+	private _validateConfig(config: Partial<IYasppConfig>): Pick<IYasppConfig, "content"> {
 		config = config ?? {};
-		const content = config.content || {} as Partial<IYasppContentConfig>,
-			locale = config.locale || {} as Partial<IYasppLocaleConfig>;
-		const langs = Array.isArray(locale.langs) ? locale.langs : ["en"];
+		const content = config.content || {} as Partial<IYasppContentConfig>;
 		return {
 			content: {
 				root: content.root || "",
 				index: content.index || ""
-			},
-			locale: {
-				langs,
-				defaultLocale: locale.defaultLocale && langs.includes(locale.defaultLocale) ?
-					locale.defaultLocale : undefined,
-				pages: {},
-				root: locale.root || ""
-
 			}
 		};
 	}

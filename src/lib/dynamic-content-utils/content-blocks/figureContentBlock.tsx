@@ -8,10 +8,10 @@ export const FigureContentBlock = ({
 	componentData,
 }: ContentComponentProps): JSX.Element => {
 	const { node } = componentData;
-	const { attributes } = useComponentAttrs(node);
+	const { attributes, style } = useComponentAttrs(node);
 	const { key, children, elementId } = node;
 	return (
-		<Figure key={key} elementId={elementId} {...attributes}>
+		<Figure key={key} elementId={elementId} style={style} {...attributes}>
 			{renderNodes(children)}
 		</Figure>
 	);

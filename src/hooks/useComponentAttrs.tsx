@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
-import { IMLParsedNode, NodeAttributeMap } from 'types/models';
+import { IMLParsedNode, INodeAttributeData } from 'types/models';
 import { mlNextBrowserUtils } from '../lib/next-runtime-utils/nextRunetimeUtils';
 
-interface IComponentAttributeData {
-	attributes: NodeAttributeMap;
-}
 
 /**
  * Returns an object with the sanitized attribute map of the node
@@ -14,16 +11,16 @@ interface IComponentAttributeData {
  */
 export const useComponentAttrs = (
 	node: IMLParsedNode
-): IComponentAttributeData => {
-	const [attributes, setAttributes] = useState<NodeAttributeMap>({});
+): INodeAttributeData => {
+	const [nodeData, setNodeData] = useState<INodeAttributeData>({ attributes: {}, style: {}});
 
 	// If the node changed, reparse the attributes
 	useEffect(
-		() => setAttributes(mlNextBrowserUtils.extractNodeAttributes(node)),
+		() => setNodeData(mlNextBrowserUtils.extractNodeAttributes(node)),
 		[node]
 	);
 
 	return {
-		attributes,
+		...nodeData
 	};
 };

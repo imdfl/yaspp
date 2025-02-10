@@ -34,6 +34,8 @@ i18n.js
 # copied content
 /public/content
 /public/locales
+/public/styles
+/public/assets/site
 
 # misc
 .DS_Store

@@ -325,8 +325,8 @@ class MarkdownParser implements IMarkdownParser {
 		}
 
 		const isHTML = node.type as string=== ASTNODE_TYPES.HTML as string,
-			mlType: MLNODE_TYPES = isHTML
-				? node.tag?.toLowerCase()
+			mlType: MLNODE_TYPES = isHTML ?
+				node.tag!.toLowerCase()
 				: mdUtils.nodeTypeToMLType(node.type, context);
 
 		if (!mlType) {

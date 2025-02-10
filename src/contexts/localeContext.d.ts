@@ -1,11 +1,13 @@
-import { NextRouter } from "next/router";
-import { LocaleId } from "../types";
+import type { NextRouter } from "next/router";
+import type { LocaleId } from "../types";
+import type { Translate } from "next-translate";
 // import type { ILocaleMetaContext } from "../contexts/locale-meta-context";
 // import type { ILocalePageContext } from "../contexts/locale-page-context";
 
 export interface ILocaleContext {
 	readonly locale: string;
-	readonly locales: string[];
+	readonly locales: ReadonlyArray<string>;
+	readonly textDirection: TextDirection;
 	// readonly textDirection: TextDirection;
 	// readonly meta: ILocaleMetaContext;
 	// readonly pages: ILocalePageContext;
@@ -13,7 +15,8 @@ export interface ILocaleContext {
 	// getLocaleSymbol: (id: string) => string;
 	getLocaleLabel: (id: string) => string;
 	setLocale: (id: LocaleId) => Promise<boolean>;
-	textDirection: (locale?: string) => TextDirection;
+	getTextDirection: (locale?: string) => TextDirection;
+	t: Translate;
 	// siteTitle: string;
 	// siteSubtitle: string;
 	// pageName: string;
@@ -22,6 +25,8 @@ export interface ILocaleContext {
 
 export interface ILocaleContextProps {
 	readonly router: NextRouter;
+	readonly locale: LocaleId;
+	readonly translate: Translate;
 }
 
 export type TextDirection = "rtl" | "ltr";

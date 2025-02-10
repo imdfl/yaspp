@@ -1,11 +1,22 @@
 import { parse as parseJSON } from 'json5';
 import { promises as fs } from 'fs';
+import { rimraf } from "rimraf";
 
 
 export type FileType = "" | "file"| "folder" | "other";
 /**
  * Helpers for ML API implementation
  */
+
+export interface IRemoveFolderOptions {
+	readonly path: string;
+	readonly removeRoot: boolean;
+	/**
+	 * If true, return an error if the folder does not  exist
+	 */
+	readonly mustExist?: boolean;
+}
+
 export interface IFileUtils {
 
     /**
@@ -35,7 +46,14 @@ export interface IFileUtils {
      * Simple wrapper to read json/jsonc
      * @param path
      */
-    readJSON<T = Record<string, string>>(path: string): Promise<T | null>
+    readJSON<T = Record<string, string>>(path: string): Promise<T | null>;
+
+    /**
+     * Remove either the folder or all its content, based on options.removeRoot
+     * @param options 
+     */
+    removeFolder(options: IRemoveFolderOptions): Promise<boolean>;
+
 
 }
 
@@ -68,6 +86,16 @@ class FileUtils implements IFileUtils {
         catch (e) {
             return "";
         }
+    }
+
+    public async removeFolder({ path, removeRoot, mustExist = false }: IRemoveFolderOptions): Promise<boolean> {
+		if (!await fileUtils.isFolder(path)) {
+			return !mustExist;
+		}
+		const success = await rimraf(removeRoot ? path : `${path}/*`, {
+			glob: !removeRoot
+		});
+		return success;
     }
 
     public async isFolder(fspath: string): Promise<boolean> {

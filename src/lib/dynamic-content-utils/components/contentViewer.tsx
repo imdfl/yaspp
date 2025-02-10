@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { DynamicContentLayout } from './contentLayout';
 import { Text, LoadingIndicator } from 'components/index';
 import { DynamicContentTypes } from 'types/content';
 import { useDynamicContentServer } from '../hooks/useDynamicContentServer';
 import { SHOW_LOADING_INDICATOR_AFTER_MSEC } from '../consts';
-import { useLocale } from 'hooks/index';
 import { RefOrSourceProps } from 'types/components';
 import { contentUtils } from 'lib/contentUtils';
 import { renderNodes } from 'lib/dynamicContentHelpers';
+import { LocaleContext } from '@contexts/localeContext';
 
 type DynamicContentViewerProps = {
 	url: string;
@@ -17,7 +17,7 @@ export const DynamicContentViewer = ({
 	url,
 }: DynamicContentViewerProps): JSX.Element => {
 	const { error, isLoading, item } = useDynamicContentServer(url);
-	const { t } = useLocale();
+	const { t } = useContext(LocaleContext);
 
 	if (error) {
 		return <Text>{error}</Text>;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { getIcon } from '../../icons';
 import ListItem from '../../list-item/ListItem';
@@ -8,7 +8,7 @@ import NavItem from '../nav-item/NavItem';
 import styles from './MenuBar.module.scss';
 import type { NavItemDataProps, NavParsedNodes, NavProps } from '../types';
 import classNames from 'classnames';
-import { useLocale } from '../../../hooks';
+import { LocaleContext } from '@contexts/localeContext';
 
 const renderItems = (items: NavItemDataProps[]) =>
 	items.map((item) => (
@@ -50,10 +50,10 @@ const renderSections = (sections: NavParsedNodes[]) =>
 	));
 
 const MenuBar = ({ items, textDirection, className }: NavProps) => {
-	const locale = useLocale();
+	const locale = useContext(LocaleContext);
 	return <NavigationMenu.Root
 		className={classNames(styles.root, className)}
-		data-direction={textDirection || locale.textDirection}
+		data-direction={textDirection || locale.getTextDirection}
 	>
 		<NavigationMenu.List className={styles.menuSectionTriggers}>
 			{renderSections(items)}

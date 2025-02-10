@@ -6,16 +6,17 @@ import { mlNextUtils } from '../../lib/next-utils/nextUtils';
 import { usePageData } from '../../hooks/usePageData';
 import { Container, Link } from 'components/index';
 import Layout from 'layout/Layout';
-import { useLocale } from 'hooks/index';
 import { getIcon } from 'components/icons';
 import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
 import { renderElements } from 'lib/dynamicContentHelpers';
 import styles from '../../custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss';
+import { LocaleContext } from '@contexts/localeContext';
+import { useContext } from 'react';
 
 export default function Doc(props: IPageProps) {
 	const { pageData } = usePageData(props);
 	const page = pageData?.[0];
-	const { t, textDirection } = useLocale();
+	const { t, textDirection } = useContext(LocaleContext);
 	const { metaData } = page;
 	const { title, date, author } = metaData;
 	const backIcon = getIcon(

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
 import { GetStaticProps } from 'next';
 import { ContentTypes } from 'types/content';
@@ -7,15 +7,15 @@ import type { IPageProps, IParsedPageData } from 'types/models';
 import { usePageData } from '../hooks/usePageData';
 import orderBy from 'lodash.orderby';
 import Layout from 'layout/Layout';
-import { useLocale } from 'hooks/index';
 import Head from 'next/head';
 import { getMetadata, renderElements } from 'lib/dynamicContentHelpers';
 import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
 import styles from '../custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss';
+import { LocaleContext } from '@contexts/localeContext';
 
 export default function Blog(props: IPageProps) {
 	const { pageData } = usePageData(props);
-	const { t, lang } = useLocale();
+	const { t, locale } = useContext(LocaleContext);
 	const pageTitle = `${t('common:site:title')} – ${t('pages:blog:title')}`;
 	const sortedItems = orderBy(pageData, ['metaData.date'], ['desc']);
 	const items = sortedItems || pageData;
@@ -43,7 +43,7 @@ export default function Blog(props: IPageProps) {
 							date={date}
 							author={author}
 							path={path}
-							locale={lang}
+							locale={locale}
 							className={styles.root}
 							pageStyles={styles}
 						>

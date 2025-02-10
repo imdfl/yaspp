@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IParsedPageData } from 'types/models';
 import { DynamicContentContext } from '@contexts/contentContext';
 import { PopoverContext } from '@contexts/popoverContext';
-import { useLocale } from 'hooks/index';
 import { getIcon } from 'components/icons';
 import { ToolbarButton } from 'components/index';
+import { LocaleContext } from '@contexts/localeContext';
 
 export interface IDynamicContentToolbarProps {
 	pages: IParsedPageData[];
@@ -16,7 +16,7 @@ export default function DynamicContentToolbar({
 	pages,
 }: IDynamicContentToolbarProps): JSX.Element {
 	const [prevPageId, setPrevPageId] = useState('');
-	const { t, textDirection } = useLocale();
+	const { t, textDirection } = useContext(LocaleContext);
 	const popoverContext = useContext(PopoverContext);
 	const dynamicContentContext = useContext(DynamicContentContext);
 

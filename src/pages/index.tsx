@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import { mlNextUtils } from '../lib/next-utils/nextUtils';
 import { usePageData } from '../hooks/usePageData';
@@ -9,12 +9,12 @@ import { GenericContentLayout } from 'custom-layouts/generic-content-layout/Gene
 import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
 import { getMetadata, renderElements } from '../lib/dynamicContentHelpers';
 import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
-import { useLocale } from 'hooks/useLocale';
 import type { IPageProps } from 'types/models';
 import { initYaspp } from '../lib/app';
+import { LocaleContext } from '@contexts/localeContext';
 
 const Index: NextPage<IPageProps> = (props) => {
-	const { t } = useLocale();
+	const { t } = useContext(LocaleContext);
 	const { pageData } = usePageData(props);
 	const [title, moto] = getMetadata(['title', 'moto'], pageData);
 
@@ -36,7 +36,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const app = await initYaspp();
 	return mlNextUtils.getFolderStaticProps(
 		app.indexPath,
-		// `docs/the-story-of-mel/${ContentTypes.Codex}`,
 		context.locale,
 		LoadFolderModes.Folder,
 		{

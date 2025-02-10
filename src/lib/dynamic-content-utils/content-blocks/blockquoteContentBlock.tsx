@@ -8,10 +8,10 @@ export const BlockquoteContentBlock = ({
 	componentData,
 }: ContentComponentProps): JSX.Element => {
 	const { node } = componentData;
-	const { attributes } = useComponentAttrs(node);
+	const { attributes, style } = useComponentAttrs(node);
 	const { key, children } = node;
 	return (
-		<Blockquote key={key} {...attributes}>
+		<Blockquote key={key} {...attributes} style={style}>
 			<Paragraph>{renderNodes(children)}</Paragraph>
 		</Blockquote>
 	);

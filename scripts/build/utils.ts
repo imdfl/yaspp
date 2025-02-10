@@ -1,24 +1,16 @@
 import { promises as fs } from "fs";
 import fsPath from "path";
-import { rimraf, RimrafAsyncOptions } from "rimraf";
 import { spawn } from "child_process";
 import { parse as parseJSON } from "json5";
 
-import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig, IYasppAppConfig } from "../../src/types/app";
-import { fileUtils } from "../../src/lib/fileUtils";
+import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig, IYasppAppConfig, IYasppStyleConfig, IYasppAssetsConfig } from "../../src/types/app";
+import { fileUtils } from '../../src/lib/fileUtils';
+
+const ROOT_PATH = fsPath.resolve(__dirname, "../..");
 
 export interface IResponse<T> {
 	result: T | null;
 	error?: string;
-}
-
-export interface IRemoveFolderOptions {
-	readonly path: string;
-	readonly removeRoot: boolean;
-	/**
-	 * If true, return an error if the folder does not  exist
-	 */
-	readonly mustExist?: boolean;
 }
 
 export interface IYasppUtils {
@@ -37,8 +29,13 @@ export interface IYasppUtils {
 	 * @param path 
 	 */
 	trimPath(path: string): string;
-	copyContent(srcPath: string, targetPath: string, clean: boolean): Promise<string>;
-	removeFolder(options: IRemoveFolderOptions): Promise<boolean>;
+	/**
+	 * Returns an error message if any
+	 * @param srcPath 
+	 * @param targetPath 
+	 * @param clean if true, delete target content before copying
+	 */
+	copyFolderContent(srcPath: string, targetPath: string, clean: boolean): Promise<string>;
 	/**
 	 * Validates on the file system the configuration contained in the provided config
 	 * @param projectRoot 
@@ -51,6 +48,12 @@ export interface IYasppUtils {
 	 * @param toPath 
 	 */
 	diffPaths(fromPath: string, toPath: string): string;
+
+	/**
+	 * Returns the text content of `../templates/${name}.tmpl`
+	 * @param name 
+	 */
+	loadTemplate(name: string): Promise<IResponse<string>>;
 }
 
 export interface IYasppLoadOptions {
@@ -61,6 +64,11 @@ function errorResult<TResult = IYasppConfig>(err: string): IResponse<TResult> {
 	return {
 		result: null,
 		error: err
+	}
+}
+function successResult<TResult = IYasppConfig>(result: TResult): IResponse<TResult> {
+	return {
+		result
 	}
 }
 
@@ -75,19 +83,61 @@ async function validateContent(projectRoot: string, content?: Partial<IYasppCont
 	if (!await fileUtils.isFolder(contentPath)) {
 		return errorResult(`Can't find content folder ${content.root} (${contentPath})`);
 	}
-	if (content.index) {
-		const indexPath = fsPath.resolve(contentPath, content.index);
-		if (!await fileUtils.isFileOrFolder(indexPath)) {
-			return errorResult(`Can't find index at ${content.index} (${indexPath})`);
-		}
+	if (!content?.index) {
+		return errorResult(`Missing configuration option content.index`);
+	}
+	const indexPath = fsPath.resolve(contentPath, content.index);
+	if (!await fileUtils.isFolder(indexPath)) {
+		return errorResult(`Can't find content index folder at ${content.index} (${indexPath})`);
 	}
 	return {
 		result: {
 			root: content.root,
-			index: content.index || "index.md"
+			index: content.index
 		}
 	}
 }
+async function validateStyle(projectRoot: string, style?: Partial<IYasppStyleConfig>): Promise<IResponse<IYasppStyleConfig | undefined>> {
+	if (!style) {
+		return successResult(undefined);
+	}
+	if (!style?.root) {
+		return errorResult(`Style configuration does not contain a root property.
+If you have no style configuration, remove the style block from the configuration`);
+	}
+	const stylePath = fsPath.resolve(projectRoot, style.root);
+	if (!await fileUtils.isFolder(stylePath)) {
+		return errorResult(`Can't find style folder ${style.root} (${stylePath})`);
+	}
+	if (style.index) {
+		const indexPath = fsPath.resolve(stylePath, style.index);
+		if (!await fileUtils.isFile(indexPath)) {
+			return errorResult(`Can't find style index at ${style.index} (${indexPath})`);
+		}
+	}
+	return successResult({
+		root: style.root,
+		index: style.index
+	})
+}
+
+async function validateAssets(projectRoot: string, assets?: Partial<IYasppAssetsConfig>): Promise<IResponse<IYasppAssetsConfig | undefined>> {
+	if (!assets) {
+		return successResult(undefined);
+	}
+	if (!assets?.root) {
+		return errorResult(`Assets configuration does not contain a root property.
+If you have no style configuration, remove the assets block from the configuration`);
+	}
+	const assetPath = fsPath.resolve(projectRoot, assets.root);
+	if (!await fileUtils.isFolder(assetPath)) {
+		return errorResult(`Can't find assets folder ${assets.root} (${assetPath})`);
+	}
+	return successResult({
+		root: assets.root
+	})
+}
+
 
 async function validateLocale(projectRoot: string, locale?: Partial<IYasppLocaleConfig>): Promise<IResponse<IYasppLocaleConfig>> {
 	const defaultConfig: IYasppLocaleConfig = {
@@ -97,7 +147,7 @@ async function validateLocale(projectRoot: string, locale?: Partial<IYasppLocale
 		root: ""
 	}
 	if (!locale) {
-		return { result: { ...defaultConfig } }
+		return successResult({ ...defaultConfig });
 	}
 	if (locale.root) {
 		const localePath = fsPath.resolve(projectRoot, locale.root);
@@ -121,14 +171,12 @@ async function validateLocale(projectRoot: string, locale?: Partial<IYasppLocale
 			}
 		})
 	}
-	return {
-		result: {
-			root: locale.root || "",
-			langs,
-			defaultLocale,
-			pages
-		}
-	}
+	return successResult({
+		root: locale.root || "",
+		langs,
+		defaultLocale,
+		pages
+	});
 }
 
 
@@ -164,51 +212,35 @@ class YasppUtils implements IYasppUtils {
 	* @param fromPath
 	* @param toPath 
 	*/
-   public diffPaths(fromPath: string, toPath: string): string {
-	   const fromParts = fromPath.split(/[\/\\]+/),
-		   toParts = toPath.split(/[\/\\]+/);
-	   let rest = "";
-	   const retParts = [] as string[];
-	   for (let ind = 0, len = fromParts.length, toLen = toParts.length; ind < len; ++ind) {
-		   if (rest || ind >= toLen) {
-			   retParts.push("..");
-		   }
-		   else if (fromParts[ind] !== toParts[ind]) {
-			   rest = toParts.slice(Math.min(ind, toParts.length - 1)).join('/');
-			   retParts.push("..");
-		   }
-	   }
-	   if (rest) {
-		   retParts.push(rest);
-	   }
-	   return retParts.join('/')
-   
-   }
-   
+	public diffPaths(fromPath: string, toPath: string): string {
+		const fromParts = fromPath.split(/[\/\\]+/),
+			toParts = toPath.split(/[\/\\]+/);
+		let rest = "";
+		const retParts = [] as string[];
+		for (let ind = 0, len = fromParts.length, toLen = toParts.length; ind < len; ++ind) {
+			if (rest || ind >= toLen) {
+				retParts.push("..");
+			}
+			else if (fromParts[ind] !== toParts[ind]) {
+				rest = toParts.slice(Math.min(ind, toParts.length - 1)).join('/');
+				retParts.push("..");
+			}
+		}
+		if (rest) {
+			retParts.push(rest);
+		}
+		return retParts.join('/')
+
+	}
+
 
 	public trimPath(path: string): string {
 		const parts = path.split(/[\/\\]+/);
 		return parts.slice(Math.max(0, parts.length - 3)).join('/');
 	}
 
-	public async removeFolder({ path, removeRoot, mustExist = false }: IRemoveFolderOptions): Promise<boolean> {
-		if (!await fileUtils.isFolder(path)) {
-			return !mustExist;
-		}
-		const success = await rimraf(removeRoot ? path : `${path}/*`, {
-			glob: !removeRoot
-		});
-		return success;
-		// return new Promise<string>(async resolve => {
-		// 	const success = await rimraf.rimraf(removeRoot ? path : `${path}/*`);
-		// 	const rmargs = ["-rf", removeRoot ? '*' : fsPath.basename(path)];
-		// 	const cwd = removeRoot ? fsPath.dirname(path) : path;
-		// 	const rmCode = await yasppUtils.runProcess("rm", rmargs, cwd);
-		// 	resolve(rmCode !== 0 ? `Failed to delete content of ${path}` : "");
-		// });
-	}
 
-	public copyContent(srcPath: string, targetPath: string, clean: boolean): Promise<string> {
+	public copyFolderContent(srcPath: string, targetPath: string, clean: boolean): Promise<string> {
 		return new Promise<string>(async resolve => {
 			if (!await fileUtils.isFolder(srcPath)) {
 				return resolve(`Content Folder ${srcPath} not found`);
@@ -232,19 +264,40 @@ class YasppUtils implements IYasppUtils {
 	}
 
 	public async validateConfig(projectRoot: string, config?: Partial<IYasppConfig>): Promise<IResponse<IYasppConfig>> {
-		const validContent = await validateContent(projectRoot, config?.content);
-		if (validContent.error) {
-			return errorResult(validContent.error);
-		}
-		const validLocale = await validateLocale(projectRoot, config?.locale);
-		if (validLocale.error) {
-			return errorResult(validLocale.error);
-		}
-		return {
-			result: {
-				content: validContent.result!,
-				locale: validLocale.result!
+		const validContent = await validateContent(projectRoot, config?.content),
+			validLocale = await validateLocale(projectRoot, config?.locale),
+			validStyle = await validateStyle(projectRoot, config?.style),
+			validAsssets = await validateAssets(projectRoot, config?.assets);
+		const errors = [validContent, validLocale, validStyle, validAsssets].filter(r => r.error);
+		return errors.length ?
+			errorResult(errors.join('\n'))
+			: {
+				result: {
+					content: validContent.result!,
+					locale: validLocale.result!,
+					style: validStyle.result!,
+					assets: validAsssets.result!
+				}
 			}
+	}
+
+	public async loadTemplate(name: string): Promise<IResponse<string>> {
+		if (!name) {
+			return errorResult("no template name provided");
+		}
+		try {
+			name = name.replace(/\.tmpl\s*$/g, "");
+			const tmplPath = fsPath.resolve(__dirname, `templates/${name}.tmpl`);
+			if (!await fileUtils.isFile(tmplPath)) {
+				return errorResult(`template file ${name} (${tmplPath}) not found`);
+			}
+			const result = await fs.readFile(tmplPath, "utf-8");
+			return {
+				result
+			}
+		}
+		catch (err) {
+			return errorResult(`error while loading template ${name}: ${err}`);
 		}
 	}
 }
@@ -271,14 +324,13 @@ export async function loadYasppConfig(projectRoot: string, options: IYasppLoadOp
 }
 
 export async function loadYasppAppConfig(options: IYasppLoadOptions): Promise<IResponse<IYasppAppConfig>> {
-	const rootPath = fsPath.resolve(__dirname, "../..");
-	const { result, error } = await loadYasppConfig(rootPath, options);
+	const { result, error } = await loadYasppConfig(ROOT_PATH, options);
 	if (error) {
 		return errorResult(error);
 	}
 	return {
 		result: {
-			root: rootPath,
+			root: ROOT_PATH,
 			...result!
 		}
 	}

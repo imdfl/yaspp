@@ -23,18 +23,21 @@ interface IHTMLValidator {
 }
 
 const ALLOWED_HTML_ATTRIBUTES = {
-	'*': {
-		valid: ['data-type', 'align', 'dir'],
+	"*": {
+		valid: ["align", "dir", "style"],
 	},
 	TD: {
-		valid: ['rowspan', 'colspan'],
+		valid: ["rowspan", "colspan"],
 	},
 	TH: {
-		valid: ['rowspan', 'colspan'],
+		valid: ["rowspan", "colspan"],
 	},
 	TABLE: {
-		valid: ['border', 'cellpadding', 'cellspacing'],
+		valid: ["border", "cellpadding", "cellspacing"],
 	},
+	A: {
+		valid: ["href", "rel","target"]
+	}
 };
 
 interface IAttributeMap {
@@ -45,25 +48,28 @@ class HTMLValidator implements IHTMLValidator {
 	private readonly attributeMap: CaseInsensitiveMap<IAttributeMap>;
 
 	constructor() {
-		this.attributeMap = new CaseInsensitiveMap();
+		const m = this.attributeMap = new CaseInsensitiveMap();
 		Object.keys(ALLOWED_HTML_ATTRIBUTES).forEach((key) => {
 			const rec = ALLOWED_HTML_ATTRIBUTES[key];
-			this.attributeMap.set(key, {
+			m.set(key, {
 				valid: new CaseInsensitiveSet(rec.valid as string[]),
 			});
 		});
-		if (!this.attributeMap.has('*')) {
-			this.attributeMap.set('*', { valid: new CaseInsensitiveSet() });
-		}
 	}
 
 	isValidAttributeFor(tag: string, key: string): boolean {
-		if (!tag) {
+		if (!tag || !key) {
 			return false;
+		}
+		if (/^\s*on/i.test(key)) {
+			return false;
+		}
+		if (/^\s*data-/.test(key)) {
+			return true;
 		}
 		return (
 			this.attributeMap.get('*').valid.has(key) ||
-			this.attributeMap.get(tag)?.valid.has(key)
+			Boolean(this.attributeMap.get(tag)?.valid.has(key))
 		);
 	}
 

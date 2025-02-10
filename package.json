@@ -36,6 +36,7 @@
 		"build": "next build",
 		"prebuild": "npx ts-node scripts/build/copy-content --clean",
 		"dev": "next dev",
+		"dev-only": "next dev",
 		"predev": "npx ts-node scripts/build/copy-content",
 		"start": "next start",
 		"build:sitemap": "next-sitemap",

@@ -8,8 +8,8 @@ import {
 	SHOW_LOADING_INDICATOR_AFTER_MSEC,
 } from '../consts';
 import type { IParsedPageData } from 'types/models';
-import { useLocale } from 'hooks/index';
 import { contentUtils } from 'lib/contentUtils';
+import { LocaleContext } from '@contexts/localeContext';
 
 export type DynamicContentViewerProps = {
 	url: string;
@@ -25,7 +25,7 @@ export const useDynamicContentServer = (url: string) => {
 	const { documentPath, dynamicContentServer } = useContext(PageContext);
 	const dynamicContentContext = useContext(DynamicContentContext);
 
-	const { t, lang } = useLocale();
+	const { t, locale } = useContext(LocaleContext);
 
 	useEffect(() => {
 		// safeguard against a promise resolving after the component was torn down
@@ -53,7 +53,7 @@ export const useDynamicContentServer = (url: string) => {
 		dynamicContentServer
 			.getItems({
 				type,
-				locale: lang,
+				locale: locale,
 				ids: [itemId],
 				document: docPath,
 			})
@@ -96,7 +96,7 @@ export const useDynamicContentServer = (url: string) => {
 	}, [
 		url,
 		dynamicContentContext,
-		lang,
+		locale,
 		dynamicContentServer,
 		documentPath,
 		router.asPath,

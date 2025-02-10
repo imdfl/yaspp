@@ -137,9 +137,7 @@ class MarkdownUtils implements IMarkdownUtils {
 			return MLNODE_TYPES.UNKNOWN;
 		}
 
-		return (
-			AST2MLTypeMap.get(nodeName) || nodeName
-		).toLowerCase() as MLNODE_TYPES;
+		return AST2MLTypeMap.get(nodeName) || (nodeName.toLowerCase() as MLNODE_TYPES);
 	}
 
 	/**
@@ -270,7 +268,7 @@ class MarkdownUtils implements IMarkdownUtils {
 		const children: Array<ParsedNode> = node.content;
 		const rec = Array.isArray(children) && HTML_VALIDATION_MAP[tag];
 
-		if (rec && rec.valid) {
+		if (rec?.valid) {
 			const filtered = children.filter((child) => {
 				return rec.valid.includes((child.tag || child.type).toUpperCase());
 			});

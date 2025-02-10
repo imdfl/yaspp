@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GetStaticProps, GetStaticPaths, GetStaticPropsContext } from 'next';
 import { ContentTypes } from 'types/content';
 import { mlNextUtils } from '../../lib/next-utils/nextUtils';
@@ -9,8 +9,8 @@ import { usePageData } from '../../hooks/usePageData';
 import { Link, List } from 'components/index';
 import { ContentIterator } from 'lib/dynamic-content-utils/contentIterator';
 import Layout from 'layout/Layout';
-import { useLocale } from 'hooks/index';
 import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
+import { LocaleContext } from '@contexts/localeContext';
 
 export default function GlossaryTerm(props: IPageProps) {
 	const { pageData } = usePageData(props);
@@ -22,7 +22,7 @@ export default function GlossaryTerm(props: IPageProps) {
 		line: -1,
 		type: MLNODE_TYPES.UNKNOWN,
 	};
-	const { t } = useLocale();
+	const { t } = useContext(LocaleContext);
 
 	return (
 		<Layout>

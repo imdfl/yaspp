@@ -1,11 +1,40 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/tomerlichtash/mels-loop/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/tomerlichtash/mels-loop/tree/master)
 
-# Mel's Loop
+# Yaspp
 
-## A Comprehensive Companion to _The Story of Mel_
+## Yet Another Self Publishing Platform
 
-Mel's Loop is a comprehensive companion and guide for _The Story of Mel_, an epic Hacker Folklore tale that was written and published by its author, Ed Nather, on Usenet in 1983. The story describes an exemplary "Real Programmer" by the name of Mel Kaye and his subtle techniques fascinate his colleagues. The story is one of the earliest documentations of The Hacker Spirit, and the themes in the story are still valid to this day.
+This platform is based on [Mels' loop](https://github.com/tomerlichtash/mels-loop), a comprehensive companion and guide for _The Story of Mel_, an epic Hacker Folklore tale written Ed Nather about a programmer called Mel Kaye.
 
-In Mel's Loop we will also collect a lot of sub-stories around _The Story of Mel_, its author, Ed Nather, and Mel Kaye himself. This is an historical (or rather an e-archeological) ongoing research into the world of Ed, Mel, their families and life stories, first generation computing and the birth of digital culture, hacker lore and more.
+### Operation
 
-Alongside _The Story of Mel_, Mel's Loop project is designed as an anthology for other stories, poems and relics in the Hacker Folklore genre. We acknowledge the aesthetic and literary value of such stories, and we aim at providing them with quality translations.
+Yaspp packs your content and the yaspp platform into a web app that displays this content according to your configuration. Your text (markdown with html), metadata (in the markdown), localized strings, style overrides etc. are all packed into a [Next.js](https://nextjs.org), easily deployable to the web.
+
+### Content
+
+You can organize your content any way you want, as long as it is reflected in the `yaspp.json` configuration file. After publishing, all your content is available in the `/public` folder, e.g. `/public/content`, `/public/locales` etc.
+
+The recommended folder structure for a Yaspp project is
+
+    /root-
+          |...your content, styles, dictionaries etc in folders
+          | yaspp/
+          | yaspp.json
+
+### Operation
+
+Once you have your project structure place, `cd` to your project's root and run
+
+    $ cd yaspp
+    $ yarn init-yaspp -P ..
+
+This will create the files and folders required for running yaspp. From here, your run and build normally, e.g.
+
+    $ yarn dev
+    $ yarn build
+    $ yarn start
+
+On each development or production run, yaspp runs the script `scripts/build/copy-content` which copies the relevant content from your project to the yaspp `/public` folder. This means that you _cannot_ hot-reload your content, but you will get the latest version of it in each run.
+
+### Detailed information
+
+See the [Wiki](https://github.com/imdfl/yaspp/wiki)

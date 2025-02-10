@@ -35,21 +35,30 @@ export interface IProjectLocaleConfig {
 	readonly pages: Record<string, ReadonlyArray<string>>;
 }
 
-
-export interface IYasppLocaleConfig extends IProjectLocaleConfig {
+interface IYasppBaseConfig {
+	/**
+	 * Relative to project root, all content is copied to `/public`, e.g. `/public/content`, `/public/locales`
+	 */
 	readonly root: string;
 }
 
-export interface IYasppContentConfig {
+export type IYasppLocaleConfig = IProjectLocaleConfig & IYasppBaseConfig;
+export interface IYasppContentConfig extends IYasppBaseConfig{
 	/**
-	 * Relative to project root
-	 */
-	readonly root: string;
-	/**
-	 * Path to index document, defaults to pages/index.md
+	 * Mandatory path to index folder relative to the content root folder, e.g. `docs` which is expected to contain
+	 * at least a content folder for the default locale, e.g. 'en'
 	 */
 	readonly index: string;
 }
+
+export interface IYasppStyleConfig extends IYasppBaseConfig {
+	/**
+	 * Optional Path to main css file, relative to the style root , defaults to site.scss (generated if no css is provided by the user)
+	 */
+	readonly index?: string;
+}
+
+export type IYasppAssetsConfig = IYasppBaseConfig;
 
 /**
  * Project configuration file
@@ -57,6 +66,8 @@ export interface IYasppContentConfig {
 export interface IYasppConfig {
 	readonly content: IYasppContentConfig;
 	readonly locale: IYasppLocaleConfig;
+	readonly style?: IYasppStyleConfig;
+	readonly assets?: IYasppStyleConfig;
 }
 
 /**

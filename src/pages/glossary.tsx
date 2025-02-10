@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import { ContentTypes } from 'types/content';
 import { mlNextUtils } from '../lib/next-utils/nextUtils';
@@ -7,12 +7,12 @@ import { usePageData } from '../hooks/usePageData';
 import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
 import { Link, Text } from 'components/index';
 import Layout from 'layout/Layout';
-import { useLocale } from 'hooks/index';
 import Head from 'next/head';
+import { LocaleContext } from '@contexts/localeContext';
 
 const Glossary: NextPage<IPageProps> = (props) => {
 	const { metaData } = usePageData(props);
-	const { t } = useLocale();
+	const { t } = useContext(LocaleContext);
 	const pageTitle = `${t('common:site:title')} – ${t('pages:glossary:title')}`;
 
 	const getItem = (page, index) => {

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import Layout from 'layout/Layout';
 import Head from 'next/head';
-import { useLocale } from 'hooks/useLocale';
+import { LocaleContext } from '../contexts/localeContext';
 
 const CustomError: NextPage = () => {
-	const { t } = useLocale();
+	const { t } = useContext(LocaleContext);
 
 	return (
 		<Layout>

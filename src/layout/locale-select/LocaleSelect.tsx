@@ -22,7 +22,7 @@ const LocaleSelect = ({
 	options,
 	onSelect,
 	className,
-}: LocaleSelectProps): JSX.Element => (
+}: LocaleSelectProps): JSX.Element => options.length > 1 ? (
 	<ToggleGroup
 		type="single"
 		defaultValue={defaultValue}
@@ -40,7 +40,7 @@ const LocaleSelect = ({
 			</span>
 		))}
 	</ToggleGroup>
-);
+) : <></>
 
 export default LocaleSelect;
 export type { LocaleOptionProps, LocaleSelectProps };

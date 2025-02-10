@@ -1,0 +1,23 @@
+const uns = new Set([%USERNS%]); // replace with an list of quoted namespaces implemented  by the project, e.g. `'"docs", "info"'`
+const sns = new Set([%SYSNS%]); // same for system namespaces
+module.exports = {
+	locales: [%LANGS%], // replace with an list of quoted locales used by the project, e.g. '"en", "ar"' (note the surrounding quotes)
+	defaultLocale: "%DEFAULT%", // replace with the value of the default locale, e.g. "en" (note no surrounding quotes)
+	logBuild: false,
+	pages: 	%PAGES%, // replace with JSON.stringify(pages: Record<string, string[]>), e.g. JSON.stringify({ docs: ["glossary", "authors"]})
+	dictionaries: %DICTIONARIES%, // Replace with e.g. JSON.stringify({ system: { docs: "./locales/%LANG%/docs.json" }, project: { authors: "./public/locales/%LANG%/authors.json" } }, )
+	loadLocaleFrom: async (lang, ns) => {
+		// console.log(`load ns ${ns} for locale ${lang}`)
+		const ret = {};
+		if (sns.has(ns)) {
+			const m = await import(`./locales/${lang}/${ns}.json`);
+			Object.assign(ret, m.default);
+		}
+		if (uns.has(ns)) {
+			const m = await import(`./public/locales/${lang}/${ns}.json`);
+			Object.assign(ret, m.default);
+		}
+
+		return ret;
+	}
+}

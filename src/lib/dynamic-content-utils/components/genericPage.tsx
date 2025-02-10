@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Layout from 'layout/Layout';
 import Head from 'next/head';
 import type { IContentComponentData, IMLParsedNode } from 'types/models';
 import { ContentIterator } from '../contentIterator';
 import { usePageData } from '../../../hooks/usePageData';
-import { useLocale } from 'hooks/index';
 import { MLNODE_TYPES } from 'types/nodes';
 import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
 import { getMetadata } from 'lib/dynamicContentHelpers';
+import { LocaleContext } from '@contexts/localeContext';
 
 const GenericPage = ({ pageProps, className }: IContentComponentData) => {
 	const { pageData } = usePageData(pageProps);
@@ -18,7 +18,7 @@ const GenericPage = ({ pageProps, className }: IContentComponentData) => {
 		line: -1,
 		type: MLNODE_TYPES.UNKNOWN,
 	};
-	const { t } = useLocale();
+	const { t } = useContext(LocaleContext);
 
 	const [title, abstract, author, date] = getMetadata(
 		['title', 'abstract', 'author', 'date'],

@@ -2,7 +2,7 @@ import fsPath from "path";
 import { promises as fs } from "fs";
 import { parse as parseJSON } from "json5";
 import { loadYasppConfig, yasppUtils } from "./utils";
-import type { IProjectLocaleConfig, IYasppAppConfig, IYasppLocaleConfig } from "../../src/types/app";
+import type { IProjectLocaleConfig, IYasppAppConfig, IYasppLocaleConfig } from "../../src/types/app"
 import { fileUtils } from "../../src/lib/fileUtils";
 
 /**
@@ -24,32 +24,11 @@ async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Pr
 		"%USERNS%": [] as ReadonlyArray<string>,
 		"%DICTIONARIES%": ""
 	}
-	const outputTmpl = `
-const uns = new Set([%USERNS%]);
-const sns = new Set([%SYSNS%]);
-module.exports = {
-	locales: [%LANGS%],
-	defaultLocale: "%DEFAULT%",
-	logBuild: false,
-	pages: 	%PAGES%,
-	dictionaries: %DICTIONARIES%,
-	loadLocaleFrom: async (lang, ns) => {
-		console.log(\`load ns \${ns} for locale \${lang}\`)
-		// You can use a dynamic import, fetch, whatever. You should
-		// return a Promise with the JSON file.
-		const ret = {};
-		if (sns.has(ns)) {
-			const m = await import(\`./locales/\${lang}/\${ns}.json\`);
-			Object.assign(ret, m.default);
-		}
-		if (uns.has(ns)) {
-			const m = await import(\`./public/locales/\${lang}/\${ns}.json\`);
-			Object.assign(ret, m.default);
-		}
-
-		return ret;
+	const tmplResult = await yasppUtils.loadTemplate("i18n.js");
+	if (tmplResult.error) {
+		return tmplResult.error;
 	}
-}`;
+	const outputTmpl = tmplResult.result!.replace(/\/\/.+$/mg, "");
 	const tmplPath = fsPath.resolve(process.cwd(), I18N_TMPL);
 	if (!await fileUtils.isFile(tmplPath)) {
 		return `Template file ${I18N_TMPL} (${tmplPath}) not found`;
@@ -104,7 +83,7 @@ module.exports = {
 			const re = new RegExp(key, "g");
 			return html.replace(re, String(value));
 		}, outputTmpl);
-		const outPath = fsPath.resolve(process.cwd(), "i18n.js");
+		const outPath = fsPath.resolve(ROOT_FOLDER, "i18n.js");
 		await fs.writeFile(outPath, GEN_HEADER + output);
 		console.log(`Generated ${yasppUtils.trimPath(outPath)}`);
 	}
@@ -137,17 +116,16 @@ async function clean(): Promise<string> {
 		if (!await fileUtils.isFolder(publicPath)) {
 			return "public folder not found";
 		}
-		await fileUtils.mkdir(fsPath.resolve(publicPath, "content"));
-		await fileUtils.mkdir(fsPath.resolve(publicPath, "locales"));
-		await yasppUtils.removeFolder({
-			path: fsPath.resolve(ROOT_FOLDER, "public/content"),
-			removeRoot: false
-		});
-		await yasppUtils.removeFolder({
-			path: fsPath.resolve(ROOT_FOLDER, "public/locales"),
-			removeRoot: false
-		})
-		console.log(`Cleaned public locales and content`);
+		const folders = ["content", "locales", "styles", "assets/site"];
+		for await (const folder of folders) {
+			const fpath = fsPath.resolve(publicPath, folder);
+			await fileUtils.mkdir(fpath);
+			await fileUtils.removeFolder({
+				path: fpath,
+				removeRoot: false
+			});
+		}
+		console.log(`Cleaned ${folders}`);
 		return "";
 	}
 	catch (err) {
@@ -163,11 +141,12 @@ async function run(projectRoot: string): Promise<string> {
 		if (error) {
 			return error;
 		}
-		const { content, locale } = result!;
+		const { content, locale, style } = result!;
 		const config: IYasppAppConfig = {
 			root: yasppUtils.diffPaths(ROOT_FOLDER, projectRoot),
 			content,
-			locale
+			locale,
+			style
 		}
 		const appErr = await generateAppJSON(config);
 		if (appErr) {

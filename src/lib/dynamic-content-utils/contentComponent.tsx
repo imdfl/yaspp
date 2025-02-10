@@ -18,6 +18,11 @@ import {
 } from './content-blocks';
 import type { ContentComponentProps } from 'types/models';
 import { ErrorMessage } from 'components/index';
+import { CaseInsensitiveMap } from '../caseInsensitiveCollections';
+
+const HTMLTypeMap = new CaseInsensitiveMap<MLNODE_TYPES>([
+	["a", MLNODE_TYPES.LINK]
+])
 
 export const ContentComponent = ({
 	componentData,
@@ -30,8 +35,9 @@ export const ContentComponent = ({
 	}
 
 	const props = { key, componentData };
+	const renderType = HTMLTypeMap.get(type) || type;
 
-	switch (type) {
+	switch (renderType) {
 		case MLNODE_TYPES.DEL:
 		case MLNODE_TYPES.INS:
 		case MLNODE_TYPES.STRONG:

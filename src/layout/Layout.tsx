@@ -3,7 +3,7 @@
 import React, { PropsWithChildren, useCallback, useContext, useMemo } from 'react';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
-import { useIconAnimator, useLocale, useWindowSize } from 'hooks/index';
+import { useIconAnimator, useWindowSize } from '@hooks/index';
 import { useDrawer } from '../hooks/useDrawer';
 import {
 	Button,
@@ -51,7 +51,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 
 	const pathname = usePathname();
 	const { theme, setTheme } = useTheme();
-	const { t, lang, locales, textDirection } = useLocale();
+	const { t, locale: lang, locales, textDirection } = useContext(LocaleContext);
 	const { width: screenWidth } = useWindowSize();
 
 	const isHome = pathname === '/';

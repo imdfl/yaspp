@@ -1,6 +1,7 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import styles from './Figure.module.scss';
+import type { YSPComponentPropsWithChildren } from 'types/components';
 
 type FigureProps = {
 	elementId: string;
@@ -11,9 +12,10 @@ const Figure = ({
 	elementId,
 	children,
 	className,
+	style = {},
 	...rest
-}: PropsWithChildren<FigureProps>) => (
-	<figure className={classNames(styles.root, className)} {...rest}>
+}: YSPComponentPropsWithChildren<FigureProps>) => (
+	<figure className={classNames(styles.root, className)} {...rest} style={style}>
 		{elementId && <a id={elementId}></a>}
 		<div className={styles.figureContent}>{children}</div>
 	</figure>

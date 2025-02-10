@@ -24,7 +24,7 @@
 			"config/*": ["config/*"],
 			"locale/*": ["locale/*"],
 			"context/*": ["context/*"],
-			"hooks/*": ["hooks/*"],
+			"@hooks/*": ["hooks/*"],
 			"components/*": ["components/*"],
 			"styles/*": ["styles/*"],
 			"@public/*": ["../public/*"],
@@ -33,7 +33,6 @@
 			"@dynamicContent/*": ["lib/dynamic-content-utils/*"],
 			"@contexts/*": ["contexts/*"],
 			"@root/*": ["../*"]
-
 		}
 	},
 	"include": [

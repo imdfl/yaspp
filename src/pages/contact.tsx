@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Layout from 'layout/Layout';
 import * as yup from 'yup';
-import { useLocale } from 'hooks/index';
 import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
 import { Form, ErrorMessage, Link, Text } from 'components/index';
 import type { NextPage, GetStaticProps } from 'next';
 import type { IPageProps } from 'types/models';
 import type { FormFieldProps } from 'components/form/Form';
+import { LocaleContext } from '@contexts/localeContext';
 
 export const MAX_FULL_NAME_LENGTH = 100;
 export const MAX_EMAIL_LENGTH = 256;
@@ -27,7 +27,7 @@ const Contact: NextPage<IPageProps> = () => {
 	const [error, setError] = useState('');
 	const [completed, setCompleted] = useState(false);
 
-	const { t } = useLocale();
+	const { t } = useContext(LocaleContext);
 
 	const contactFormFields: FormFieldProps[] = [
 		{

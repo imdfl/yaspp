@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import DynamicContentBrowser from '../components/contentBrowser';
 import { AnnotationContentBlock } from './annotationLinkContentBlock';
 import { TermLinkContentBlock } from './termLinkContentBlock';
 import { PopoverProvider } from '@contexts/popoverContext';
-import { useLocale } from 'hooks/useLocale';
 import { useToolbar } from '../hooks/useToolbar';
 import { IPopoverContext } from '../types';
 // import I18nProvider from 'next-translate/I18nProvider';
@@ -14,6 +13,7 @@ import type {
 	ContentComponentProps,
 	IContentComponentInitData,
 } from 'types/models';
+import { LocaleContext } from '@contexts/localeContext';
 
 type PopoverContentBlockProps = {
 	type: DynamicContentTypes;
@@ -44,7 +44,7 @@ export const PopoverContentBlock = ({
 	'data-testid': dataTestId,
 }: PopoverContentBlockProps & ContentComponentProps): JSX.Element => {
 	const toolbar = useToolbar();
-	const { lang, textDirection } = useLocale();
+	const { locale, textDirection } = useContext(LocaleContext);
 	const { node } = componentData;
 	const context: IPopoverContext = {
 		toolbar: toolbar.items,
@@ -58,7 +58,7 @@ export const PopoverContentBlock = ({
 				trigger={getContentBlock(type, componentData, className)}
 				toolbarItems={toolbar.items.map((item) => item.element)}
 				side={textDirection === 'ltr' ? 'right' : 'left'}
-				locale={lang}
+				locale={locale}
 				data-testid={dataTestId}
 			>
 				{/* <I18nProvider namespaces={{ glossaryEN }}> */}
