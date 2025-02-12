@@ -9,7 +9,7 @@ import { fileUtils } from "../../src/lib/fileUtils";
  * The root of the  yaspp module
  */
 const ROOT_FOLDER = fsPath.resolve(__dirname, "../..");
-const I18N_TMPL = "i18n-tmpl.json";
+const I18N_TMPL = "i18n.tmpl.json";
 const GEN_HEADER = `// ****************************************************************"
 // This is a GENERATED file, editing it is likely to break the build
 // ****************************************************************\n`;
@@ -29,15 +29,14 @@ async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Pr
 		return tmplResult.error;
 	}
 	const outputTmpl = tmplResult.result!.replace(/\/\/.+$/mg, "");
-	const tmplPath = fsPath.resolve(process.cwd(), I18N_TMPL);
+	const tmplPath = fsPath.resolve(__dirname, "templates", I18N_TMPL);
 	if (!await fileUtils.isFile(tmplPath)) {
 		return `Template file ${I18N_TMPL} (${tmplPath}) not found`;
 	}
 	try {
 		function ts(s: string) { return `"${s}"`; }
-		const data = await fs.readFile(tmplPath, "utf-8");
-		const tmpl = parseJSON<IProjectLocaleConfig>(data);
-		const sysNS = Object.entries(tmpl.pages).reduce((ns: Set<string>, [key, values]) => {
+		const tmpl = await fileUtils.readJSON<IProjectLocaleConfig>(tmplPath);
+		const sysNS = Object.entries(tmpl!.pages).reduce((ns: Set<string>, [key, values]) => {
 			values.forEach(s => ns.add(s));
 			return ns
 		}, new Set<string>());
@@ -58,7 +57,7 @@ async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Pr
 			values.forEach(s => sys.add(s));
 			pages[key] = Array.from(sys.keys());
 			return pages;
-		}, tmpl.pages);
+		}, tmpl!.pages);
 		values["%PAGES%"] = JSON.stringify(mergedPages, null, 4);
 		if (config.root) {
 			const nsPath = fsPath.resolve(projectRoot, config.root, config.defaultLocale);

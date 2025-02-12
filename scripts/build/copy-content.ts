@@ -9,6 +9,7 @@ const rootPath = fsPath.resolve(__dirname, "../..");
 async function copyStyles(projectRoot: string, style: Partial<IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
 	const targetPath = fsPath.resolve(rootPath, "public/styles"),
 		sitePath = fsPath.resolve(targetPath, "site.scss");
+	await fileUtils.mkdir(targetPath);
 	try {
 		if (style?.root) {
 			const stylePath = fsPath.resolve(projectRoot, style.root);

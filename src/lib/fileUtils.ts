@@ -21,6 +21,7 @@ export interface IFileUtils {
 
     /**
      * Handles various scenarios and swallows errors
+     * @returns error string if any
      * @param path
      */
     mkdir(path: string): Promise<string>;
