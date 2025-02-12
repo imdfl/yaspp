@@ -173,7 +173,7 @@ function exitWith(err: string): void {
 
 const rootArg = yasppUtils.getArg(process.argv, "--project") || yasppUtils.getArg(process.argv, "-P");
 if (!rootArg) {
-	exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../../mysite\nOR\n--project /users/me/projects/mysite`);
+	exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
 }
 else {
 	const projectRoot = fsPath.resolve(process.cwd(), rootArg!);

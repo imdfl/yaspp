@@ -215,10 +215,10 @@ class YasppUtils implements IYasppUtils {
 	public diffPaths(fromPath: string, toPath: string): string {
 		const fromParts = fromPath.split(/[\/\\]+/),
 			toParts = toPath.split(/[\/\\]+/);
-		let rest = "";
+		let rest: string = "";
 		const retParts = [] as string[];
 		for (let ind = 0, len = fromParts.length, toLen = toParts.length; ind < len; ++ind) {
-			if (rest || ind >= toLen) {
+			if (retParts.length || ind >= toLen) {
 				retParts.push("..");
 			}
 			else if (fromParts[ind] !== toParts[ind]) {
@@ -228,6 +228,9 @@ class YasppUtils implements IYasppUtils {
 		}
 		if (rest) {
 			retParts.push(rest);
+		}
+		else if (toParts.length > fromParts.length) {
+			retParts.push(...toParts.slice(fromParts.length));
 		}
 		return retParts.join('/')
 
