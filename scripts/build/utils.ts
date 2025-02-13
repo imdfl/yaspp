@@ -199,6 +199,10 @@ class YasppUtils implements IYasppUtils {
 				cwd
 			})
 
+			proc.on("error", err  => {
+				resolve(-1);
+			})
+
 			proc.on('close', function () {
 				const code = Number(proc.exitCode);
 				resolve(isNaN(code) ? 1 : code);
@@ -243,20 +247,33 @@ class YasppUtils implements IYasppUtils {
 	}
 
 
+	/**
+	 * Tries to copy the content of one folder to another
+	 * @param srcPath 
+	 * @param targetPath 
+	 * @param clean 
+	 * @returns 
+	 */
 	public copyFolderContent(srcPath: string, targetPath: string, clean: boolean): Promise<string> {
 		return new Promise<string>(async resolve => {
 			if (!await fileUtils.isFolder(srcPath)) {
 				return resolve(`Content Folder ${srcPath} not found`);
 			}
-			await fs.mkdir(targetPath, { recursive: true });
-			if (!await fileUtils.isFolder(targetPath)) {
-				return resolve(`Target Folder ${targetPath} not found`);
+			if (await fileUtils.mkdir(targetPath)) {
+				return resolve(`Target Folder ${targetPath} can't be created`);
 			}
 			if (clean) {
 				const rmargs = ["-rf", '*'];
 				const rmCode = await yasppUtils.runProcess("rm", rmargs, targetPath);
 				if (rmCode !== 0) {
 					resolve(`Failed to delete content of ${targetPath}`);
+				}
+			}
+			else {
+				const srcList = await fs.readdir(srcPath);
+				const trgList = await fs.readdir(targetPath);
+				if (srcList.length === trgList.length) {
+					return "";
 				}
 			}
 			const cpargs = ["--update", "-r", '*', targetPath]
