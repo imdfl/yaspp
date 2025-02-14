@@ -136,7 +136,7 @@ async function clean(): Promise<string> {
  */
 async function run(projectRoot: string): Promise<string> {
 	try {
-		const { error, result } = await loadYasppConfig(projectRoot, { validate: true });
+		const { error, result } = await loadYasppConfig(projectRoot, { type: "site", validate: true });
 		if (error) {
 			return error;
 		}

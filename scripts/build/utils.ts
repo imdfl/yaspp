@@ -58,6 +58,7 @@ export interface IYasppUtils {
 
 export interface IYasppLoadOptions {
 	readonly validate: boolean;
+	readonly type: "local" | "site";
 }
 
 function errorResult<TResult = IYasppConfig>(err: string): IResponse<TResult> {
@@ -325,15 +326,16 @@ class YasppUtils implements IYasppUtils {
 
 export const yasppUtils = new YasppUtils;
 
-export async function loadYasppConfig(projectRoot: string, options: IYasppLoadOptions): Promise<IResponse<IYasppConfig>> {
+export async function loadYasppConfig(projectRoot: string, { validate, type }: IYasppLoadOptions): Promise<IResponse<IYasppConfig>> {
 	try {
-		const configPath = fsPath.resolve(projectRoot, "yaspp.json");
+		const fname = type === "site" ? "yaspp.config.json" : "yaspp.json";
+		const configPath = fsPath.resolve(projectRoot, fname);
 		if (!await fileUtils.isFile(configPath)) {
 			return { error: `Can't find yaspp configuration file (${configPath})`, result: null };
 		}
 		const data = await fs.readFile(configPath, "utf-8");
 		const userConfig = parseJSON<Partial<IYasppConfig>>(data);
-		return options.validate ? yasppUtils.validateConfig(projectRoot, userConfig) : { result: userConfig as IYasppConfig };
+		return validate ? yasppUtils.validateConfig(projectRoot, userConfig) : { result: userConfig as IYasppConfig };
 	}
 	catch (err) {
 		return {

@@ -57,7 +57,7 @@ async function copyStyles(projectRoot: string, style: Partial<IYasppStyleConfig>
  */
 async function run(clean: boolean): Promise<string> {
 	try {
-		const { error, result } = await loadYasppAppConfig({ validate: false });
+		const { error, result } = await loadYasppAppConfig({ type: "local", validate: false });
 		if (error) {
 			return error;
 		}
