@@ -31,9 +31,11 @@ export const parseMenuItems = (
 ): NavParsedNodes[] => {
 	const res = sections.map((section) => {
 		return Object.assign({}, section, {
+			title: translate(section.title),
 			locale: translateKeys(section.locale, translate),
 			items: getSectionItems(section, items).map((item) => {
 				return Object.assign({}, item, {
+					title: translate(item.title),
 					locale: translateKeys(item.locale, translate),
 				});
 			}),

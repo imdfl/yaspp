@@ -12,11 +12,11 @@ import { LocaleContext } from '@contexts/localeContext';
 
 const renderItems = (items: NavItemDataProps[]) =>
 	items.map((item) => (
-		<NavigationMenu.Link asChild key={`list-item-${item.id}`}>
+		<NavigationMenu.Link asChild key={item.id}>
 			<ListItem className={styles.menuListItem}>
 				<NavItem
 					{...item}
-					title={item.locale.title}
+					title={item.title}
 					description={item.locale.description}
 					author={item.locale.author}
 					icon={item.icon}
@@ -35,7 +35,7 @@ const renderSections = (sections: NavParsedNodes[]) =>
 				<>
 					<Button className={styles.menuSectionTriggerButton} asChild>
 						<NavigationMenu.Trigger>
-							{section.locale.title}
+							{section.title}
 							{getIcon('caretDown', styles.caret)}
 						</NavigationMenu.Trigger>
 					</Button>

@@ -11,6 +11,7 @@ export type NavProps = {
 export type NavItemDataProps = {
 	id: string;
 	type: string;
+	title: string;
 	url: string;
 	locale: NavItemLocaleProps;
 	icon?: string;
@@ -21,10 +22,12 @@ export type NavSectionDataProps = {
 	id: string;
 	locale: NavItemLocaleProps;
 	items: string[];
+	title: string;
 };
 
 export type NavParsedNodes = {
 	id: string;
 	locale: Record<string, string>;
 	items: NavItemDataProps[];
+	title: string;
 };

@@ -4,8 +4,8 @@
 		"type": "article",
 		"url": "/docs/the-story-of-mel/pages/preface",
 		"icon": "article",
+		"title": "nav:items:articles:som:intro:label",
 		"locale": {
-			"title": "nav:items:articles:som:intro:label",
 			"author": "authors:tomerlichtash"
 		}
 	},
@@ -14,8 +14,8 @@
 		"type": "article",
 		"url": "/docs/the-story-of-mel/pages/mel-kaye-cv",
 		"icon": "article",
+		"title": "nav:items:articles:som:bio:label",
 		"locale": {
-			"title": "nav:items:articles:som:bio:label",
 			"author": "authors:tomerlichtash"
 		}
 	},
@@ -24,8 +24,8 @@
 		"type": "article",
 		"url": "/docs/the-story-of-mel/pages/mels-hack-the-missing-bits",
 		"icon": "article",
+		"title": "nav:items:articles:som:missingBits:label",
 		"locale": {
-			"title": "nav:items:articles:som:missingBits:label",
 			"author": "authors:dfl"
 		}
 	},
@@ -34,8 +34,8 @@
 		"type": "page",
 		"url": "/docs/the-story-of-mel/pages/resources",
 		"icon": "list",
+		"title": "nav:items:pages:resources:label",
 		"locale": {
-			"title": "nav:items:pages:resources:label",
 			"description": "nav:items:pages:resources:desc"
 		}
 	},
@@ -43,8 +43,8 @@
 		"id": "about",
 		"type": "page",
 		"url": "/about",
+		"title": "nav:items:pages:about:label",
 		"locale": {
-			"title": "nav:items:pages:about:label",
 			"description": "nav:items:pages:about:desc"
 		}
 	},
@@ -52,8 +52,8 @@
 		"id": "about-mobile",
 		"type": "page",
 		"url": "/about",
+		"title": "nav:items:pages:about:label",
 		"locale": {
-			"title": "nav:items:pages:about:label",
 			"description": "nav:items:pages:about:desc"
 		}
 	},
@@ -61,8 +61,8 @@
 		"id": "blog",
 		"type": "page",
 		"url": "/posts",
+		"title": "nav:items:pages:blog:label",
 		"locale": {
-			"title": "nav:items:pages:blog:label",
 			"description": "nav:items:pages:blog:desc"
 		}
 	},
@@ -70,8 +70,8 @@
 		"id": "contribute",
 		"type": "page",
 		"url": "/contribute",
+		"title": "nav:items:pages:contrib:label",
 		"locale": {
-			"title": "nav:items:pages:contrib:label",
 			"description": "nav:items:pages:contrib:desc"
 		}
 	},
@@ -80,8 +80,8 @@
 		"type": "page",
 		"url": "/contact",
 		"icon": "pencil",
+		"title": "nav:items:pages:contact:label",
 		"locale": {
-			"title": "nav:items:pages:contact:label",
 			"description": "nav:items:pages:contact:desc"
 		}
 	},
@@ -90,8 +90,8 @@
 		"type": "external",
 		"url": "https://twitter.com/aboutmelsloop",
 		"icon": "𝕏",
+		"title": "nav:items:links:twitter:label",
 		"locale": {
-			"title": "nav:items:links:twitter:label",
 			"description": "nav:items:links:twitter:desc"
 		}
 	},
@@ -101,8 +101,8 @@
 		"url": "https://github.com/tomerlichtash/mels-loop",
 		"icon": "github",
 		"target": "_blank",
+		"title": "nav:items:links:github:label",
 		"locale": {
-			"title": "nav:items:links:github:label",
 			"description": "nav:items:links:github:desc"
 		}
 	}

@@ -190,17 +190,7 @@ class ParsedPageData implements IParsedPageData {
 }
 
 class PageMetaData implements IPageMetaData {
-	constructor(data: Partial<IParsedPageData> | string) {
-		safeMerge(this, data);
-		if (this.date && typeof this.date === 'string') {
-			this.date = parseDate(this.date);
-		}
-	}
-	public toObject(): IPageMetaData {
-		return {
-			...this,
-		};
-	}
+	
 	public glossary_key = '';
 	public date: Date = null;
 	public title = '';
@@ -222,4 +212,16 @@ class PageMetaData implements IPageMetaData {
 			
 		}
 	} as const;
+
+	constructor(data: Partial<IParsedPageData> | string) {
+		safeMerge(this, data);
+		if (this.date && typeof this.date === 'string') {
+			this.date = parseDate(this.date);
+		}
+	}
+	public toObject(): IPageMetaData {
+		return {
+			...this,
+		};
+	}
 }
