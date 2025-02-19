@@ -1,9 +1,9 @@
 import { default as menuSectionData } from './sections.json' assert { type: 'json' };
 import { default as menuItemsData } from './items.json' assert { type: 'json' };
 import type {
-	NavItemDataProps,
-	NavSectionDataProps,
-} from '../../../components/nav/types';
+	INavItemDataProps,
+	INavSectionDataProps,
+} from 'types/nav';
 
 export enum NavSectionId {
 	TOPBAR = 'topbar',
@@ -12,13 +12,13 @@ export enum NavSectionId {
 }
 
 type LayoutConfig = {
-	menuSectionData: Record<NavSectionId, NavSectionDataProps[]>;
-	menuItemsData: NavItemDataProps[];
+	menuSectionData: Record<NavSectionId, INavSectionDataProps[]>;
+	menuItemsData: INavItemDataProps[];
 };
 
 const config: LayoutConfig = {
-	menuSectionData: menuSectionData,
-	menuItemsData: menuItemsData,
+	menuSectionData,
+	menuItemsData,
 };
 
 export default config;

@@ -111,11 +111,12 @@ async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
 
 async function clean(): Promise<string> {
 	try {
-		const publicPath = fsPath.resolve(ROOT_FOLDER, "public");
+		const publicPath = fsPath.resolve(ROOT_FOLDER, "public/yaspp");
+		await fileUtils.mkdir(publicPath);
 		if (!await fileUtils.isFolder(publicPath)) {
 			return "public folder not found";
 		}
-		const folders = ["content", "locales", "styles", "assets/site"];
+		const folders = ["content", "locales", "styles", "assets"];
 		for await (const folder of folders) {
 			const fpath = fsPath.resolve(publicPath, folder);
 			await fileUtils.mkdir(fpath);

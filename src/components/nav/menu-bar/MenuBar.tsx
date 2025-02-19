@@ -6,11 +6,18 @@ import Button from '../../button/Button';
 import List from '../../list/List';
 import NavItem from '../nav-item/NavItem';
 import styles from './MenuBar.module.scss';
-import type { NavItemDataProps, NavParsedNodes, NavProps } from '../types';
+import type { INavItemDataProps, INavSection } from 'types/nav';
 import classNames from 'classnames';
 import { LocaleContext } from '@contexts/localeContext';
+import type { TextDirection } from 'types/locale';
 
-const renderItems = (items: NavItemDataProps[]) =>
+type NavProps = {
+	items: INavSection[];
+	className?: string;
+	textDirection?: TextDirection;
+};
+
+const renderItems = (items: INavItemDataProps[]) =>
 	items.map((item) => (
 		<NavigationMenu.Link asChild key={item.id}>
 			<ListItem className={styles.menuListItem}>
@@ -25,7 +32,7 @@ const renderItems = (items: NavItemDataProps[]) =>
 		</NavigationMenu.Link>
 	));
 
-const renderSections = (sections: NavParsedNodes[]) =>
+const renderSections = (sections: INavSection[]) =>
 	sections.map((section) => (
 		<NavigationMenu.Item key={section.id} asChild>
 			<ListItem

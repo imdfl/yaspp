@@ -4,10 +4,10 @@ import List from '../../list/List';
 import ListItem from '../../list-item/ListItem';
 import classNames from 'classnames';
 import styles from './MenuDrawer.module.scss';
-import type { NavParsedNodes } from '../types';
+import type { INavSection } from 'types/nav';
 
 type VerticalNavProps = {
-	items: NavParsedNodes[];
+	items: INavSection[];
 	onClose?: () => void;
 	className?: string;
 };

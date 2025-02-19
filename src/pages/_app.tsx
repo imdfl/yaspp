@@ -22,7 +22,7 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 				storageKey="ml-theme"
 				attribute="data-ml-theme"
 			>
-				<PageProvider documentPath={pageProps.documentPath}>
+				<PageProvider documentPath={pageProps.documentPath} nav={pageProps.nav}>
 					<style jsx global>
 						{fontStyles}
 					</style>

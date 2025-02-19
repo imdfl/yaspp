@@ -1,4 +1,5 @@
-import { LocaleDictionary, LocaleId } from "./locale";
+import type { LocaleDictionary, LocaleId } from "./locale";
+import type { INavItemDataProps, INavSectionDataProps } from "./nav";
 
 /**
  * App object that contains data about the current build
@@ -68,6 +69,11 @@ export interface IYasppConfig {
 	readonly locale: IYasppLocaleConfig;
 	readonly style?: IYasppStyleConfig;
 	readonly assets?: IYasppStyleConfig;
+}
+
+export interface IYasppNavConfig {
+	readonly items: Record<string, Omit<INavItemDataProps, "id">>;
+	readonly sections: Record<string, Omit<INavSectionDataProps, "id">>
 }
 
 /**

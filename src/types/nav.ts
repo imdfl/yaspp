@@ -1,14 +1,7 @@
-import { TextDirection } from 'types/locale';
 
 export type NavItemLocaleProps = Record<string, string>;
 
-export type NavProps = {
-	items: NavParsedNodes[];
-	className?: string;
-	textDirection?: TextDirection;
-};
-
-export type NavItemDataProps = {
+export interface INavItemDataProps {
 	id: string;
 	type: string;
 	title: string;
@@ -18,16 +11,19 @@ export type NavItemDataProps = {
 	target?: string;
 };
 
-export type NavSectionDataProps = {
+export interface INavSectionDataProps {
 	id: string;
 	locale: NavItemLocaleProps;
 	items: string[];
 	title: string;
 };
 
-export type NavParsedNodes = {
+/**
+ * Represents the full data of a single section in a navigation list
+ */
+export interface INavSection {
 	id: string;
 	locale: Record<string, string>;
-	items: NavItemDataProps[];
+	items: INavItemDataProps[];
 	title: string;
 };
