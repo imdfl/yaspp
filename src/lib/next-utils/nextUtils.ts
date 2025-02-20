@@ -62,7 +62,8 @@ class MLNextUtils implements IMLNextUtils {
 				// Stringify the result, instead of leaving the job to Next, because
 				// Next's serializer is picky about objects, won't take class instances, Dates and more
 				content: JSON.stringify(docData.pages),
-				documentPath: (page && page.path) || '',
+				documentPath: page?.path || '',
+				nav: JSON.stringify(app.nav)
 			},
 		};
 	}

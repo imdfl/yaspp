@@ -6,7 +6,7 @@ import { PageProvider } from '../contexts/pageContext';
 import { fontFaceDecls } from '../siteFonts';
 import 'normalize.css/normalize.css';
 import '../styles/app.scss';
-// import '../../public/styles/site.scss';
+import '../../public/yaspp/styles/site.scss';
 import type { IPageProps } from 'types/models';
 import { LocaleContextProvider } from '../contexts/localeContext';
 
@@ -22,7 +22,7 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 				storageKey="ml-theme"
 				attribute="data-ml-theme"
 			>
-				<PageProvider documentPath={pageProps.documentPath}>
+				<PageProvider documentPath={pageProps.documentPath} nav={pageProps.nav}>
 					<style jsx global>
 						{fontStyles}
 					</style>

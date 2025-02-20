@@ -16,6 +16,10 @@ export const renderNodes = (elements: IMLParsedNode[]) =>
 	));
 
 export const getMetadata = (keys: string[], pageData: IParsedPageData[]) => {
-	const { metaData } = pageData[0];
-	return keys.map((k: string) => metaData?.[k]);
+	const page = pageData?.[0];
+	if (!page) {
+		return [];
+	}
+	const { metaData = {} } = page;
+	return keys.map((k: string) => metaData[k]);
 };

@@ -34,7 +34,7 @@
 			"name": "Copy Content",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/copy-content",
+			"command": "npx ts-node scripts/build/copy-content --clean",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}

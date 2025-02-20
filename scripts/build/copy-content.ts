@@ -6,8 +6,10 @@ import { fileUtils } from "../../src/lib/fileUtils";
 
 const rootPath = fsPath.resolve(__dirname, "../..");
 
-async function copyStyles(projectRoot: string, style: Partial<IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
-	const targetPath = fsPath.resolve(rootPath, "public/styles"),
+const YASPP_NAV_CONFIG = "yaspp.nav.json";
+
+async function copyStyles(projectRoot: string, publicRoot: string, style: Partial<IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
+	const targetPath = fsPath.resolve(publicRoot, "styles"),
 		sitePath = fsPath.resolve(targetPath, "site.scss");
 	await fileUtils.mkdir(targetPath);
 	try {
@@ -63,7 +65,7 @@ async function run(clean: boolean): Promise<string> {
 		}
 		const config = result!;
 		const projectRoot = fsPath.resolve(rootPath, config.root),
-			publicPath = fsPath.resolve(rootPath, "public");
+			publicPath = fsPath.resolve(rootPath, "public/yaspp");
 		const { content, locale, style, assets } = config;
 
 		async function copyOne(target: string, root?: string): Promise<string> {
@@ -76,18 +78,33 @@ async function run(clean: boolean): Promise<string> {
 		}
 		async function copyAssets() {
 			const contentPath = fsPath.resolve(__dirname, "assets"),
-				targetPath = fsPath.resolve(publicPath, "assets/site");
+				targetPath = fsPath.resolve(publicPath, "assets");
 			const err = await yasppUtils.copyFolderContent(contentPath, targetPath, clean);
 			if (!err) {
 				console.log("copied default assets");
 			}
 			return err;
 		}
-		const err = await copyOne("content", content.root)
+
+		async function copyNav(): Promise<string> {
+			const srcPath = fsPath.resolve(projectRoot, YASPP_NAV_CONFIG),
+				trgPath = fsPath.resolve(publicPath, "nav.json");
+			try {
+				await fs.copyFile(srcPath, trgPath);
+				return "";
+			}
+			catch(err) {
+				return `Error copying `
+			}
+		}
+		const err = await copyNav()
+			|| await copyOne("content", content.root)
 			|| await copyOne("locales", locale.root)
-			|| await copyStyles(projectRoot, style, clean)
+			|| await copyStyles(projectRoot, publicPath, style, clean)
 			|| await copyAssets()
-			|| await copyOne("assets/site", assets?.root);
+			|| await copyOne("assets", assets?.root);
+
+		
 		return err ?? "";
 	}
 	catch (err) {
