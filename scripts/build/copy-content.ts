@@ -8,8 +8,8 @@ const rootPath = fsPath.resolve(__dirname, "../..");
 
 const YASPP_NAV_CONFIG = "yaspp.nav.json";
 
-async function copyStyles(projectRoot: string, style: Partial<IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
-	const targetPath = fsPath.resolve(rootPath, "public/styles"),
+async function copyStyles(projectRoot: string, publicRoot: string, style: Partial<IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
+	const targetPath = fsPath.resolve(publicRoot, "styles"),
 		sitePath = fsPath.resolve(targetPath, "site.scss");
 	await fileUtils.mkdir(targetPath);
 	try {
@@ -100,7 +100,7 @@ async function run(clean: boolean): Promise<string> {
 		const err = await copyNav()
 			|| await copyOne("content", content.root)
 			|| await copyOne("locales", locale.root)
-			|| await copyStyles(projectRoot, style, clean)
+			|| await copyStyles(projectRoot, publicPath, style, clean)
 			|| await copyAssets()
 			|| await copyOne("assets", assets?.root);
 

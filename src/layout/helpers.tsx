@@ -1,8 +1,8 @@
 import {
-	INavItemDataProps,
+	INavItemData,
 	NavItemLocaleProps,
 	INavSection,
-	INavSectionDataProps,
+	INavSectionData,
 } from 'types/nav';
 
 const translateKeys = (
@@ -14,8 +14,8 @@ const translateKeys = (
 	);
 
 const getSectionItems = (
-	section: INavSectionDataProps,
-	items: INavItemDataProps[]
+	section: INavSectionData,
+	items: INavItemData[]
 ) => {
 	return section.items
 		? section.items.map(
@@ -25,8 +25,8 @@ const getSectionItems = (
 };
 
 export const parseMenuItems = (
-	sections: INavSectionDataProps[],
-	items: INavItemDataProps[],
+	sections: INavSectionData[],
+	items: INavItemData[],
 	translate: (s: string) => string
 ): INavSection[] => {
 	const res = sections.map((section) => {

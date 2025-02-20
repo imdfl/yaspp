@@ -2,26 +2,33 @@ import React, { Context, createContext } from 'react';
 import { DynamicContentServer } from 'lib/dynamic-content-utils/dynamicContentServer';
 import type { IDynamicContentServer } from 'lib/types';
 import type { IPageContext } from '../types/contexts';
-import { INavSection } from '../types/nav';
+import { INavSection, NavGroups } from '../types/nav';
 
 export class PageContextClass implements IPageContext {
-	public readonly navItems: ReadonlyArray<INavSection>;
+	private readonly navItems: Map<string, ReadonlyArray<INavSection>>;
 	constructor(
 		public readonly dynamicContentServer: IDynamicContentServer,
 		public documentPath: string,
 		nav: string | object
 	) {
-		let ni: INavSection[];
+		let ni: NavGroups = {};
+		this.navItems = new Map();
 		if (nav) {
 			if (typeof nav === "string") {
 				const parsed = JSON.parse(nav);
 				ni = parsed;
 			}
 			else {
-				ni = nav as INavSection[];
+				ni = nav as NavGroups;
 			}
 		}
-		this.navItems = Array.isArray(ni) ? ni : [];
+		Object.entries(ni).forEach(([groupName, section]) => {
+			this.navItems.set(groupName, section)
+		});
+	}
+
+	public get navigationGroups(): ReadonlyMap<string, ReadonlyArray<INavSection>> {
+		return this.navItems;
 	}
 }
 

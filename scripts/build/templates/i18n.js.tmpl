@@ -14,7 +14,7 @@ module.exports = {
 			Object.assign(ret, m.default);
 		}
 		if (uns.has(ns)) {
-			const m = await import(`./public/locales/${lang}/${ns}.json`);
+			const m = await import(`./public/yaspp/locales/${lang}/${ns}.json`);
 			Object.assign(ret, m.default);
 		}
 

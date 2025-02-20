@@ -7,7 +7,7 @@ import styles from './MenuDrawer.module.scss';
 import type { INavSection } from 'types/nav';
 
 type VerticalNavProps = {
-	items: INavSection[];
+	items: ReadonlyArray<INavSection>;
 	onClose?: () => void;
 	className?: string;
 };

@@ -4,7 +4,7 @@ import { fileUtils } from '../fileUtils';
 import i18nconfig from "@root/i18n";
 import type { IYasppApp, IYasppConfig, IYasppContentConfig, IYasppNavConfig } from 'types/app';
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from 'types';
-import type { INavItemDataProps, INavSection } from 'types/nav';
+import type { INavItemData, INavSection, NavGroups } from 'types/nav';
 
 
 const CONFIG_FILE = "yaspp.json";
@@ -19,7 +19,7 @@ class YasppApp implements IYasppApp {
 	private _indexPage = "";
 	private _isLoading = false;
 	private _dictionary: LocaleDictionary | null = null;
-	private readonly _navItems: INavSection[] = [];
+	private readonly _navItems: Record<string, INavSection[]> = {};
 
 	public get isLoading() {
 		return this._isLoading;
@@ -35,6 +35,12 @@ class YasppApp implements IYasppApp {
 
 	public get defaultLocale(): string {
 		return i18nconfig.defaultLocale;
+	}
+
+	public get nav(): NavGroups {
+		return {
+			...this._navItems
+		}
 	}
 
 	public async init(cwd: string, contentRoot: string): Promise<string> {
@@ -62,7 +68,7 @@ class YasppApp implements IYasppApp {
 			return dictErr;
 		}
 
-		const navErr = await this._loadNavItems(cwd)
+		const navErr = await this._loadNavItems(contentRoot)
 
 		return navErr;
 	}
@@ -73,31 +79,41 @@ class YasppApp implements IYasppApp {
 		if (!navData) {
 			return `navigation items data not found in ${navPath}`;
 		}
-		if (!navData.items || !navData.sections) {
-			return `nav.json must contain two arrays under sections and items`
+		if (!navData.items || !navData.sections || !navData.groups) {
+			return `nav.json must contain items, sections and groups`;
 		}
-		Object.entries(navData.sections).forEach(([name, data]) => {
-			if (!name || !Array.isArray(data.items)) {
-				console.error(`bad entry in nav sections ${name}`);
+		Object.entries(navData.groups).forEach(([groupName, groupData]) => {
+			if (!groupName || !Array.isArray(groupData.items)) {
+				console.error(`bad entry in nav sections ${groupName}`);
 				return;
 			}
-			const section: INavSection = {
-				id: name,
-				locale: data.locale,
-				title: data.title,
-				items: data.items.map(itemName => {
-					const itemData = navData.items[itemName];
-					if (!itemData) {
-						console.error(`Missing nav item ${itemName}`);
-						return null;
-					}
-					return {
-						...itemData,
-						id: itemName,
-					};
-				}).filter(Boolean) as INavItemDataProps[]
-			};
-			this._navItems.push(section);
+			this._navItems[groupName] = [];
+
+			groupData.items.forEach(sectionName => {
+				const sectionData = navData.sections[sectionName];
+				if (!Array.isArray(sectionData?.items)) {
+					console.error(`unknown or invalid section ${sectionName}`);
+					return;
+				}
+				const section: INavSection = {
+					id: sectionName,
+					locale: sectionData.locale?? {},
+					title: sectionData.title,
+					items: sectionData.items.map(itemName => {
+						const itemData = navData.items[itemName];
+						if (!itemData) {
+							console.error(`Missing nav item ${itemName}`);
+							return null;
+						}
+						return {
+							...itemData,
+							locale: itemData.locale?? {},
+							id: itemName,
+						};
+					}).filter(Boolean) as INavItemData[]
+				};
+				this._navItems[groupName].push(section);
+			})
 		})
 		return "";
 	}

@@ -1,5 +1,5 @@
 import type { LocaleDictionary, LocaleId } from "./locale";
-import type { INavItemDataProps, INavSectionDataProps } from "./nav";
+import type { INavGroupData, INavItemData, INavSectionData, NavGroups } from "./nav";
 
 /**
  * App object that contains data about the current build
@@ -27,6 +27,8 @@ export interface IYasppApp {
 	 * Default locale to start with and use as fallback in translations
 	 */
 	readonly defaultLocale: LocaleId;
+
+	readonly nav: NavGroups;
 }
 
 export type LocaleLoader = (lang: string, ns?: string) => Promise<Record<string, string>>;
@@ -71,9 +73,11 @@ export interface IYasppConfig {
 	readonly assets?: IYasppStyleConfig;
 }
 
+
 export interface IYasppNavConfig {
-	readonly items: Record<string, Omit<INavItemDataProps, "id">>;
-	readonly sections: Record<string, Omit<INavSectionDataProps, "id">>
+	readonly items: Record<string, Omit<INavItemData, "id">>;
+	readonly sections: Record<string, Omit<INavSectionData, "id">>;
+	readonly groups: Record<string, INavGroupData>;
 }
 
 /**

@@ -6,18 +6,18 @@ import Button from '../../button/Button';
 import List from '../../list/List';
 import NavItem from '../nav-item/NavItem';
 import styles from './MenuBar.module.scss';
-import type { INavItemDataProps, INavSection } from 'types/nav';
+import type { INavItemData, INavSection } from 'types/nav';
 import classNames from 'classnames';
 import { LocaleContext } from '@contexts/localeContext';
 import type { TextDirection } from 'types/locale';
 
 type NavProps = {
-	items: INavSection[];
+	items: ReadonlyArray<INavSection>;
 	className?: string;
 	textDirection?: TextDirection;
 };
 
-const renderItems = (items: INavItemDataProps[]) =>
+const renderItems = (items: ReadonlyArray<INavItemData>) =>
 	items.map((item) => (
 		<NavigationMenu.Link asChild key={item.id}>
 			<ListItem className={styles.menuListItem}>
@@ -32,7 +32,7 @@ const renderItems = (items: INavItemDataProps[]) =>
 		</NavigationMenu.Link>
 	));
 
-const renderSections = (sections: INavSection[]) =>
+const renderSections = (sections: ReadonlyArray<INavSection>) =>
 	sections.map((section) => (
 		<NavigationMenu.Item key={section.id} asChild>
 			<ListItem

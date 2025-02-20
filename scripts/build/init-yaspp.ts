@@ -72,7 +72,7 @@ async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Pr
 				.map(s => s.replace(/\.[^\.]+$/, ""));
 			values["%USERNS%"] = userNS.map(ts);
 			const pDict = userNS.reduce((dict: Record<string, string>, ns) => {
-				dict[ns] = `./public/locales/%LANG%/${ns}.json`;
+				dict[ns] = `./public/yaspp/locales/%LANG%/${ns}.json`;
 				return dict;
 			}, {})
 			dicts.project = pDict
