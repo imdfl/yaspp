@@ -1,4 +1,8 @@
 {
+	"site:title": "Yaspp Site",
+	"site:subtitle": "Site Description goes here",
+	"site:shortSiteDescription": "Short blurb about your Yaspp site",
+	"site:license": "2021-{{toYear}} (cc-by-sa) Your name",
 	"footer:sections:pages:label": "Pages",
 	"footer:sections:links:label": "Links",
 	"caption:loading": "Loading...",

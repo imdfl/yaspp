@@ -12,6 +12,9 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
 	const targetPath = fsPath.resolve(publicRoot, "styles"),
 		sitePath = fsPath.resolve(targetPath, "site.scss");
 	await fileUtils.mkdir(targetPath);
+	if (clean) {
+		await fileUtils.removeFolder({ path: targetPath, removeRoot: false });
+	}
 	try {
 		if (style?.root) {
 			const stylePath = fsPath.resolve(projectRoot, style.root);

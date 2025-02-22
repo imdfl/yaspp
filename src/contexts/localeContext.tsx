@@ -23,11 +23,10 @@ class LocaleContextImpl implements ILocaleContext {
 		}
 		const { router, translate } = props;
 		this._t = translate;
-		this._translate = s => localizeString(s, translate);
+		this._translate = (s, arg) => localizeString(s, translate, arg);
 		this._router = router;
 		this._locale = props.locale;
 		this._locales = router.locales;
-		// this._translate = _translate(locale, Languages);
 	}
 
 	public get textDirection(): TextDirection {

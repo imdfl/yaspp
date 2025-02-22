@@ -22,7 +22,7 @@ export interface ILocaleContext {
 	 */
 	t: Translate;
 	/**
-	 * Translate one string. Supports embedded keys [[ns:key:list:...]]
+	 * Translate one string. Supports embedded keys [[ns:key:list:...]] and next-translate value dictonary
 	 */
 	translate: LocalizeFunction;
 	// siteTitle: string;
