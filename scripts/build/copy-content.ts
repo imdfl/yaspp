@@ -61,11 +61,11 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
  * Returns an error message, empty if no error
  */
 async function run(clean: boolean): Promise<string> {
+	const { error, result } = await loadYasppAppConfig({ type: "local", validate: false });
+	if (error) {
+		return error;
+	}
 	try {
-		const { error, result } = await loadYasppAppConfig({ type: "local", validate: false });
-		if (error) {
-			return error;
-		}
 		const config = result!;
 		const projectRoot = fsPath.resolve(rootPath, config.root),
 			publicPath = fsPath.resolve(rootPath, "public/yaspp");
@@ -79,6 +79,10 @@ async function run(clean: boolean): Promise<string> {
 				targetPath = fsPath.resolve(publicPath, target);
 			return await yasppUtils.copyFolderContent(contentPath, targetPath, clean);
 		}
+		/**
+		 * Copies default assets from the build assets folder
+		 * @returns 
+		 */
 		async function copyAssets() {
 			const contentPath = fsPath.resolve(__dirname, "assets"),
 				targetPath = fsPath.resolve(publicPath, "assets");
@@ -97,7 +101,7 @@ async function run(clean: boolean): Promise<string> {
 				return "";
 			}
 			catch(err) {
-				return `Error copying `
+				return `Error copying ${srcPath}`
 			}
 		}
 		const err = await copyNav()
@@ -111,10 +115,11 @@ async function run(clean: boolean): Promise<string> {
 		return err ?? "";
 	}
 	catch (err) {
-		return `Error loading yaspp.json: ${err}`;
+		return `Error copying yaspp data: ${err}`;
 	}
 }
 const clean = yasppUtils.getArg(process.argv, "--clean");
+console.log(`Copying yaspp project site data, clean mode ${clean !== null}`);
 run(clean !== null)
 	.then(err => {
 		if (err) {

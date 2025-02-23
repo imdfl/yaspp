@@ -357,4 +357,3 @@ export async function loadYasppAppConfig(options: IYasppLoadOptions): Promise<IR
 		}
 	}
 }
-
