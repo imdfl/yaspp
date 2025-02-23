@@ -1,8 +1,8 @@
 import fsPath from "path";
 import { promises as fs } from "fs";
-import { yasppUtils, loadYasppAppConfig, IResponse } from "./utils";
-import { IYasppStyleConfig } from "../../src/types/app";
-import { fileUtils } from "../../src/lib/fileUtils";
+import { yasppUtils, loadYasppAppConfig } from "./utils";
+import { IYasppStyleConfig } from "@src/types/app";
+import { fileUtils } from "@lib/fileUtils";
 
 const rootPath = fsPath.resolve(__dirname, "../..");
 
@@ -94,7 +94,7 @@ async function run(clean: boolean): Promise<string> {
 		}
 
 		async function copyNav(): Promise<string> {
-			const srcPath = fsPath.resolve(projectRoot, YASPP_NAV_CONFIG),
+			const srcPath = fsPath.resolve(projectRoot, "site", YASPP_NAV_CONFIG),
 				trgPath = fsPath.resolve(publicPath, "nav.json");
 			try {
 				await fs.copyFile(srcPath, trgPath);

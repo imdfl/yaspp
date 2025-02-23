@@ -1,6 +1,5 @@
 import fsPath from "path";
 import { promises as fs } from "fs";
-import { parse as parseJSON } from "json5";
 import { loadYasppConfig, yasppUtils } from "./utils";
 import type { IProjectLocaleConfig, IYasppAppConfig, IYasppLocaleConfig } from "../../src/types/app"
 import { fileUtils } from "../../src/lib/fileUtils";
