@@ -67,7 +67,13 @@ export type IYasppAssetsConfig = IYasppBaseConfig;
  * Project configuration file
  */
 export interface IYasppConfig {
+	/**
+	 * Content configuration
+	 */
 	readonly content: IYasppContentConfig;
+	/**
+	 * Locales configuration
+	 */
 	readonly locale: IYasppLocaleConfig;
 	readonly style?: IYasppStyleConfig;
 	readonly assets?: IYasppStyleConfig;
@@ -80,10 +86,9 @@ export interface IYasppNavConfig {
 	readonly groups: Record<string, INavGroupData>;
 }
 
-/**
- * The configuration stored in the yaspp root
- */
 export interface IYasppAppConfig extends IYasppConfig {
+	/**
+	 * Relative to yaspp root
+	 */
 	readonly root: string;
 }
-

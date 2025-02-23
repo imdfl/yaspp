@@ -3,7 +3,7 @@ import fsPath from "path";
 import { spawn } from "child_process";
 import { parse as parseJSON } from "json5";
 
-import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig, IYasppAppConfig, IYasppStyleConfig, IYasppAssetsConfig } from "../../src/types/app";
+import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig, IYasppStyleConfig, IYasppAssetsConfig } from "../../src/types/app";
 import { fileUtils } from '../../src/lib/fileUtils';
 
 const ROOT_PATH = fsPath.resolve(__dirname, "../..");
@@ -289,7 +289,8 @@ class YasppUtils implements IYasppUtils {
 			validLocale = await validateLocale(projectRoot, config?.locale),
 			validStyle = await validateStyle(projectRoot, config?.style),
 			validAsssets = await validateAssets(projectRoot, config?.assets);
-		const errors = [validContent, validLocale, validStyle, validAsssets].filter(r => r.error);
+
+		const errors = [validContent, validLocale, validStyle, validAsssets].filter(r => r.error).map(r => r.error!);
 		return errors.length ?
 			errorResult(errors.join('\n'))
 			: {
@@ -345,15 +346,6 @@ export async function loadYasppConfig(projectRoot: string, { validate, type }: I
 	}
 }
 
-export async function loadYasppAppConfig(options: IYasppLoadOptions): Promise<IResponse<IYasppAppConfig>> {
-	const { result, error } = await loadYasppConfig(ROOT_PATH, options);
-	if (error) {
-		return errorResult(error);
-	}
-	return {
-		result: {
-			root: ROOT_PATH,
-			...result!
-		}
-	}
+export async function loadYasppAppConfig(options: IYasppLoadOptions): Promise<IResponse<IYasppConfig>> {
+	return await loadYasppConfig(ROOT_PATH, options);
 }
