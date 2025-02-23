@@ -58,8 +58,8 @@ class YasppApp implements IYasppApp {
 			return `Failed to load config file ${configPath}`;
 		}
 		contentRoot = fsPath.resolve(cwd, contentRoot);
-		const config = this._validateConfig(cdata);
-		const contentErr = await this._processContent(config.content, contentRoot);
+		const config = this._validateContentConfig(cdata);
+		const contentErr = await this._processContent(config, contentRoot);
 		if (contentErr) {
 			return contentErr;
 		}
@@ -171,14 +171,16 @@ class YasppApp implements IYasppApp {
 
 	}
 
-	private _validateConfig(config: Partial<IYasppConfig>): Pick<IYasppConfig, "content"> {
-		config = config ?? {};
-		const content = config.content || {} as Partial<IYasppContentConfig>;
+	/**
+	 * 
+	 * @param config 
+	 * @returns 
+	 */
+	private _validateContentConfig(config: Partial<IYasppConfig>): IYasppContentConfig {
+		const content = config?.content || {} as Partial<IYasppContentConfig>;
 		return {
-			content: {
-				root: content.root || "",
-				index: content.index || ""
-			}
+			root: content.root || "",
+			index: content.index || ""
 		};
 	}
 

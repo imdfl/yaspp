@@ -61,7 +61,7 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
  * Returns an error message, empty if no error
  */
 async function run(clean: boolean): Promise<string> {
-	const { error, result } = await loadYasppAppConfig({ type: "local", validate: false });
+	const { error, result } = await loadYasppAppConfig();
 	if (error) {
 		return error;
 	}

@@ -3,7 +3,7 @@ import fsPath from "path";
 import { spawn } from "child_process";
 import { parse as parseJSON } from "json5";
 
-import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig, IYasppStyleConfig, IYasppAssetsConfig } from "../../src/types/app";
+import { type IYasppContentConfig, type IYasppConfig, type IYasppLocaleConfig, type IYasppStyleConfig, type IYasppAssetsConfig, IYasppAppConfig } from "../../src/types/app";
 import { fileUtils } from '../../src/lib/fileUtils';
 
 const ROOT_PATH = fsPath.resolve(__dirname, "../..");
@@ -58,7 +58,6 @@ export interface IYasppUtils {
 
 export interface IYasppLoadOptions {
 	readonly validate: boolean;
-	readonly type: "local" | "site";
 }
 
 function errorResult<TResult = IYasppConfig>(err: string): IResponse<TResult> {
@@ -327,25 +326,37 @@ class YasppUtils implements IYasppUtils {
 
 export const yasppUtils = new YasppUtils;
 
-export async function loadYasppConfig(projectRoot: string, { validate, type }: IYasppLoadOptions): Promise<IResponse<IYasppConfig>> {
+export async function loadYasppConfig(projectRoot: string): Promise<IResponse<IYasppConfig>> {
 	try {
-		const fname = type === "site" ? "yaspp.config.json" : "yaspp.json";
+		const fname = "yaspp.config.json";
 		const configPath = fsPath.resolve(projectRoot, fname);
-		if (!await fileUtils.isFile(configPath)) {
-			return { error: `Can't find yaspp configuration file (${configPath})`, result: null };
+		const userConfig = await fileUtils.readJSON<IYasppConfig>(configPath);
+		if (!userConfig) {
+			return errorResult(`Missing or invalid yaspp configuration file (${configPath})`);
 		}
-		const data = await fs.readFile(configPath, "utf-8");
-		const userConfig = parseJSON<Partial<IYasppConfig>>(data);
-		return validate ? yasppUtils.validateConfig(projectRoot, userConfig) : { result: userConfig as IYasppConfig };
+		return yasppUtils.validateConfig(projectRoot, userConfig);
 	}
 	catch (err) {
-		return {
-			result: null,
-			error: `Error loading yaspp ${err}`
-		}
+		return errorResult(`Error loading yaspp ${err}`);
 	}
 }
 
-export async function loadYasppAppConfig(options: IYasppLoadOptions): Promise<IResponse<IYasppConfig>> {
-	return await loadYasppConfig(ROOT_PATH, options);
+export async function loadYasppAppConfig(): Promise<IResponse<IYasppAppConfig>> {
+	try {
+		const projectRoot = ROOT_PATH;
+		const fname = "yaspp.json";
+		const configPath = fsPath.resolve(projectRoot, fname);
+		const config = await fileUtils.readJSON<IYasppAppConfig>(configPath);
+		if (!config?.root) {
+			return errorResult(`Missing or invalid yaspp configuration file (${configPath})`);
+		}
+		const siteRoot = fsPath.resolve(ROOT_PATH, config.root);
+		if (!await fileUtils.isFolder(siteRoot)) {
+			return errorResult(`Can't find site folder ${config.root} (${siteRoot})`);
+		}
+		return successResult(config);
+	}
+	catch (err) {
+		return errorResult(`Error loading yaspp ${err}`);
+	}
 }
