@@ -49,6 +49,15 @@
 			}
 		},
 		{
+			"name": "Init Current",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "npx ts-node scripts/build/init-yaspp --project ..",
+			"env": {
+				"NODE_OPTIONS": "--inspect"
+			}
+		},
+		{
 			"name": "Init Mel",
 			"type": "node-terminal",
 			"request": "launch",
