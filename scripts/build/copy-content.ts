@@ -94,7 +94,7 @@ async function run(clean: boolean): Promise<string> {
 		}
 
 		async function copyNav(): Promise<string> {
-			const srcPath = fsPath.resolve(projectRoot, "site", YASPP_NAV_CONFIG),
+			const srcPath = fsPath.resolve(projectRoot, YASPP_NAV_CONFIG),
 				trgPath = fsPath.resolve(publicPath, "nav.json");
 			try {
 				await fs.copyFile(srcPath, trgPath);

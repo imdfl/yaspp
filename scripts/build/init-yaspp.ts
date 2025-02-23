@@ -1,3 +1,7 @@
+/************************************************************/
+/** init-yaspp creates the relevant yaspp files, based on   */
+/** The configuration stored in the provided project folder */
+/************************************************************/
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { loadYasppConfig, yasppUtils } from "./utils";
