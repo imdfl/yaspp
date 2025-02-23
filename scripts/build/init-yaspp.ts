@@ -1,3 +1,7 @@
+/************************************************************/
+/** init-yaspp creates the relevant yaspp files, based on   */
+/** The configuration stored in the provided project folder */
+/************************************************************/
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { loadYasppConfig, yasppUtils } from "./utils";
@@ -136,7 +140,7 @@ async function clean(): Promise<string> {
  */
 async function run(projectRoot: string): Promise<string> {
 	try {
-		const { error, result } = await loadYasppConfig(projectRoot, { type: "site", validate: true });
+		const { error, result } = await loadYasppConfig(projectRoot);
 		if (error) {
 			return error;
 		}

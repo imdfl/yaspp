@@ -61,7 +61,7 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
  * Returns an error message, empty if no error
  */
 async function run(clean: boolean): Promise<string> {
-	const { error, result } = await loadYasppAppConfig({ type: "local", validate: false });
+	const { error, result } = await loadYasppAppConfig();
 	if (error) {
 		return error;
 	}
@@ -94,7 +94,7 @@ async function run(clean: boolean): Promise<string> {
 		}
 
 		async function copyNav(): Promise<string> {
-			const srcPath = fsPath.resolve(projectRoot, "site", YASPP_NAV_CONFIG),
+			const srcPath = fsPath.resolve(projectRoot, YASPP_NAV_CONFIG),
 				trgPath = fsPath.resolve(publicPath, "nav.json");
 			try {
 				await fs.copyFile(srcPath, trgPath);
