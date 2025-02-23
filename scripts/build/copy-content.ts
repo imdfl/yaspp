@@ -1,8 +1,8 @@
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { yasppUtils, loadYasppAppConfig } from "./utils";
-import { IYasppStyleConfig } from "@src/types/app";
-import { fileUtils } from "@lib/fileUtils";
+import { IYasppStyleConfig } from "../../src/types/app";
+import { fileUtils } from "../../src/lib/fileUtils";
 
 const rootPath = fsPath.resolve(__dirname, "../..");
 
@@ -34,7 +34,7 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
 					return "";
 				}
 				await fs.copyFile(indexPath, sitePath);
-				console.log(`copied ${style.index} to public/styles/site.scss`);
+				console.log(`copied ${style.index} to ${yasppUtils.trimPath(sitePath)}`);
 				return "";
 			}
 		}
@@ -101,7 +101,7 @@ async function run(clean: boolean): Promise<string> {
 				return "";
 			}
 			catch(err) {
-				return `Error copying ${srcPath}`
+				return `Error copying ${srcPath}: ${err}`
 			}
 		}
 		const err = await copyNav()
