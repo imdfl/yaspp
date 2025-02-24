@@ -60,13 +60,13 @@ export interface IYasppLoadOptions {
 	readonly validate: boolean;
 }
 
-function errorResult<TResult = IYasppConfig>(err: string): IResponse<TResult> {
+export function errorResult<TResult = IYasppConfig>(err: string): IResponse<TResult> {
 	return {
 		result: null,
 		error: err
 	}
 }
-function successResult<TResult = IYasppConfig>(result: TResult): IResponse<TResult> {
+export function successResult<TResult = IYasppConfig>(result: TResult): IResponse<TResult> {
 	return {
 		result
 	}
@@ -300,6 +300,20 @@ class YasppUtils implements IYasppUtils {
 					assets: validAsssets.result!
 				}
 			}
+	}
+
+	public async loadJSONTemplate<TRet>(name: string): Promise<IResponse<TRet>> {
+		const loadRes = await this.loadTemplate(name);
+		if (loadRes.error) {
+			return errorResult(loadRes.error);
+		}
+		try {
+			const ret = parseJSON<TRet>(loadRes.result!);
+			return ret ? successResult(ret) : errorResult(`Failed to load template ${name}`)
+		}
+		catch (err) {
+			return errorResult(`Failed to load template ${name}: ${err}`)
+		}
 	}
 
 	public async loadTemplate(name: string): Promise<IResponse<string>> {
