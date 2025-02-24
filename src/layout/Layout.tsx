@@ -85,8 +85,8 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 		() =>
 			locales.map((id) => ({
 				id: id,
-				label: t(`locale:${id}:symbol`),
-				title: t(`locale:${id}:label`),
+				label: t(`locale:${id}:symbol`, null, { default: id[0] }),
+				title: t(`locale:${id}:label`, null, { default: id }),
 			})),
 		[locales, t]
 	);

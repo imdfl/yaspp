@@ -188,7 +188,7 @@ class YasppApp implements IYasppApp {
 		async function load(nsMap: Record<string, string>): Promise<ILocaleResult[]> {
 			const sys = Object.entries(nsMap).map(async ([ns, path]): Promise<ILocaleResult> => {
 				path = path.replace(/%LANG%/g, lang);
-				const data = await fileUtils.readJSON<LocaleNamespace>(path);
+				const data = await fileUtils.readJSON<LocaleNamespace>(path, { canFail: true });
 				return {
 					ns,
 					data
@@ -201,7 +201,9 @@ class YasppApp implements IYasppApp {
 			const dictionaries: LocaleLanguage = new Map();
 			const loaded = await load(localeConfig.dictionaries.system || {});
 			loaded.forEach(rec => {
-				dictionaries.set(rec.ns, rec.data);
+				if (rec.data) {
+					dictionaries.set(rec.ns, rec.data);
+				}
 			});
 			const ploaded = await load(localeConfig.dictionaries.project || {});
 			ploaded.forEach(rec => {

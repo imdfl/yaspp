@@ -1,6 +1,14 @@
 {
-	"en:symbol": "EN",
+	"en:symbol": "En",
 	"en:label": "English",
 	"he:symbol": "ע",
-	"he:label": "עברית"
+	"he:label": "עברית",
+	"fr:symbol": "Fr",
+	"fr:label": "Français",
+	"ar:label": "عربي",
+	"ar:symbol": "عـ",
+	"it:label": "Lingua italiana",
+	"it:symbol": "It",
+	"de:label": "Deutsch",
+	"de:symbol": "De"
 }
