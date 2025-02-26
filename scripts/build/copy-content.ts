@@ -94,7 +94,11 @@ async function run(clean: boolean): Promise<string> {
 		}
 
 		async function copyNav(): Promise<string> {
-			const srcPath = fsPath.resolve(projectRoot, YASPP_NAV_CONFIG),
+			const navPath = config.nav?.index;
+			if(!navPath) {
+				return "missing nav:index in configuration";
+			};
+			const srcPath = fsPath.resolve(projectRoot, navPath),
 				trgPath = fsPath.resolve(publicPath, "nav.json");
 			try {
 				await fs.copyFile(srcPath, trgPath);

@@ -180,7 +180,7 @@ class YasppApp implements IYasppApp {
 		const content = config?.content || {} as Partial<IYasppContentConfig>;
 		return {
 			root: content.root || "",
-			index: content.index || ""
+			index: content.index || "",
 		};
 	}
 

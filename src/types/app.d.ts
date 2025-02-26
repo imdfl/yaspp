@@ -54,6 +54,14 @@ export interface IYasppContentConfig extends IYasppBaseConfig{
 	readonly index: string;
 }
 
+export interface IYasppAppNavConfig {
+	/**
+	 * Path to navigation configuration file
+	 */
+	readonly index: string;
+
+}
+
 export interface IYasppStyleConfig extends IYasppBaseConfig {
 	/**
 	 * Optional Path to main css file, relative to the style root , defaults to site.scss (generated if no css is provided by the user)
@@ -71,6 +79,7 @@ export interface IYasppConfig {
 	 * Content configuration
 	 */
 	readonly content: IYasppContentConfig;
+	readonly nav: IYasppAppNavConfig;
 	/**
 	 * Locales configuration
 	 */
