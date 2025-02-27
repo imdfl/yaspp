@@ -13,7 +13,7 @@ import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig,
 import { fileUtils } from '../../src/lib/fileUtils';
 
 const ROOT_PATH = fsPath.resolve(__dirname, "../..");
-const WIN_DEVICE_RE = /^([A-Za-z]):[\\\/]+/; // eslint-disable-line no-useless-escape
+const WIN_DEVICE_RE = /^([A-Z]):[\\\/]+/i; // eslint-disable-line no-useless-escape
 
 export interface IResponse<T> {
 	result: T | null;
