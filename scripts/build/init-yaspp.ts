@@ -2,6 +2,9 @@
 /** init-yaspp creates the relevant yaspp files, based on   */
 /** The configuration stored in the provided project folder */
 /************************************************************/
+
+/* eslint-disable no-inner-declarations */
+
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { errorResult, IResponse, loadYasppConfig, successResult, yasppUtils } from "./utils";
@@ -13,7 +16,6 @@ import { I18NConfig } from "../../src/types/locale";
  * The root of the  yaspp module
  */
 const ROOT_FOLDER = fsPath.resolve(__dirname, "../..");
-const I18N_TMPL = "i18n.tmpl.json";
 const GEN_HEADER = `// ****************************************************************"
 // This is a GENERATED file, editing it is likely to break the build
 // ****************************************************************\n`;
@@ -76,7 +78,7 @@ async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Pr
 	try {
 		const localeConfig = configResult.result!
 		function ts(s: string) { return `"${s}"`; }
-		const sysNS = Object.entries(localeConfig!.pages!).reduce((ns: Set<string>, [key, values]) => {
+		const sysNS = Object.entries(localeConfig.pages).reduce((ns: Set<string>, [, values]) => {
 			values.forEach(s => ns.add(s));
 			return ns
 		}, new Set<string>());
@@ -84,7 +86,7 @@ async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Pr
 		const sysLocalePath = fsPath.resolve(__dirname,  `../../locales`);
 		const nsResult = await loadAllNamespaces({
 			folder: sysLocalePath,
-			locales: config.langs!,
+			locales: config.langs,
 			namespaces: nsArray
 		});
 		if (nsResult.error) {
@@ -106,7 +108,7 @@ async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Pr
 			values.forEach(s => sys.add(s));
 			pages[key] = Array.from(sys.keys());
 			return pages;
-		}, localeConfig!.pages);
+		}, localeConfig.pages);
 		values["%PAGES%"] = JSON.stringify(mergedPages, null, 4);
 		if (config.root) {
 			const userLocalePath = fsPath.resolve(projectRoot, config.root),
@@ -236,7 +238,7 @@ if (!rootArg) {
 	exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
 }
 else {
-	const projectRoot = fsPath.resolve(process.cwd(), rootArg!);
+	const projectRoot = fsPath.resolve(process.cwd(), rootArg);
 	run(projectRoot)
 		.then(err => {
 			exitWith(err);

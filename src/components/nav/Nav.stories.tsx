@@ -21,12 +21,13 @@ type Story = StoryObj<typeof meta>;
 const sectionWithItems = [
 	{
 		id: 's1',
+		title: 'Section 1',
 		locale: {
-			title: 'Section 1',
 		},
 		items: [
 			{
 				id: 'item1',
+				title: 'item 1',
 				type: 'article',
 				url: '#',
 				locale: {
@@ -36,6 +37,7 @@ const sectionWithItems = [
 			},
 			{
 				id: 'item2',
+				title: 'item 2',
 				type: 'article',
 				url: '#',
 				locale: {
@@ -45,6 +47,7 @@ const sectionWithItems = [
 			},
 			{
 				id: 'item3',
+				title: 'item 3',
 				type: 'article',
 				url: '#',
 				locale: {
@@ -57,11 +60,12 @@ const sectionWithItems = [
 	{
 		id: 's2',
 		locale: {
-			title: 'Section 2',
 		},
+		title: 'Section 2',
 		items: [
 			{
 				id: 'item1',
+				title: 'item 1',
 				type: 'article',
 				url: '#',
 				locale: {
@@ -71,6 +75,7 @@ const sectionWithItems = [
 			},
 			{
 				id: 'item2',
+				title: 'item 2',
 				type: 'article',
 				url: '#',
 				locale: {
@@ -80,6 +85,7 @@ const sectionWithItems = [
 			},
 			{
 				id: 'item3',
+				title: 'item 3',
 				type: 'article',
 				url: '#',
 				locale: {

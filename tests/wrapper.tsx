@@ -26,7 +26,7 @@ const Providers = ({ children: Component, ...props }) => (
 			storageKey="ml-theme"
 			attribute="data-ml-theme"
 		>
-			<PageProvider documentPath={props.pageProps.documentPath}>
+			<PageProvider documentPath={props.pageProps.documentPath} nav={props.pageProps.nav}>
 				<Component {...props} />
 			</PageProvider>
 		</ThemeProvider>

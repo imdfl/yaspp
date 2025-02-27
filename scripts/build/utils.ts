@@ -1,9 +1,15 @@
+/* eslint-disable no-inner-declarations */
+
 import { promises as fs } from "fs";
 import fsPath from "path";
 import { spawn } from "child_process";
 import { parse as parseJSON } from "json5";
 
-import { type IYasppContentConfig, type IYasppConfig, type IYasppLocaleConfig, type IYasppStyleConfig, type IYasppAssetsConfig, IYasppAppConfig } from "../../src/types/app";
+import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig, 
+	IYasppStyleConfig, IYasppAssetsConfig, IYasppAppConfig,
+	IYasppNavConfig,
+	IYasppNavData
+} from "../../src/types/app";
 import { fileUtils } from '../../src/lib/fileUtils';
 
 const ROOT_PATH = fsPath.resolve(__dirname, "../..");
@@ -121,6 +127,34 @@ If you have no style configuration, remove the style block from the configuratio
 	})
 }
 
+async function validateNav(projectRoot: string, config?: IYasppNavConfig): Promise<IResponse<IYasppNavConfig | undefined>> {
+	if (!config?.index) {
+		return errorResult(`Missing nav/index in configuration`);
+	}
+	const navPath = fsPath.resolve(projectRoot, config.index);
+	if (!await fileUtils.isFile(navPath)) {
+		return errorResult(`Navigation configuration ${config.index} not found at ${navPath}`);
+	}
+	const navConfig = await fileUtils.readJSON<IYasppNavData>(navPath, { canFail: true });
+	if (!navConfig) {
+		return errorResult(`Invalid configuration file ${config.index} (${navPath})`);
+	}
+	function isValid(key: keyof IYasppNavData) {
+		const data = navConfig![key];
+		return Boolean(data && typeof data === "object" && !Array.isArray(data)) 
+	}
+	for (const key of ["groups", "sections", "items"] as (keyof IYasppNavData)[]) {
+		if (!isValid(key)) {
+			return errorResult(`Invalid navigation entry ${key} in navigation config file ${config.index}`);
+		}
+	}
+	return successResult({
+		index: config.index
+	});
+	
+	
+}
+
 async function validateAssets(projectRoot: string, assets?: Partial<IYasppAssetsConfig>): Promise<IResponse<IYasppAssetsConfig | undefined>> {
 	if (!assets) {
 		return successResult(undefined);
@@ -199,7 +233,7 @@ class YasppUtils implements IYasppUtils {
 				cwd
 			})
 
-			proc.on("error", err  => {
+			proc.on("error", ()  => {
 				resolve(-1);
 			})
 
@@ -217,8 +251,9 @@ class YasppUtils implements IYasppUtils {
 	* @param toPath 
 	*/
 	public diffPaths(fromPath: string, toPath: string): string {
-		const fromParts = fromPath.split(/[\/\\]+/),
-			toParts = toPath.split(/[\/\\]+/);
+		const SEP_RE = /[/\\]+/;
+		const fromParts = fromPath.split(SEP_RE),
+			toParts = toPath.split(SEP_RE);
 		let rest: string = "";
 		const retParts = [] as string[];
 		for (let ind = 0, len = fromParts.length, toLen = toParts.length; ind < len; ++ind) {
@@ -236,13 +271,14 @@ class YasppUtils implements IYasppUtils {
 		else if (toParts.length > fromParts.length) {
 			retParts.push(...toParts.slice(fromParts.length));
 		}
-		return retParts.join('/')
+		const relPath = retParts.join('/');
+		return relPath.length < toPath.length ? relPath : toPath;
 
 	}
 
 
 	public trimPath(path: string): string {
-		const parts = path.split(/[\/\\]+/);
+		const parts = path.split(/[/\\]+/);
 		return parts.slice(Math.max(0, parts.length - 3)).join('/');
 	}
 
@@ -252,10 +288,10 @@ class YasppUtils implements IYasppUtils {
 	 * @param srcPath 
 	 * @param targetPath 
 	 * @param clean 
-	 * @returns 
+	 * @returns Promise<string> with error message
 	 */
-	public copyFolderContent(srcPath: string, targetPath: string, clean: boolean): Promise<string> {
-		return new Promise<string>(async resolve => {
+	public async copyFolderContent(srcPath: string, targetPath: string, clean: boolean): Promise<string> {
+		async function copyIt(resolve: (value: string | PromiseLike<string>) => unknown): Promise<unknown> {
 			if (!await fileUtils.isFolder(srcPath)) {
 				return resolve(`Content Folder ${srcPath} not found`);
 			}
@@ -273,21 +309,27 @@ class YasppUtils implements IYasppUtils {
 				const srcList = await fs.readdir(srcPath);
 				const trgList = await fs.readdir(targetPath);
 				if (srcList.length === trgList.length) {
-					return "";
+					return resolve("");
 				}
 			}
 			const cpargs = ["--update", "-r", '*', targetPath]
 			const cpCode = await yasppUtils.runProcess("cp", cpargs, srcPath);
 			console.log(`Copied ${yasppUtils.trimPath(srcPath)} to ${yasppUtils.trimPath(targetPath)}`);
 			resolve(cpCode === 0 ? "" : `Error copying content, exit code ${cpCode}`);
-		});
+		}
+
+		return new Promise<string>(resolve => {
+			copyIt(resolve)
+				.catch(err => resolve(String(err)))
+		})
 	}
 
 	public async validateConfig(projectRoot: string, config?: Partial<IYasppConfig>): Promise<IResponse<IYasppConfig>> {
 		const validContent = await validateContent(projectRoot, config?.content),
 			validLocale = await validateLocale(projectRoot, config?.locale),
 			validStyle = await validateStyle(projectRoot, config?.style),
-			validAsssets = await validateAssets(projectRoot, config?.assets);
+			validAsssets = await validateAssets(projectRoot, config?.assets),
+			validNav = await validateNav(projectRoot, config?.nav)
 
 		const errors = [validContent, validLocale, validStyle, validAsssets].filter(r => r.error).map(r => r.error!);
 		return errors.length ?
@@ -297,7 +339,9 @@ class YasppUtils implements IYasppUtils {
 					content: validContent.result!,
 					locale: validLocale.result!,
 					style: validStyle.result!,
-					assets: validAsssets.result!
+					assets: validAsssets.result!,
+					nav: validNav.result!
+
 				}
 			}
 	}

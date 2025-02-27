@@ -1,3 +1,5 @@
+/* eslint-disable no-inner-declarations */
+
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { yasppUtils, loadYasppAppConfig } from "./utils";
@@ -5,8 +7,6 @@ import { IYasppStyleConfig } from "../../src/types/app";
 import { fileUtils } from "../../src/lib/fileUtils";
 
 const rootPath = fsPath.resolve(__dirname, "../..");
-
-const YASPP_NAV_CONFIG = "yaspp.nav.json";
 
 async function copyStyles(projectRoot: string, publicRoot: string, style: Partial<IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
 	const targetPath = fsPath.resolve(publicRoot, "styles"),

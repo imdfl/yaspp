@@ -20,7 +20,7 @@ type LinkProps = {
 const Link = ({
 	label,
 	title,
-	href,
+	href = "",
 	style = {},
 	target,
 	asChild,

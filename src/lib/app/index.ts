@@ -2,7 +2,7 @@ import getNextConfig from 'next/config';
 import * as fsPath from 'path';
 import { fileUtils } from '../fileUtils';
 import i18nconfig from "@root/i18n";
-import type { IYasppApp, IYasppConfig, IYasppContentConfig, IYasppNavConfig } from 'types/app';
+import type { IYasppApp, IYasppConfig, IYasppContentConfig, IYasppNavData } from 'types/app';
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from 'types';
 import type { INavItemData, INavSection, NavGroups } from 'types/nav';
 
@@ -75,7 +75,7 @@ class YasppApp implements IYasppApp {
 
 	private async _loadNavItems(contentRoot: string): Promise<string> {
 		const navPath = fsPath.resolve(contentRoot, "nav.json");
-		const navData = await fileUtils.readJSON<IYasppNavConfig>(navPath);
+		const navData = await fileUtils.readJSON<IYasppNavData>(navPath);
 		if (!navData) {
 			return `navigation items data not found in ${navPath}`;
 		}

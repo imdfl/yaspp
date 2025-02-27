@@ -54,7 +54,7 @@ export interface IYasppContentConfig extends IYasppBaseConfig{
 	readonly index: string;
 }
 
-export interface IYasppAppNavConfig {
+export interface IYasppNavConfig {
 	/**
 	 * Path to navigation configuration file
 	 */
@@ -79,7 +79,7 @@ export interface IYasppConfig {
 	 * Content configuration
 	 */
 	readonly content: IYasppContentConfig;
-	readonly nav: IYasppAppNavConfig;
+	readonly nav: IYasppNavConfig;
 	/**
 	 * Locales configuration
 	 */
@@ -89,7 +89,7 @@ export interface IYasppConfig {
 }
 
 
-export interface IYasppNavConfig {
+export interface IYasppNavData {
 	readonly items: Record<string, Omit<INavItemData, "id">>;
 	readonly sections: Record<string, Omit<INavSectionData, "id">>;
 	readonly groups: Record<string, INavGroupData>;
