@@ -13,6 +13,7 @@ import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig,
 import { fileUtils } from '../../src/lib/fileUtils';
 
 const ROOT_PATH = fsPath.resolve(__dirname, "../..");
+const WIN_DEVICE_RE = /^([A-Za-z]):[\\\/]+/; // eslint-disable-line no-useless-escape
 
 export interface IResponse<T> {
 	result: T | null;
@@ -60,6 +61,8 @@ export interface IYasppUtils {
 	 * @param name 
 	 */
 	loadTemplate(name: string): Promise<IResponse<string>>;
+
+	normalizePath(path: string): string;
 }
 
 export interface IYasppLoadOptions {
@@ -378,6 +381,19 @@ class YasppUtils implements IYasppUtils {
 		catch (err) {
 			return errorResult(`error while loading template ${name}: ${err}`);
 		}
+	}
+
+	public normalizePath(path: string): string {
+		if (!path) {
+			return "";
+		}
+		const match = WIN_DEVICE_RE.exec( path );
+		let ret = "";
+		if (match) {
+			const drive = `/${match[1].toLowerCase()}/`;
+			ret = path.replace(WIN_DEVICE_RE, drive );
+		}
+		return ret.replace(/\\/g, '/' );
 	}
 }
 

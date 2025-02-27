@@ -58,6 +58,16 @@
 			}
 		},
 		{
+			"name": "Init c-temp-mels-loop",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "npx ts-node scripts/build/init-yaspp --project C:\\\\temp\\\\mels-loop",
+			"env": {
+				"NODE_OPTIONS": "--inspect"
+			}
+		},
+		
+		{
 			"name": "Init Mel",
 			"type": "node-terminal",
 			"request": "launch",
