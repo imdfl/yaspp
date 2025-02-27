@@ -10,6 +10,8 @@ node_modules
 
 /temp
 
+**/*.ignore.*
+
 # artifacts
 **/*.js.map
 
@@ -32,10 +34,7 @@ i18n.js
 /build
 
 # copied content
-/public/content
-/public/locales
-/public/styles
-/public/assets/site
+/public/yaspp
 
 # misc
 .DS_Store

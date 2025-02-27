@@ -26,14 +26,14 @@ import {
 import { getIcon } from 'components/icons';
 import CustomHead from './customHead';
 import { Analytics } from './analytics';
-import { parseMenuItems } from './helpers';
 import { LocaleId } from 'types';
 import { useRouter } from 'next/router';
-import navData, { NavSectionId } from './data/nav';
+import { NavSectionId } from './data/nav';
 import classNames from 'classnames';
 import styles from './Layout.module.scss';
 import type { LocaleOptionProps } from 'layout/locale-select/LocaleSelect';
 import { LocaleContext } from '../contexts/localeContext';
+import useNavItems from '../hooks/useNavItems';
 
 type RootLayoutProps = {
 	className?: string;
@@ -47,8 +47,6 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 
 	useIconAnimator(router);
 
-	const { menuItemsData, menuSectionData } = navData;
-
 	const pathname = usePathname();
 	const { theme, setTheme } = useTheme();
 	const { t, locale: lang, locales, textDirection } = useContext(LocaleContext);
@@ -61,6 +59,10 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	const { open: drawerOpen, toggle: toggleDrawer } = useDrawer(isMobile);
 
 	const localeContext = useContext(LocaleContext);
+
+	const { sections: footerSections } = useNavItems(NavSectionId.FOOTER);
+	const { sections: sidebarSections } = useNavItems(NavSectionId.SIDEBAR);
+	const { sections: topbarSections } = useNavItems(NavSectionId.TOPBAR);
 
 	const setLocale = useCallback(
 		async (id: LocaleId) => {
@@ -79,45 +81,14 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 		});
 	}, [oppositeTheme, t]);
 
-	const navItems = useCallback(
-		(id: NavSectionId) => parseMenuItems(menuSectionData[id], menuItemsData, t),
-		[menuItemsData, menuSectionData, t]
-	);
-
 	const localeItems: LocaleOptionProps[] = useMemo(
 		() =>
 			locales.map((id) => ({
 				id: id,
-				label: t(`locale:${id}:symbol`),
-				title: t(`locale:${id}:label`),
+				label: t(`locale:${id}:symbol`, null, { default: id[0] }),
+				title: t(`locale:${id}:label`, null, { default: id }),
 			})),
 		[locales, t]
-	);
-
-	const footerLinks = useMemo(
-		() =>
-			navItems(NavSectionId.FOOTER).map((section) => (
-				<Container className={styles.column} key={`container-${section.id}`}>
-					<List className={styles.list} label={section.locale.title}>
-						{section.items.map((item) => (
-							<ListItem
-								key={`footer-links-item-${item.id}`}
-								className={styles.item}
-							>
-								<Link
-									href={item.url}
-									target={item.target}
-									className={styles.link}
-									asChild={true}
-								>
-									{item.locale.title}
-								</Link>
-							</ListItem>
-						))}
-					</List>
-				</Container>
-			)),
-		[navItems]
 	);
 
 	const siteTitle = t('common:site:title');
@@ -161,7 +132,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 						/>
 					</div>
 					<MenuDrawer
-						items={navItems(NavSectionId.SIDEBAR)}
+						items={sidebarSections}
 						onClose={toggleDrawer}
 						className={styles.menu}
 					/>
@@ -180,7 +151,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 			themeLabel,
 			theme,
 			setTheme,
-			navItems,
+			sidebarSections,
 			setLocale,
 		]
 	);
@@ -232,7 +203,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 							<Container alignItemsCenter>
 								<Container className={styles.panel}>
 									<MenuBar
-										items={navItems(NavSectionId.TOPBAR)}
+										items={topbarSections}
 										textDirection={textDirection}
 									/>
 									<LocaleSelect
@@ -265,7 +236,27 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 									<Text>{siteSubtitle}</Text>
 									<Text>{t('common:site:shortSiteDescription')}</Text>
 								</div>
-								{footerLinks}
+								{footerSections.map((section) => (
+									<Container className={styles.column} key={`container-${section.id}`}>
+										<List className={styles.list} label={section.title}>
+											{section.items.map((item) => (
+												<ListItem
+													key={`footer-links-item-${item.id}`}
+													className={styles.item}
+												>
+													<Link
+														href={item.url}
+														target={item.target}
+														className={styles.link}
+														asChild={true}
+													>
+														{item.title}
+													</Link>
+												</ListItem>
+											))}
+										</List>
+									</Container>
+								))}
 							</div>
 						</div>
 					</footer>

@@ -10,6 +10,7 @@ import {
 } from './nodeTypes';
 import { MLParseModes } from 'types/parser/modes';
 import type { IMLParsedNode, ParsedNode } from 'types/models';
+import { localizeString } from '../locale';
 
 
 export interface IMarkdownUtils {
@@ -44,8 +45,6 @@ export interface IMarkdownUtils {
 	sanitizeHTML(node: ParsedNode): ParsedNode;
 	createHtmlMDParser(): mdParser.Parser;
 }
-
-const TRANSLATED_STRING_REGEXP = /\[\[(.+?)\]\]/g;
 
 /**
  * Parses an HTML attribute string
@@ -181,16 +180,9 @@ class MarkdownUtils implements IMarkdownUtils {
 		return node;
 	}
 	public translateString(text: string, context: MLParseContext): string {
-		if (!text) {
-			return '';
-		}
-		return text.replace(TRANSLATED_STRING_REGEXP, function (_, key: string) {
-			return context.translate(key);
-		});
+		return localizeString(text, s => context.translate(s));
 	}
 	
-
-
 	public findArrayPart(node: ParsedNode): Array<ParsedNode> | null {
 		if (Array.isArray(node.items)) {
 			return node.items;

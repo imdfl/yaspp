@@ -47,7 +47,7 @@ export interface IFileUtils {
      * Simple wrapper to read json/jsonc
      * @param path
      */
-    readJSON<T = Record<string, string>>(path: string): Promise<T | null>;
+    readJSON<T = Record<string, string>>(path: string, options?: { canFail?: boolean }): Promise<T | null>;
 
     /**
      * Remove either the folder or all its content, based on options.removeRoot
@@ -59,13 +59,15 @@ export interface IFileUtils {
 }
 
 class FileUtils implements IFileUtils {
-    public async readJSON<T = Record<string, string>>(path: string): Promise<T | null> {
+    public async readJSON<T = Record<string, string>>(path: string, options?: { canFail?: boolean }): Promise<T | null> {
         try {
             const str = await fs.readFile(path, "utf-8");
             return parseJSON<T>(str);
         }
         catch (err) {
-            console.error(`Error reading json data from ${path}: ${err}`);
+            if (!options?.canFail) {
+                console.error(`Error reading json data from ${path}: ${err}`);
+            }
             return null;
         }
     }

@@ -34,7 +34,7 @@
 			"name": "Copy Content",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/copy-content",
+			"command": "npx ts-node scripts/build/copy-content --clean",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}
@@ -49,10 +49,29 @@
 			}
 		},
 		{
+			"name": "Init Current",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "npx ts-node scripts/build/init-yaspp --project ../site",
+			"env": {
+				"NODE_OPTIONS": "--inspect"
+			}
+		},
+		{
+			"name": "Init c-temp-mels-loop",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "npx ts-node scripts/build/init-yaspp --project C:\\\\temp\\\\mels-loop",
+			"env": {
+				"NODE_OPTIONS": "--inspect"
+			}
+		},
+		
+		{
 			"name": "Init Mel",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/init-yaspp --project ../mels-loop-content",
+			"command": "npx ts-node scripts/build/init-yaspp --project /c/temp/mels-loop",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}

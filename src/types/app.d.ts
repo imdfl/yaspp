@@ -1,4 +1,5 @@
-import { LocaleDictionary, LocaleId } from "./locale";
+import type { LocaleDictionary, LocaleId } from "./locale";
+import type { INavGroupData, INavItemData, INavSectionData, NavGroups } from "./nav";
 
 /**
  * App object that contains data about the current build
@@ -26,6 +27,8 @@ export interface IYasppApp {
 	 * Default locale to start with and use as fallback in translations
 	 */
 	readonly defaultLocale: LocaleId;
+
+	readonly nav: NavGroups;
 }
 
 export type LocaleLoader = (lang: string, ns?: string) => Promise<Record<string, string>>;
@@ -51,6 +54,14 @@ export interface IYasppContentConfig extends IYasppBaseConfig{
 	readonly index: string;
 }
 
+export interface IYasppNavConfig {
+	/**
+	 * Path to navigation configuration file
+	 */
+	readonly index: string;
+
+}
+
 export interface IYasppStyleConfig extends IYasppBaseConfig {
 	/**
 	 * Optional Path to main css file, relative to the style root , defaults to site.scss (generated if no css is provided by the user)
@@ -64,16 +75,29 @@ export type IYasppAssetsConfig = IYasppBaseConfig;
  * Project configuration file
  */
 export interface IYasppConfig {
+	/**
+	 * Content configuration
+	 */
 	readonly content: IYasppContentConfig;
+	readonly nav: IYasppNavConfig;
+	/**
+	 * Locales configuration
+	 */
 	readonly locale: IYasppLocaleConfig;
 	readonly style?: IYasppStyleConfig;
 	readonly assets?: IYasppStyleConfig;
 }
 
-/**
- * The configuration stored in the yaspp root
- */
-export interface IYasppAppConfig extends IYasppConfig {
-	readonly root: string;
+
+export interface IYasppNavData {
+	readonly items: Record<string, Omit<INavItemData, "id">>;
+	readonly sections: Record<string, Omit<INavSectionData, "id">>;
+	readonly groups: Record<string, INavGroupData>;
 }
 
+export interface IYasppAppConfig extends IYasppConfig {
+	/**
+	 * Relative to yaspp root
+	 */
+	readonly root: string;
+}

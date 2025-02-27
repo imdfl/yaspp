@@ -2,8 +2,8 @@
 	"topbar": [
 		{
 			"id": "articles",
+			"title": "nav:sections:articles:label",
 			"locale": {
-				"title": "nav:sections:articles:label"
 			},
 			"items": [
 				"preface",
@@ -14,8 +14,8 @@
 		},
 		{
 			"id": "contact",
+			"title": "nav:sections:contact:label",
 			"locale": {
-				"title": "nav:sections:contact:label"
 			},
 			"items": ["contact", "twitter", "github"]
 		}
@@ -23,8 +23,8 @@
 	"sidebar": [
 		{
 			"id": "articles",
+			"title": "nav:sections:articles:label",
 			"locale": {
-				"title": "nav:sections:articles:label"
 			},
 			"items": [
 				"preface",
@@ -35,15 +35,15 @@
 		},
 		{
 			"id": "about",
+			"title": "nav:sections:about:label",
 			"locale": {
-				"title": "nav:sections:about:label"
 			},
 			"items": ["about-mobile", "blog"]
 		},
 		{
 			"id": "contact",
+			"title": "nav:sections:contact:label",
 			"locale": {
-				"title": "nav:sections:contact:label"
 			},
 			"items": ["contact", "twitter", "github"]
 		}
@@ -51,15 +51,15 @@
 	"footer": [
 		{
 			"id": "pages",
+			"title": "common:footer:sections:pages:label",
 			"locale": {
-				"title": "common:footer:sections:pages:label"
 			},
 			"items": ["about", "blog", "contribute"]
 		},
 		{
 			"id": "links",
+			"title": "common:footer:sections:links:label",
 			"locale": {
-				"title": "common:footer:sections:links:label"
 			},
 			"items": ["contact", "twitter", "github"]
 		}

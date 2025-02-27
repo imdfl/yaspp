@@ -1,5 +1,5 @@
-const uns = new Set([%USERNS%]); // replace with an list of quoted namespaces implemented  by the project, e.g. `'"docs", "info"'`
-const sns = new Set([%SYSNS%]); // same for system namespaces
+const uns = new Map([%USERNS%]); // replace with an list tuples: namespace => [array of locales]
+const sns = new Map([%SYSNS%]); // same for system namespaces
 module.exports = {
 	locales: [%LANGS%], // replace with an list of quoted locales used by the project, e.g. '"en", "ar"' (note the surrounding quotes)
 	defaultLocale: "%DEFAULT%", // replace with the value of the default locale, e.g. "en" (note no surrounding quotes)
@@ -7,15 +7,30 @@ module.exports = {
 	pages: 	%PAGES%, // replace with JSON.stringify(pages: Record<string, string[]>), e.g. JSON.stringify({ docs: ["glossary", "authors"]})
 	dictionaries: %DICTIONARIES%, // Replace with e.g. JSON.stringify({ system: { docs: "./locales/%LANG%/docs.json" }, project: { authors: "./public/locales/%LANG%/authors.json" } }, )
 	loadLocaleFrom: async (lang, ns) => {
-		// console.log(`load ns ${ns} for locale ${lang}`)
 		const ret = {};
-		if (sns.has(ns)) {
-			const m = await import(`./locales/${lang}/${ns}.json`);
-			Object.assign(ret, m.default);
+
+        const sarr = sns.get(ns);
+		if (sarr) {
+            if (sarr.includes(lang)) {
+                const m = await import(`./locales/${lang}/${ns}.json`);
+                Object.assign(ret, m.default);
+            }
+            else {
+                const m = await import(`./locales/en/${ns}.json`);
+                Object.assign(ret, m.default);
+            }
 		}
-		if (uns.has(ns)) {
-			const m = await import(`./public/locales/${lang}/${ns}.json`);
-			Object.assign(ret, m.default);
+
+        const uarr = uns.get(ns);
+		if (uarr) {
+            if (uarr.includes((lang))) {
+                const m = await import(`./public/yaspp/locales/${lang}/${ns}.json`);
+                Object.assign(ret, m.default);
+            }
+            else {
+                const m = await import(`./public/yaspp/locales/en/${ns}.json`);
+                Object.assign(ret, m.default);
+            }
 		}
 
 		return ret;

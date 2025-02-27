@@ -33,11 +33,12 @@
 	"private": true,
 	"scripts": {
 		"clean": "rm -rf .next",
+		"refresh-content": "npx ts-node scripts/build/copy-content",
 		"build": "next build",
 		"prebuild": "npx ts-node scripts/build/copy-content --clean",
 		"dev": "next dev",
-		"dev-only": "next dev",
 		"predev": "npx ts-node scripts/build/copy-content",
+		"dev-only": "next dev",
 		"start": "next start",
 		"build:sitemap": "next-sitemap",
 		"health": "yarn format:check && yarn lint && yarn lint:style && yarn test:unit && yarn test:e2e",

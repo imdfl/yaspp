@@ -1,8 +1,8 @@
 {
-	"site:title": "Mel's Loop",
-	"site:subtitle": "A Comprehensive Guide to The Story of Mel",
-	"site:shortSiteDescription": "Mel’s Loop is a guide to the epic hacker folklore tale \"The Story of Mel\". It also aims to collect the stories and sub-stories around the tale, its author, and its main characters, as well as early computing era stories and other related tales.",
-	"site:license": "2021-{{toYear}} (cc-by-sa) Mel's Loop",
+	"site:title": "Yaspp Site",
+	"site:subtitle": "Site Description goes here",
+	"site:shortSiteDescription": "Short blurb about your Yaspp site",
+	"site:license": "2021-{{toYear}} (cc-by-sa) Your name",
 	"footer:sections:pages:label": "Pages",
 	"footer:sections:links:label": "Links",
 	"caption:loading": "Loading...",
@@ -12,6 +12,7 @@
 	"to": "to",
 	"button:backToTarget": "Back {{ sep }} {{ target }}",
 	"button:toggleTheme": "Switch to {{ theme }}",
+	"button:back": "Back",
 	"theme:light:name": "Light Theme",
 	"theme:dark:name": "Dark Theme",
 	"markdown:tags:figure:abbr": "Fig."

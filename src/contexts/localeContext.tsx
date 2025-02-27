@@ -4,44 +4,47 @@ import type {
 	ILocaleContext,
 	ILocaleContextProps,
 } from "./localeContext.d";
-import {
-	localeLabelPrefix,
-} from "./localeContext.d";
+
 import { NextRouter } from "next/router";
 import type { LocaleId, TextDirection } from "../types";
 import { Translate } from "next-translate";
+import { isRTL, LocalizeFunction, localizeString } from "@lib/locale";
 
-const RTL_LANGS = new Set<string>(["he", "ar"]);
 class LocaleContextImpl implements ILocaleContext {
 	private _locale: string;
 	private _locales: string[];
 	// private _translate: (s: string, lang?: LocaleId) => string;
-	private _router: NextRouter;
-	private _translate: Translate
+	private readonly _router: NextRouter;
+	private readonly _t: Translate;
+	private readonly _translate: LocalizeFunction;
 	constructor(props: ILocaleContextProps) {
 		if (!props) {
 			return;
 		}
-		const { router } = props;
-		this._translate = props.translate;
+		const { router, translate } = props;
+		this._t = translate;
+		this._translate = (s, arg) => localizeString(s, translate, arg);
 		this._router = router;
 		this._locale = props.locale;
 		this._locales = router.locales;
-		// this._translate = _translate(locale, Languages);
 	}
 
 	public get textDirection(): TextDirection {
 		// code repeated because this is called a lot
-		return RTL_LANGS.has(this._locale) ? "rtl" : "ltr";
+		return isRTL(this._locale) ? "rtl" : "ltr";
+	}
+
+	public get translate(): LocalizeFunction {
+		return this._translate;
 	}
 
 	public get t(): Translate {
-		return this._translate;
+		return this._t;
 	}
 
 	public getTextDirection(locale?: string): TextDirection {
 		locale = locale || this._locale;
-		return RTL_LANGS.has(locale) ? "rtl" : "ltr";
+		return isRTL(locale) ? "rtl" : "ltr";
 	}
 
 	private get router() {
@@ -60,8 +63,8 @@ class LocaleContextImpl implements ILocaleContext {
 		return this._locales;
 	}
 
-	public getLocaleLabel = (id: string) =>
-		[localeLabelPrefix, id].join("_").toUpperCase();
+	// public getLocaleLabel = (id: string) =>
+	// 	[localeLabelPrefix, id].join("_").toUpperCase();
 
 	// public getLocaleSymbol = (id: string) =>
 	// 	this.translate(this.getLocaleLabel(id));

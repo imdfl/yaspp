@@ -6,17 +6,24 @@ import Button from '../../button/Button';
 import List from '../../list/List';
 import NavItem from '../nav-item/NavItem';
 import styles from './MenuBar.module.scss';
-import type { NavItemDataProps, NavParsedNodes, NavProps } from '../types';
+import type { INavItemData, INavSection } from 'types/nav';
 import classNames from 'classnames';
 import { LocaleContext } from '@contexts/localeContext';
+import type { TextDirection } from 'types/locale';
 
-const renderItems = (items: NavItemDataProps[]) =>
+type NavProps = {
+	items: ReadonlyArray<INavSection>;
+	className?: string;
+	textDirection?: TextDirection;
+};
+
+const renderItems = (items: ReadonlyArray<INavItemData>) =>
 	items.map((item) => (
-		<NavigationMenu.Link asChild key={`list-item-${item.id}`}>
+		<NavigationMenu.Link asChild key={item.id}>
 			<ListItem className={styles.menuListItem}>
 				<NavItem
 					{...item}
-					title={item.locale.title}
+					title={item.title}
 					description={item.locale.description}
 					author={item.locale.author}
 					icon={item.icon}
@@ -25,7 +32,7 @@ const renderItems = (items: NavItemDataProps[]) =>
 		</NavigationMenu.Link>
 	));
 
-const renderSections = (sections: NavParsedNodes[]) =>
+const renderSections = (sections: ReadonlyArray<INavSection>) =>
 	sections.map((section) => (
 		<NavigationMenu.Item key={section.id} asChild>
 			<ListItem
@@ -35,7 +42,7 @@ const renderSections = (sections: NavParsedNodes[]) =>
 				<>
 					<Button className={styles.menuSectionTriggerButton} asChild>
 						<NavigationMenu.Trigger>
-							{section.locale.title}
+							{section.title}
 							{getIcon('caretDown', styles.caret)}
 						</NavigationMenu.Trigger>
 					</Button>
