@@ -16,7 +16,7 @@ export const ContentIterator = ({
 }: ContentComponentProps): JSX.Element => {
 	const { node } = componentData;
 	const { attributes, style } = useComponentAttrs(node);
-	const { children, text } = node;
+	const { children, text } = node ?? {};
 
 	if (!node) {
 		console.warn('Content Iterator: no input node');

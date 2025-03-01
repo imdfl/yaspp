@@ -11,7 +11,7 @@ import { LocaleContext } from '@contexts/localeContext';
 
 const GenericPage = ({ pageProps, className }: IContentComponentData) => {
 	const { pageData } = usePageData(pageProps);
-	const page = pageData && pageData[0];
+	const page = pageData?.[0];
 	const node: IMLParsedNode = page && {
 		children: page.parsed,
 		key: page.id,
@@ -28,6 +28,10 @@ const GenericPage = ({ pageProps, className }: IContentComponentData) => {
 	const pageTitle = `
 		${t('common:site:title')} – ${t('common:site:subtitle')} – ${title}
 	`;
+
+	if (!node) {
+		return <></>;
+	}
 
 	return (
 		<Layout>

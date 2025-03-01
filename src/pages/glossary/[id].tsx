@@ -14,7 +14,7 @@ import { LocaleContext } from '@contexts/localeContext';
 
 export default function GlossaryTerm(props: IPageProps) {
 	const { pageData } = usePageData(props);
-	const page = pageData && pageData[0];
+	const page = pageData?.[0];
 	const metaData = page?.metaData;
 	const node: IMLParsedNode = page && {
 		children: page.parsed,

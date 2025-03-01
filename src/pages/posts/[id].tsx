@@ -17,11 +17,14 @@ export default function Doc(props: IPageProps) {
 	const { pageData } = usePageData(props);
 	const page = pageData?.[0];
 	const { t, textDirection } = useContext(LocaleContext);
-	const { metaData } = page;
-	const { title, date, author } = metaData;
+	const { metaData } = page ?? {};
+	const { title = "", date, author = "" } = metaData ?? {};
 	const backIcon = getIcon(
 		`chevron${textDirection === 'ltr' ? 'Left' : 'Right'}`
 	);
+	if (!page) {
+		return <></>
+	}
 	return (
 		<Layout>
 			<div className="page">
