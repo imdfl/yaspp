@@ -77,20 +77,33 @@ async function run(clean: boolean): Promise<string> {
 			}
 			const contentPath = fsPath.resolve(projectRoot, root),
 				targetPath = fsPath.resolve(publicPath, target);
-			return await yasppUtils.copyFolderContent(contentPath, targetPath, clean);
+			const err = await yasppUtils.copyFolderContent(contentPath, targetPath, clean);
+			if (!err) {
+				console.log(`copied ${root} to ${target}`);
+			}
+			return err;
 		}
 		/**
 		 * Copies default assets from the build assets folder
 		 * @returns 
 		 */
-		async function copyAssets() {
+		async function copyAssets(root?: string) {
 			const contentPath = fsPath.resolve(__dirname, "assets"),
 				targetPath = fsPath.resolve(publicPath, "assets");
 			const err = await yasppUtils.copyFolderContent(contentPath, targetPath, clean);
-			if (!err) {
-				console.log("copied default assets");
+			if (err) {
+				return err;
 			}
-			return err;
+			console.log("copied default assets");
+			if (!root) {
+				return "";
+			}
+			const srcPath = fsPath.resolve(projectRoot, root);
+			const err1 = await yasppUtils.copyFolderContent(srcPath, targetPath, false);
+			if (!err1) {
+				console.log(`copied assets from ${root}`);
+			}
+			return err1;
 		}
 
 		async function copyNav(): Promise<string> {
@@ -102,6 +115,7 @@ async function run(clean: boolean): Promise<string> {
 				trgPath = fsPath.resolve(publicPath, "nav.json");
 			try {
 				await fs.copyFile(srcPath, trgPath);
+				console.log(`Copied ${navPath} to nav.json`)
 				return "";
 			}
 			catch(err) {
@@ -112,8 +126,7 @@ async function run(clean: boolean): Promise<string> {
 			|| await copyOne("content", content.root)
 			|| await copyOne("locales", locale.root)
 			|| await copyStyles(projectRoot, publicPath, style, clean)
-			|| await copyAssets()
-			|| await copyOne("assets", assets?.root);
+			|| await copyAssets(assets?.root);
 
 		
 		return err ?? "";

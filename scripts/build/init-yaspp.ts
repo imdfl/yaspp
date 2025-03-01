@@ -202,11 +202,12 @@ async function run(projectRoot: string): Promise<string> {
 		if (error) {
 			return error;
 		}
-		const { nav, content, locale, style } = result!;
+		const { nav, content, locale, style, assets } = result!;
 		const config: IYasppAppConfig = {
 			root: yasppUtils.diffPaths(ROOT_FOLDER, projectRoot),
 			content,
 			locale,
+			assets,
 			style,
 			nav
 		}

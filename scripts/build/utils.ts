@@ -81,6 +81,19 @@ export function successResult<TResult = IYasppConfig>(result: TResult): IRespons
 	}
 }
 
+function equalArrays(arr1: string[], arr2: string[]): boolean {
+	if (!arr1?.length) {
+		return !arr2?.length;
+	}
+	if (arr1.length !== arr2?.length) {
+		return false;
+	}
+	const items1 = new Set(arr1);
+	const ind = arr2.findIndex(s => !items1.has(s));
+	return ind < 0;
+
+}
+
 async function validateContent(projectRoot: string, content?: Partial<IYasppContentConfig>): Promise<IResponse<IYasppContentConfig>> {
 	if (!content) {
 		return errorResult("no content section in config file");
@@ -318,7 +331,7 @@ class YasppUtils implements IYasppUtils {
 			else {
 				const srcList = await fs.readdir(srcPath);
 				const trgList = await fs.readdir(targetPath);
-				if (srcList.length === trgList.length) {
+				if (equalArrays(srcList, trgList)) {
 					return resolve("");
 				}
 			}
