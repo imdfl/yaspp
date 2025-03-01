@@ -51,25 +51,22 @@ export const loadContentFolder = async (
 	const folderContentData = new FolderContent();
 
 	if (!await fileUtils.isFolder(contentDir)) {
-		console.warn(
-			`Cannot read files in ${relativePath} (mapped to ${contentDir}). In dynamic paths, this is not an error`
-		);
+		// console.warn(
+		// 	`Cannot read files in ${relativePath} (mapped to ${contentDir}). In dynamic paths, this is not an error`
+		// );
 		return folderContentData;
 	}
 
-	// Get file names under /posts
+	// Get file names under the content dir
 	const folderContent: Dirent[] = await fs.readdir(contentDir, {
 		withFileTypes: true,
 	});
-
-	// console.log(`collect - sorted content in "${contentDir}" for locale "${options.locale}"`);
 
 	const targetFileName = mdUtils.getIndexFileName(locale);
 	const markdownParser = createMDParser(app);
 
 	for await (const rec of folderContent) {
 		const name = rec.name;
-		//log.info(`process - content ID "${name}"`);
 
 		let fullPath: string;
 

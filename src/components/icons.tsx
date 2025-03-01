@@ -6,6 +6,7 @@ import {
 	MoonIcon,
 	SunIcon,
 	HamburgerMenuIcon,
+	QuestionMarkCircledIcon,
 	Cross2Icon,
 	CaretDownIcon,
 	ChevronLeftIcon,
@@ -18,49 +19,43 @@ import {
 	CrossCircledIcon,
 	CheckboxIcon,
 	FileTextIcon,
+	TwitterLogoIcon,
+	ExclamationTriangleIcon
 } from '@radix-ui/react-icons';
 
+type IconData = typeof CheckIcon;
+const ICON_MAP = new Map<string, IconData>([
+	[ "email", EnvelopeClosedIcon ],
+	[ "?", QuestionMarkCircledIcon ],
+	[ "twitter", TwitterLogoIcon],
+	[ "article", FileIcon ], 
+	[ "list", ListBulletIcon ], 
+	[ "github", GitHubLogoIcon ], 
+	[ "pencil", Pencil1Icon ],
+	[ "light", SunIcon ], 
+	[ "dark", MoonIcon ], 
+	[ "close", Cross2Icon ],
+	[ "hamburger", HamburgerMenuIcon ], 
+	[ "caretDown", CaretDownIcon ], 
+	[ "chevronLeft", ChevronLeftIcon ], 
+	[ "chevronRight", ChevronRightIcon ], 
+	[ "arrowLeft", ArrowLeftIcon ], 
+	[ "arrowRight", ArrowRightIcon ], 
+	[ "person", PersonIcon ], 
+	[ "closed-envelope", EnvelopeClosedIcon ], 
+	[ "check", CheckIcon ], 
+	[ "cross", CrossCircledIcon ], 
+	[ "checkbox", CheckboxIcon ], 
+	[ "file-text", FileTextIcon ]
+])
+
 export const getIcon = (icon: string, className?: string) => {
-	switch (icon) {
-		case 'article':
-			return <FileIcon className={className} />;
-		case 'list':
-			return <ListBulletIcon className={className} />;
-		case 'github':
-			return <GitHubLogoIcon className={className} />;
-		case 'pencil':
-			return <Pencil1Icon className={className} />;
-		case 'light':
-			return <SunIcon className={className} />;
-		case 'dark':
-			return <MoonIcon className={className} />;
-		case 'close':
-			return <Cross2Icon className={className} />;
-		case 'hamburger':
-			return <HamburgerMenuIcon className={className} />;
-		case 'caretDown':
-			return <CaretDownIcon className={className} />;
-		case 'chevronLeft':
-			return <ChevronLeftIcon className={className} />;
-		case 'chevronRight':
-			return <ChevronRightIcon className={className} />;
-		case 'arrowLeft':
-			return <ArrowLeftIcon className={className} />;
-		case 'arrowRight':
-			return <ArrowRightIcon className={className} />;
-		case 'person':
-			return <PersonIcon className={className} />;
-		case 'closed-envelope':
-			return <EnvelopeClosedIcon className={className} />;
-		case 'check':
-			return <CheckIcon className={className} />;
-		case 'cross':
-			return <CrossCircledIcon className={className} />;
-		case 'checkbox':
-			return <CheckboxIcon className={className} />;
-		case 'file-text':
-			return <FileTextIcon className={className} />;
-		default:
-			return icon;
+	const Ref = ICON_MAP.get(icon);
+	if (Ref) {
+		return <Ref className={className} />
 	}
+	else if (icon?.length <= 2) { // will cover
+		return icon;
+	}
+	return <ExclamationTriangleIcon className={className} />
 };

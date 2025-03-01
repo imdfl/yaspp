@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Layout from 'layout/Layout';
 import * as yup from 'yup';
 import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
@@ -20,15 +20,16 @@ const EMAIL_NOT_ALLOWED_REGEXP =
 
 const fieldLocalePrefix = 'contact:form:fields';
 
-const issueTrackerUrl =
-	'https://github.com/tomerlichtash/mels-loop/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=Contact%20form%20error&labels=bug';
-
 const Contact: NextPage<IPageProps> = () => {
 	const [error, setError] = useState('');
 	const [completed, setCompleted] = useState(false);
-
 	const { t } = useContext(LocaleContext);
+	const [ issuesLink, setIssuesLink ] = useState("");
 
+
+	useEffect(() => {
+		setIssuesLink(t("nav:links:issues"))
+	}, [t])
 	const contactFormFields: FormFieldProps[] = [
 		{
 			name: 'fullName',
@@ -127,11 +128,11 @@ const Contact: NextPage<IPageProps> = () => {
 					</>
 				)}
 
-				{error && (
+				{error && issuesLink && (
 					<ErrorMessage
 						message={t('contact:form:error:message')}
 						label={t('contact:form:error:report:label')}
-						issueTrackerUrl={issueTrackerUrl}
+						issueTrackerUrl={issuesLink}
 					/>
 				)}
 			</GenericContentLayout>

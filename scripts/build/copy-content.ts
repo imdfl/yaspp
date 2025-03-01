@@ -126,12 +126,8 @@ const clean = yasppUtils.getArg(process.argv, "--clean");
 console.log(`Copying yaspp project site data, clean mode ${clean !== null}`);
 run(clean !== null)
 	.then(err => {
-		if (err) {
-			console.error(err);
-		}
-		process.exit(err ? 1 : 0);
+		yasppUtils.exitWith(err);
 	})
 	.catch(err => {
-		console.error(err);
-		process.exit(2);
+		yasppUtils.exitWith(String(err));
 	})

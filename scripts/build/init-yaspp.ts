@@ -226,24 +226,17 @@ async function run(projectRoot: string): Promise<string> {
 	}
 }
 
-function exitWith(err: string): void {
-	if (err) {
-		console.error(err);
-	}
-	process.exit(err ? 1 : 0);
-}
-
-const rootArg = yasppUtils.getArg(process.argv, "--project") || yasppUtils.getArg(process.argv, "-P");
+const rootArg = yasppUtils.getArg(process.argv, "--project");
 if (!rootArg) {
-	exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
+	yasppUtils.exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
 }
 else {
 	const projectRoot = fsPath.resolve(process.cwd(), rootArg);
 	run(projectRoot)
 		.then(err => {
-			exitWith(err);
+			yasppUtils.exitWith(err);
 		})
 		.catch(err => {
-			exitWith(String(err));
+			yasppUtils.exitWith(String(err));
 		});
 }

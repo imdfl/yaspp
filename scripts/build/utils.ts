@@ -230,6 +230,13 @@ class YasppUtils implements IYasppUtils {
 		return /^-/.test(val) ? "" : val;
 	}
 
+	public exitWith(err: string): void {
+		if (err) {
+			console.error(err);
+		}
+		process.exit(err ? 1 : 0);
+	}
+
 	public runProcess(exe: string, argv: string[], cwd: string): Promise<number> {
 		return new Promise<number>(resolve => {
 			const proc = spawn(exe, argv, {
