@@ -11,25 +11,31 @@ module.exports = {
 
         const sarr = sns.get(ns);
 		if (sarr) {
-            if (sarr.includes(lang)) {
+            if (lang != "%DEFAULT%" && sarr.includes(lang)) {
                 const m = await import(`./locales/${lang}/${ns}.json`);
                 Object.assign(ret, m.default);
             }
-            else {
-                const m = await import(`./locales/en/${ns}.json`);
+            else if (sarr.includes("%DEFAULT%")) {
+                const m = await import(`./locales/%DEFAULT%/${ns}.json`);
                 Object.assign(ret, m.default);
+            }
+            else {
+                console.warn(`no system locale found for namespace ${ns}`);
             }
 		}
 
         const uarr = uns.get(ns);
 		if (uarr) {
-            if (uarr.includes((lang))) {
+            if (lang != "%DEFAULT%" && uarr.includes((lang))) {
                 const m = await import(`./public/yaspp/locales/${lang}/${ns}.json`);
                 Object.assign(ret, m.default);
             }
-            else {
-                const m = await import(`./public/yaspp/locales/en/${ns}.json`);
+            else if (uarr.includes("%DEFAULT%")) {
+                const m = await import(`./public/yaspp/locales/%DEFAULT%/${ns}.json`);
                 Object.assign(ret, m.default);
+            }
+            else {
+                console.warn(`no user locale found for namespace ${ns}`);
             }
 		}
 
