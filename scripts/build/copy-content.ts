@@ -28,7 +28,7 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
 			}
 			console.log(`copied ${style.root} to public/styles`);
 			if (style.index) {
-				const name = style.index.replace(/\.scss$/i, "");
+				const name = style.index.replace(/\.scss\s*$/i, "");
 				const indexPath = fsPath.resolve(targetPath, `${name}.scss`);
 				if (indexPath === sitePath) {
 					return "";
