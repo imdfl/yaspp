@@ -5,12 +5,11 @@ import fsPath from "path";
 import { spawn } from "child_process";
 import { parse as parseJSON } from "json5";
 
-import type { IYasppContentConfig, IYasppConfig, IYasppLocaleConfig, 
-	IYasppStyleConfig, IYasppAssetsConfig, IYasppAppConfig,
-	IYasppNavConfig,
-	IYasppNavData
+import type { IYasppAppConfig, IYasppNavData
 } from "../../src/types/app";
 import { fileUtils } from '../../src/lib/fileUtils';
+import type{ YASPP } from "yaspp-types";
+
 
 const ROOT_PATH = fsPath.resolve(__dirname, "../..");
 const WIN_DEVICE_RE = /^([A-Z]):[\\\/]+/i; // eslint-disable-line no-useless-escape
@@ -48,7 +47,7 @@ export interface IYasppUtils {
 	 * @param projectRoot 
 	 * @param config 
 	 */
-	validateConfig(projectRoot: string, config?: Partial<IYasppConfig>): Promise<IResponse<IYasppConfig>>;
+	validateConfig(projectRoot: string, config?: Partial<YASPP.IYasppConfig>): Promise<IResponse<YASPP.IYasppConfig>>;
 	/**
 	 * Returns the relative path from `fromPath` to  `toPath`, e.g. ../../docs/content
 	 * @param fromPath 
@@ -69,13 +68,13 @@ export interface IYasppLoadOptions {
 	readonly validate: boolean;
 }
 
-export function errorResult<TResult = IYasppConfig>(err: string): IResponse<TResult> {
+export function errorResult<TResult = YASPP.IYasppConfig>(err: string): IResponse<TResult> {
 	return {
 		result: null,
 		error: err
 	}
 }
-export function successResult<TResult = IYasppConfig>(result: TResult): IResponse<TResult> {
+export function successResult<TResult = YASPP.IYasppConfig>(result: TResult): IResponse<TResult> {
 	return {
 		result
 	}
@@ -94,7 +93,7 @@ function equalArrays(arr1: string[], arr2: string[]): boolean {
 
 }
 
-async function validateContent(projectRoot: string, content?: Partial<IYasppContentConfig>): Promise<IResponse<IYasppContentConfig>> {
+async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IResponse<YASPP.IYasppContentConfig>> {
 	if (!content) {
 		return errorResult("no content section in config file");
 	}
@@ -119,7 +118,8 @@ async function validateContent(projectRoot: string, content?: Partial<IYasppCont
 		}
 	}
 }
-async function validateStyle(projectRoot: string, style?: Partial<IYasppStyleConfig>): Promise<IResponse<IYasppStyleConfig | undefined>> {
+async function validateStyle(projectRoot: string, style?: Partial<YASPP.IYasppStyleConfig>): 
+	Promise<IResponse<YASPP.IYasppStyleConfig | undefined>> {
 	if (!style) {
 		return successResult(undefined);
 	}
@@ -143,7 +143,8 @@ If you have no style configuration, remove the style block from the configuratio
 	})
 }
 
-async function validateNav(projectRoot: string, config?: IYasppNavConfig): Promise<IResponse<IYasppNavConfig | undefined>> {
+async function validateNav(projectRoot: string, config?: YASPP.IYasppNavConfig): 
+	Promise<IResponse<YASPP.IYasppNavConfig | undefined>> {
 	if (!config?.index) {
 		return errorResult(`Missing nav/index in configuration`);
 	}
@@ -171,7 +172,8 @@ async function validateNav(projectRoot: string, config?: IYasppNavConfig): Promi
 	
 }
 
-async function validateAssets(projectRoot: string, assets?: Partial<IYasppAssetsConfig>): Promise<IResponse<IYasppAssetsConfig | undefined>> {
+async function validateAssets(projectRoot: string, assets?: Partial<YASPP.IYasppAssetsConfig>): 
+	Promise<IResponse<YASPP.IYasppAssetsConfig | undefined>> {
 	if (!assets) {
 		return successResult(undefined);
 	}
@@ -189,8 +191,9 @@ If you have no style configuration, remove the assets block from the configurati
 }
 
 
-async function validateLocale(projectRoot: string, locale?: Partial<IYasppLocaleConfig>): Promise<IResponse<IYasppLocaleConfig>> {
-	const defaultConfig: IYasppLocaleConfig = {
+async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYasppLocaleConfig>): 
+	Promise<IResponse<YASPP.IYasppLocaleConfig>> {
+	const defaultConfig: YASPP.IYasppLocaleConfig = {
 		langs: ["en"],
 		defaultLocale: "en",
 		pages: {},
@@ -347,7 +350,8 @@ class YasppUtils implements IYasppUtils {
 		})
 	}
 
-	public async validateConfig(projectRoot: string, config?: Partial<IYasppConfig>): Promise<IResponse<IYasppConfig>> {
+	public async validateConfig(projectRoot: string, config?: Partial<YASPP.IYasppConfig>):
+		Promise<IResponse<YASPP.IYasppConfig>> {
 		const validContent = await validateContent(projectRoot, config?.content),
 			validLocale = await validateLocale(projectRoot, config?.locale),
 			validStyle = await validateStyle(projectRoot, config?.style),
@@ -420,11 +424,11 @@ class YasppUtils implements IYasppUtils {
 
 export const yasppUtils = new YasppUtils;
 
-export async function loadYasppConfig(projectRoot: string): Promise<IResponse<IYasppConfig>> {
+export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YASPP.IYasppConfig>> {
 	try {
 		const fname = "yaspp.config.json";
 		const configPath = fsPath.resolve(projectRoot, fname);
-		const userConfig = await fileUtils.readJSON<IYasppConfig>(configPath);
+		const userConfig = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
 		if (!userConfig) {
 			return errorResult(`Missing or invalid yaspp configuration file (${configPath})`);
 		}

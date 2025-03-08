@@ -2,9 +2,10 @@ import getNextConfig from 'next/config';
 import * as fsPath from 'path';
 import { fileUtils } from '../fileUtils';
 import i18nconfig from "@root/i18n";
-import type { IYasppApp, IYasppConfig, IYasppContentConfig, IYasppNavData } from 'types/app';
+import type { IYasppApp } from 'types/app';
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from 'types';
-import type { INavItemData, INavSection, NavGroups } from 'types/nav';
+import type { INavSection, NavGroups } from 'types/nav';
+import { YASPP } from "yaspp-types";
 
 
 const CONFIG_FILE = "yaspp.json";
@@ -75,7 +76,7 @@ class YasppApp implements IYasppApp {
 
 	private async _loadNavItems(contentRoot: string): Promise<string> {
 		const navPath = fsPath.resolve(contentRoot, "nav.json");
-		const navData = await fileUtils.readJSON<IYasppNavData>(navPath);
+		const navData = await fileUtils.readJSON<YASPP.IYasppNavData>(navPath);
 		if (!navData) {
 			return `navigation items data not found in ${navPath}`;
 		}
@@ -110,7 +111,7 @@ class YasppApp implements IYasppApp {
 							locale: itemData.locale?? {},
 							id: itemName,
 						};
-					}).filter(Boolean) as INavItemData[]
+					}).filter(Boolean) as YASPP.INavItemData[]
 				};
 				this._navItems[groupName].push(section);
 			})
@@ -152,7 +153,7 @@ class YasppApp implements IYasppApp {
 		return this._root;
 	}
 
-	private async _processContent(config: IYasppContentConfig, contentRoot: string): Promise<string> {
+	private async _processContent(config: YASPP.IYasppContentConfig, contentRoot: string): Promise<string> {
 		if (!config.root) {
 			return `Invalid content root in yaspp.json`;
 		}
@@ -176,8 +177,8 @@ class YasppApp implements IYasppApp {
 	 * @param config 
 	 * @returns 
 	 */
-	private _validateContentConfig(config: Partial<IYasppConfig>): IYasppContentConfig {
-		const content = config?.content || {} as Partial<IYasppContentConfig>;
+	private _validateContentConfig(config: Partial<YASPP.IYasppConfig>): YASPP.IYasppContentConfig {
+		const content = config?.content || {} as Partial<YASPP.IYasppContentConfig>;
 		return {
 			root: content.root || "",
 			index: content.index || "",

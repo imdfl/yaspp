@@ -3,12 +3,12 @@
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { yasppUtils, loadYasppAppConfig } from "./utils";
-import { IYasppStyleConfig } from "../../src/types/app";
 import { fileUtils } from "../../src/lib/fileUtils";
+import type { YASPP } from "yaspp-types";
 
 const rootPath = fsPath.resolve(__dirname, "../..");
 
-async function copyStyles(projectRoot: string, publicRoot: string, style: Partial<IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
+async function copyStyles(projectRoot: string, publicRoot: string, style: Partial<YASPP.IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
 	const targetPath = fsPath.resolve(publicRoot, "styles"),
 		sitePath = fsPath.resolve(targetPath, "site.scss");
 	await fileUtils.mkdir(targetPath);

@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
-import type { INavItemData, INavSection } from '../types/nav';
+import type { YASPP } from 'yaspp-types';
 import { PageContext } from '../contexts/pageContext';
 import { LocaleContext } from '../contexts/localeContext';
-import { LocalizeFunction } from '../lib/locale';
+import type  { LocalizeFunction } from '../lib/locale';
+import type { INavSection } from '../types/nav';
 
 export interface INavItemsData {
 	sections: ReadonlyArray<INavSection>;
@@ -15,7 +16,7 @@ function translateRecord(rec: Record<string, string>, translate: LocalizeFunctio
 	}, {} as Record<string, string>)
 }
 
-function translateItem(item: INavItemData, translate: LocalizeFunction): INavItemData {
+function translateItem(item: YASPP.INavItemData, translate: LocalizeFunction): YASPP.INavItemData {
 	return {
 		...item,
 		title: translate(item.title),

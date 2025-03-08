@@ -1,3 +1,4 @@
+import { YASPP } from "yaspp-types";
 
 export type NavItemLocaleProps = Record<string, string>;
 
@@ -7,34 +8,13 @@ export enum NavSectionId {
 	FOOTER = 'footer',
 }
 
-export interface INavItemData {
-	id: string;
-	type: string;
-	title: string;
-	url: string;
-	locale: NavItemLocaleProps;
-	icon?: string;
-	target?: string;
-};
-
-export interface INavSectionData {
-	id: string;
-	locale: NavItemLocaleProps;
-	items: ReadonlyArray<string>;
-	title: string;
-};
-
-export interface INavGroupData {
-	items: ReadonlyArray<string>;
-}
-
 /**
  * Represents the full data of a single section in a navigation list
  */
 export interface INavSection {
 	id: string;
 	locale: Record<string, string>;
-	items: ReadonlyArray<INavItemData>;
+	items: ReadonlyArray<YASPP.INavItemData>;
 	title: string;
 };
 

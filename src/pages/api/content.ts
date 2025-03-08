@@ -10,7 +10,6 @@ import type {
 } from 'types/api';
 import * as fsPath from 'path';
 import * as fileSystem from 'fs';
-import { arrayToMap } from 'utils/index';
 import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
 import { initYaspp } from '../../lib/app';
 import type { IYasppApp } from 'types/app';
@@ -22,6 +21,21 @@ const TypeMap: { [key: string]: ContentTypes } = {
 
 const noop = function () {
 	void 0;
+};
+
+const arrayToMap = <T>(
+	array: Array<T>,
+	field: string
+): { [key: string]: T } => {
+	const map: { [key: string]: T } = array.reduce((acc, elem) => {
+		const value = elem && elem[field];
+		if (value !== null && value !== undefined) {
+			acc[String(value)] = elem;
+		}
+		return acc;
+	}, {});
+
+	return map;
 };
 
 /**
@@ -107,8 +121,8 @@ async function loadContent(
 
 		const app = await initYaspp(process.cwd());
 		const docPath =
-			clientPath && contentType === ContentTypes.Annotation
-				? await findFirstFolder(clientPath, contentType, app)
+			clientPath && contentType === ContentTypes.Annotation ? 
+				await findFirstFolder(clientPath, contentType, app)
 				: contentType;
 
 		if (!docPath) {
@@ -138,7 +152,8 @@ async function loadContent(
 			.then(noop)
 			.catch(noop);
 		return Object.assign({ data }, { cache: false });
-	} catch (error) {
+	}
+	catch (error) {
 		return { data: null, error: String(error) };
 	}
 }

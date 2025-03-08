@@ -8,9 +8,10 @@
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { errorResult, IResponse, loadYasppConfig, successResult, yasppUtils } from "./utils";
-import type { IYasppAppConfig, IYasppLocaleConfig } from "../../src/types/app"
 import { fileUtils } from "../../src/lib/fileUtils";
-import { I18NConfig } from "../../src/types/locale";
+import type { I18NConfig } from "../../src/types/locale";
+import type { YASPP } from "yaspp-types";
+import type { IYasppAppConfig } from "../../src/types/app";
 
 /**
  * The root of the  yaspp module
@@ -57,7 +58,7 @@ function toNSString(namespaces: NSRecord[]): string {
 	});
 	return parts.join(',');
 }
-async function generateI18N(projectRoot: string, config: IYasppLocaleConfig): Promise<string> {
+async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfig): Promise<string> {
 	const values = {
 		"%LANGS%": [] as ReadonlyArray<string>,
 		"%DEFAULT%": "en",

@@ -1,4 +1,3 @@
-import { stringArrayToMap } from '../utils';
 import { MLNODE_TYPES } from 'types/nodes';
 import { DynamicContentTypes } from 'types/content';
 import type { IMLParsedNode } from 'types/models';
@@ -53,10 +52,10 @@ class ContentUtils implements IContentUtils {
 			return (n) => n;
 		}
 
-		const typeMap = stringArrayToMap(types);
+		const typeMap = new Set(types);
 
 		return (node: IMLParsedNode, context: INodeProcessorContext) => {
-			if (!node || !(node.type in typeMap)) {
+			if (!node || !(typeMap.has(node.type))) {
 				return null;
 			}
 

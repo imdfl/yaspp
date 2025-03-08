@@ -1,9 +1,9 @@
-import {
-	INavItemData,
+import type {
 	NavItemLocaleProps,
 	INavSection,
-	INavSectionData,
 } from 'types/nav';
+
+import type { YASPP} from "yaspp-types";
 
 const translateKeys = (
 	keys: NavItemLocaleProps,
@@ -14,8 +14,8 @@ const translateKeys = (
 	);
 
 const getSectionItems = (
-	section: INavSectionData,
-	items: INavItemData[]
+	section: YASPP.INavSectionData,
+	items: YASPP.INavItemData[]
 ) => {
 	return section.items
 		? section.items.map(
@@ -25,8 +25,8 @@ const getSectionItems = (
 };
 
 export const parseMenuItems = (
-	sections: INavSectionData[],
-	items: INavItemData[],
+	sections: YASPP.INavSectionData[],
+	items: YASPP.INavItemData[],
 	translate: (s: string) => string
 ): INavSection[] => {
 	const res = sections.map((section) => {
