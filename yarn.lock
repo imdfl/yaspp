@@ -11427,7 +11427,7 @@ tsconfig-paths@^3.15.0:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tsconfig-paths@^4.0.0, tsconfig-paths@^4.1.2:
+tsconfig-paths@^4.0.0, tsconfig-paths@^4.1.2, tsconfig-paths@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-4.2.0.tgz#ef78e19039133446d244beac0fd6a1632e2d107c"
   integrity sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==
@@ -12145,8 +12145,8 @@ yargs@^17.3.1:
     yargs-parser "^21.1.1"
 
 "yaspp-types@git+ssh://git@github.com:imdfl/yaspp-types.git":
-  version "1.0.2"
-  resolved "git+ssh://git@github.com:imdfl/yaspp-types.git#8445685aae290f8a7683624d3f483db4c5c418fb"
+  version "1.0.3"
+  resolved "git+ssh://git@github.com:imdfl/yaspp-types.git#bba54d3c09864e1dfe40d35ea683ec388be22d0d"
 
 yauzl@^2.10.0:
   version "2.10.0"

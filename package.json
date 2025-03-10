@@ -35,9 +35,9 @@
 		"clean": "rm -rf .next",
 		"refresh-content": "npx ts-node scripts/build/copy-content",
 		"build": "next build",
-		"prebuild": "npx ts-node scripts/build/copy-content --clean",
+		"prebuild-ignore": "npx ts-node scripts/build/copy-content --clean",
 		"dev": "next dev",
-		"predev": "npx ts-node scripts/build/copy-content",
+		"predev-ignore": "npx ts-node scripts/build/copy-content",
 		"dev-only": "next dev",
 		"start": "next start",
 		"build:sitemap": "next-sitemap",
@@ -138,6 +138,7 @@
 		"stylelint-config-prettier-scss": "1.0.0",
 		"stylelint-config-standard-scss": "13.0.0",
 		"ts-node": "^10.9.2",
+		"tsconfig-paths": "^4.2.0",
 		"typescript": "5.3.3"
 	},
 	"eslintConfig": {

@@ -11,7 +11,7 @@ import { errorResult, IResponse, loadYasppConfig, successResult, yasppUtils } fr
 import { fileUtils } from "../../src/lib/fileUtils";
 import type { I18NConfig } from "../../src/types/locale";
 import type { YASPP } from "yaspp-types";
-import type { IYasppAppConfig } from "../../src/types/app";
+// import type { IYasppAppConfig } from "@src/types/app";
 
 /**
  * The root of the  yaspp module
@@ -153,22 +153,22 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 	return "";
 }
 
-async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
-	const fpath = fsPath.resolve(ROOT_FOLDER, "yaspp.json");
-	try {
-		const data = [
-			GEN_HEADER,
-			JSON.stringify(config, null, 4)
-		]
-		await fs.writeFile(fpath, data.join('\n'));
-		console.log(`Generated ${yasppUtils.trimPath(fpath)}`);
-		return "";
-	}
-	catch (err) {
-		return `Error generating yaspp.json (${fpath}): ${err}`;
-	}
+// async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
+// 	const fpath = fsPath.resolve(ROOT_FOLDER, "yaspp.json");
+// 	try {
+// 		const data = [
+// 			GEN_HEADER,
+// 			JSON.stringify(config, null, 4)
+// 		]
+// 		await fs.writeFile(fpath, data.join('\n'));
+// 		console.log(`Generated ${yasppUtils.trimPath(fpath)}`);
+// 		return "";
+// 	}
+// 	catch (err) {
+// 		return `Error generating yaspp.json (${fpath}): ${err}`;
+// 	}
 
-}
+// }
 
 async function clean(): Promise<string> {
 	try {
@@ -177,16 +177,17 @@ async function clean(): Promise<string> {
 		if (!await fileUtils.isFolder(publicPath)) {
 			return "public folder not found";
 		}
-		const folders = ["content", "locales", "styles", "assets"];
-		for await (const folder of folders) {
-			const fpath = fsPath.resolve(publicPath, folder);
-			await fileUtils.mkdir(fpath);
-			await fileUtils.removeFolder({
-				path: fpath,
-				removeRoot: false
-			});
-		}
-		console.log(`Cleaned ${folders}`);
+		// TODO create soft links?
+		// const folders = ["content", "locales", "styles", "assets"];
+		// for await (const folder of folders) {
+		// 	const fpath = fsPath.resolve(publicPath, folder);
+		// 	await fileUtils.mkdir(fpath);
+		// 	await fileUtils.removeFolder({
+		// 		path: fpath,
+		// 		removeRoot: false
+		// 	});
+		// }
+		// console.log(`Cleaned ${folders}`);
 		return "";
 	}
 	catch (err) {
@@ -203,19 +204,19 @@ async function run(projectRoot: string): Promise<string> {
 		if (error) {
 			return error;
 		}
-		const { nav, content, locale, style, assets } = result!;
-		const config: IYasppAppConfig = {
-			root: yasppUtils.diffPaths(ROOT_FOLDER, projectRoot),
-			content,
-			locale,
-			assets,
-			style,
-			nav
-		}
-		const appErr = await generateAppJSON(config);
-		if (appErr) {
-			return appErr;
-		}
+		const { locale } = result!;
+		// const config: IYasppAppConfig = {
+		// 	root: yasppUtils.diffPaths(ROOT_FOLDER, projectRoot),
+		// 	content,
+		// 	locale,
+		// 	assets,
+		// 	style,
+		// 	nav
+		// }
+		// const appErr = await generateAppJSON(config);
+		// if (appErr) {
+		// 	return appErr;
+		// }
 		const i18err = await generateI18N(projectRoot, locale);
 		if (i18err) {
 			return i18err;

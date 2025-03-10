@@ -4,6 +4,11 @@ import type { YASPP } from "yaspp-types";
 /**
  * App object that contains data about the current build
  */
+
+export interface IStylesheetUrl {
+	readonly base: string;
+	readonly full: string;
+}
 export interface IYasppApp {
 	/**
 	 * The full path of the content folder
@@ -29,9 +34,9 @@ export interface IYasppApp {
 	readonly defaultLocale: LocaleId;
 
 	readonly nav: NavGroups;
-}
 
-export type LocaleLoader = (lang: string, ns?: string) => Promise<Record<string, string>>;
+	readonly styleUrls: ReadonlyArray<IStylesheetUrl>;
+}
 
 /**
  * Display ready navigation data (before localization)

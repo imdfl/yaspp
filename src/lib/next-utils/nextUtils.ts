@@ -12,7 +12,7 @@ import {
 import { IFolderStaticProps } from 'types/folder';
 import { LocaleId } from 'types/locale';
 import type { IMLNextUtils, IStaticPathsParameters } from './types';
-import { initYaspp } from '../app';
+import { initYaspp } from '../yaspp';
 
 class MLNextUtils implements IMLNextUtils {
 	/**

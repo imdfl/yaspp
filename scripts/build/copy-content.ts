@@ -27,14 +27,14 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
 				return contentErr;
 			}
 			console.log(`copied ${style.root} to public/styles`);
-			if (style.index) {
-				const name = style.index.replace(/\.scss\s*$/i, "");
-				const indexPath = fsPath.resolve(targetPath, `${name}.scss`);
-				if (indexPath === sitePath) {
-					return "";
-				}
-				await fs.copyFile(indexPath, sitePath);
-				console.log(`copied ${style.index} to ${yasppUtils.trimPath(sitePath)}`);
+			if (style.sheets?.length) {
+				// const name = style.index.replace(/\.scss\s*$/i, "");
+				// const indexPath = fsPath.resolve(targetPath, `${name}.scss`);
+				// if (indexPath === sitePath) {
+				// 	return "";
+				// }
+				// await fs.copyFile(indexPath, sitePath);
+				// console.log(`copied ${style.index} to ${yasppUtils.trimPath(sitePath)}`);
 				return "";
 			}
 		}

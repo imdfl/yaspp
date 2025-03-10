@@ -131,15 +131,16 @@ If you have no style configuration, remove the style block from the configuratio
 	if (!await fileUtils.isFolder(stylePath)) {
 		return errorResult(`Can't find style folder ${style.root} (${stylePath})`);
 	}
-	if (style.index) {
-		const indexPath = fsPath.resolve(stylePath, style.index);
-		if (!await fileUtils.isFile(indexPath)) {
-			return errorResult(`Can't find style index at ${style.index} (${indexPath})`);
-		}
-	}
+	// const sheets = style.sheets;
+	// if (style.index) {
+	// 	const indexPath = fsPath.resolve(stylePath, style.index);
+	// 	if (!await fileUtils.isFile(indexPath)) {
+	// 		return errorResult(`Can't find style index at ${style.index} (${indexPath})`);
+	// 	}
+	// }
 	return successResult({
 		root: style.root,
-		index: style.index
+		sheets: style.sheets
 	})
 }
 
@@ -200,7 +201,7 @@ async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYaspp
 		root: ""
 	}
 	if (!locale) {
-		return successResult({ ...defaultConfig });
+		return successResult(defaultConfig);
 	}
 	if (locale.root) {
 		const localePath = fsPath.resolve(projectRoot, locale.root);

@@ -11,7 +11,7 @@ import type {
 import * as fsPath from 'path';
 import * as fileSystem from 'fs';
 import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
-import { initYaspp } from '../../lib/app';
+import { initYaspp } from '../../lib/yaspp';
 import type { IYasppApp } from 'types/app';
 
 const TypeMap: { [key: string]: ContentTypes } = {

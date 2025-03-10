@@ -1,10 +1,10 @@
 import Head from 'next/head';
 
-type HeadProps = {
+type HeadProps = Readonly<{
 	title?: string;
 	name?: string;
 	description?: string;
-};
+}>;
 
 const CustomHead = ({ title, name, description }: HeadProps) => (
 	<Head>
@@ -31,6 +31,9 @@ const CustomHead = ({ title, name, description }: HeadProps) => (
 			/> */}
 		<meta name="og:title" content={title} />
 		<meta name="twitter:card" content="summary_large_image" />
+		{/* {styles && styles.map((url, ind) => (
+			<link rel="stylesheet" href={url} key={ind} />
+		))} */}
 	</Head>
 );
 
