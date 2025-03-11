@@ -5,6 +5,7 @@ import type { IStylesheetUrl, IYasppApp } from 'types/app';
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from 'types';
 import type { INavSection, NavGroups } from 'types/nav';
 import { YASPP } from "yaspp-types";
+import { getYasppProjectRoot, loadYasppConfig } from './yaspp-lib';
 
 
 const CONFIG_FILE = "yaspp.config.json";
@@ -53,44 +54,40 @@ class YasppApp implements IYasppApp {
 			throw new Error("Can't call yaspp app init when it's loading");
 		}
 		this._isLoading = true;
-		if (!await fileUtils.isFolder(projectRoot)) {
-			return `path ${projectRoot} is not a folder, can't find ${CONFIG_FILE}`;
-		}
-		this._root = projectRoot;
-		const configPath = fsPath.resolve(projectRoot, CONFIG_FILE);
-		const cdata = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
-		if (!cdata) {
-			return `Failed to load config file ${configPath}`;
-		}
-		const config = this._extractContentConfig(cdata);
-		const contentErr = await this._processContent(config, projectRoot);
-		if (contentErr) {
-			return contentErr;
-		}
-		const styleConfig = this._extractStyleConfig(cdata);
-		const styleErr = await this._processStyles(styleConfig, projectRoot);
-		if (styleErr) {
-			return styleErr;
-		}
-		const dictErr = await this._loadLocales();
-		if (dictErr) {
-			return dictErr;
-		}
-		const assetsErr = await this._validateAssets(projectRoot, cdata.assets);
-		if (assetsErr) {
-			return assetsErr;
-		}
+		try {
+			if (!await fileUtils.isFolder(projectRoot)) {
+				return `path ${projectRoot} is not a folder, can't find ${CONFIG_FILE}`;
+			}
+			this._root = projectRoot;
+			const configResult = await loadYasppConfig(projectRoot);
+			if (configResult.error) {
+				return configResult.error;
+			}
+			const yConfig = configResult.result;
+			this._content = fsPath.resolve(projectRoot, yConfig.content.root);
+			this._indexPage = yConfig.content.index;
+	
+			const styleErr = await this._processStyles(projectRoot, yConfig.style);
+			if (styleErr) {
+				return styleErr;
+			}
+			const dictErr = await this._loadLocales();
+			if (dictErr) {
+				return dictErr;
+			}
 
-		const navErr = await this._loadNavItems(cdata.nav, projectRoot)
+			const navErr = await this._loadNavItems(yConfig.nav, projectRoot);
 
-		return navErr;
+			return navErr;
+		}
+		finally {
+			this._isLoading = false;
+		}
 	}
 
 	private async _loadNavItems(config: YASPP.IYasppNavConfig, projectRoot: string): Promise<string> {
-		const index = config?.index;
-		if (!index) {
-			return `nav.index not found in configuration`
-		}
+		const index = config.index;
+
 		const navPath = fsPath.resolve(projectRoot, index);
 		const navData = await fileUtils.readJSON<YASPP.IYasppNavData>(navPath);
 		if (!navData) {
@@ -175,12 +172,12 @@ class YasppApp implements IYasppApp {
 	 * @param projectRoot 
 	 * @returns 
 	 */
-	private async _processStyles({ root, sheets }: YASPP.IYasppStyleConfig, projectRoot: string): Promise<string> {
-		if (!root) {
-			return (sheets?.length) ?
-				`no style root but stylesheets defined: ${sheets}`
-				: "";
+	private async _processStyles(projectRoot: string, config?: YASPP.IYasppStyleConfig): Promise<string> {
+		if (!config) {
+			return "";
 		}
+		const { root, sheets } = config;
+
 		const styleRoot = fsPath.resolve(projectRoot, root);
 		if (!await fileUtils.isFolder(styleRoot)) {
 			return `Style root folder ${styleRoot} not found`;
@@ -198,37 +195,6 @@ class YasppApp implements IYasppApp {
 				base: sheet,
 				full: `/yaspp/styles/${sheet}`
 			});
-		}
-		return "";
-	}
-
-
-	private async _processContent({ root, index }: YASPP.IYasppContentConfig, projectRoot: string): Promise<string> {
-		if (!root) {
-			return `Invalid content root in yaspp.json`;
-		}
-		const contentPath = fsPath.resolve(projectRoot, root);
-		if (!await fileUtils.isFolder(contentPath)) {
-			return `Content path indicated by config not found: ${contentPath}`;
-		}
-		this._content = contentPath;
-		const indexPath = fsPath.resolve(contentPath, index);
-		if (!await fileUtils.isFileOrFolder(indexPath)) {
-			return `Failed to find index pag/folder at ${indexPath}`;
-		}
-		this._indexPage = index;
-
-		return "";
-
-	}
-
-	private async _validateAssets(projectRoot: string, config?: Partial<YASPP.IYasppAssetsConfig>): Promise<string> {
-		if (!config?.root) {
-			return "";
-		}
-		const assetPath = fsPath.resolve(projectRoot, config.root);
-		if (!await fileUtils.isFolder(assetPath)) {
-			return `Asset path ${assetPath} not found`
 		}
 		return "";
 	}
@@ -306,8 +272,7 @@ const _instances: Map<string, {
 }> = new Map();
 
 export const initYaspp = async function (root?: string): Promise<IYasppApp> {
-	root = root || process.cwd();
-	const projectRoot = fsPath.resolve(root, process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || "..");
+	const projectRoot = await getYasppProjectRoot(root);
 
 	const { app, resolvers } = _instances.get(root) ?? {
 		app: new YasppApp(),
