@@ -2,22 +2,13 @@
 
 import { promises as fs } from "fs";
 import fsPath from "path";
-import { spawn } from "child_process";
 import { parse as parseJSON } from "json5";
 
-import type { IYasppAppConfig, IYasppNavData
-} from "../../src/types/app";
+import type { IResponse, NotNull } from "@src/types";
 import { fileUtils } from '../../src/lib/fileUtils';
-import type{ YASPP } from "yaspp-types";
+import { errorResult, runProcess, successResult } from "../../src/lib/yaspp/yaspp-lib";
 
-
-const ROOT_PATH = fsPath.resolve(__dirname, "../..");
 const WIN_DEVICE_RE = /^([A-Z]):[\\\/]+/i; // eslint-disable-line no-useless-escape
-
-export interface IResponse<T> {
-	result: T | null;
-	error?: string;
-}
 
 export interface IYasppUtils {
 	/**
@@ -29,7 +20,6 @@ export interface IYasppUtils {
 	 */
 	getArg(args: string[], key: string): string | null;
 
-	runProcess(exe: string, argv: string[], cwd: string): Promise<number>;
 	/**
 	 * Returns a reasonably sized path of the path for display, e.g. users/docs/readme.md
 	 * @param path 
@@ -42,12 +32,6 @@ export interface IYasppUtils {
 	 * @param clean if true, delete target content before copying
 	 */
 	copyFolderContent(srcPath: string, targetPath: string, clean: boolean): Promise<string>;
-	/**
-	 * Validates on the file system the configuration contained in the provided config
-	 * @param projectRoot 
-	 * @param config 
-	 */
-	validateConfig(projectRoot: string, config?: Partial<YASPP.IYasppConfig>): Promise<IResponse<YASPP.IYasppConfig>>;
 	/**
 	 * Returns the relative path from `fromPath` to  `toPath`, e.g. ../../docs/content
 	 * @param fromPath 
@@ -68,18 +52,6 @@ export interface IYasppLoadOptions {
 	readonly validate: boolean;
 }
 
-export function errorResult<TResult = YASPP.IYasppConfig>(err: string): IResponse<TResult> {
-	return {
-		result: null,
-		error: err
-	}
-}
-export function successResult<TResult = YASPP.IYasppConfig>(result: TResult): IResponse<TResult> {
-	return {
-		result
-	}
-}
-
 function equalArrays(arr1: string[], arr2: string[]): boolean {
 	if (!arr1?.length) {
 		return !arr2?.length;
@@ -93,144 +65,6 @@ function equalArrays(arr1: string[], arr2: string[]): boolean {
 
 }
 
-async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IResponse<YASPP.IYasppContentConfig>> {
-	if (!content) {
-		return errorResult("no content section in config file");
-	}
-	if (!content?.root) {
-		return errorResult(`Missing configuration option content.root`);
-	}
-	const contentPath = fsPath.resolve(projectRoot, content.root);
-	if (!await fileUtils.isFolder(contentPath)) {
-		return errorResult(`Can't find content folder ${content.root} (${contentPath})`);
-	}
-	if (!content?.index) {
-		return errorResult(`Missing configuration option content.index`);
-	}
-	const indexPath = fsPath.resolve(contentPath, content.index);
-	if (!await fileUtils.isFolder(indexPath)) {
-		return errorResult(`Can't find content index folder at ${content.index} (${indexPath})`);
-	}
-	return {
-		result: {
-			root: content.root,
-			index: content.index
-		}
-	}
-}
-async function validateStyle(projectRoot: string, style?: Partial<YASPP.IYasppStyleConfig>): 
-	Promise<IResponse<YASPP.IYasppStyleConfig | undefined>> {
-	if (!style) {
-		return successResult(undefined);
-	}
-	if (!style?.root) {
-		return errorResult(`Style configuration does not contain a root property.
-If you have no style configuration, remove the style block from the configuration`);
-	}
-	const stylePath = fsPath.resolve(projectRoot, style.root);
-	if (!await fileUtils.isFolder(stylePath)) {
-		return errorResult(`Can't find style folder ${style.root} (${stylePath})`);
-	}
-	if (style.index) {
-		const indexPath = fsPath.resolve(stylePath, style.index);
-		if (!await fileUtils.isFile(indexPath)) {
-			return errorResult(`Can't find style index at ${style.index} (${indexPath})`);
-		}
-	}
-	return successResult({
-		root: style.root,
-		index: style.index
-	})
-}
-
-async function validateNav(projectRoot: string, config?: YASPP.IYasppNavConfig): 
-	Promise<IResponse<YASPP.IYasppNavConfig | undefined>> {
-	if (!config?.index) {
-		return errorResult(`Missing nav/index in configuration`);
-	}
-	const navPath = fsPath.resolve(projectRoot, config.index);
-	if (!await fileUtils.isFile(navPath)) {
-		return errorResult(`Navigation configuration ${config.index} not found at ${navPath}`);
-	}
-	const navConfig = await fileUtils.readJSON<IYasppNavData>(navPath, { canFail: true });
-	if (!navConfig) {
-		return errorResult(`Invalid configuration file ${config.index} (${navPath})`);
-	}
-	function isValid(key: keyof IYasppNavData) {
-		const data = navConfig![key];
-		return Boolean(data && typeof data === "object" && !Array.isArray(data)) 
-	}
-	for (const key of ["groups", "sections", "items"] as (keyof IYasppNavData)[]) {
-		if (!isValid(key)) {
-			return errorResult(`Invalid navigation entry ${key} in navigation config file ${config.index}`);
-		}
-	}
-	return successResult({
-		index: config.index
-	});
-	
-	
-}
-
-async function validateAssets(projectRoot: string, assets?: Partial<YASPP.IYasppAssetsConfig>): 
-	Promise<IResponse<YASPP.IYasppAssetsConfig | undefined>> {
-	if (!assets) {
-		return successResult(undefined);
-	}
-	if (!assets?.root) {
-		return errorResult(`Assets configuration does not contain a root property.
-If you have no style configuration, remove the assets block from the configuration`);
-	}
-	const assetPath = fsPath.resolve(projectRoot, assets.root);
-	if (!await fileUtils.isFolder(assetPath)) {
-		return errorResult(`Can't find assets folder ${assets.root} (${assetPath})`);
-	}
-	return successResult({
-		root: assets.root
-	})
-}
-
-
-async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYasppLocaleConfig>): 
-	Promise<IResponse<YASPP.IYasppLocaleConfig>> {
-	const defaultConfig: YASPP.IYasppLocaleConfig = {
-		langs: ["en"],
-		defaultLocale: "en",
-		pages: {},
-		root: ""
-	}
-	if (!locale) {
-		return successResult({ ...defaultConfig });
-	}
-	if (locale.root) {
-		const localePath = fsPath.resolve(projectRoot, locale.root);
-		if (!await fileUtils.isFolder(localePath)) {
-			return errorResult(`Can't find locale root ${locale.root} (${localePath})`);
-		}
-	}
-
-	const langs = Array.isArray(locale.langs) ? locale.langs : ["en"];
-	const defaultLocale = locale.defaultLocale || "en";
-	if (!langs.includes(defaultLocale)) {
-		return errorResult(`default locale ${defaultLocale} not found in locales list ${langs}`);
-	}
-	const pages: Record<string, string[]> = {};
-	if (locale.pages) {
-		Object.entries(locale.pages).forEach(([key, values]) => {
-			if (key && typeof key === "string") {
-				if (Array.isArray(values) && values.findIndex(s => !(s && typeof s === "string")) === -1) {
-					pages[key] = values;
-				}
-			}
-		})
-	}
-	return successResult({
-		root: locale.root || "",
-		langs,
-		defaultLocale,
-		pages
-	});
-}
 
 
 class YasppUtils implements IYasppUtils {
@@ -253,23 +87,6 @@ class YasppUtils implements IYasppUtils {
 		process.exit(err ? 1 : 0);
 	}
 
-	public runProcess(exe: string, argv: string[], cwd: string): Promise<number> {
-		return new Promise<number>(resolve => {
-			const proc = spawn(exe, argv, {
-				cwd
-			})
-
-			proc.on("error", ()  => {
-				resolve(-1);
-			})
-
-			proc.on('close', function () {
-				const code = Number(proc.exitCode);
-				resolve(isNaN(code) ? 1 : code);
-			});
-		})
-
-	}
 
 	/**
 	* Both paths point to folders
@@ -326,7 +143,7 @@ class YasppUtils implements IYasppUtils {
 			}
 			if (clean) {
 				const rmargs = ["-rf", '*'];
-				const rmCode = await yasppUtils.runProcess("rm", rmargs, targetPath);
+				const rmCode = await runProcess("rm", rmargs, targetPath);
 				if (rmCode !== 0) {
 					resolve(`Failed to delete content of ${targetPath}`);
 				}
@@ -339,7 +156,7 @@ class YasppUtils implements IYasppUtils {
 				}
 			}
 			const cpargs = ["--update", "-r", '*', targetPath]
-			const cpCode = await yasppUtils.runProcess("cp", cpargs, srcPath);
+			const cpCode = await runProcess("cp", cpargs, srcPath);
 			console.log(`Copied ${yasppUtils.trimPath(srcPath)} to ${yasppUtils.trimPath(targetPath)}`);
 			resolve(cpCode === 0 ? "" : `Error copying content, exit code ${cpCode}`);
 		}
@@ -350,30 +167,8 @@ class YasppUtils implements IYasppUtils {
 		})
 	}
 
-	public async validateConfig(projectRoot: string, config?: Partial<YASPP.IYasppConfig>):
-		Promise<IResponse<YASPP.IYasppConfig>> {
-		const validContent = await validateContent(projectRoot, config?.content),
-			validLocale = await validateLocale(projectRoot, config?.locale),
-			validStyle = await validateStyle(projectRoot, config?.style),
-			validAsssets = await validateAssets(projectRoot, config?.assets),
-			validNav = await validateNav(projectRoot, config?.nav)
 
-		const errors = [validContent, validLocale, validStyle, validAsssets].filter(r => r.error).map(r => r.error!);
-		return errors.length ?
-			errorResult(errors.join('\n'))
-			: {
-				result: {
-					content: validContent.result!,
-					locale: validLocale.result!,
-					style: validStyle.result!,
-					assets: validAsssets.result!,
-					nav: validNav.result!
-
-				}
-			}
-	}
-
-	public async loadJSONTemplate<TRet>(name: string): Promise<IResponse<TRet>> {
+	public async loadJSONTemplate<TRet extends NotNull>(name: string): Promise<IResponse<TRet>> {
 		const loadRes = await this.loadTemplate(name);
 		if (loadRes.error) {
 			return errorResult(loadRes.error);
@@ -423,38 +218,3 @@ class YasppUtils implements IYasppUtils {
 
 
 export const yasppUtils = new YasppUtils;
-
-export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YASPP.IYasppConfig>> {
-	try {
-		const fname = "yaspp.config.json";
-		const configPath = fsPath.resolve(projectRoot, fname);
-		const userConfig = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
-		if (!userConfig) {
-			return errorResult(`Missing or invalid yaspp configuration file (${configPath})`);
-		}
-		return yasppUtils.validateConfig(projectRoot, userConfig);
-	}
-	catch (err) {
-		return errorResult(`Error loading yaspp ${err}`);
-	}
-}
-
-export async function loadYasppAppConfig(): Promise<IResponse<IYasppAppConfig>> {
-	try {
-		const projectRoot = ROOT_PATH;
-		const fname = "yaspp.json";
-		const configPath = fsPath.resolve(projectRoot, fname);
-		const config = await fileUtils.readJSON<IYasppAppConfig>(configPath);
-		if (!config?.root) {
-			return errorResult(`Missing or invalid yaspp configuration file (${configPath})`);
-		}
-		const siteRoot = fsPath.resolve(ROOT_PATH, config.root);
-		if (!await fileUtils.isFolder(siteRoot)) {
-			return errorResult(`Can't find site folder ${config.root} (${siteRoot})`);
-		}
-		return successResult(config);
-	}
-	catch (err) {
-		return errorResult(`Error loading yaspp ${err}`);
-	}
-}

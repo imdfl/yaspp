@@ -2,9 +2,10 @@
 
 import fsPath from "path";
 import { promises as fs } from "fs";
-import { yasppUtils, loadYasppAppConfig } from "./utils";
+import { yasppUtils } from "./utils";
 import { fileUtils } from "../../src/lib/fileUtils";
 import type { YASPP } from "yaspp-types";
+import { getYasppProjectRoot, loadYasppConfig } from "../../src/lib/yaspp/yaspp-lib";
 
 const rootPath = fsPath.resolve(__dirname, "../..");
 
@@ -27,14 +28,14 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
 				return contentErr;
 			}
 			console.log(`copied ${style.root} to public/styles`);
-			if (style.index) {
-				const name = style.index.replace(/\.scss\s*$/i, "");
-				const indexPath = fsPath.resolve(targetPath, `${name}.scss`);
-				if (indexPath === sitePath) {
-					return "";
-				}
-				await fs.copyFile(indexPath, sitePath);
-				console.log(`copied ${style.index} to ${yasppUtils.trimPath(sitePath)}`);
+			if (style.sheets?.length) {
+				// const name = style.index.replace(/\.scss\s*$/i, "");
+				// const indexPath = fsPath.resolve(targetPath, `${name}.scss`);
+				// if (indexPath === sitePath) {
+				// 	return "";
+				// }
+				// await fs.copyFile(indexPath, sitePath);
+				// console.log(`copied ${style.index} to ${yasppUtils.trimPath(sitePath)}`);
 				return "";
 			}
 		}
@@ -60,15 +61,18 @@ async function copyStyles(projectRoot: string, publicRoot: string, style: Partia
 /**
  * Returns an error message, empty if no error
  */
-async function run(clean: boolean): Promise<string> {
-	const { error, result } = await loadYasppAppConfig();
+async function run(clean: boolean, root?: string): Promise<string> {
+	const projectRoot = await getYasppProjectRoot(root);
+	if (!projectRoot) {
+		return `Failed to find yaspp project root`;
+	}
+	const { error, result } = await loadYasppConfig(projectRoot);
 	if (error) {
 		return error;
 	}
 	try {
 		const config = result!;
-		const projectRoot = fsPath.resolve(rootPath, config.root),
-			publicPath = fsPath.resolve(rootPath, "public/yaspp");
+		const publicPath = fsPath.resolve(rootPath, "public/yaspp");
 		const { content, locale, style, assets } = config;
 
 		async function copyOne(target: string, root?: string): Promise<string> {
@@ -136,8 +140,9 @@ async function run(clean: boolean): Promise<string> {
 	}
 }
 const clean = yasppUtils.getArg(process.argv, "--clean");
+const projectRoot = yasppUtils.getArg(process.argv, "--root");
 console.log(`Copying yaspp project site data, clean mode ${clean !== null}`);
-run(clean !== null)
+run(clean !== null, projectRoot ?? "")
 	.then(err => {
 		yasppUtils.exitWith(err);
 	})

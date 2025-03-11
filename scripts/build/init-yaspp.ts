@@ -7,11 +7,12 @@
 
 import fsPath from "path";
 import { promises as fs } from "fs";
-import { errorResult, IResponse, loadYasppConfig, successResult, yasppUtils } from "./utils";
+import { yasppUtils } from "./utils";
 import { fileUtils } from "../../src/lib/fileUtils";
 import type { I18NConfig } from "../../src/types/locale";
 import type { YASPP } from "yaspp-types";
-import type { IYasppAppConfig } from "../../src/types/app";
+import type { IResponse } from "../../src/types";
+import { errorResult, loadYasppConfig, successResult } from "../../src/lib/yaspp/yaspp-lib";
 
 /**
  * The root of the  yaspp module
@@ -153,40 +154,52 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 	return "";
 }
 
-async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
-	const fpath = fsPath.resolve(ROOT_FOLDER, "yaspp.json");
-	try {
-		const data = [
-			GEN_HEADER,
-			JSON.stringify(config, null, 4)
-		]
-		await fs.writeFile(fpath, data.join('\n'));
-		console.log(`Generated ${yasppUtils.trimPath(fpath)}`);
-		return "";
-	}
-	catch (err) {
-		return `Error generating yaspp.json (${fpath}): ${err}`;
-	}
+// async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
+// 	const fpath = fsPath.resolve(ROOT_FOLDER, "yaspp.json");
+// 	try {
+// 		const data = [
+// 			GEN_HEADER,
+// 			JSON.stringify(config, null, 4)
+// 		]
+// 		await fs.writeFile(fpath, data.join('\n'));
+// 		console.log(`Generated ${yasppUtils.trimPath(fpath)}`);
+// 		return "";
+// 	}
+// 	catch (err) {
+// 		return `Error generating yaspp.json (${fpath}): ${err}`;
+// 	}
 
-}
+// }
 
-async function clean(): Promise<string> {
+/**
+ * @param projectRoot
+ * @param config known to be valid
+ * @returns 
+ */
+async function linkSite(projectRoot: string, config: YASPP.IYasppConfig): Promise<string> {
 	try {
 		const publicPath = fsPath.resolve(ROOT_FOLDER, "public/yaspp");
 		await fileUtils.mkdir(publicPath);
 		if (!await fileUtils.isFolder(publicPath)) {
 			return "public folder not found";
 		}
-		const folders = ["content", "locales", "styles", "assets"];
-		for await (const folder of folders) {
-			const fpath = fsPath.resolve(publicPath, folder);
-			await fileUtils.mkdir(fpath);
-			await fileUtils.removeFolder({
-				path: fpath,
-				removeRoot: false
-			});
+
+		const folders = [["locales", config.locale.root], ["styles", config.style?.root], ["assets", config.assets?.root]];
+		for await (const [name, target] of folders) {
+			if (target) {
+				const srcPath = fsPath.resolve(projectRoot, target);
+				const linkErr = await fileUtils.symLink({
+					srcPath,
+					targetFolder: publicPath,
+					name,
+					overwrite: true
+				});
+				if (linkErr.error) {
+					return linkErr.error;
+				}
+			}
 		}
-		console.log(`Cleaned ${folders}`);
+		console.log(`Linked ${folders}`);
 		return "";
 	}
 	catch (err) {
@@ -203,24 +216,14 @@ async function run(projectRoot: string): Promise<string> {
 		if (error) {
 			return error;
 		}
-		const { nav, content, locale, style, assets } = result!;
-		const config: IYasppAppConfig = {
-			root: yasppUtils.diffPaths(ROOT_FOLDER, projectRoot),
-			content,
-			locale,
-			assets,
-			style,
-			nav
-		}
-		const appErr = await generateAppJSON(config);
-		if (appErr) {
-			return appErr;
-		}
+		const config = result!,
+			{ locale } = config;
+
 		const i18err = await generateI18N(projectRoot, locale);
 		if (i18err) {
 			return i18err;
 		}
-		const cleanErr = await clean();
+		const cleanErr = await linkSite(projectRoot, config);
 		return cleanErr;
 	}
 	catch (e) {

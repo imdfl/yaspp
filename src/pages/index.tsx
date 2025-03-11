@@ -10,7 +10,7 @@ import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLin
 import { getMetadata, renderElements } from '../lib/dynamicContentHelpers';
 import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
 import type { IPageProps } from 'types/models';
-import { initYaspp } from '../lib/app';
+import { initYaspp } from '../lib/yaspp';
 import { LocaleContext } from '@contexts/localeContext';
 
 const Index: NextPage<IPageProps> = (props) => {
