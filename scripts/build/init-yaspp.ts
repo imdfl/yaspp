@@ -176,7 +176,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
  * @param config known to be valid
  * @returns 
  */
-async function clean(projectRoot: string, config: YASPP.IYasppConfig): Promise<string> {
+async function linkSite(projectRoot: string, config: YASPP.IYasppConfig): Promise<string> {
 	try {
 		const publicPath = fsPath.resolve(ROOT_FOLDER, "public/yaspp");
 		await fileUtils.mkdir(publicPath);
@@ -199,7 +199,7 @@ async function clean(projectRoot: string, config: YASPP.IYasppConfig): Promise<s
 				}
 			}
 		}
-		console.log(`Cleaned ${folders}`);
+		console.log(`Linked ${folders}`);
 		return "";
 	}
 	catch (err) {
@@ -223,7 +223,7 @@ async function run(projectRoot: string): Promise<string> {
 		if (i18err) {
 			return i18err;
 		}
-		const cleanErr = await clean(projectRoot, config);
+		const cleanErr = await linkSite(projectRoot, config);
 		return cleanErr;
 	}
 	catch (e) {
