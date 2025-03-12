@@ -120,6 +120,9 @@ async function loadContent(
 		}
 
 		const app = await initYaspp(process.cwd());
+		if (!app.isValid) {
+			throw new Error(`Failed to initialize yaspp: ${app.error}`);
+		}
 		const docPath =
 			clientPath && contentType === ContentTypes.Annotation ? 
 				await findFirstFolder(clientPath, contentType, app)
@@ -137,7 +140,6 @@ async function loadContent(
 				contentMode: LoadContentModes.Full,
 				nodeProcessors: [createPopoverLinksNodeProcessor()],
 			},
-			rootFolder: app.contentPath,
 		});
 
 		const data = {

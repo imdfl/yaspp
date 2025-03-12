@@ -28,9 +28,10 @@ class CustomDocument extends Document<IStyleProps> {
 	static async getInitialProps(ctx: DocumentContext): Promise<YSPInitDocProps> {
 		const app = await initYaspp();
 		const base = await Document.getInitialProps(ctx);
+
 		return {
 			...base,
-			styleUrls: app.styleUrls.map(rec => rec.full)
+			styleUrls: app.isValid ? app.styleUrls.map(rec => rec.full) : []
 		}
 	}
 

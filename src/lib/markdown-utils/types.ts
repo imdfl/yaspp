@@ -5,7 +5,6 @@ import type { LocaleDictionary, LocaleId } from 'types';
 
 export interface ILoadContentOptions {
 	readonly app: IYasppApp;
-	readonly rootFolder: string;
 	/** Defaults to FOLDER */
 	readonly loadMode: LoadFolderModes;
 	/** The content path, relative to the content folder */

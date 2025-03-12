@@ -16,7 +16,7 @@ import type { IFolderStaticProps } from 'types/folder';
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type MLGetStaticProps = (
-	folderRelativePath: string,
+	folderRelativePath: string | null,
 	locale: string, //GetStaticPropsContext<ParsedUrlQuery, PreviewData>,
 	loadMode: LoadFolderModes,
 	mode?: Partial<IContentParseOptions>
