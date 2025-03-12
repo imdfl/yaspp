@@ -19,7 +19,7 @@ const Index: NextPage<IPageProps> = (props) => {
 	const [title, moto] = getMetadata(['title', 'moto'], pageData);
 
 	const pageTitle = `${t('common:site:title')} – ${t('common:site:subtitle')}`;
-
+	
 	return (
 		<Layout>
 			<Head>

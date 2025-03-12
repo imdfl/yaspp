@@ -34,6 +34,7 @@ import styles from './Layout.module.scss';
 import type { LocaleOptionProps } from 'layout/locale-select/LocaleSelect';
 import { LocaleContext } from '../contexts/localeContext';
 import useNavItems from '../hooks/useNavItems';
+import { YasppOnload } from '../components/yaspp-components';
 
 type RootLayoutProps = {
 	className?: string;
@@ -41,6 +42,7 @@ type RootLayoutProps = {
 
 const IS_DEBUG = process.env.NEXT_PUBLIC_ML_DEBUG;
 const MIN_DESKTOP_WIDTH = 1024;
+
 
 const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	const router = useRouter();
@@ -96,6 +98,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	const siteLicense = t('common:site:license', {
 		toYear: new Date().getFullYear(),
 	});
+
 
 	const menuDrawer = useMemo(
 		() => (
@@ -263,6 +266,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 				</Container>
 				{isMobile && menuDrawer}
 			</Scrollbar>
+			<YasppOnload />
 			{!IS_DEBUG && <Analytics />}
 		</>
 	);
