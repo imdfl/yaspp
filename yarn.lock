@@ -12164,9 +12164,9 @@ yargs@^17.3.1:
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
 
-"yaspp-types@git+ssh://git@github.com:imdfl/yaspp-types.git":
+"yaspp-types@git+https://github.com/imdfl/yaspp-types.git":
   version "1.0.3"
-  resolved "git+ssh://git@github.com:imdfl/yaspp-types.git#bba54d3c09864e1dfe40d35ea683ec388be22d0d"
+  resolved "git+https://github.com/imdfl/yaspp-types.git#bba54d3c09864e1dfe40d35ea683ec388be22d0d"
 
 yauzl@^2.10.0:
   version "2.10.0"

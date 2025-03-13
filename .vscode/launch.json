@@ -40,19 +40,10 @@
 			}
 		},
 		{
-			"name": "Init Jehovascript",
+			"name": "Init Test Site",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/init-yaspp --project ../jehovascript-content",
-			"env": {
-				"NODE_OPTIONS": "--inspect"
-			}
-		},
-		{
-			"name": "Init Current",
-			"type": "node-terminal",
-			"request": "launch",
-			"command": "npx ts-node scripts/build/init-yaspp --project ../site",
+			"command": "npx ts-node scripts/build/init-yaspp --project C:\\\\temp\\\\mels-loop",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}
