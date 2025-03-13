@@ -28,12 +28,13 @@ class CustomDocument extends Document<IStyleProps> {
 	static async getInitialProps(ctx: DocumentContext): Promise<YSPInitDocProps> {
 		const app = await initYaspp();
 		const base = await Document.getInitialProps(ctx);
+
 		return {
 			...base,
-			styleUrls: app.styleUrls.map(rec => rec.full)
+			styleUrls: app.isValid ? app.styleUrls.map(rec => rec.full) : []
 		}
-		
 	}
+
 	render() {
 		return (
 			<Html>
@@ -41,7 +42,7 @@ class CustomDocument extends Document<IStyleProps> {
 					{fontFaceLinks}
 					{
 						this.styleUrls.map((url, ind) => (
-							<link rel="stylesheet" href={url} key={ind} />
+							<link data-yaspp-position="last" rel="stylesheet" href={url} key={ind} />
 						))
 					}
 				</Head>

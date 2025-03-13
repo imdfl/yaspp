@@ -228,7 +228,8 @@ export function successResult<TResult extends NotNull>(result: TResult): IRespon
  */
 export async function getYasppProjectRoot(root?: string): Promise<string> {
 	root = root || process.cwd();
-	const projectRoot = fsPath.resolve(root, process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || "..");
+	const projectPath = process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "..";
+	const projectRoot = fsPath.resolve(root, projectPath);
 	if (await fileUtils.isFolder(projectRoot)) {
 		return projectRoot;
 	}

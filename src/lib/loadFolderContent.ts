@@ -31,10 +31,10 @@ const DEFAULT_PARSE_OPTIONS: IContentParseOptions = {
 };
 
 export const loadContentFolder = async (
-	{ relativePath, mode, loadMode,locale, rootFolder, app }: ILoadContentOptions
+	{ relativePath, mode, loadMode,locale, app }: ILoadContentOptions
 ): Promise<IFolderContent> => {
-	if (!rootFolder) {
-		throw new Error(`can't load content folder with neither app nor root`);
+	if (!app?.isValid) {
+		throw new Error(`can't load content folder with an invalid app`);
 	}
 	const parseOptions: IContentParseOptions = {
 		...DEFAULT_PARSE_OPTIONS,
@@ -44,7 +44,7 @@ export const loadContentFolder = async (
 
 	const contentDir = fsPath.resolve(
 		// getContentRootDir(options.rootFolder),
-		rootFolder,
+		app.contentPath,
 		relativePath
 	);
 

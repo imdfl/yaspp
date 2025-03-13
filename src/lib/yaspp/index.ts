@@ -14,21 +14,28 @@ interface ILocaleResult {
 	ns: string;
 	data: LocaleNamespace;
 }
+
+type YAppState = "none" | "error" | "loading" | "loaded";
 class YasppApp implements IYasppApp {
 	private _root = "";
 	private _content = "";
 	private _indexPage = "";
-	private _isLoading = false;
+	private _error: string = "";
+	private _state: YAppState = "none";
 	private _dictionary: LocaleDictionary | null = null;
 	private readonly _navItems: Record<string, INavSection[]> = {};
 	private readonly _styleUrls: IStylesheetUrl[] = [];
 
 	public get isLoading() {
-		return this._isLoading;
+		return this._state === "loading";
+	}
+
+	public get error(){
+		return this._error;
 	}
 
 	public get isValid(): boolean {
-		return Boolean(this._indexPage && this._dictionary)
+		return this._state === "loaded";
 	}
 
 	public get dictionary(): LocaleDictionary {
@@ -50,18 +57,23 @@ class YasppApp implements IYasppApp {
 	}
 
 	public async init(projectRoot: string): Promise<string> {
-		if (this._isLoading) {
-			throw new Error("Can't call yaspp app init when it's loading");
+		if (this._state !== "none") {
+			throw new Error("Can't call yaspp app init more than once");
 		}
-		this._isLoading = true;
+		this._state = "loading";
+		const returnError = (err: string) => {
+			this._state  = err ? "error" : "loaded";
+			this._error = err;
+			return err;
+		}
 		try {
 			if (!await fileUtils.isFolder(projectRoot)) {
-				return `path ${projectRoot} is not a folder, can't find ${CONFIG_FILE}`;
+				return returnError(`path ${projectRoot} is not a folder, can't find ${CONFIG_FILE}`);
 			}
 			this._root = projectRoot;
 			const configResult = await loadYasppConfig(projectRoot);
 			if (configResult.error) {
-				return configResult.error;
+				return returnError(configResult.error);
 			}
 			const yConfig = configResult.result;
 			this._content = fsPath.resolve(projectRoot, yConfig.content.root);
@@ -69,19 +81,19 @@ class YasppApp implements IYasppApp {
 	
 			const styleErr = await this._processStyles(projectRoot, yConfig.style);
 			if (styleErr) {
-				return styleErr;
+				return returnError(styleErr);
 			}
 			const dictErr = await this._loadLocales();
 			if (dictErr) {
-				return dictErr;
+				return returnError(dictErr);
 			}
 
 			const navErr = await this._loadNavItems(yConfig.nav, projectRoot);
 
-			return navErr;
+			return returnError(navErr);
 		}
-		finally {
-			this._isLoading = false;
+		catch(err) {
+			return returnError(String(err));
 		}
 	}
 
@@ -199,33 +211,6 @@ class YasppApp implements IYasppApp {
 		return "";
 	}
 
-	/**
-	 * 
-	 * @param config 
-	 * @returns 
-	 */
-	private _extractContentConfig(config: Partial<YASPP.IYasppConfig>): YASPP.IYasppContentConfig {
-		const content = config?.content || {} as Partial<YASPP.IYasppContentConfig>;
-		return {
-			root: content.root || "",
-			index: content.index || "",
-		};
-	}
-
-	private _extractStyleConfig(config: Partial<YASPP.IYasppConfig>): YASPP.IYasppStyleConfig {
-		const style = config?.style || {} as Partial<YASPP.IYasppStyleConfig>,
-			rawSheets = style.sheets;
-
-		const sheets = typeof rawSheets === "string" ?
-			rawSheets.split(',').map(s => s.trim())
-			: Array.isArray(rawSheets) ?
-				rawSheets.slice()
-				: ((rawSheets && console.error(`Invalid sheets entry in configuration ${typeof rawSheets}`)), []);
-		return {
-			root: style.root || "",
-			sheets: sheets.filter(Boolean)
-		};
-	}
 	private async _loadLanguage(lang: LocaleId, localeConfig: I18NConfig): Promise<LocaleLanguage | null> {
 		async function load(nsMap: Record<string, string>): Promise<ILocaleResult[]> {
 			const sys = Object.entries(nsMap).map(async ([ns, path]): Promise<ILocaleResult> => {
@@ -267,10 +252,16 @@ class YasppApp implements IYasppApp {
 type InitCallback = (app: IYasppApp) => unknown;
 
 const _instances: Map<string, {
-	app: YasppApp;
-	resolvers: InitCallback[];
+	readonly app: YasppApp;
+	readonly resolvers: InitCallback[];
 }> = new Map();
 
+/**
+ * Tries to load yaspp.config.json and build the relevant data from this file and
+ * files that it references. An app is always returned, you should check its `isValid` value;
+ * @param [root] defaults to process.cwd()
+ * @returns 
+ */
 export const initYaspp = async function (root?: string): Promise<IYasppApp> {
 	const projectRoot = await getYasppProjectRoot(root);
 
@@ -278,7 +269,7 @@ export const initYaspp = async function (root?: string): Promise<IYasppApp> {
 		app: new YasppApp(),
 		resolvers: []
 	}
-	if (app.isValid) {
+	if (app.isValid || app.error) {
 		return app;
 	}
 	if (app.isLoading) {

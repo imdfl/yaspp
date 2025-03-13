@@ -24,6 +24,11 @@ export interface IYasppApp {
 	readonly isValid: boolean;
 
 	/**
+	 * if the app is not valid, this is the error encountered
+	 */
+	readonly error: string;
+
+	/**
 	 * Map of locale id (e.g. "en") to a map of namespace => key:value
 	 */
 	readonly dictionary: LocaleDictionary;

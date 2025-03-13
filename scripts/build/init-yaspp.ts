@@ -18,6 +18,11 @@ import { errorResult, loadYasppConfig, successResult } from "../../src/lib/yaspp
  * The root of the  yaspp module
  */
 const ROOT_FOLDER = fsPath.resolve(__dirname, "../..");
+/**
+ * The projects various resources are linked here
+ */
+const PUBLIC_YASPP_FOLDER = "public/yaspp";
+
 const GEN_HEADER = `// ****************************************************************"
 // This is a GENERATED file, editing it is likely to break the build
 // ****************************************************************\n`;
@@ -178,12 +183,13 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
  */
 async function linkSite(projectRoot: string, config: YASPP.IYasppConfig): Promise<string> {
 	try {
-		const publicPath = fsPath.resolve(ROOT_FOLDER, "public/yaspp");
+		const publicPath = fsPath.resolve(ROOT_FOLDER, PUBLIC_YASPP_FOLDER);
 		await fileUtils.mkdir(publicPath);
 		if (!await fileUtils.isFolder(publicPath)) {
-			return "public folder not found";
+			return `Can't find or create ${PUBLIC_YASPP_FOLDER}`
 		}
 
+		const relPath = yasppUtils.diffPaths(ROOT_FOLDER, projectRoot)
 		const folders = [["locales", config.locale.root], ["styles", config.style?.root], ["assets", config.assets?.root]];
 		for await (const [name, target] of folders) {
 			if (target) {
@@ -198,8 +204,8 @@ async function linkSite(projectRoot: string, config: YASPP.IYasppConfig): Promis
 					return linkErr.error;
 				}
 			}
+			console.log(`Linked ${PUBLIC_YASPP_FOLDER}/${name}->${relPath}/${target}}`);
 		}
-		console.log(`Linked ${folders}`);
 		return "";
 	}
 	catch (err) {
