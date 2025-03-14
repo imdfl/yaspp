@@ -56,10 +56,11 @@ but has a sheets property`)
 			rawSheets.slice()
 			: ((rawSheets && console.error(`Invalid sheets entry in configuration ${typeof rawSheets}`)), []);
 
-	const sheets = allSheets.map(s => s.trim()).filter(Boolean);
+	const sheets: string[] = allSheets.map(s => s.trim()).filter(Boolean);
 	for await (const ss of sheets) {
-		const sheetPath = fsPath.resolve(stylePath, ss as unknown as string); // work around weird lint error
-		if (!await fileUtils.isFile(sheetPath)) {
+		const sheetPath = fsPath.resolve(stylePath, ss);
+		const targetSheet = fileUtils.assertFileExtension(sheetPath, "css");
+		if (!await fileUtils.isFile(targetSheet)) {
 			return errorResult(`Stylesheet ${ss} not found in ${stylePath}`);
 		}
 	}
@@ -219,6 +220,13 @@ export function successResult<TResult extends NotNull>(result: TResult): IRespon
 	return {
 		result
 	}
+}
+
+export function operationResult<TResult extends NotNull>(error?: string, result?: TResult): IResponse<TResult> {
+	return error?
+		{ error: error, result: null }
+		: result ? { result }
+			: { result: null, error: `undefined operation result`};
 }
 
 /**

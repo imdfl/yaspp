@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import fsPath from "path";
 import { rimraf } from "rimraf";
 import type { IResponse } from "../../src/types";
-import { errorResult, successResult } from './yaspp/yaspp-lib';
+import { errorResult, operationResult } from './yaspp/yaspp-lib';
 
 
 export type FileType = "" | "file" | "folder" | "other";
@@ -41,6 +41,13 @@ export interface ISymlinkOptions {
 }
 
 export interface IFileUtils {
+
+	/**
+	 * Returns a filename that ends with the required extension
+	 * @param fileName can be with or without an extension
+	 * @param extension can be with or without initial `.`
+	 */
+	assertFileExtension(fileName: string, extension: string): string;
 
 	/**
 	 * Tries to create a symlink to srcPath in targetFolder
@@ -96,6 +103,15 @@ export interface IFileUtils {
 }
 
 class FileUtils implements IFileUtils {
+
+	public 	assertFileExtension(fileName: string, extension: string): string {
+		if (!fileName) {
+			return "";
+		}
+		extension = '.' + (extension || "").replace(/^\.+/, '');
+		return fileName.replace(/\.[^.]+$/, "") + extension;
+	}
+
 	public async readJSON<T = Record<string, string>>(path: string, options?: { canFail?: boolean }): Promise<T | null> {
 		try {
 			const str = await fs.readFile(path, "utf-8");
@@ -147,21 +163,8 @@ class FileUtils implements IFileUtils {
 				rename: linkName
 			});
 
-			return res[0]?
-				errorResult(res[0]) : successResult(targetPath);
-			}
-			// const relPath = fsPath.relative(targetFolder, srcPath).replace(/\\/g, '/');
-			// const status = await runProcess("ln", ["-s", relPath, linkName], targetFolder);
-			// return status === 0 ? successResult(targetPath) : errorResult(`symlink: Failed to link ${srcPath}`);
-			// return new Promise<IResponse<string>>(resolve => {
-			// 	symlink(relPath, `./${linkName}`, err => {
-			// 		resolve(err ? errorResult(String(err)) : successResult(targetPath))
-			// 	});
-			// })
-			// .catch(err => {
-			// 	return errorResult(String(err))
-			// });
-		// }
+			return operationResult(res[0], targetPath);
+		}
 		catch (e) {
 			return errorResult(`symlink: error ${e}`);
 		}

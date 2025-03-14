@@ -181,7 +181,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
  * @param config known to be valid
  * @returns 
  */
-async function linkSite(projectRoot: string, config: YASPP.IYasppConfig): Promise<string> {
+async function linkSite(/*projectRoot: string, config: YASPP.IYasppConfig */): Promise<string> {
 	try {
 		const publicPath = fsPath.resolve(ROOT_FOLDER, PUBLIC_YASPP_FOLDER);
 		await fileUtils.mkdir(publicPath);
@@ -189,23 +189,23 @@ async function linkSite(projectRoot: string, config: YASPP.IYasppConfig): Promis
 			return `Can't find or create ${PUBLIC_YASPP_FOLDER}`
 		}
 
-		const relPath = yasppUtils.diffPaths(ROOT_FOLDER, projectRoot)
-		const folders = [["locales", config.locale.root], ["styles", config.style?.root], ["assets", config.assets?.root]];
-		for await (const [name, target] of folders) {
-			if (target) {
-				const srcPath = fsPath.resolve(projectRoot, target);
-				const linkErr = await fileUtils.symLink({
-					srcPath,
-					targetFolder: publicPath,
-					name,
-					overwrite: true
-				});
-				if (linkErr.error) {
-					return linkErr.error;
-				}
-			}
-			console.log(`Linked ${PUBLIC_YASPP_FOLDER}/${name}->${relPath}/${target}}`);
-		}
+		// const relPath = yasppUtils.diffPaths(ROOT_FOLDER, projectRoot)
+		// const folders = [["locales", config.locale.root], ["styles", config.style?.root], ["assets", config.assets?.root]];
+		// for await (const [name, target] of folders) {
+		// 	if (target) {
+		// 		const srcPath = fsPath.resolve(projectRoot, target);
+		// 		const linkErr = await fileUtils.symLink({
+		// 			srcPath,
+		// 			targetFolder: publicPath,
+		// 			name,
+		// 			overwrite: true
+		// 		});
+		// 		if (linkErr.error) {
+		// 			return linkErr.error;
+		// 		}
+		// 	}
+		// 	console.log(`Linked ${PUBLIC_YASPP_FOLDER}/${name}->${relPath}/${target}}`);
+		// }
 		return "";
 	}
 	catch (err) {
@@ -229,7 +229,7 @@ async function run(projectRoot: string): Promise<string> {
 		if (i18err) {
 			return i18err;
 		}
-		const cleanErr = await linkSite(projectRoot, config);
+		const cleanErr = await linkSite(/*projectRoot, config */);
 		return cleanErr;
 	}
 	catch (e) {

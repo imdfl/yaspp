@@ -195,10 +195,11 @@ class YasppApp implements IYasppApp {
 			return `Style root folder ${styleRoot} not found`;
 		}
 
-		for await (const sheet of sheets as string[]) {
-			if (sheet.includes("..") || !/^[a-z_]/i.test(sheet)) {
-				return `Illegal stylesheet url ${sheet}`
+		for await (const rawSheet of sheets as string[]) {
+			if (rawSheet.includes("..") || !/^[a-z_]/i.test(rawSheet)) {
+				return `Illegal stylesheet url ${rawSheet}`
 			}
+			const sheet = fileUtils.assertFileExtension(rawSheet, "css");
 			const sheetPath = fsPath.resolve(styleRoot, sheet);
 			if (!await fileUtils.isFile(sheetPath)) {
 				return `Stylesheet ${sheetPath} not found`;

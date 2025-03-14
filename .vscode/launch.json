@@ -34,9 +34,10 @@
 			"name": "Copy Content",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/copy-content --clean",
+			"command": "npx ts-node scripts/build/copy-content --clean --root ../mels-loop-content",
 			"env": {
-				"NODE_OPTIONS": "--inspect"
+				"NODE_OPTIONS": "--inspect",
+				"YASPP_PROJECT_ROOT": "../mels-loop-content"
 			}
 		},
 		{

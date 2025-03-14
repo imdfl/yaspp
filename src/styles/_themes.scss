@@ -7,9 +7,9 @@
 
 [data-ml-theme] {
 	// global assets
-	--ml-logo-light-url: url('../../public/assets/logo/ml-logo-light.png');
-	--ml-logo-dark-url: url('../../public/assets/logo/ml-logo-dark.png');
-	--ml-loading-indicator-url: url('../../public/assets/logo/ml-logo-dark.png');
+	--ml-logo-light-url: url('/assets/logo/yaspp-logo-light.png');
+	--ml-logo-dark-url: url('/assets/logo/yaspp-logo-dark.png');
+	--ml-loading-indicator-url: url('/assets/logo/yaspp-logo-dark.png');
 
 	// global vars
 	@include parser.compile(common.$vars, config.$theme-global-prefix);
