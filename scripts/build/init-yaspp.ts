@@ -12,7 +12,7 @@ import { fileUtils } from "../../src/lib/fileUtils";
 import type { I18NConfig } from "../../src/types/locale";
 import type { YASPP } from "yaspp-types";
 import type { IResponse } from "../../src/types";
-import { errorResult, loadYasppConfig, successResult } from "../../src/lib/yaspp/yaspp-lib";
+import { errorResult, loadYasppConfig, successResult, trimPath } from "@src/lib/yaspp/yaspp-lib";
 
 /**
  * The root of the  yaspp module
@@ -151,30 +151,13 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 		}, outputTmpl);
 		const outPath = fsPath.resolve(ROOT_FOLDER, "i18n.js");
 		await fs.writeFile(outPath, GEN_HEADER + output);
-		console.log(`Generated ${yasppUtils.trimPath(outPath)}`);
+		console.log(`Generated ${trimPath(outPath)}`);
 	}
 	catch (err) {
 		return `Error Generating i18n.js: ${err}`;
 	}
 	return "";
 }
-
-// async function generateAppJSON(config: IYasppAppConfig): Promise<string> {
-// 	const fpath = fsPath.resolve(ROOT_FOLDER, "yaspp.json");
-// 	try {
-// 		const data = [
-// 			GEN_HEADER,
-// 			JSON.stringify(config, null, 4)
-// 		]
-// 		await fs.writeFile(fpath, data.join('\n'));
-// 		console.log(`Generated ${yasppUtils.trimPath(fpath)}`);
-// 		return "";
-// 	}
-// 	catch (err) {
-// 		return `Error generating yaspp.json (${fpath}): ${err}`;
-// 	}
-
-// }
 
 /**
  * @param projectRoot

@@ -9,55 +9,6 @@ import { getYasppProjectRoot, loadYasppConfig } from "../../src/lib/yaspp/yaspp-
 
 const rootPath = fsPath.resolve(__dirname, "../..");
 
-// async function copyStyles(projectRoot: string, publicRoot: string, style: Partial<YASPP.IYasppStyleConfig> | undefined, clean: boolean): Promise<string> {
-// 	const targetPath = fsPath.resolve(publicRoot, "styles"),
-// 		sitePath = fsPath.resolve(targetPath, "site.scss");
-// 	await fileUtils.mkdir(targetPath);
-// 	if (clean) {
-// 		await fileUtils.removeFolder({ path: targetPath, removeRoot: false });
-// 	}
-// 	try {
-// 		if (style?.root) {
-// 			const stylePath = fsPath.resolve(projectRoot, style.root);
-
-// 			if (!await fileUtils.isFolder(stylePath)) {
-// 				return `Styles folder ${style.root} (${stylePath}) not found`;
-// 			}
-// 			const contentErr = await yasppUtils.copyFolderContent(stylePath, targetPath, clean);
-// 			if (contentErr) {
-// 				return contentErr;
-// 			}
-// 			console.log(`copied ${style.root} to public/styles`);
-// 			if (style.sheets?.length) {
-// 				// const name = style.index.replace(/\.scss\s*$/i, "");
-// 				// const indexPath = fsPath.resolve(targetPath, `${name}.scss`);
-// 				// if (indexPath === sitePath) {
-// 				// 	return "";
-// 				// }
-// 				// await fs.copyFile(indexPath, sitePath);
-// 				// console.log(`copied ${style.index} to ${yasppUtils.trimPath(sitePath)}`);
-// 				return "";
-// 			}
-// 		}
-
-// 		// Create default site.scss if it doesn't exist
-// 		if (await fileUtils.isFile(sitePath)) {
-// 			return "";
-// 		}
-// 		const tmplResult = await yasppUtils.loadTemplate("site.scss");
-// 		if (tmplResult.error) {
-// 			return tmplResult.error;
-// 		}
-// 		await fs.writeFile(sitePath, tmplResult.result!);
-// 		console.log(`Generated default site.scss`);
-// 		return "";
-// 	}
-// 	catch (err) {
-// 		return `Error copying styles ${err}`;
-// 	}
-
-// }
-
 /**
  * Returns an error message, empty if no error
  */
@@ -82,9 +33,6 @@ async function run(clean: boolean, root?: string): Promise<string> {
 			const contentPath = fsPath.resolve(projectRoot, root),
 				targetPath = fsPath.resolve(publicPath, target);
 			const err = await yasppUtils.copyFolderContent(contentPath, targetPath, clean);
-			if (!err) {
-				console.log(`copied ${root} to ${target}`);
-			}
 			return err;
 		}
 		const err = // await copyNav()

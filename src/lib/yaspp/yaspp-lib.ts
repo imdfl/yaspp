@@ -6,8 +6,6 @@ import { fileUtils } from "../fileUtils";
 import type { IYasppNavData } from "../../types/app";
 
 
-
-
 async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IResponse<YASPP.IYasppContentConfig>> {
 	if (!content) {
 		return errorResult("no content section in config file");
@@ -191,22 +189,115 @@ async function validateConfig(projectRoot: string, config?: Partial<YASPP.IYaspp
 ///////////// Exported members ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
-export function runProcess(exe: string, argv: string[], cwd: string): Promise<number> {
-	return new Promise<number>(resolve => {
-		const proc = spawn(exe, argv, {
-			cwd
-		})
+export async function captureProcessOutput(
+	{
+		cwd = process.cwd(), exe, argv, env, onData, onError, dryrun, quiet, onProgress, shell
+	}: YASPP.IProcessOptions): Promise<YASPP.IProcessOutput> {
+	const errCB = (onError === true) ?
+		(s: string) => !quiet && console.warn(`>${s}`) : onError;
 
-		proc.on("error", ()  => {
-			resolve(-1);
-		})
+	if (!exe) {
+		return {
+			output: [], errors: ["No executbale specified"], status: -1
+		}
+	}
+	const dataCB = (onData === true) ?
+		(s: string) => !quiet && console.log(`>${s}`) : onData;
 
-		proc.on('close', function () {
-			const code = Number(proc.exitCode);
-			resolve(isNaN(code) ? 1 : code);
-		});
+	const progress = typeof onProgress === "function" ? {
+		callback: onProgress as () => unknown,
+		cleanup: () => void 0,
+		interval: null as NodeJS.Timeout | null
+	} :
+		onProgress === true ? {
+			callback: () => process.stdout.write('.'),
+			cleanup: () => console.log('done'),
+			interval: null as NodeJS.Timeout | null
+		}
+			: null;
+
+	if (!quiet) {
+		console.log(`running ${exe} ${argv.join(' ')} in ${trimPath(String(cwd))}`);
+	}
+	if (dryrun) {
+		return {
+			status: 0,
+			errors: [],
+			output: []
+		}
+	}
+	return new Promise<YASPP.IProcessOutput>((resolve) => {
+		const output: string[] = [];
+		const errors: string[] = [];
+		let resolved = false;
+		function resolveWith(status: number | null, err?: string): void {
+			if (!resolved) {
+				resolved = true;
+				resolve({
+					status: Number(status),
+					errors: [err??"", ...errors].filter(Boolean),
+					output
+				});
+			}
+		}
+		try {
+			const processEnv = env ? {
+				...process.env, ...env
+			} : undefined;
+			const sexe: string = exe,
+				sargv: string[] = argv; //weird lint error that conflicts with the build if fixed locally
+			const proc = spawn(sexe, sargv, {
+				shell: shell !== false,
+				cwd,
+				env: processEnv
+			});
+			if (progress?.callback) {
+				progress.interval = setInterval(progress.callback, 100);
+			}
+			proc.on("error", err => {
+				resolveWith(2, String(err));
+			})
+			proc.stderr.on('data', data => {
+				errors.push(String(data));
+				errCB && errCB(String(data));
+
+			});
+			proc.stdout.on('data', data => {
+				output.push(String(data));
+				dataCB && dataCB(String(data));
+			});
+
+			proc.on('close', function () {
+				resolveWith(proc.exitCode);
+			});
+		}
+		catch (e) {
+			resolveWith(3, String(e))
+		}
 	})
+		.catch(err => ({
+			status: 1,
+			output: [],
+			errors: [String(err)]
+		}))
+		.finally(() => {
+			if (progress) {
+				if (progress.interval) {
+					clearInterval(progress.interval);
+					progress.interval = null;
+				}
+				progress.cleanup();
+			}
+		})
+}
 
+/**
+* Returns a reasonably sized path of the path for display, e.g. users/docs/readme.md
+* @param path 
+*/
+export function trimPath(path: string): string {
+   const parts = path.split(/[/\\]+/);
+   return parts.slice(Math.max(0, parts.length - 3)).join('/');
 }
 
 

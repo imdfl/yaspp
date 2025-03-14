@@ -6,7 +6,7 @@ import { parse as parseJSON } from "json5";
 
 import type { IResponse, NotNull } from "@src/types";
 import { fileUtils } from '../../src/lib/fileUtils';
-import { errorResult, runProcess, successResult } from "../../src/lib/yaspp/yaspp-lib";
+import { captureProcessOutput, errorResult, successResult } from "../../src/lib/yaspp/yaspp-lib";
 
 const WIN_DEVICE_RE = /^([A-Z]):[\\\/]+/i; // eslint-disable-line no-useless-escape
 
@@ -20,11 +20,6 @@ export interface IYasppUtils {
 	 */
 	getArg(args: string[], key: string): string | null;
 
-	/**
-	 * Returns a reasonably sized path of the path for display, e.g. users/docs/readme.md
-	 * @param path 
-	 */
-	trimPath(path: string): string;
 	/**
 	 * Returns an error message if any
 	 * @param srcPath 
@@ -120,32 +115,50 @@ class YasppUtils implements IYasppUtils {
 	}
 
 
-	public trimPath(path: string): string {
-		const parts = path.split(/[/\\]+/);
-		return parts.slice(Math.max(0, parts.length - 3)).join('/');
-	}
-
+	private static forbidden = [
+		// starting with / and at most one folder
+		/^\/[^/]*\/?$/, 
+		// any folder with /bin in its path
+		/(^|\/)bin(\/|$)/
+	] as ReadonlyArray<RegExp>;
 
 	/**
 	 * Tries to copy the content of one folder to another
+	 * logs the result to console
 	 * @param srcPath 
 	 * @param targetPath 
 	 * @param clean 
 	 * @returns Promise<string> with error message
 	 */
 	public async copyFolderContent(srcPath: string, targetPath: string, clean: boolean): Promise<string> {
+
+		function isForbidden(url: string): boolean {
+			if (!url) {
+				return true;
+			}
+			url = url.replace(/\\/g, '/').replace(/^[a-z]:/i, '');
+			const ind = YasppUtils.forbidden.findIndex(r => r.test(url));
+			return ind >= 0;
+		}
 		async function copyIt(resolve: (value: string | PromiseLike<string>) => unknown): Promise<unknown> {
 			if (!await fileUtils.isFolder(srcPath)) {
 				return resolve(`Content Folder ${srcPath} not found`);
+			}
+			if (isForbidden(targetPath)) {
+				return resolve(`Can't copy to ${targetPath}: forbidden`);
 			}
 			if (await fileUtils.mkdir(targetPath)) {
 				return resolve(`Target Folder ${targetPath} can't be created`);
 			}
 			if (clean) {
 				const rmargs = ["-rf", '*'];
-				const rmCode = await runProcess("rm", rmargs, targetPath);
-				if (rmCode !== 0) {
-					resolve(`Failed to delete content of ${targetPath}`);
+				const rr = await captureProcessOutput({
+					cwd: targetPath,
+					exe: "rm",
+					argv: rmargs
+				})
+				if (rr.status !== 0) {
+					resolve(`Failed to delete content of ${targetPath}: ${rr.errors.join('\n')}`);
 				}
 			}
 			else {
@@ -156,9 +169,16 @@ class YasppUtils implements IYasppUtils {
 				}
 			}
 			const cpargs = ["--update", "-r", '*', targetPath]
-			const cpCode = await runProcess("cp", cpargs, srcPath);
-			console.log(`Copied ${yasppUtils.trimPath(srcPath)} to ${yasppUtils.trimPath(targetPath)}`);
-			resolve(cpCode === 0 ? "" : `Error copying content, exit code ${cpCode}`);
+			const cpResult = await captureProcessOutput({
+				exe: "cp", 
+				argv: cpargs,
+				cwd: srcPath
+			});
+			const err = cpResult.status === 0 ? "" : `Error copying ${srcPath} to ${targetPath},
+exit code ${cpResult.status},
+errors ${cpResult.errors}`;
+			console.log(err || `Copied ${srcPath} to ${targetPath}`);
+			resolve(err);
 		}
 
 		return new Promise<string>(resolve => {
