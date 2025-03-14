@@ -5,7 +5,7 @@ import type { IStylesheetUrl, IYasppApp } from 'types/app';
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from 'types';
 import type { INavSection, NavGroups } from 'types/nav';
 import { YASPP } from "yaspp-types";
-import { getYasppProjectRoot, loadYasppConfig } from './yaspp-lib';
+import { getYasppProjectPath, loadYasppConfig } from './yaspp-lib';
 
 
 const CONFIG_FILE = "yaspp.config.json";
@@ -257,16 +257,22 @@ const _instances: Map<string, {
 	readonly resolvers: InitCallback[];
 }> = new Map();
 
+
+export interface IInitYasppOptions {
+	// will default to 
+	readonly yasppRoot: string;
+	readonly projectRoot: string;
+}
 /**
  * Tries to load yaspp.config.json and build the relevant data from this file and
  * files that it references. An app is always returned, you should check its `isValid` value;
- * @param [root] defaults to process.cwd()
+ * @param [projectRoot] defaults to process.cwd()
  * @returns 
  */
-export const initYaspp = async function (root?: string): Promise<IYasppApp> {
-	const projectRoot = await getYasppProjectRoot(root);
+export const initYaspp = async function (projectRoot?: string): Promise<IYasppApp> {
+	const projectPath = await getYasppProjectPath(projectRoot);
 
-	const { app, resolvers } = _instances.get(root) ?? {
+	const { app, resolvers } = _instances.get(projectRoot) ?? {
 		app: new YasppApp(),
 		resolvers: []
 	}
@@ -279,15 +285,15 @@ export const initYaspp = async function (root?: string): Promise<IYasppApp> {
 		});
 		return p;
 	}
-	_instances.set(root, { app, resolvers });
-	const error = await app.init(projectRoot);
+	_instances.set(projectRoot, { app, resolvers });
+	const error = await app.init(projectPath);
 	if (error) {
 		const err = `Error loading yaspp: ${error}`;
 		console.log(err);
 		// throw new Error(`Error loading yaspp: ${error}`);
 	}
 	// update data in map
-	_instances.set(root, { app, resolvers: [] });
+	_instances.set(projectRoot, { app, resolvers: [] });
 	resolvers.forEach(resolve => resolve(app));
 	return app;
 

@@ -94,6 +94,12 @@ export interface IFileUtils {
 	readJSON<T = Record<string, string>>(path: string, options?: { canFail?: boolean }): Promise<T | null>;
 
 	/**
+	 * Simple wrapper to read file content, swallws errors
+	 * @param path
+	 */
+	readFile(path: string, options?: { canFail?: boolean }): Promise<string | null>;
+
+	/**
 	 * Remove either the folder or all its content, based on options.removeRoot
 	 * @param options 
 	 */
@@ -114,12 +120,26 @@ class FileUtils implements IFileUtils {
 
 	public async readJSON<T = Record<string, string>>(path: string, options?: { canFail?: boolean }): Promise<T | null> {
 		try {
-			const str = await fs.readFile(path, "utf-8");
+			const str = await this.readFile(path, options);
+			if (str === null) {
+				return null;
+			}
 			return parseJSON<T>(str);
 		}
 		catch (err) {
+			console.error(`Error reading json data from ${path}: ${err}`);
+			return null;
+		}
+	}
+
+	public async readFile(path: string, options?: { canFail?: boolean }): Promise<string | null> {
+		try {
+			const str = await fs.readFile(path, "utf-8");
+			return str;
+		}
+		catch (err) {
 			if (!options?.canFail) {
-				console.error(`Error reading json data from ${path}: ${err}`);
+				console.error(`Error reading data from ${path}: ${err}`);
 			}
 			return null;
 		}

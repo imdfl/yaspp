@@ -33,11 +33,10 @@
 	"private": true,
 	"scripts": {
 		"clean": "rm -rf .next",
-		"refresh-content": "npx ts-node scripts/build/copy-content",
 		"build": "next build",
-		"prebuild": "npx ts-node scripts/build/copy-content --clean",
+		"prebuild": "npx ts-node src/scripts/copy-content --clean",
 		"dev": "next dev",
-		"predev": "npx ts-node scripts/build/copy-content",
+		"predev": "npx ts-node src/scripts/copy-content",
 		"dev-only": "next dev",
 		"start": "next start",
 		"build:sitemap": "next-sitemap",
@@ -56,7 +55,7 @@
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
 		"upload": "npx ts-node scripts/upload-files.ts",
-		"init-yaspp": "npx ts-node scripts/build/init-yaspp"
+		"init-yaspp": "cd src/scripts && npx ts-node init-yaspp"
 	},
 	"dependencies": {
 		"@radix-ui/react-form": "0.0.3",

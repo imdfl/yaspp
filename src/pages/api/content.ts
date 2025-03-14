@@ -119,7 +119,7 @@ async function loadContent(
 			return JSON.parse(payload);
 		}
 
-		const app = await initYaspp(process.cwd());
+		const app = await initYaspp();
 		if (!app.isValid) {
 			throw new Error(`Failed to initialize yaspp: ${app.error}`);
 		}

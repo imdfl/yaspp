@@ -323,11 +323,12 @@ export function operationResult<TResult extends NotNull>(error?: string, result?
 /**
  * Returns the root path of the yaspp site, usually the parent of the yaspp folder but can be anywhere on the
  * local FS. Returns an empty string if the 
- * @param root
+ * @param projectPath if provided, this is the relative path of the project to process.cwd(), which is
+ * assumed to be the yaspp root
  */
-export async function getYasppProjectRoot(root?: string): Promise<string> {
-	root = root || process.cwd();
-	const projectPath = process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "..";
+export async function getYasppProjectPath(projectPath?: string): Promise<string> {
+	const root = process.cwd();
+	projectPath = projectPath || process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "..";
 	const projectRoot = fsPath.resolve(root, projectPath);
 	if (await fileUtils.isFolder(projectRoot)) {
 		return projectRoot;

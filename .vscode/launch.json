@@ -34,7 +34,7 @@
 			"name": "Copy Content",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/copy-content --clean --root ../mels-loop-content",
+			"command": "npx ts-node src/scripts/copy-content --clean --project ../mels-loop-content",
 			"env": {
 				"NODE_OPTIONS": "--inspect",
 				"YASPP_PROJECT_ROOT": "../mels-loop-content"
@@ -44,7 +44,7 @@
 			"name": "Init Test Site",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/init-yaspp --project C:\\\\temp\\\\mels-loop",
+			"command": "npx ts-node ./src/scripts/init-yaspp --project C:\\\\temp\\\\mels-loop",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}
@@ -53,7 +53,7 @@
 			"name": "Init c-temp-mels-loop",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/init-yaspp --project C:\\\\temp\\\\mels-loop",
+			"command": "npx ts-node ./src/scripts/init-yaspp --project C:\\\\temp\\\\mels-loop",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}
@@ -63,7 +63,7 @@
 			"name": "Init Mel",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "npx ts-node scripts/build/init-yaspp --project ../mels-loop-content",
+			"command": "npx ts-node ./src/scripts/init-yaspp --project ../mels-loop-content",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}

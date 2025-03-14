@@ -8,11 +8,11 @@
 import fsPath from "path";
 import { promises as fs } from "fs";
 import { yasppUtils } from "./utils";
-import { fileUtils } from "../../src/lib/fileUtils";
-import type { I18NConfig } from "../../src/types/locale";
+import { fileUtils } from "@lib/fileUtils";
+import type { I18NConfig } from "types/locale";
 import type { YASPP } from "yaspp-types";
-import type { IResponse } from "../../src/types";
-import { errorResult, loadYasppConfig, successResult, trimPath } from "@src/lib/yaspp/yaspp-lib";
+import type { IResponse } from "types";
+import { errorResult, getYasppProjectPath, loadYasppConfig, successResult, trimPath } from "@lib/yaspp/yaspp-lib";
 
 /**
  * The root of the  yaspp module
@@ -81,9 +81,9 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 	if (configResult.error) {
 		return configResult.error;
 	}
-	const outputTmpl = tmplResult.result!.replace(/\/\/.+$/mg, ""); // template string without comments
+	const outputTmpl = tmplResult.result.replace(/\/\/.+$/mg, ""); // template string without comments
 	try {
-		const localeConfig = configResult.result!
+		const localeConfig = configResult.result;
 		function ts(s: string) { return `"${s}"`; }
 		const sysNS = Object.entries(localeConfig.pages).reduce((ns: Set<string>, [, values]) => {
 			values.forEach(s => ns.add(s));
@@ -99,7 +99,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 		if (nsResult.error) {
 			return nsResult.error;
 		}
-		values["%SYSNS%"] = toNSString(nsResult.result!);
+		values["%SYSNS%"] = toNSString(nsResult.result);
 		const sysDict = nsArray.reduce((dict: Record<string, string>, ns) => {
 			dict[ns] = `./locales/%LANG%/${ns}.json`;
 			return dict;
@@ -137,7 +137,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 			if (nsResult.error) {
 				return nsResult.error;
 			}
-			values["%USERNS%"] = toNSString(nsResult.result!);
+			values["%USERNS%"] = toNSString(nsResult.result);
 			const pDict = userNS.reduce((dict: Record<string, string>, ns) => {
 				dict[ns] = `./public/yaspp/locales/%LANG%/${ns}.json`;
 				return dict;
@@ -164,7 +164,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
  * @param config known to be valid
  * @returns 
  */
-async function linkSite(/*projectRoot: string, config: YASPP.IYasppConfig */): Promise<string> {
+async function createSiteRoot(/*projectRoot: string, config: YASPP.IYasppConfig */): Promise<string> {
 	try {
 		const publicPath = fsPath.resolve(ROOT_FOLDER, PUBLIC_YASPP_FOLDER);
 		await fileUtils.mkdir(publicPath);
@@ -201,18 +201,22 @@ async function linkSite(/*projectRoot: string, config: YASPP.IYasppConfig */): P
  */
 async function run(projectRoot: string): Promise<string> {
 	try {
-		const { error, result } = await loadYasppConfig(projectRoot);
+		const projectPath  = await getYasppProjectPath(projectRoot);
+		if (!projectPath) {
+			return `project folder not found at ${projectRoot}`;
+		}
+		const { error, result } = await loadYasppConfig(projectPath);
 		if (error) {
 			return error;
 		}
-		const config = result!,
+		const config = result,
 			{ locale } = config;
 
-		const i18err = await generateI18N(projectRoot, locale);
+		const i18err = await generateI18N(projectPath, locale);
 		if (i18err) {
 			return i18err;
 		}
-		const cleanErr = await linkSite(/*projectRoot, config */);
+		const cleanErr = await createSiteRoot(/*projectRoot, config */);
 		return cleanErr;
 	}
 	catch (e) {
@@ -225,8 +229,7 @@ if (!rootArg) {
 	yasppUtils.exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
 }
 else {
-	const projectRoot = fsPath.resolve(process.cwd(), rootArg);
-	run(projectRoot)
+	run(rootArg)
 		.then(err => {
 			yasppUtils.exitWith(err);
 		})

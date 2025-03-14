@@ -4,9 +4,9 @@ import { promises as fs } from "fs";
 import fsPath from "path";
 import { parse as parseJSON } from "json5";
 
-import type { IResponse, NotNull } from "@src/types";
+import type { IResponse, NotNull } from "types";
 import { fileUtils } from '../../src/lib/fileUtils';
-import { captureProcessOutput, errorResult, successResult } from "../../src/lib/yaspp/yaspp-lib";
+import { captureProcessOutput, errorResult, successResult } from "@lib/yaspp/yaspp-lib";
 
 const WIN_DEVICE_RE = /^([A-Z]):[\\\/]+/i; // eslint-disable-line no-useless-escape
 
@@ -41,6 +41,11 @@ export interface IYasppUtils {
 	loadTemplate(name: string): Promise<IResponse<string>>;
 
 	normalizePath(path: string): string;
+
+	/**
+	 * Tries to load environment variables from the root,according to the next conventions
+	 */
+	loadEnv(): Promise<void>;
 }
 
 export interface IYasppLoadOptions {
@@ -63,6 +68,44 @@ function equalArrays(arr1: string[], arr2: string[]): boolean {
 
 
 class YasppUtils implements IYasppUtils {
+
+	public async loadEnv(): Promise<void> {
+		try {
+			const files = [
+				".env"
+			],
+			env = process.env.NODE_ENV;
+			if (env){
+				files.push(`.env.${env}`);
+			}
+			const root = fsPath.resolve(__dirname, "../..");
+			for await (const file of files) {
+				const fpath = fsPath.resolve(root, file);
+				const data = await fileUtils.readFile(fpath, { canFail: true});
+				if (data) {
+					const lines = data
+						.split(/[\n\r]/)
+						.map(s => s.replace(/^\s*#.*$/g, ""))
+						.filter(Boolean)
+					lines.forEach(line => {
+						const  [key, value] = line.split('=');
+						if (key && value) {
+							const val = value.trim()
+								.replace(/^'(.*)'$/, "$1")
+								.replace(/^"(.*)"$/, "$1");
+							if (val) {
+								process.env[key] = val;
+							}
+						}
+					})
+				}
+			}
+		}
+		catch(err) {
+			console.error(`Error loading environment: ${err}`);
+		}
+	}
+
 	public getArg(args: string[], key: string): string | null {
 		const ind = args.indexOf(key);
 		if (ind < 0) {
@@ -194,7 +237,7 @@ errors ${cpResult.errors}`;
 			return errorResult(loadRes.error);
 		}
 		try {
-			const ret = parseJSON<TRet>(loadRes.result!);
+			const ret = parseJSON<TRet>(loadRes.result);
 			return ret ? successResult(ret) : errorResult(`Failed to load template ${name}`)
 		}
 		catch (err) {
