@@ -142,8 +142,8 @@ export interface IFolderContent {
  * next's approach to serializing
  */
 export interface IContentComponentData {
-	pageProps: IGenericPageProps;
-	className?: string;
+	readonly pageProps: IGenericPageProps;
+	readonly className?: string;
 }
 
 export interface IGenericPageProps {

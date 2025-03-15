@@ -8,8 +8,8 @@ interface IComponentContentData {
 }
 
 export interface IParsedComponentData {
-	pageData: IParsedPageData[];
-	metaData: IParsedPageData[];
+	readonly pageData: IParsedPageData[];
+	readonly metaData: IParsedPageData[];
 }
 
 /**

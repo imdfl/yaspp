@@ -51,6 +51,12 @@ After setup, you should have all the the files and folders required for running 
 
 On each development or production run, yaspp runs the script `scripts/build/copy-content` which copies the relevant content from your project to the `/public/yaspp` folder. This means that you _cannot_ hot-reload your content, but you will get the latest version of it in each run.
 
+### Git hooks
+
+To enable the git hooks included in this repo, run in in the root folder:
+
+    git config --local core.hooksPath .git-hooks/
+
 ### Detailed information
 
 See the [Wiki](https://github.com/imdfl/yaspp/wiki)

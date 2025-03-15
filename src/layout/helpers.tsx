@@ -3,7 +3,7 @@ import type {
 	INavSection,
 } from 'types/nav';
 
-import type { YASPP} from "yaspp-types";
+import type { YASPP } from "yaspp-types";
 
 const translateKeys = (
 	keys: NavItemLocaleProps,

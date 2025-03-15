@@ -6,10 +6,11 @@ import Button from '../../button/Button';
 import List from '../../list/List';
 import NavItem from '../nav-item/NavItem';
 import styles from './MenuBar.module.scss';
-import type { INavItemData, INavSection } from 'types/nav';
+import type { INavSection } from 'types/nav';
 import classNames from 'classnames';
 import { LocaleContext } from '@contexts/localeContext';
 import type { TextDirection } from 'types/locale';
+import type { YASPP } from "yaspp-types";
 
 type NavProps = {
 	items: ReadonlyArray<INavSection>;
@@ -17,7 +18,7 @@ type NavProps = {
 	textDirection?: TextDirection;
 };
 
-const renderItems = (items: ReadonlyArray<INavItemData>) =>
+const renderItems = (items: ReadonlyArray<YASPP.INavItemData>) =>
 	items.map((item) => (
 		<NavigationMenu.Link asChild key={item.id}>
 			<ListItem className={styles.menuListItem}>

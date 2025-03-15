@@ -10,7 +10,6 @@ import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLin
 import { getMetadata, renderElements } from '../lib/dynamicContentHelpers';
 import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
 import type { IPageProps } from 'types/models';
-import { initYaspp } from '../lib/app';
 import { LocaleContext } from '@contexts/localeContext';
 
 const Index: NextPage<IPageProps> = (props) => {
@@ -19,7 +18,7 @@ const Index: NextPage<IPageProps> = (props) => {
 	const [title, moto] = getMetadata(['title', 'moto'], pageData);
 
 	const pageTitle = `${t('common:site:title')} – ${t('common:site:subtitle')}`;
-
+	
 	return (
 		<Layout>
 			<Head>
@@ -33,9 +32,8 @@ const Index: NextPage<IPageProps> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const app = await initYaspp();
 	return mlNextUtils.getFolderStaticProps(
-		app.indexPath,
+		null, // convention for the default index page, empty string also works
 		context.locale,
 		LoadFolderModes.Folder,
 		{

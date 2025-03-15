@@ -12,7 +12,7 @@ import {
 import { IFolderStaticProps } from 'types/folder';
 import { LocaleId } from 'types/locale';
 import type { IMLNextUtils, IStaticPathsParameters } from './types';
-import { initYaspp } from '../app';
+import { initYaspp } from '../yaspp';
 
 class MLNextUtils implements IMLNextUtils {
 	/**
@@ -40,19 +40,29 @@ class MLNextUtils implements IMLNextUtils {
 	}
 
 	public async getFolderStaticProps(
-		folderPath: string,
+		folderPath: string | null,
 		locale: LocaleId,
 		loadMode: LoadFolderModes,
 		mode?: Partial<IContentParseOptions>
 	): Promise<GetStaticPropsResult<IFolderStaticProps>> {
 		const app = await initYaspp();
+		if (!app.isValid) {
+			console.error(`Failed to initialize yaspp: ${app.error}`);
+			return {
+				props: {
+					content: "",
+					documentPath: folderPath,
+					nav: ""
+				}
+			}
+		}
+		const relativePath = folderPath || app.indexPath;
 		const docData = await loadContentFolder({
 			app,
-			relativePath: folderPath,
+			relativePath,
 			loadMode,
 			locale,
 			mode,
-			rootFolder: app.contentPath,
 		});
 
 		const page = docData.pages[0];
@@ -74,6 +84,13 @@ class MLNextUtils implements IMLNextUtils {
 	): Promise<GetStaticPathsResult<ParsedUrlQuery>> {
 		const paths: ILocaleMap[] = [];
 		const app = await initYaspp();
+		if (!app.isValid) {
+			console.error(`Failed to get static paths, yaspp error ${app.error}`);
+			return {
+				paths: [],
+				fallback: false
+			}
+		}
 		for await (const locale of (locales || [])) {
 			const folderData = await loadContentFolder({
 				locale,
@@ -84,7 +101,6 @@ class MLNextUtils implements IMLNextUtils {
 					contentMode: LoadContentModes.None,
 					parseMode: MLParseModes.NORMAL,
 				},
-				rootFolder: app.contentPath,
 			});
 			paths.push(...folderData.ids);
 		}
@@ -99,6 +115,12 @@ class MLNextUtils implements IMLNextUtils {
 		options: IStaticPathsParameters
 	): Promise<GetStaticPathsResult<ParsedUrlQuery>> {
 		const app = await initYaspp();
+		if (!app.isValid) {
+			return {
+				paths: [],
+				fallback: false
+			}
+		}
 		const paths: ILocaleMap[] = [];
 		const allPaths = await collectPathsIn(app.contentPath, options.contentFolder);
 
@@ -113,7 +135,6 @@ class MLNextUtils implements IMLNextUtils {
 						contentMode: LoadContentModes.None,
 						parseMode: MLParseModes.NORMAL,
 					},
-					rootFolder: app.contentPath
 				});
 
 				if (folderData.ids.length) {

@@ -11,7 +11,7 @@ import type {
 import * as fsPath from 'path';
 import * as fileSystem from 'fs';
 import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
-import { initYaspp } from '../../lib/app';
+import { initYaspp } from '../../lib/yaspp';
 import type { IYasppApp } from 'types/app';
 
 const TypeMap: { [key: string]: ContentTypes } = {
@@ -119,7 +119,10 @@ async function loadContent(
 			return JSON.parse(payload);
 		}
 
-		const app = await initYaspp(process.cwd());
+		const app = await initYaspp();
+		if (!app.isValid) {
+			throw new Error(`Failed to initialize yaspp: ${app.error}`);
+		}
 		const docPath =
 			clientPath && contentType === ContentTypes.Annotation ? 
 				await findFirstFolder(clientPath, contentType, app)
@@ -137,7 +140,6 @@ async function loadContent(
 				contentMode: LoadContentModes.Full,
 				nodeProcessors: [createPopoverLinksNodeProcessor()],
 			},
-			rootFolder: app.contentPath,
 		});
 
 		const data = {

@@ -8,13 +8,25 @@
 		"esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
 		"skipLibCheck": true, /* Skip type checking of declaration files. */
 		"paths": {
-			"@src/*": ["../../src/*"],
-			"@lib/*": ["../../src/lib/*"],
-			"@utils/*": ["../../src/utils/*"]
+			"@src/*": [
+				"../../src/*"
+			],
+			"@lib/*": [
+				"../../src/lib/*"
+			],
+			"@utils/*": [
+				"../../src/utils/*"
+			]
 		}
 	},
 	"include": [
 		"*.ts",
 		"**/*.ts",
-	]
+	],
+	"ts-node": {
+		// Do not forget to `npm i -D tsconfig-paths`
+		"require": [
+			"tsconfig-paths/register"
+		]
+	}
 }

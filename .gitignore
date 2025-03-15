@@ -10,14 +10,16 @@ node_modules
 
 /temp
 
+# useful ignore pattern for temp files
 **/*.ignore.*
+**/*.temp.*
 
 # artifacts
 **/*.js.map
+**/*.css.map
 
 # generated
-yaspp.json
-i18n.js
+/i18n.js
 
 # dev env
 .vscode/settings.json
@@ -45,14 +47,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env
-.env*
-.env.development
-.env.test
-.env.development.local
-.env.test.local
-.env.production.local
-.local.env
+/.env*
+
+# Vercel cli artifacts
 .vercel
 
 test-results/
@@ -60,17 +57,10 @@ results.xml
 unit-tests.xml
 temp/
 
+# Commit only scssfiles
 *.css
-*.css.map
 
 playwright-report
 
-.yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
+.yarn/
 .swc

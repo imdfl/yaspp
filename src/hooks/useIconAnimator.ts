@@ -9,7 +9,7 @@ const ICON_ANIMATOR_PROPS: IFavIconProps = {
 	height: 32,
 	width: 32,
 	debug: true,
-	image: '/assets/logo/ml-logo-dark.png',
+	image: '/assets/logo/yaspp-logo-dark.png',
 };
 
 export const useIconAnimator = (router: NextRouter) => {

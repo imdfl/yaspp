@@ -25,10 +25,10 @@ export async function pathToRelativePath(path: string): Promise<string> {
 
 export async function collectPathsIn(
 	root: string,
-	topFolder: string
+	contentFolder: string
 ): Promise<ICollectedPath[]> {
 	try {
-		const relativePath = await pathToRelativePath(topFolder);
+		const relativePath = await pathToRelativePath(contentFolder);
 		const parts = relativePath.split('/');
 
 		const allPaths = await _collectPaths({ root, parts });
@@ -50,7 +50,7 @@ export async function collectPathsIn(
 			idMap: rec.idMap,
 		}));
 	} catch (e) {
-		console.error(`Error collecting paths in ${topFolder}:\n${String(e)}`);
+		console.error(`Error collecting paths in ${contentFolder}:\n${String(e)}`);
 		return [];
 	}
 }
