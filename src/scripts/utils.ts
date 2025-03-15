@@ -1,5 +1,9 @@
 /* eslint-disable no-inner-declarations */
 
+///////////////////////////////////////////////////////////
+////// Utilities for yaspp scripts ////////////////////////
+///////////////////////////////////////////////////////////
+
 import { promises as fs } from "fs";
 import fsPath from "path";
 import { parse as parseJSON } from "json5";
@@ -40,7 +44,7 @@ export interface IYasppUtils {
 	 */
 	loadTemplate(name: string): Promise<IResponse<string>>;
 
-	normalizePath(path: string): string;
+	toPosixPath(path: string): string;
 
 	/**
 	 * Tries to load environment variables from the root,according to the next conventions
@@ -65,8 +69,6 @@ function equalArrays(arr1: string[], arr2: string[]): boolean {
 
 }
 
-
-
 class YasppUtils implements IYasppUtils {
 
 	public async loadEnv(): Promise<void> {
@@ -85,14 +87,14 @@ class YasppUtils implements IYasppUtils {
 				if (data) {
 					const lines = data
 						.split(/[\n\r]/)
-						.map(s => s.replace(/^\s*#.*$/g, ""))
+						.map(s => s.replace(/(^|[^\\])#.*$/g, "$1").replace(/\\#/g, "#")) // remove comments
 						.filter(Boolean)
 					lines.forEach(line => {
 						const  [key, value] = line.split('=');
 						if (key && value) {
 							const val = value.trim()
-								.replace(/^'(.*)'$/, "$1")
-								.replace(/^"(.*)"$/, "$1");
+								.replace(/^'(.*)'$/, "$1") // single quoted strings -> string
+								.replace(/^"(.*)"$/, "$1"); // double quoted
 							if (val) {
 								process.env[key] = val;
 							}
@@ -265,7 +267,7 @@ errors ${cpResult.errors}`;
 		}
 	}
 
-	public normalizePath(path: string): string {
+	public toPosixPath(path: string): string {
 		if (!path) {
 			return "";
 		}

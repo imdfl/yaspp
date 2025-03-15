@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# A pre-commit hook script that adds the compilation result to the commit
+# if the code compiles successfully
+
+echo  "===="
+echo "Precommit: Checking added files"
+echo  "===="
+
+FILES=`git diff --cached --diff-filter=AR --name-only`
+if [ "$?" != "0" ]; then
+	echo "Failed to run git diff"
+	exit 0 # don't fail, not our job
+fi
+if [ "$FILES" == "" ]; then
+	exit 0
+fi
+
+STATUS=0
+for f in $FILES; do
+	if [[ "$f" =~ ^.env.* ]]; then
+		echo "File ${f} not allowed"
+		STATUS=1
+	fi
+done
+
+# This hook doesn't fail, it's up to other hooks to abort
+exit $STATUS
