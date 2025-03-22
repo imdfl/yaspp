@@ -347,6 +347,6 @@ export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YA
 		return validateConfig(projectRoot, userConfig);
 	}
 	catch (err) {
-		return errorResult(`Error loading yaspp ${err}`);
+		return errorResult(`Error loading yaspp config ${err}`);
 	}
 }

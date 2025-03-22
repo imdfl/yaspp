@@ -54,11 +54,12 @@ export class DynamicContentServer implements IDynamicContentServer {
 				method: 'GET',
 			});
 			const responseData = await response.json();
-			const data = responseData?.data;
+			const data = responseData?.data,
+				err = responseData?.error
 
 			if (!data || data.locale !== locale) {
 				// TODO replace with logger call
-				console.warn(`null or wrong data for ${type}, ${locale}`, data);
+				console.warn(`null or wrong data for type ${type}, locale ${locale}\ndata:`, data, `\nServer error: ${err}`);
 				return {};
 			}
 

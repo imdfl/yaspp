@@ -63,7 +63,7 @@ class YasppApp implements IYasppApp {
 		this._state = "loading";
 		const returnError = (err: string) => {
 			this._state  = err ? "error" : "loaded";
-			this._error = err;
+			this._error = err ? `Yaspp init error: ${err}\ncwd: ${process.cwd()}\nProject root: ${projectRoot}` : "";
 			return err;
 		}
 		try {

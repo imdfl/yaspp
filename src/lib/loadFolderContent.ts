@@ -18,10 +18,6 @@ import { parseDate, safeMerge } from '../utils';
 import { fileUtils } from './fileUtils';
 import { customMarkdownTags } from './customMarkdownTags';
 
-/** Save setting for build time */
-// const { serverRuntimeConfig } = getConfig();
-// setContentRootDir(String(serverRuntimeConfig.PROJECT_ROOT));
-
 /** Options for unspecified parse properties */
 const DEFAULT_PARSE_OPTIONS: IContentParseOptions = {
 	contentMode: LoadContentModes.Full,
