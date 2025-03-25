@@ -62,7 +62,7 @@ export const useDynamicContentServer = (url: string) => {
 					return;
 				}
 
-				const page = items && items[0];
+				const page = items?.[0];
 
 				if (page) {
 					const elapsed = Date.now() - queryTime;

@@ -32,7 +32,7 @@ export const DynamicContentViewer = ({
 		);
 	}
 
-	const elements = item && item.parsed;
+	const elements = item?.parsed;
 
 	if (!elements?.length) {
 		return <></>;

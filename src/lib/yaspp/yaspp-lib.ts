@@ -167,7 +167,7 @@ async function validateConfig(projectRoot: string, config?: Partial<YASPP.IYaspp
 		validAsssets = await validateAssets(projectRoot, config?.assets),
 		validNav = await validateNav(projectRoot, config?.nav);
 
-	const errors = [validContent, validLocale, validStyle, validAsssets].filter(r => r.error).map(r => r.error);
+	const errors = [validContent, validLocale, validStyle, validAsssets, validNav].filter(r => r.error).map(r => r.error);
 
 	function toResult<T extends NotNull>(result: IResponse<T>): T {
 		return result.result as unknown as T;

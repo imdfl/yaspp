@@ -1,12 +1,13 @@
 /* eslint-disable no-inner-declarations */
 
 import fsPath from "path";
-// import { promises as fs } from "fs";
+import { promises as fs } from "fs";
 import { yasppUtils } from "./utils";
 // import { fileUtils } from "../../src/lib/fileUtils";
 // import type { YASPP } from "yaspp-types";
 import { getYasppProjectPath, loadYasppConfig } from "@lib/yaspp/yaspp-lib";
 import { YASPP } from "yaspp-types";
+import { fileUtils } from "../lib/fileUtils";
 
 const rootPath = fsPath.resolve(__dirname, "../..");
 
@@ -25,7 +26,7 @@ async function run(clean: boolean, projectRoot?: string): Promise<string> {
 	try {
 		const config: YASPP.IYasppConfig = result;
 		const publicPath = fsPath.resolve(rootPath, "public/yaspp");
-		const { locale, style, assets } = config;
+		const { locale, style, assets, content, nav } = config;
 
 		async function copyOne(target: string, root?: string): Promise<string> {
 			if (!root) {
@@ -33,12 +34,29 @@ async function run(clean: boolean, projectRoot?: string): Promise<string> {
 			}
 			const contentPath = fsPath.resolve(projectPath, root),
 				targetPath = fsPath.resolve(publicPath, target);
-			const err = await yasppUtils.copyFolderContent(contentPath, targetPath, clean);
-			return err;
+			try {
+				const contentType = await fileUtils.getFileType(contentPath);
+				if (!contentType) {
+					return `Can't find ${root} at ${projectPath}`;
+				}
+
+				if (contentType === "file") {
+					await fs.copyFile(contentPath, targetPath);
+					return "";
+				}
+				if (contentType === "folder") {
+					return await yasppUtils.copyFolderContent(contentPath, targetPath, clean);
+				}
+				return `Unknown content type ${contentType} for ${contentPath}`;
+			}
+			catch(err) {
+				return `Error copying ${target} from ${contentPath} to ${targetPath}: ${err}`;
+			}
 		}
-		const err = // await copyNav()
-			// await copyOne("content", content.root)
-			await copyOne("locales", locale.root)
+		const err = 
+			await copyOne("nav.json", nav?.index)
+			|| await copyOne("content", content.root)
+			|| await copyOne("locales", locale.root)
 			|| await copyOne("styles", style?.root)
 			|| await copyOne("assets", assets?.root);
 

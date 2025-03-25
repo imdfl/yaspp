@@ -269,7 +269,7 @@ export interface IInitYasppOptions {
  * @param [projectRoot] defaults to process.cwd()
  * @returns 
  */
-export const initYaspp = async function (projectRoot?: string): Promise<IYasppApp> {
+export const initYaspp = async function (projectRoot = "."): Promise<IYasppApp> {
 	const projectPath = await getYasppProjectPath(projectRoot);
 
 	const { app, resolvers } = _instances.get(projectRoot) ?? {
