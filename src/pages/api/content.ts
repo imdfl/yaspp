@@ -76,8 +76,8 @@ const findFirstFolder = async (
 };
 
 const collectFSData = async () => {
-	const root = process.cwd();
-		// pubPath = fsPath.resolve(root, "public"),
+	const root = process.cwd(),
+		pubPath = fsPath.resolve(root, "public");
 		// yPath = fsPath.resolve(root, "yaspp");
 
 	async function collectOne(target: string): Promise<string[]> {
@@ -94,7 +94,7 @@ const collectFSData = async () => {
 	}
 	const data = {
 		[`cwd (${root}):`]: await collectOne(root),
-		// [`${pubPath}:`]: await collectOne(pubPath),
+		[`${pubPath}:`]: await collectOne(pubPath),
 		// [`${yPath}:`]: await collectOne(yPath),
 	}
 	return data;
