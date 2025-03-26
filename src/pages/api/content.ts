@@ -143,7 +143,7 @@ const collectFSData = async () => {
 			}
 
 			const app = await initYaspp();
-			if (app.isValid) {
+			if (!app.isValid) {
 				const data = await collectFSData();
 				throw new Error(`Failed to initialize yaspp: ${app.error}\n${JSON.stringify(data, null, '\t')}`);
 			}

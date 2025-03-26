@@ -207,6 +207,7 @@ async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> 
 	const outPath = fsPath.resolve(ROOT_FOLDER, YConstants.PUBLIC_PATH, YConstants.CONFIG_FILE);
 	try {
 		await fs.writeFile(outPath, JSON.stringify(localConfig, null, '\t'));
+		console.log(`Generated ${trimPath(outPath)}`);
 		return "";
 	}
 	catch (err) {
