@@ -323,7 +323,7 @@ export function operationResult<TResult extends NotNull>(error?: string, result?
 
 /**
  * Returns the root path of the yaspp site, usually the parent of the yaspp folder but can be anywhere on the
- * local FS. Returns an empty string if the 
+ * local FS. Returns an empty string if the folder is not found
  * @param projectPath if provided, this is the relative path of the project to process.cwd(), which is
  * assumed to be the yaspp root
  */
