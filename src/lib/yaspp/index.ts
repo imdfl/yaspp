@@ -6,9 +6,7 @@ import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleName
 import type { INavSection, NavGroups } from 'types/nav';
 import { YASPP } from "yaspp-types";
 import { getYasppProjectPath, loadYasppConfig } from './yaspp-lib';
-
-
-const CONFIG_FILE = "yaspp.config.json";
+import YConstants from './constants';
 
 interface ILocaleResult {
 	ns: string;
@@ -68,7 +66,7 @@ class YasppApp implements IYasppApp {
 		}
 		try {
 			if (!await fileUtils.isFolder(projectRoot)) {
-				return returnError(`path ${projectRoot} is not a folder, can't find ${CONFIG_FILE}`);
+				return returnError(`path ${projectRoot} is not a folder, can't find ${YConstants.CONFIG_FILE}`);
 			}
 			this._root = projectRoot;
 			const configResult = await loadYasppConfig(projectRoot);
@@ -269,7 +267,8 @@ export interface IInitYasppOptions {
  * @param [projectRoot] defaults to process.cwd()
  * @returns 
  */
-export const initYaspp = async function (projectRoot = "."): Promise<IYasppApp> {
+export const initYaspp = async function (): Promise<IYasppApp> {
+	const projectRoot = YConstants.PUBLIC_PATH;
 	const projectPath = await getYasppProjectPath(projectRoot);
 
 	const { app, resolvers } = _instances.get(projectRoot) ?? {

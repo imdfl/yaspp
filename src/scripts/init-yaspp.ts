@@ -13,6 +13,7 @@ import type { I18NConfig } from "types/locale";
 import type { YASPP } from "yaspp-types";
 import type { IResponse } from "types";
 import { errorResult, getYasppProjectPath, loadYasppConfig, successResult, trimPath } from "@lib/yaspp/yaspp-lib";
+import YConstants from "../lib/yaspp/constants";
 
 /**
  * The root of the  yaspp module
@@ -21,7 +22,6 @@ const ROOT_FOLDER = fsPath.resolve(__dirname, "../..");
 /**
  * The projects various resources are linked here
  */
-const PUBLIC_YASPP_FOLDER = "public/yaspp";
 
 const GEN_HEADER = `// ****************************************************************"
 // This is a GENERATED file, editing it is likely to break the build
@@ -166,21 +166,21 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
  */
 async function createSiteRoot(/*projectRoot: string, config: YASPP.IYasppConfig */): Promise<string> {
 	try {
-		const publicPath = fsPath.resolve(ROOT_FOLDER, PUBLIC_YASPP_FOLDER);
+		const publicPath = fsPath.resolve(ROOT_FOLDER, YConstants.PUBLIC_PATH);
 		const perr = await fileUtils.mkdir(publicPath);
 		return perr ?
-			`Can't find or create ${PUBLIC_YASPP_FOLDER}: ${perr}`
+			`Can't find or create ${YConstants.PUBLIC_PATH}: ${perr}`
 			: "";
 	}
 	catch (err) {
-		return (`Error creating public root at ${PUBLIC_YASPP_FOLDER} under ${ROOT_FOLDER}: ${err}`);
+		return (`Error creating public root at ${YConstants.PUBLIC_PATH} under ${ROOT_FOLDER}: ${err}`);
 	}
 }
 
 async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> {
 	const { locale, style, assets, content, nav } = config;
 	function toPath(relPath: string): string {
-		return `${PUBLIC_YASPP_FOLDER}/${relPath}`;
+		return relPath; //`${YConstants.PUBLIC_PATH}/${relPath}`;
 	}
 	const localConfig: YASPP.IYasppConfig = {
 		content: {
@@ -204,13 +204,13 @@ async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> 
 			root: toPath("assets"),
 		} : undefined
 	};
-	const outPath = fsPath.resolve(ROOT_FOLDER, "yaspp.config.json");
+	const outPath = fsPath.resolve(ROOT_FOLDER, YConstants.PUBLIC_PATH, YConstants.CONFIG_FILE);
 	try {
 		await fs.writeFile(outPath, JSON.stringify(localConfig, null, '\t'));
 		return "";
 	}
 	catch (err) {
-		return `Error writing yaspp.config.json: ${err}`;
+		return `Error writing y${YConstants.CONFIG_FILE}: ${err}`;
 	}
 }
 /**

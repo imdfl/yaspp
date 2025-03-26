@@ -4,6 +4,7 @@ import type { YASPP } from "yaspp-types";
 import type { IResponse, NotNull } from "../../types";
 import { fileUtils } from "../fileUtils";
 import type { IYasppNavData } from "../../types/app";
+import YConstants from './constants';
 
 
 async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IResponse<YASPP.IYasppContentConfig>> {
@@ -338,8 +339,7 @@ export async function getYasppProjectPath(projectPath?: string): Promise<string>
 
 export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YASPP.IYasppConfig>> {
 	try {
-		const fname = "yaspp.config.json";
-		const configPath = fsPath.resolve(projectRoot, fname);
+		const configPath = fsPath.resolve(projectRoot, YConstants.CONFIG_FILE);
 		const userConfig = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
 		if (!userConfig) {
 			return errorResult(`Missing or invalid yaspp configuration file (${configPath})`);
