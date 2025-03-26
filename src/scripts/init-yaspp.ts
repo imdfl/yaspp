@@ -12,7 +12,7 @@ import { fileUtils } from "@lib/fileUtils";
 import type { I18NConfig } from "types/locale";
 import type { YASPP } from "yaspp-types";
 import type { IResponse } from "types";
-import { errorResult, getYasppProjectPath, loadYasppConfig, successResult, trimPath } from "@lib/yaspp/yaspp-lib";
+import { errorResult, getYasppProjectPath, loadYasppConfig, successResult } from "@lib/yaspp/yaspp-lib";
 import YConstants from "../lib/yaspp/constants";
 
 /**
