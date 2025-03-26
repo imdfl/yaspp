@@ -151,7 +151,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 		}, outputTmpl);
 		const outPath = fsPath.resolve(ROOT_FOLDER, "i18n.js");
 		await fs.writeFile(outPath, GEN_HEADER + output);
-		console.log(`Generated ${trimPath(outPath)}`);
+		console.log(`Generated ${outPath}`);
 	}
 	catch (err) {
 		return `Error Generating i18n.js: ${err}`;
@@ -207,7 +207,7 @@ async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> 
 	const outPath = fsPath.resolve(ROOT_FOLDER, YConstants.PUBLIC_PATH, YConstants.CONFIG_FILE);
 	try {
 		await fs.writeFile(outPath, JSON.stringify(localConfig, null, '\t'));
-		console.log(`Generated ${trimPath(outPath)}`);
+		console.log(`Generated ${outPath}`);
 		return "";
 	}
 	catch (err) {
