@@ -210,7 +210,7 @@ async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> 
 		return "";
 	}
 	catch (err) {
-		return `Error writing y${YConstants.CONFIG_FILE}: ${err}`;
+		return `Error writing ${YConstants.CONFIG_FILE}: ${err}`;
 	}
 }
 /**
@@ -230,17 +230,17 @@ async function run(projectRoot: string): Promise<string> {
 		const config = result,
 			{ locale } = config;
 
+		const cleanErr = await createSiteRoot(/*projectRoot, config */);
+		if (cleanErr) {
+			return cleanErr;
+		}
 		const i18err = await generateI18N(projectPath, locale);
 		if (i18err) {
 			return i18err;
 		}
 
 		const configErr = await generateLocalConfig(config);
-		if (configErr) {
-			return configErr;
-		}
-		const cleanErr = await createSiteRoot(/*projectRoot, config */);
-		return cleanErr;
+		return configErr;
 	}
 	catch (e) {
 		return `Error loading yaspp.json: ${e}`;
