@@ -32,12 +32,12 @@ const nextConfig = async () => {
 		sassOptions: {
 			includePaths: [path.join(__dirname, 'styles')],
 		},
-		publicRuntimeConfig: {
-			basePath: process.env.BASE_PATH || '/public/',
-		},
-		serverRuntimeConfig: {
-			PROJECT_ROOT: __dirname,
-		},
+		// publicRuntimeConfig: {
+		// 	// basePath: process.env.BASE_PATH || '/public/',
+		// },
+		// serverRuntimeConfig: {
+		// 	// PROJECT_ROOT: __dirname,
+		// },
 		async redirects() {
 			return legacyRedirects;
 		},

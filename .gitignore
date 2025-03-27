@@ -20,6 +20,7 @@ node_modules
 
 # generated
 /i18n.js
+/yaspp.config.json
 
 # dev env
 .vscode/settings.json

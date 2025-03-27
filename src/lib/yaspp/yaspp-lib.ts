@@ -4,6 +4,7 @@ import type { YASPP } from "yaspp-types";
 import type { IResponse, NotNull } from "../../types";
 import { fileUtils } from "../fileUtils";
 import type { IYasppNavData } from "../../types/app";
+import YConstants from './constants';
 
 
 async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IResponse<YASPP.IYasppContentConfig>> {
@@ -167,7 +168,7 @@ async function validateConfig(projectRoot: string, config?: Partial<YASPP.IYaspp
 		validAsssets = await validateAssets(projectRoot, config?.assets),
 		validNav = await validateNav(projectRoot, config?.nav);
 
-	const errors = [validContent, validLocale, validStyle, validAsssets].filter(r => r.error).map(r => r.error);
+	const errors = [validContent, validLocale, validStyle, validAsssets, validNav].filter(r => r.error).map(r => r.error);
 
 	function toResult<T extends NotNull>(result: IResponse<T>): T {
 		return result.result as unknown as T;
@@ -322,7 +323,7 @@ export function operationResult<TResult extends NotNull>(error?: string, result?
 
 /**
  * Returns the root path of the yaspp site, usually the parent of the yaspp folder but can be anywhere on the
- * local FS. Returns an empty string if the 
+ * local FS. Returns an empty string if the folder is not found
  * @param projectPath if provided, this is the relative path of the project to process.cwd(), which is
  * assumed to be the yaspp root
  */
@@ -338,8 +339,7 @@ export async function getYasppProjectPath(projectPath?: string): Promise<string>
 
 export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YASPP.IYasppConfig>> {
 	try {
-		const fname = "yaspp.config.json";
-		const configPath = fsPath.resolve(projectRoot, fname);
+		const configPath = fsPath.resolve(projectRoot, YConstants.CONFIG_FILE);
 		const userConfig = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
 		if (!userConfig) {
 			return errorResult(`Missing or invalid yaspp configuration file (${configPath})`);
@@ -347,6 +347,6 @@ export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YA
 		return validateConfig(projectRoot, userConfig);
 	}
 	catch (err) {
-		return errorResult(`Error loading yaspp ${err}`);
+		return errorResult(`Error loading yaspp config ${err}`);
 	}
 }

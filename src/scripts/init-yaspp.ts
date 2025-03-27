@@ -12,7 +12,8 @@ import { fileUtils } from "@lib/fileUtils";
 import type { I18NConfig } from "types/locale";
 import type { YASPP } from "yaspp-types";
 import type { IResponse } from "types";
-import { errorResult, getYasppProjectPath, loadYasppConfig, successResult, trimPath } from "@lib/yaspp/yaspp-lib";
+import { errorResult, getYasppProjectPath, loadYasppConfig, successResult } from "@lib/yaspp/yaspp-lib";
+import YConstants from "../lib/yaspp/constants";
 
 /**
  * The root of the  yaspp module
@@ -21,44 +22,43 @@ const ROOT_FOLDER = fsPath.resolve(__dirname, "../..");
 /**
  * The projects various resources are linked here
  */
-const PUBLIC_YASPP_FOLDER = "public/yaspp";
 
 const GEN_HEADER = `// ****************************************************************"
 // This is a GENERATED file, editing it is likely to break the build
 // ****************************************************************\n`;
 
-type NSRecord =  [string, string[]];
+type NSRecord = [string, string[]];
 interface ILoadNamespacesOptions {
-		folder: string;
-		locales: ReadonlyArray<string>;
-		namespaces: ReadonlyArray<string>;
+	folder: string;
+	locales: ReadonlyArray<string>;
+	namespaces: ReadonlyArray<string>;
 }
 
-async function loadAllNamespaces({ folder, locales, namespaces}: ILoadNamespacesOptions): Promise<IResponse<NSRecord[]>> {
-		if (!await fileUtils.isFolder(folder)) {
-			return errorResult(`load namespaces: folder ${folder} not found`);
-		}
-		const ret: NSRecord[] = [];
-		for await (const ns of namespaces) {
-			const foundLocales: string[] = [];
-			for await (const locale of locales) {
-				const nspath = fsPath.resolve(folder, locale, `${ns}.json`);
-				if (await fileUtils.isFile(nspath)) {
-					foundLocales.push(locale);
-				}
-			}
-			if (foundLocales.length) {
-				ret.push([ns, foundLocales]);
+async function loadAllNamespaces({ folder, locales, namespaces }: ILoadNamespacesOptions): Promise<IResponse<NSRecord[]>> {
+	if (!await fileUtils.isFolder(folder)) {
+		return errorResult(`load namespaces: folder ${folder} not found`);
+	}
+	const ret: NSRecord[] = [];
+	for await (const ns of namespaces) {
+		const foundLocales: string[] = [];
+		for await (const locale of locales) {
+			const nspath = fsPath.resolve(folder, locale, `${ns}.json`);
+			if (await fileUtils.isFile(nspath)) {
+				foundLocales.push(locale);
 			}
 		}
-
-
-		return successResult(ret);
+		if (foundLocales.length) {
+			ret.push([ns, foundLocales]);
+		}
 	}
 
 
+	return successResult(ret);
+}
+
+
 function toNSString(namespaces: NSRecord[]): string {
-	const parts = namespaces.map(([ ns, locales ]) => {
+	const parts = namespaces.map(([ns, locales]) => {
 		const locs = locales.map(loc => `"${loc}"`);
 		return `["${ns}",[${locs.join(',')}]]`
 	});
@@ -90,7 +90,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 			return ns
 		}, new Set<string>());
 		const nsArray = Array.from(sysNS.keys());
-		const sysLocalePath = fsPath.resolve(__dirname,  `../../locales`);
+		const sysLocalePath = fsPath.resolve(__dirname, `../../locales`);
 		const nsResult = await loadAllNamespaces({
 			folder: sysLocalePath,
 			locales: config.langs,
@@ -151,7 +151,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 		}, outputTmpl);
 		const outPath = fsPath.resolve(ROOT_FOLDER, "i18n.js");
 		await fs.writeFile(outPath, GEN_HEADER + output);
-		console.log(`Generated ${trimPath(outPath)}`);
+		console.log(`Generated ${outPath}`);
 	}
 	catch (err) {
 		return `Error Generating i18n.js: ${err}`;
@@ -166,33 +166,52 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
  */
 async function createSiteRoot(/*projectRoot: string, config: YASPP.IYasppConfig */): Promise<string> {
 	try {
-		const publicPath = fsPath.resolve(ROOT_FOLDER, PUBLIC_YASPP_FOLDER);
-		await fileUtils.mkdir(publicPath);
-		if (!await fileUtils.isFolder(publicPath)) {
-			return `Can't find or create ${PUBLIC_YASPP_FOLDER}`
-		}
+		const publicPath = fsPath.resolve(ROOT_FOLDER, YConstants.PUBLIC_PATH);
+		const perr = await fileUtils.mkdir(publicPath);
+		return perr ?
+			`Can't find or create ${YConstants.PUBLIC_PATH}: ${perr}`
+			: "";
+	}
+	catch (err) {
+		return (`Error creating public root at ${YConstants.PUBLIC_PATH} under ${ROOT_FOLDER}: ${err}`);
+	}
+}
 
-		// const relPath = yasppUtils.diffPaths(ROOT_FOLDER, projectRoot)
-		// const folders = [["locales", config.locale.root], ["styles", config.style?.root], ["assets", config.assets?.root]];
-		// for await (const [name, target] of folders) {
-		// 	if (target) {
-		// 		const srcPath = fsPath.resolve(projectRoot, target);
-		// 		const linkErr = await fileUtils.symLink({
-		// 			srcPath,
-		// 			targetFolder: publicPath,
-		// 			name,
-		// 			overwrite: true
-		// 		});
-		// 		if (linkErr.error) {
-		// 			return linkErr.error;
-		// 		}
-		// 	}
-		// 	console.log(`Linked ${PUBLIC_YASPP_FOLDER}/${name}->${relPath}/${target}}`);
-		// }
+async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> {
+	const { locale, style, assets, content, nav } = config;
+	function toPath(relPath: string): string {
+		return relPath; //`${YConstants.PUBLIC_PATH}/${relPath}`;
+	}
+	const localConfig: YASPP.IYasppConfig = {
+		content: {
+			...content,
+			root: toPath("content"),
+		},
+		nav: {
+			...nav,
+			index: toPath("nav.json")
+		},
+		locale: locale ? {
+			...locale,
+			root: toPath("locales"),
+		} : undefined,
+		style: style ? {
+			...style,
+			root: toPath("styles"),
+		} : undefined,
+		assets: assets ? {
+			...assets,
+			root: toPath("assets"),
+		} : undefined
+	};
+	const outPath = fsPath.resolve(ROOT_FOLDER, YConstants.PUBLIC_PATH, YConstants.CONFIG_FILE);
+	try {
+		await fs.writeFile(outPath, JSON.stringify(localConfig, null, '\t'));
+		console.log(`Generated ${outPath}`);
 		return "";
 	}
 	catch (err) {
-		return (`Error cleaning project content ${err}`);
+		return `Error writing ${YConstants.CONFIG_FILE}: ${err}`;
 	}
 }
 /**
@@ -201,7 +220,7 @@ async function createSiteRoot(/*projectRoot: string, config: YASPP.IYasppConfig 
  */
 async function run(projectRoot: string): Promise<string> {
 	try {
-		const projectPath  = await getYasppProjectPath(projectRoot);
+		const projectPath = await getYasppProjectPath(projectRoot);
 		if (!projectPath) {
 			return `project folder not found at ${projectRoot}`;
 		}
@@ -212,12 +231,17 @@ async function run(projectRoot: string): Promise<string> {
 		const config = result,
 			{ locale } = config;
 
+		const cleanErr = await createSiteRoot(/*projectRoot, config */);
+		if (cleanErr) {
+			return cleanErr;
+		}
 		const i18err = await generateI18N(projectPath, locale);
 		if (i18err) {
 			return i18err;
 		}
-		const cleanErr = await createSiteRoot(/*projectRoot, config */);
-		return cleanErr;
+
+		const configErr = await generateLocalConfig(config);
+		return configErr;
 	}
 	catch (e) {
 		return `Error loading yaspp.json: ${e}`;

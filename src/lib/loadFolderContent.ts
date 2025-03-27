@@ -16,11 +16,6 @@ import { mdUtils } from './markdown-utils/markdownUtils';
 import { MLNODE_TYPES } from '../types';
 import { parseDate, safeMerge } from '../utils';
 import { fileUtils } from './fileUtils';
-import { customMarkdownTags } from './customMarkdownTags';
-
-/** Save setting for build time */
-// const { serverRuntimeConfig } = getConfig();
-// setContentRootDir(String(serverRuntimeConfig.PROJECT_ROOT));
 
 /** Options for unspecified parse properties */
 const DEFAULT_PARSE_OPTIONS: IContentParseOptions = {
@@ -29,6 +24,12 @@ const DEFAULT_PARSE_OPTIONS: IContentParseOptions = {
 	nodeProcessors: undefined,
 	locale: undefined,
 };
+
+/**
+ * The key for the figure abbreviation string ("Fig."" in English) in the current locale
+ */
+const FIGURE_ABBR_LOCALE_KEY = "common:markdown:tags:figure:abbr";
+
 
 export const loadContentFolder = async (
 	{ relativePath, mode, loadMode,locale, app }: ILoadContentOptions
@@ -204,8 +205,7 @@ class PageMetaData implements IPageMetaData {
 		[MLNODE_TYPES.FIGURE]: {
 			auto: true,
 			base: 1,
-//			template: `[[FIGURE_ABBR]] %index%`,
-			template: `[[${customMarkdownTags.figureAbbr}]] %index%`,
+			template: `[[${FIGURE_ABBR_LOCALE_KEY}]] %index%`,
 			
 		}
 	} as const;

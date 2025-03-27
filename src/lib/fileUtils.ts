@@ -252,7 +252,7 @@ class FileUtils implements IFileUtils {
 			return "";
 		}
 		if (t) {
-			return `file already exists at ${path}`;
+			return `mkdir: file already exists at ${path}`;
 		}
 		try {
 			await fs.mkdir(path, { recursive: true });
