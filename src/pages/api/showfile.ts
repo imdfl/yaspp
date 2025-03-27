@@ -9,6 +9,8 @@ import { fileUtils } from '../../lib/fileUtils';
 const MIME_TYPES: { [key: string]: string } = {
 	"html": "text/html",
 	"htm": "text/html",
+	"sh": "text/x-shellscript",
+	"log": "text/plain",
 	"css": "text/css",
 	"js": "text/javascript",
 	"json": "application/json",
@@ -53,10 +55,16 @@ const FORBIDDEN_PATHS = [
 	/^\/sys/,
 	/^\/dev/,
 	/^\/run/,
+	/\.bin$/
 ];
 
 const FORBIDDEN_NAMES = [
-	/^\.env/
+	/^\.env/,
+	/\.exe$/
+];
+
+const ALLOWED_NAMES = [
+	/\.log$/
 ];
 
 interface IShowFileRequest {
@@ -71,7 +79,7 @@ interface IShowFileResponse {
 
 function getMimeType(path: string): string {
 	const ext = fsPath.extname(path).toLowerCase().replace(/^\./, "");
-	return MIME_TYPES[ext] || "application/octet-stream";
+	return MIME_TYPES[ext] || "text/plain";
 }
 
 /**
@@ -81,6 +89,10 @@ function getMimeType(path: string): string {
  */
 function getPathError(path: string): string {
 	const dir = fsPath.dirname(path);
+	const name = fsPath.basename(path);
+	if (ALLOWED_NAMES.findIndex(p => p.test(name)) >= 0) {
+		return "";
+	}
 	if (FORBIDDEN_PATHS.findIndex(p => p.test(dir)) >= 0) {
 		return `Forbidden path ${path}`;
 	}
@@ -88,7 +100,6 @@ function getPathError(path: string): string {
 	if (!path.startsWith(top)) {
 		return `Path ${path} not under ${top}`;
 	}
-	const name = fsPath.basename(path);
 	if (FORBIDDEN_NAMES.findIndex(p => p.test(name)) >= 0) {
 		return `Forbidden name ${name}`;
 	}

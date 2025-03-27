@@ -16,6 +16,9 @@ const INTERACTIVE_TEMPLATE = `<!DOCTYPE html><html>
                 background-color: #FFF;
                 color: #000;
             }
+			.small {
+				font-size: 0.8rem;
+			}
             [data-yaspp-dir] {
                 font-weight: 900;
             }
@@ -61,10 +64,9 @@ const INTERACTIVE_TEMPLATE = `<!DOCTYPE html><html>
     </head>
     <body>
         <h2>Folder listing for %PATH</h2>
-        <h3>(%ROOT)</h3>
-        <pre>
-            %CONTENT
-        </pre>
+        <h3>(%ROOT) <span class="small">(<span data-yaspp-dir="%UPONE">..</span>)</span></h3>
+		<div>
+        <pre>%CONTENT</pre>
     </body>
 </html>`;
 
@@ -94,6 +96,21 @@ function toDirLink(path: string, params: IListFilesRequest): string{
 	});
 	return `<span data-yaspp-dir="${encodeURIComponent(linkData)}">${path}</span>`;
 	// return `<a href="/api/listfiles?path=${params.path}/${path}&depth=${params.depth}${intr}">${path}</a>`;
+}
+
+function getParentLink(path: string): string {
+	const parts = path.split('/'),
+		nParts = parts.length;
+	if (nParts === 0 || (nParts === 1 && parts[0] === '.')) {
+		return "..";
+	}
+	if (parts[nParts - 1] === "..") {
+		parts.push("..");
+	}
+	else {
+		parts.pop();
+	}
+	return parts.join('/');
 }
 
 function toFileLink(fileName: string, root: string): string{
@@ -192,10 +209,15 @@ function formatSimpleDirData(data: IListFilesResponse): string {
 
 function formatInteractiveDirData(data: IListFilesResponse, params: IListFilesRequest): string {
 	const content = formatDirData(data.content, params, 0);
+	const upOne: IListFilesRequest = {
+		...params,
+		path: getParentLink(params.path)
+	};
 	const html = INTERACTIVE_TEMPLATE
 		.replace(/%ROOT/g, data.root)
 		.replace(/%PATH/g, params.path)
-		.replace(/%CONTENT/g, content);
+		.replace(/%CONTENT/g, content)
+		.replace(/%UPONE/g, encodeURIComponent(JSON.stringify(upOne)));
 
 	return html;
 }
