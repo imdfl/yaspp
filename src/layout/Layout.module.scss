@@ -10,6 +10,7 @@
 @import './Layout.meta';
 
 $footerMinheight: 20vh;
+$gutter: 2em;
 
 @mixin page-container-mixin($var) {
 	margin: 0 auto;

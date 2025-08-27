@@ -1,4 +1,5 @@
 @use '../../lib/color';
+@use './layout';
 @use './colors';
 @use './typography';
 @use './shadows';
@@ -6,5 +7,5 @@
 @use './animations';
 
 $pallette: color.generate(colors.$vars, 'color');
-$vars: $pallette, typography.$vars, shadows.$vars, radius.$vars,
-	animations.$vars;
+$vars: $pallette, typography.$vars, shadows.$vars,
+	radius.$vars, layout.$vars, animations.$vars;
