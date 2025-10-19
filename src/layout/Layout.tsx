@@ -35,6 +35,7 @@ import type { LocaleOptionProps } from 'layout/locale-select/LocaleSelect';
 import { LocaleContext } from '../contexts/localeContext';
 import useNavItems from '../hooks/useNavItems';
 import { YasppOnload } from '../components/yaspp-components';
+import { MLThemeContext } from '../contexts/MLThemeContext';
 
 type RootLayoutProps = {
 	className?: string;
@@ -53,6 +54,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	const { theme, setTheme } = useTheme();
 	const { t, locale: lang, locales, textDirection } = useContext(LocaleContext);
 	const { width: screenWidth } = useWindowSize();
+	const { theme: mlTheme, setTheme: setMLTheme} = useContext(MLThemeContext);
 
 	const isHome = pathname === '/';
 	const isMobile = screenWidth <= MIN_DESKTOP_WIDTH;
@@ -65,6 +67,11 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	const { sections: footerSections } = useNavItems(NavSectionId.FOOTER);
 	const { sections: sidebarSections } = useNavItems(NavSectionId.SIDEBAR);
 	const { sections: topbarSections } = useNavItems(NavSectionId.TOPBAR);
+
+	const setCurrentTheme = useCallback((theme: string) => {
+		setTheme(theme);
+		setMLTheme(theme);
+	}, [setTheme, setMLTheme])
 
 	const setLocale = useCallback(
 		async (id: LocaleId) => {
@@ -130,7 +137,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 						<ThemeSelect
 							label={themeLabel}
 							theme={theme}
-							setTheme={setTheme}
+							setTheme={setCurrentTheme}
 							className={styles.themeSelect}
 						/>
 					</div>
@@ -165,6 +172,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 				title={`${siteTitle} – ${siteSubtitle}`}
 				name={siteTitle}
 				description={siteSubtitle}
+				theme={mlTheme}
 			/>
 			<Scrollbar
 				textDirection={textDirection}
@@ -218,7 +226,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 									<ThemeSelect
 										label={themeLabel}
 										theme={theme}
-										setTheme={setTheme}
+										setTheme={setCurrentTheme}
 										className={styles.themeSelect}
 									/>
 								</Container>

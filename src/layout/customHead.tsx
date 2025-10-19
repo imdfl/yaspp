@@ -4,9 +4,10 @@ type HeadProps = Readonly<{
 	title?: string;
 	name?: string;
 	description?: string;
+	theme?: string;
 }>;
 
-const CustomHead = ({ title, name, description }: HeadProps) => (
+const CustomHead = ({ title, name, description, theme }: HeadProps) => (
 	<Head>
 		<link
 			rel="icon"
@@ -31,6 +32,11 @@ const CustomHead = ({ title, name, description }: HeadProps) => (
 			/> */}
 		<meta name="og:title" content={title} />
 		<meta name="twitter:card" content="summary_large_image" />
+		{
+			theme && (
+				<link rel="stylesheet" href={`/styles/themes/${theme}.css`} />
+			)
+		}
 		{/* {styles && styles.map((url, ind) => (
 			<link rel="stylesheet" href={url} key={ind} />
 		))} */}

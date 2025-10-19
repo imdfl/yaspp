@@ -6,7 +6,7 @@ import { usePageData } from '../hooks/usePageData';
 import { LoadFolderModes } from 'types/parser/modes';
 import type { IPageProps } from 'types/models';
 import Layout from 'layout/Layout';
-import { getMetadata, renderElements } from 'lib/dynamicContentHelpers';
+import { renderElements, usePageMetadata } from 'lib/dynamicContentHelpers';
 import Head from 'next/head';
 import { GenericContentLayout } from '../custom-layouts/generic-content-layout/GenericContentLayout';
 import { Container } from 'components/index';
@@ -14,7 +14,8 @@ import { LocaleContext } from '@contexts/localeContext';
 
 const About: NextPage<IPageProps> = (props) => {
 	const { pageData } = usePageData(props);
-	const [title, abstract] = getMetadata(['title', 'abstract'], pageData);
+	const { metaData } = usePageMetadata(pageData);
+
 	const { t } = useContext(LocaleContext);
 
 	return (
@@ -22,7 +23,7 @@ const About: NextPage<IPageProps> = (props) => {
 			<Head>
 				<title>{`${t('common:site:title')} – ${t('pages:about:title')}`}</title>
 			</Head>
-			<GenericContentLayout caption={title} title={abstract}>
+			<GenericContentLayout caption={metaData.title} title={metaData.abstract}>
 				<Container flexDirection="column">{renderElements(pageData)}</Container>
 			</GenericContentLayout>
 		</Layout>

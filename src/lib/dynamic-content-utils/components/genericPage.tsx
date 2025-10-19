@@ -6,7 +6,7 @@ import { ContentIterator } from '../contentIterator';
 import { usePageData } from '../../../hooks/usePageData';
 import { MLNODE_TYPES } from 'types/nodes';
 import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
-import { getMetadata } from 'lib/dynamicContentHelpers';
+import { usePageMetadata } from 'lib/dynamicContentHelpers';
 import { LocaleContext } from '@contexts/localeContext';
 
 const GenericPage = ({ pageProps, className }: IContentComponentData) => {
@@ -19,14 +19,10 @@ const GenericPage = ({ pageProps, className }: IContentComponentData) => {
 		type: MLNODE_TYPES.UNKNOWN,
 	};
 	const { t } = useContext(LocaleContext);
-
-	const [title, abstract, author, date] = getMetadata(
-		['title', 'abstract', 'author', 'date'],
-		pageData
-	);
+	const { metaData } = usePageMetadata(pageData);
 
 	const pageTitle = `
-		${t('common:site:title')} – ${t('common:site:subtitle')} – ${title}
+		${t('common:site:title')} – ${t('common:site:subtitle')} – ${metaData.title}
 	`;
 
 	if (!node) {
@@ -39,10 +35,10 @@ const GenericPage = ({ pageProps, className }: IContentComponentData) => {
 				<title>{pageTitle}</title>
 			</Head>
 			<GenericContentLayout
-				title={title}
-				abstract={abstract}
-				author={author}
-				date={date}
+				title={metaData.title}
+				abstract={metaData.abstract}
+				author={metaData.author}
+				date={metaData.date}
 				className={className}
 			>
 				<ContentIterator componentData={{ node }} />

@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import { ContentComponent } from './dynamic-content-utils/contentComponent';
-import type { IMLParsedNode, IParsedPageData } from 'types/models';
+import type { IMLParsedNode, IPageMetaData, IParsedPageData } from 'types/models';
 
 export const renderElements = (pageData: IParsedPageData[]) => {
 	const page = pageData[0] || ({} as IParsedPageData);
@@ -22,4 +23,15 @@ export const getMetadata = (keys: string[], pageData: IParsedPageData[]) => {
 	}
 	const { metaData = {} } = page;
 	return keys.map((k: string) => metaData[k]);
+};
+
+type UseMetaData = { metaData: Partial<IPageMetaData> };
+export const usePageMetadata = (pageData: IParsedPageData[]): UseMetaData => {
+	const [ metaData, setMetaData ] = useState<Partial<IPageMetaData>>({});
+	useEffect(() => {
+		const page = pageData?.[0];
+		setMetaData({ ...(page?.metaData ?? {}) });
+	}, [pageData] )
+	
+	return { metaData };
 };

@@ -9,12 +9,6 @@ export interface ILocaleContext {
 	readonly locale: string;
 	readonly locales: ReadonlyArray<string>;
 	readonly textDirection: TextDirection;
-	// readonly textDirection: TextDirection;
-	// readonly meta: ILocaleMetaContext;
-	// readonly pages: ILocalePageContext;
-	// translate: (s: string, lang?: string) => string;
-	// getLocaleSymbol: (id: string) => string;
-	// getLocaleLabel: (id: string) => string;
 	setLocale: (id: LocaleId) => Promise<boolean>;
 	getTextDirection: (locale?: string) => TextDirection;
 	/**
@@ -25,10 +19,6 @@ export interface ILocaleContext {
 	 * Translate one string. Supports embedded keys [[ns:key:list:...]] and next-translate value dictonary
 	 */
 	translate: LocalizeFunction;
-	// siteTitle: string;
-	// siteSubtitle: string;
-	// pageName: string;
-	// sectionName: string;
 }
 
 export interface ILocaleContextProps {

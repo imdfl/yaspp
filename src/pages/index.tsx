@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import { mlNextUtils } from '../lib/next-utils/nextUtils';
 import { usePageData } from '../hooks/usePageData';
@@ -7,7 +7,7 @@ import Layout from 'layout/Layout';
 import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
 // import { ContentTypes } from '../types/content';
 import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
-import { getMetadata, renderElements } from '../lib/dynamicContentHelpers';
+import { renderElements, usePageMetadata } from '../lib/dynamicContentHelpers';
 import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
 import type { IPageProps } from 'types/models';
 import { LocaleContext } from '@contexts/localeContext';
@@ -15,7 +15,9 @@ import { LocaleContext } from '@contexts/localeContext';
 const Index: NextPage<IPageProps> = (props) => {
 	const { t } = useContext(LocaleContext);
 	const { pageData } = usePageData(props);
-	const [title, moto] = getMetadata(['title', 'moto'], pageData);
+	const { metaData } = usePageMetadata(pageData);
+	const [s] = useState<[title: string, moto: string] | null>(null);
+	void s;
 
 	const pageTitle = `${t('common:site:title')} – ${t('common:site:subtitle')}`;
 	
@@ -24,7 +26,7 @@ const Index: NextPage<IPageProps> = (props) => {
 			<Head>
 				<title>{pageTitle}</title>
 			</Head>
-			<GenericContentLayout title={title} abstract={moto}>
+			<GenericContentLayout title={metaData.title} abstract={metaData.moto}>
 				{renderElements(pageData)}
 			</GenericContentLayout>
 		</Layout>

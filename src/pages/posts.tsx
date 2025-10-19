@@ -29,6 +29,7 @@ export default function Blog(props: IPageProps) {
 			<GenericContentLayout caption={t('pages:blog:title')} title={'Posts'}>
 				{items.map((page: IParsedPageData) => {
 					const { path } = page;
+					// const { metaData } = usePageMetadata([page]);
 					const [title, date, author] = getMetadata(
 						['title', 'date', 'author'],
 						[page]

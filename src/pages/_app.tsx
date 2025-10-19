@@ -7,6 +7,7 @@ import 'normalize.css/normalize.css';
 import '../styles/app.scss';
 import type { IPageProps } from 'types/models';
 import { LocaleContextProvider } from '../contexts/localeContext';
+import MLThemeContextProvider from '../contexts/MLThemeContext';
 
 const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	const fontStyles = css`
@@ -22,12 +23,14 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 				storageKey="ml-theme"
 				attribute="data-ml-theme"
 			>
-				<PageProvider documentPath={pageProps.documentPath} nav={pageProps.nav}>
-					<style jsx global>
-						{fontStyles}
-					</style>
-					<Component {...pageProps} />
-				</PageProvider>
+				<MLThemeContextProvider theme={"light"}>
+					<PageProvider documentPath={pageProps.documentPath} nav={pageProps.nav}>
+						<style jsx global>
+							{fontStyles}
+						</style>
+						<Component {...pageProps} />
+					</PageProvider>
+				</MLThemeContextProvider>
 			</ThemeProvider>
 		</LocaleContextProvider>
 	);
