@@ -1,0 +1,23 @@
+@use 'sass:map';
+@use "colors";
+@use "typography";
+
+@function load($colors: (), $typography: ()) {
+	@return (
+		colors: colors.load($colors),
+		typography: typography.load($typography)
+	)
+};
+
+@mixin root($colors: (), $typography: ()) {
+	$vars: load($colors, $typography);
+	$c: map.get($vars, colors);
+	$t: map.get($vars, typography);
+	:root {
+		--ml-color: #{map.get($c, text-color)};
+		--ml-background: #{map.get($c, background)};
+
+		color: var(--ml-color);
+		background: var(--ml-background);
+	}
+}

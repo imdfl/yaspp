@@ -30,14 +30,8 @@ const nextConfig = async () => {
 		reactStrictMode: true,
 		optimizeFonts: true,
 		sassOptions: {
-			includePaths: [path.join(__dirname, 'styles')],
+			includePaths: [path.join(__dirname, 'public/styles')],
 		},
-		// publicRuntimeConfig: {
-		// 	// basePath: process.env.BASE_PATH || '/public/',
-		// },
-		// serverRuntimeConfig: {
-		// 	// PROJECT_ROOT: __dirname,
-		// },
 		async redirects() {
 			return legacyRedirects;
 		},

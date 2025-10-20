@@ -31,7 +31,7 @@ const LocaleSelect = ({
 	>
 		{options.map(({ id, label, title }) => (
 			<span
-				key={`locale-item-${id}`}
+				key={id}
 				title={title}
 				data-value={id}
 				data-locale={id}

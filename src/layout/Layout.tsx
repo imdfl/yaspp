@@ -151,6 +151,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 		),
 		[
 			textDirection,
+			setCurrentTheme,
 			drawerOpen,
 			toggleDrawer,
 			oppositeTheme,
@@ -160,7 +161,6 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 			localeItems,
 			themeLabel,
 			theme,
-			setTheme,
 			sidebarSections,
 			setLocale,
 		]

@@ -1,0 +1,10 @@
+@use "../site";
+
+$colors: (
+	background: #222,
+	background-hover: lighten(#222, 20%),
+	text-color: #FEFEFE,
+	action-color: #BBF
+);
+
+@include site.root($colors: $colors);

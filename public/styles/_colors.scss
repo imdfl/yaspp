@@ -1,0 +1,11 @@
+@use "lib/_merge" as merge;
+
+@function load($overrides: ()) {
+	$default: (
+		background: #FDFDFD,
+		background-hover: #BBB,
+		text-color: #222,
+		action-color: #22F
+	);
+	@return merge.deep($default, $overrides);
+}
