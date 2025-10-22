@@ -42,4 +42,14 @@
 		),
 	);
     @return merge.deep($default, $overrides);
+};
+
+@mixin root($typography: ()) {
+	$vars: load($typography);
+	$t: map.get($vars, typography);
+	:root {
+		--ml-color: #{map.get($c, text-color)};
+		--ml-background: #{map.get($c, background)};
+	}
 }
+

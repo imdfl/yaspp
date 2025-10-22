@@ -16,7 +16,8 @@
 	:root {
 		--ml-color: #{map.get($c, text-color)};
 		--ml-background: #{map.get($c, background)};
-
+	}
+	body {
 		color: var(--ml-color);
 		background: var(--ml-background);
 	}

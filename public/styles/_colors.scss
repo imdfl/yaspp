@@ -8,4 +8,14 @@
 		action-color: #22F
 	);
 	@return merge.deep($default, $overrides);
+};
+
+@mixin root($colors: ()) {
+	$vars: load($colors);
+	$c: map.get($vars, colors);
+	:root {
+		--ml-color: #{map.get($c, text-color)};
+		--ml-background: #{map.get($c, background)};
+	}
 }
+
