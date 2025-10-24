@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './DateFormat.module.scss';
 import { useContext, useEffect, useState } from 'react';
 import { LocaleContext } from '../../contexts/localeContext';

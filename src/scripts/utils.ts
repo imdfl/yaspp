@@ -9,7 +9,7 @@ import fsPath from "path";
 import { parse as parseJSON } from "json5";
 
 import type { IResponse, NotNull } from "types";
-import { fileUtils } from '../../src/lib/fileUtils';
+import { fileUtils } from "@lib/fileUtils";
 import { captureProcessOutput, errorResult, successResult } from "@lib/yaspp/yaspp-lib";
 
 const WIN_DEVICE_RE = /^([A-Z]):[\\\/]+/i; // eslint-disable-line no-useless-escape
@@ -22,7 +22,7 @@ export interface IYasppUtils {
 	 * @param args 
 	 * @param key 
 	 */
-	getArg(args: string[], key: string): string | null;
+	getArg(args: ReadonlyArray<string>, key: string): string | null;
 
 	/**
 	 * Returns an error message if any
@@ -108,7 +108,7 @@ class YasppUtils implements IYasppUtils {
 		}
 	}
 
-	public getArg(args: string[], key: string): string | null {
+	public getArg(args: ReadonlyArray<string>, key: string): string | null {
 		const ind = args.indexOf(key);
 		if (ind < 0) {
 			return null;

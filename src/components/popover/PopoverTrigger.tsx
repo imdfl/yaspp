@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import styles from './PopoverTrigger.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 
 type PopoverTriggerProps = {
 	opened?: boolean;

@@ -7,7 +7,7 @@ import List from '../../list/List';
 import NavItem from '../nav-item/NavItem';
 import styles from './MenuBar.module.scss';
 import type { INavSection } from 'types/nav';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import { LocaleContext } from '@contexts/localeContext';
 import type { TextDirection } from 'types/locale';
 import type { YASPP } from "yaspp-types";

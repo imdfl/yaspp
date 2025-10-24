@@ -1,6 +1,6 @@
 import React from 'react';
 import ToggleGroup from '../../components/toggle/toggle-group/ToggleGroup';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './LocaleSelect.module.scss';
 import type { LocaleId } from 'types/locale';
 

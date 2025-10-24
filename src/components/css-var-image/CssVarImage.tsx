@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CssVarImage.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import { getCustomStyle } from './helpers';
 
 type CssVarImageProps = {
