@@ -99,7 +99,6 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 		toYear: new Date().getFullYear(),
 	});
 
-	console.log(classNames({ "man": false }, "not3", "man", { rabak: true }, { "man": true }));
 	const menuDrawer = useMemo(
 		() => (
 			<Drawer
