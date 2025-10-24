@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { default as ModernDrawer } from 'react-modern-drawer';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './Drawer.module.scss';
 
 type DrawerProps = {

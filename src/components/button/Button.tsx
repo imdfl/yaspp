@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, SyntheticEvent } from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './Button.module.scss';
 
 type ButtonProps = {

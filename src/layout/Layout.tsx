@@ -29,7 +29,7 @@ import { Analytics } from './analytics';
 import { LocaleId } from 'types';
 import { useRouter } from 'next/router';
 import { NavSectionId } from './data/nav';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './Layout.module.scss';
 import type { LocaleOptionProps } from 'layout/locale-select/LocaleSelect';
 import { LocaleContext } from '../contexts/localeContext';
@@ -99,7 +99,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 		toYear: new Date().getFullYear(),
 	});
 
-
+	console.log(classNames({ "man": false }, "not3", "man", { rabak: true }, { "man": true }));
 	const menuDrawer = useMemo(
 		() => (
 			<Drawer

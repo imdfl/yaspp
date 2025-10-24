@@ -6,7 +6,7 @@ import Text, {
 } from '../text/Text';
 import Link from '../link/Link';
 import styles from './TextLink.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 
 export type TextLinkProps = {
 	href: string;

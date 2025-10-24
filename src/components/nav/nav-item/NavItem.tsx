@@ -1,6 +1,6 @@
 import { getIcon } from 'components/icons';
 import styles from './NavItem.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import Link from 'components/link/Link';
 
 type NavItemContentProps = {

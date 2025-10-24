@@ -1,9 +1,6 @@
-export const flattenArray = <T>(arr: Array<T | T[]>) => {
-	return arr.reduce((flat: T[], toFlatten: T | T[]) => {
-		if (Array.isArray(toFlatten)) {
-			return flat.concat(flattenArray(toFlatten) as T[]);
-		} else {
-			return flat.concat(toFlatten);
-		}
+export const flattenArray = <T>(arr: Array<T | T[]>): T[] => {
+	const f = arr.reduce((flat: T[], toFlatten: T | T[]) => {
+		return flat.concat(Array.isArray(toFlatten) ? flattenArray(toFlatten) : toFlatten);
 	}, []);
+	return f as T[];
 };
