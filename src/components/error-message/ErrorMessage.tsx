@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { getIcon } from 'components/icons';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './ErrorMessage.module.scss';
 import { Link } from '..';
 

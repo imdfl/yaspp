@@ -1,6 +1,6 @@
 import React from 'react';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './Scrollbar.module.scss';
 import type { ScrollAreaScrollbarVisibleProps } from '@radix-ui/react-scroll-area';
 import type { TextDirection } from 'types/locale';

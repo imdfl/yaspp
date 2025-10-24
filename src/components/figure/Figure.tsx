@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './Figure.module.scss';
 import type { YSPComponentPropsWithChildren } from 'types/components';
 

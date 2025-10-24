@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './CodeBlock.module.scss';
 
 type CodeProps = {

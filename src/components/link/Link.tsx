@@ -2,7 +2,7 @@ import React, { type SyntheticEvent } from 'react';
 import NextLink from 'next/link';
 import styles from './Link.module.scss';
 import { Slot } from '@radix-ui/react-slot';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import type { YSPComponentPropsWithChildren } from 'types/components';
 
 type LinkTargetProps = string;

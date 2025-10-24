@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Blockquote.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import type { YSPComponentPropsWithChildren } from 'types/components';
 
 type BlockquoteProps = {

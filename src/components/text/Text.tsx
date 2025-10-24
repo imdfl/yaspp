@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './Text.module.scss';
 
 type HeadingVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';

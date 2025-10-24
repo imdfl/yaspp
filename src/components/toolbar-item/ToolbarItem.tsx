@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import styles from './ToolbarItem.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 
 type PopoverToolbarItemProps = {
 	className?: string;

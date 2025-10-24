@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import styles from './Heading.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import Text, { type HeadingVariant } from '../text/Text';
 
 // type HeadingVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as SeparatorPrimitive from '@radix-ui/react-separator';
 import styles from './Separator.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 
 type SeparatorProps = {
 	orientation?: 'vertical' | 'horizontal';

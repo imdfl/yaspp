@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CustomImage.module.scss';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 
 type CustomImageProps = {
 	src: string;

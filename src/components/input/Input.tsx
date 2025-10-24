@@ -4,7 +4,7 @@ import CustomField, {
 } from 'components/custom-field/CustomField';
 import { getValidityErrorMessage } from 'components/custom-field/helpers';
 import { useInputValidation } from '../../hooks/useInputValidation';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './Input.module.scss';
 
 type InputProps = {

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './Container.module.scss';
 
 type ContainerProps = {

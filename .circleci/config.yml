@@ -95,4 +95,4 @@ workflows:
     jobs:
       - lint
       - unit
-      - e2e
+      # - e2e

@@ -2,7 +2,7 @@ import React from 'react';
 import NavItem from '../nav-item/NavItem';
 import List from '../../list/List';
 import ListItem from '../../list-item/ListItem';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './MenuDrawer.module.scss';
 import type { INavSection } from 'types/nav';
 

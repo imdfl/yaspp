@@ -1,5 +1,5 @@
 import React, { forwardRef, PropsWithChildren } from 'react';
-import classNames from 'classnames';
+import classNames from '@lib/class-names';
 import styles from './ListItem.module.scss';
 import type { LinkTargetProps } from '../link/Link';
 
