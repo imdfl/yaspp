@@ -1,7 +1,7 @@
-import React from 'react';
-import styles from './CssVarImage.module.scss';
-import classNames from '@lib/class-names';
-import { getCustomStyle } from './helpers';
+import React from "react";
+import styles from "./CssVarImage.module.scss";
+import classNames from "@lib/class-names";
+import { getCustomStyle } from "./helpers";
 
 type CssVarImageProps = {
 	varName: string;

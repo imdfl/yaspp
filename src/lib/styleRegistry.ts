@@ -83,7 +83,7 @@ class StyleRegistry implements IStyleRegistry {
 		return binding.chains.findIndex(bchain => String(bchain) === chstr)
 	}
 
-	private _updateRule(chain: ReadonlyArray<string>, part: string, classes: ReadonlyArray<string> | IYasppClassOverrides): string {
+	private _updateRule(chain: ReadonlyArray<string>, part: string, classes: ReadonlyArray<string> | Partial<IYasppClassOverrides>): string {
 		part = part?.trim();
 		if (!part) {
 			return "";

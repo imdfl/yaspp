@@ -1,11 +1,13 @@
 import * as fsPath from 'path';
 import { fileUtils } from '../fileUtils';
 import i18nconfig from "@root/i18n";
+import styleBindings from "@root/class-bindings.json";
 import type { IStylesheetUrl, IYasppApp } from 'types/app';
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from 'types';
 import type { INavSection, NavGroups } from 'types/nav';
-import { YASPP } from "yaspp-types";
-import { getYasppProjectPath, loadYasppConfig } from './yaspp-lib';
+import type { IYasppBindingsFile, IYasppClassTree } from 'types/styles';
+import type { YASPP } from "yaspp-types";
+import { getYasppProjectPath, loadYasppConfig, validateClassBindings } from './yaspp-lib';
 import YConstants from './constants';
 
 interface ILocaleResult {
@@ -23,6 +25,7 @@ class YasppApp implements IYasppApp {
 	private _dictionary: LocaleDictionary | null = null;
 	private readonly _navItems: Record<string, INavSection[]> = {};
 	private readonly _styleUrls: IStylesheetUrl[] = [];
+	private readonly _classBindings: Array<IYasppClassTree> = [];
 
 	public get isLoading() {
 		return this._state === "loading";
@@ -52,6 +55,10 @@ class YasppApp implements IYasppApp {
 		return {
 			...this._navItems
 		}
+	}
+
+	public get styleClassBindings(): ReadonlyArray<IYasppClassTree> {
+		return this._classBindings.slice();
 	}
 
 	public async init(projectRoot: string): Promise<string> {
@@ -85,6 +92,12 @@ class YasppApp implements IYasppApp {
 			if (dictErr) {
 				return returnError(dictErr);
 			}
+			const bf = styleBindings as unknown as IYasppBindingsFile;
+			const bres = validateClassBindings(bf.bindings);
+			if (bres.error) {
+				return returnError(bres.error);
+			}
+			this._classBindings.push(...bres.result);
 
 			const navErr = await this._loadNavItems(yConfig.nav, projectRoot);
 

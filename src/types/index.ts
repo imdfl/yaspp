@@ -1,9 +1,5 @@
 export type NotNull = NonNullable<unknown>;
 export type Nullable<T extends NotNull> = T | null;
-export interface IResponse<T extends NotNull> {
-	result?: T;
-	error?: string;
-}
 
 export type Maybe<T extends object> = T | undefined;
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
@@ -22,7 +18,7 @@ export type PartialWithout<TObject extends object, TKey extends keyof TObject> =
 export type KeyOf<TObject extends object> = (string & keyof TObject);
 export type AnyFunction = (...args: unknown[]) => unknown;
 
-export interface IOperationResult<T extends object> {
+export interface IOperationResult<T extends NotNull> {
 	readonly error?: string;
 	readonly result?: T;
 }

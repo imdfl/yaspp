@@ -1,14 +1,35 @@
 import { spawn } from "child_process";
 import fsPath from "path";
+import * as zod from "zod";
 import type { YASPP } from "yaspp-types";
-import type { IResponse, NotNull } from "../../types";
+import type { IOperationResult, NotNull, OperationPromise } from "types";
 import { fileUtils } from "../fileUtils";
-import type { IYasppNavData } from "../../types/app";
+import type { IYasppNavData } from "types/app";
 import YConstants from './constants';
 import { stringUtils } from "../stringUtils";
+import type { IYasppBindingsFile, IYasppClassOverrides, IYasppClassTree } from "types/styles";
 
 
-async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IResponse<YASPP.IYasppContentConfig>> {
+const ClassesSchema = zod.array(zod.string());
+const ChangeSchema: zod.ZodType<Partial<IYasppClassOverrides>> = zod.object({
+	add: zod.array(zod.string()).optional(),
+	remove: zod.array(zod.string()).optional()
+})
+const ClassRecSchema = zod.union([ClassesSchema, ChangeSchema]);
+
+// const ClassConfigSchema = zod.object({
+// 	classes: ClassRecSchema.optional()
+// });
+
+const ClassPartSchema = zod.lazy(() => zod.object({
+	classes: ClassRecSchema.optional()
+}).catchall(ClassPartSchema));
+
+const ClassTreeSchema = zod.record(zod.string(), ClassPartSchema);
+type ClassBindings = ReadonlyArray<IYasppClassTree> | IYasppClassTree;
+
+
+async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IOperationResult<YASPP.IYasppContentConfig>> {
 	if (!content) {
 		return errorResult("no content section in config file");
 	}
@@ -34,7 +55,7 @@ async function validateContent(projectRoot: string, content?: Partial<YASPP.IYas
 	}
 }
 async function validateStyle(projectRoot: string, style?: Partial<YASPP.IYasppStyleConfig>):
-	Promise<IResponse<YASPP.IYasppStyleConfig>> {
+	Promise<IOperationResult<YASPP.IYasppStyleConfig>> {
 	if (!style) {
 		return successResult({ root: "" });
 	}
@@ -73,7 +94,7 @@ but has a sheets property`)
 }
 
 async function validateNav(projectRoot: string, config?: YASPP.IYasppNavConfig):
-	Promise<IResponse<YASPP.IYasppNavConfig>> {
+	Promise<IOperationResult<YASPP.IYasppNavConfig>> {
 	if (!config?.index) {
 		return errorResult(`Missing nav/index in configuration`);
 	}
@@ -81,7 +102,7 @@ async function validateNav(projectRoot: string, config?: YASPP.IYasppNavConfig):
 	if (!await fileUtils.isFile(navPath)) {
 		return errorResult(`Navigation configuration ${config.index} not found at ${navPath}`);
 	}
-	const {error, result: navConfig} = await fileUtils.readJSON<IYasppNavData>(navPath, { canFail: true });
+	const { error, result: navConfig } = await fileUtils.readJSON<IYasppNavData>(navPath, { canFail: true });
 	if (error) {
 		return errorResult(`Invalid configuration file ${config.index} (${navPath}): ${error}`);
 	}
@@ -102,7 +123,7 @@ async function validateNav(projectRoot: string, config?: YASPP.IYasppNavConfig):
 }
 
 async function validateAssets(projectRoot: string, assets?: Partial<YASPP.IYasppAssetsConfig>):
-	Promise<IResponse<YASPP.IYasppAssetsConfig>> {
+	Promise<IOperationResult<YASPP.IYasppAssetsConfig>> {
 	if (!assets?.root) {
 		return successResult({ root: "" });
 	}
@@ -118,7 +139,7 @@ async function validateAssets(projectRoot: string, assets?: Partial<YASPP.IYaspp
 
 
 async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYasppLocaleConfig>):
-	Promise<IResponse<YASPP.IYasppLocaleConfig>> {
+	Promise<IOperationResult<YASPP.IYasppLocaleConfig>> {
 	const defaultConfig: YASPP.IYasppLocaleConfig = {
 		langs: ["en"],
 		defaultLocale: "en",
@@ -164,7 +185,7 @@ async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYaspp
  * @param config 
  */
 async function validateConfig(projectRoot: string, config?: Partial<YASPP.IYasppConfig>):
-	Promise<IResponse<YASPP.IYasppConfig>> {
+	Promise<IOperationResult<YASPP.IYasppConfig>> {
 	const validContent = await validateContent(projectRoot, config?.content),
 		validLocale = await validateLocale(projectRoot, config?.locale),
 		validStyle = await validateStyle(projectRoot, config?.style),
@@ -173,7 +194,7 @@ async function validateConfig(projectRoot: string, config?: Partial<YASPP.IYaspp
 
 	const errors = [validContent, validLocale, validStyle, validAsssets, validNav].filter(r => r.error).map(r => r.error);
 
-	function toResult<T extends NotNull>(result: IResponse<T>): T {
+	function toResult<T extends NotNull>(result: IOperationResult<T>): T {
 		return result.result as unknown as T;
 	}
 	return errors.length ?
@@ -239,7 +260,7 @@ export async function captureProcessOutput(
 				resolved = true;
 				resolve({
 					status: Number(status),
-					errors: [err??"", ...errors].filter(Boolean),
+					errors: [err ?? "", ...errors].filter(Boolean),
 					output
 				});
 			}
@@ -300,28 +321,28 @@ export async function captureProcessOutput(
 * @param path 
 */
 export function trimPath(path: string): string {
-   const parts = path.split(/[/\\]+/);
-   return parts.slice(Math.max(0, parts.length - 3)).join('/');
+	const parts = path.split(/[/\\]+/);
+	return parts.slice(Math.max(0, parts.length - 3)).join('/');
 }
 
 
-export function errorResult<TResult extends NotNull>(err: string): IResponse<TResult> {
+export function errorResult<TResult extends NotNull>(err: string): IOperationResult<TResult> {
 	return {
 		result: null,
 		error: err
 	}
 }
-export function successResult<TResult extends NotNull>(result: TResult): IResponse<TResult> {
+export function successResult<TResult extends NotNull>(result: TResult): IOperationResult<TResult> {
 	return {
 		result
 	}
 }
 
-export function operationResult<TResult extends NotNull>(error?: string, result?: TResult): IResponse<TResult> {
-	return error?
+export function operationResult<TResult extends NotNull>(error?: string, result?: TResult): IOperationResult<TResult> {
+	return error ?
 		{ error: error, result: null }
 		: result ? { result }
-			: { result: null, error: `undefined operation result`};
+			: { result: null, error: `undefined operation result` };
 }
 
 /**
@@ -340,7 +361,7 @@ export async function getYasppProjectPath(projectPath?: string): Promise<string>
 	return "";
 }
 
-export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YASPP.IYasppConfig>> {
+export async function loadYasppConfig(projectRoot: string): Promise<IOperationResult<YASPP.IYasppConfig>> {
 	try {
 		const configPath = fsPath.resolve(projectRoot, YConstants.CONFIG_FILE);
 		const { result: userConfig, error } = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
@@ -352,4 +373,44 @@ export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YA
 	catch (err) {
 		return errorResult(`Error loading yaspp config ${err}`);
 	}
+}
+
+export function validateClassBindings(bindings: ClassBindings): IOperationResult<IYasppClassTree[]> {
+	const ret = [];
+	const b: IYasppClassTree[] = Array.isArray(bindings) ? bindings : [bindings];
+	const errors: string[] = [];
+	for (const bindings of b) {
+		const res = ClassTreeSchema.safeParse(bindings);
+		if (!res.success) {
+			errors.push(`Binding validation error(${res.error?.message || "unknown"}`)
+		}
+		else if (res.data) {
+			ret.push(res.data);
+		}
+	}
+
+	return errors.length ? {
+		error: errors.join('\n')
+	} : { result: ret };
+}
+
+
+export async function loadClassBindings(path: string): OperationPromise<IYasppClassTree[]> {
+	const errors = [] as string[];
+	const allBindings: IYasppClassTree[] = [];
+	const jres = await fileUtils.readJSON<IYasppBindingsFile>(path);
+	if (!jres.result) {
+		errors.push(`Failed to find bindings file ${path}: ${jres.error || "uknown error"}`);
+	}
+	else {
+		const bres = validateClassBindings(jres.result.bindings);
+		if (bres.error) {
+			errors.push(`Error parsing ${path}: ${bres.error}`);
+		}
+		else {
+			allBindings.push(...bres.result);
+		}
+	}
+	return operationResult(errors.join('\n'), allBindings)
+
 }

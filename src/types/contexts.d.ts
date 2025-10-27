@@ -1,5 +1,6 @@
 import type { IDynamicContentServer } from "@lib/types";
 import type { INavSection } from "./nav";
+import type { IStyleRegistry } from "../lib/styleRegistry";
 
 /** Describes a content-related context, available to all rendered components under a ML page */
 export interface IPageContext {
@@ -9,4 +10,6 @@ export interface IPageContext {
 	readonly documentPath: string;
 
 	readonly navigationGroups: ReadonlyMap<string, ReadonlyArray<INavSection>>;
+
+	readonly styleRegistry: IStyleRegistry;
 }

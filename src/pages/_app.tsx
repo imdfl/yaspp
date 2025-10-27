@@ -24,7 +24,7 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 				attribute="data-ml-theme"
 			>
 				<MLThemeContextProvider theme={"light"}>
-					<PageProvider documentPath={pageProps.documentPath} nav={pageProps.nav}>
+					<PageProvider documentPath={pageProps.documentPath} nav={pageProps.nav} styleClassBindings={pageProps.styleClassBindings}>
 						<style jsx global>
 							{fontStyles}
 						</style>

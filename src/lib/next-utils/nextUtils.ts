@@ -52,7 +52,8 @@ class MLNextUtils implements IMLNextUtils {
 				props: {
 					content: "",
 					documentPath: folderPath,
-					nav: ""
+					nav: "",
+					styleClassBindings: ""
 				}
 			}
 		}
@@ -73,7 +74,8 @@ class MLNextUtils implements IMLNextUtils {
 				// Next's serializer is picky about objects, won't take class instances, Dates and more
 				content: JSON.stringify(docData.pages),
 				documentPath: page?.path || '',
-				nav: JSON.stringify(app.nav)
+				nav: JSON.stringify(app.nav),
+				styleClassBindings: JSON.stringify(app.styleClassBindings)
 			},
 		};
 	}

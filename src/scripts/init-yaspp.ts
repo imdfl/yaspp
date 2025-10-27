@@ -6,20 +6,19 @@
 /* eslint-disable no-inner-declarations */
 
 import fsPath from "path";
-import * as zod from "zod";
 import { promises as fs } from "fs";
+import type { I18NConfig } from "types/locale";
+import type { YASPP } from "yaspp-types";
+import type { IOperationResult } from "types";
+import type { IYasppBindingsFile, IYasppClassTree } from "types/styles";
 import { yasppUtils } from "./utils";
 import { fileUtils } from "@lib/fileUtils";
 import { stringUtils } from "@lib/stringUtils";
-import type { I18NConfig } from "types/locale";
-import type { YASPP } from "yaspp-types";
-import type { IOperationResult, IResponse } from "types";
-import { errorResult, getYasppProjectPath, loadYasppConfig, successResult } from "@lib/yaspp/yaspp-lib";
+import {
+	errorResult, getYasppProjectPath, loadClassBindings,
+	loadYasppConfig, successResult
+} from "@lib/yaspp/yaspp-lib";
 import YConstants from "../lib/yaspp/constants";
-import type {
-	IYasppBindingsFile, IYasppClassTree,
-	IYasppClassOverrides
-} from "types/styles";
 /**
  * The root of the  yaspp module
  */
@@ -39,9 +38,7 @@ interface ILoadNamespacesOptions {
 	namespaces: ReadonlyArray<string>;
 }
 
-type ClassBindings = ReadonlyArray<IYasppClassTree> | IYasppClassTree;
-
-async function loadAllNamespaces({ folder, locales, namespaces }: ILoadNamespacesOptions): Promise<IResponse<NSRecord[]>> {
+async function loadAllNamespaces({ folder, locales, namespaces }: ILoadNamespacesOptions): Promise<IOperationResult<NSRecord[]>> {
 	if (!await fileUtils.isFolder(folder)) {
 		return errorResult(`load namespaces: folder ${folder} not found`);
 	}
@@ -72,82 +69,48 @@ function toNSString(namespaces: NSRecord[]): string {
 	return parts.join(',');
 }
 
-const ClassesSchema = zod.array(zod.string());
-const ChangeSchema: zod.ZodType<Partial<IYasppClassOverrides>> = zod.object({
-	add: zod.array(zod.string()).optional(),
-	remove: zod.array(zod.string()).optional()
-})
-const ClassRecSchema = zod.union([ClassesSchema, ChangeSchema]);
 
-const ClassConfigSchema = zod.object({
-	classes: ClassRecSchema.optional()
-});
+// function testZod() {
+// 	const parseIt = (schema: zod.ZodType<unknown>, obj: unknown) => {
+// 		const res = schema.safeParse(obj);
+// 		if (res.error) {
+// 			console.error(res.error);
+// 			return null;
+// 		}
+// 		return res.data;
 
-const ClassPartSchema = zod.lazy(() => zod.object({
-	classes: ClassRecSchema.optional()
-}).catchall(ClassPartSchema));
+// 	}
+// 	// let res = parseIt(ClassConfigSchema, { classes: true });
+// 	// res = parseIt(ClassConfigSchema, { classes: ["man"] });
+// 	// res = parseIt(ClassConfigSchema, { classes: ["", 12] });
+// 	// res = parseIt(ClassConfigSchema, { classes: { add: "not" } });
+// 	// res = parseIt(ClassConfigSchema, { classes: { add: ["not"], remove: [], rabak: ["hashish"] } });
+// 	// res = parseIt(ClassConfigSchema, { classes: { add: ["not"], remove: ["hashish"] } });
+// 	let res = parseIt(ClassTreeSchema,
+// 		{
+// 			"button": {
+// 				"classes": ["container-center", "control"]
+// 			},
+// 			"menu": {
+// 				"menu-item": {
+// 					"classes": ["vcontainer-left"],
+// 					"button": {
+// 						"classes": {
+// 							"add": ["control-hover"],
+// 							"remove": ["control"]
+// 						}
+// 					}
+// 				}
+// 			}
+// 		});
 
-const ClassTreeSchema = zod.record(zod.string(), ClassPartSchema);
-
-function testZod() {
-	const parseIt = (schema: zod.ZodType<unknown>, obj: unknown) => {
-		const res = schema.safeParse(obj);
-		if (res.error) {
-			console.error(res.error);
-			return null;
-		}
-		return res.data;
-
-	}
-	// let res = parseIt(ClassConfigSchema, { classes: true });
-	// res = parseIt(ClassConfigSchema, { classes: ["man"] });
-	// res = parseIt(ClassConfigSchema, { classes: ["", 12] });
-	// res = parseIt(ClassConfigSchema, { classes: { add: "not" } });
-	// res = parseIt(ClassConfigSchema, { classes: { add: ["not"], remove: [], rabak: ["hashish"] } });
-	// res = parseIt(ClassConfigSchema, { classes: { add: ["not"], remove: ["hashish"] } });
-	let res = parseIt(ClassTreeSchema,
-		{
-			"button": {
-				"classes": ["container-center", "control"]
-			},
-			"menu": {
-				"menu-item": {
-					"classes": ["vcontainer-left"],
-					"button": {
-						"classes": {
-							"add": ["control-hover"],
-							"remove": ["control"]
-						}
-					}
-				}
-			}
-		});
-
-	console.log(ClassPartSchema, ClassConfigSchema);
+// 	console.log(ClassPartSchema, ClassConfigSchema);
 
 
-	return res;
-}
+// 	return res;
+// }
 
 
-function validateClassBindings(bindings: ClassBindings): IOperationResult<IYasppClassTree[]> {
-	const ret = [];
-	const b: IYasppClassTree[] = Array.isArray(bindings) ? bindings : [bindings];
-	const errors: string[] = [];
-	for (const bindings of b) {
-		const res = ClassTreeSchema.safeParse(bindings);
-		if (!res.success) {
-			errors.push(`Binding validation error(${res.error?.message || "unknown"}`)
-		}
-		else if (res.data) {
-			ret.push(res.data);
-		}
-	}
-
-	return errors.length ? {
-		error: errors.join('\n')
-	} : { result: ret };
-}
 async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfig): Promise<string> {
 	const values = {
 		"%LANGS%": [] as ReadonlyArray<string>,
@@ -223,7 +186,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 			}
 			values["%USERNS%"] = toNSString(nsResult.result);
 			const pDict = userNS.reduce((dict: Record<string, string>, ns) => {
-				dict[ns] = `./public/yaspp/locales/%LANG%/${ns}.json`;
+				dict[ns] = `./${YConstants.PUBLIC_PATH}/locales/%LANG%/${ns}.json`;
 				return dict;
 			}, {})
 			dicts.project = pDict
@@ -256,28 +219,24 @@ async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConf
 			}
 			stylePaths.push(...(c.map((s: string) => fsPath.resolve(projectRoot, s))));
 		}
-		const allBindings: IYasppClassTree[] = [];
+		const bindings = [] as IYasppClassTree[],
+			outData: IYasppBindingsFile = { bindings };
 		const errors: string[] = [];
 		for await (const fpath of stylePaths) {
-			const jres = await fileUtils.readJSON<IYasppBindingsFile>(fpath);
-			if (!jres.result) {
-				errors.push(`Failed to find bindings file ${fpath}: ${jres.error || "uknown error"}`);
+			const loadRes = await loadClassBindings(fpath);
+			if (loadRes.error) {
+				errors.push(`Error parsing ${fpath}:\n${loadRes.error}`);
 			}
 			else {
-				const bres = validateClassBindings(jres.result.bindings);
-				if (bres.error) {
-					errors.push(`Error parsing ${fpath}: ${bres.error}`);
-				}
-				else {
-					allBindings.push(...bres.result);
-				}
+				bindings.push(...loadRes.result);
 			}
 		}
 		if (errors.length) {
 			return errors.join('\n');
 		}
 		const outPath = fsPath.resolve(ROOT_FOLDER, "class-bindings.json");
-		await fs.writeFile(outPath, JSON.stringify({ bindings: allBindings }));
+		await fs.writeFile(outPath, JSON.stringify(outData, null, '\t'));
+		console.log(`Generated ${outPath}`);
 
 		return "";
 	}
@@ -384,7 +343,7 @@ if (!rootArg) {
 	yasppUtils.exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
 }
 else {
-	void testZod;
+	// void testZod;
 	run(rootArg)
 		.then(err => {
 			yasppUtils.exitWith(err);

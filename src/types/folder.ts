@@ -1,9 +1,11 @@
 export interface IFolderStaticProps {
 	/** Typically the stringified ParsedPageData */
-	content: string | object;
+	readonly content: string | object;
 
-	nav: string | object;
+	readonly nav: string | object;
 
 	/** The path of the first page in the document data */
-	documentPath: string;
+	readonly documentPath: string;
+
+	readonly styleClassBindings: string | object;
 }

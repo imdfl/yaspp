@@ -12,7 +12,7 @@ interface ContentMap {
 
 const normalizeId = (id: string) => (id || '').trim().toLowerCase();
 
-export class DynamicContentServer implements IDynamicContentServer {
+class DynamicContentServer implements IDynamicContentServer {
 	private readonly contentMap: { [type: string]: ContentMap };
 
 	constructor() {
@@ -76,3 +76,5 @@ export class DynamicContentServer implements IDynamicContentServer {
 		return String(type);
 	}
 }
+
+export const createDynamicContentServer = (): IDynamicContentServer => new DynamicContentServer(); 

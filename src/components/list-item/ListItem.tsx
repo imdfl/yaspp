@@ -1,7 +1,8 @@
-import React, { forwardRef, PropsWithChildren } from 'react';
-import classNames from '@lib/class-names';
-import styles from './ListItem.module.scss';
-import type { LinkTargetProps } from '../link/Link';
+import React, { forwardRef, PropsWithChildren } from "react";
+import styles from "./ListItem.module.scss";
+import type { LinkTargetProps } from "../link/Link";
+import ComponentContextProvider from "@contexts/componentContext";
+import useClassNames from "@hooks/useClassNames";
 
 type ListItemProps = {
 	label?: string;
@@ -11,14 +12,22 @@ type ListItemProps = {
 };
 
 const ListItem = forwardRef<HTMLLIElement, PropsWithChildren<ListItemProps>>(
-	({ children, className, ...rest }: PropsWithChildren<ListItemProps>, ref) => (
-		<li ref={ref} className={classNames(styles.root, className)} {...rest}>
-			{children}
-		</li>
-	)
+	({ children, className, ...rest }: PropsWithChildren<ListItemProps>, ref) => {
+		const { componentClass, componentPath } = useClassNames({
+			classes: [styles.root, className],
+			part: "list-item",
+		});
+		return (
+			<ComponentContextProvider parentPath={componentPath}>
+				<li ref={ref} className={componentClass} {...rest}>
+					{children}
+				</li>
+			</ComponentContextProvider>
+		)
+	}
 );
 
-ListItem.displayName = 'ListItem';
+ListItem.displayName = "ListItem";
 
 export default ListItem;
 export type { ListItemProps };

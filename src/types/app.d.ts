@@ -1,6 +1,7 @@
 import type { LocaleDictionary, LocaleId } from "./locale";
 import type { INavGroupData, INavItemData, INavSectionData, NavGroups } from "./nav";
 import type { YASPP } from "yaspp-types";
+import { IYasppClassTree } from "./styles";
 /**
  * App object that contains data about the current build
  */
@@ -39,6 +40,8 @@ export interface IYasppApp {
 	readonly defaultLocale: LocaleId;
 
 	readonly nav: NavGroups;
+
+	readonly styleClassBindings: ReadonlyArray<IYasppClassTree>;
 
 	readonly styleUrls: ReadonlyArray<IStylesheetUrl>;
 }

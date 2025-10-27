@@ -8,7 +8,7 @@ import { promises as fs } from "fs";
 import fsPath from "path";
 import { parse as parseJSON } from "json5";
 
-import type { IResponse, NotNull } from "types";
+import type { IOperationResult, NotNull } from "types";
 import { fileUtils } from "@lib/fileUtils";
 import { captureProcessOutput, errorResult, successResult } from "@lib/yaspp/yaspp-lib";
 
@@ -42,7 +42,7 @@ export interface IYasppUtils {
 	 * Returns the text content of `../templates/${name}.tmpl`
 	 * @param name 
 	 */
-	loadTemplate(name: string): Promise<IResponse<string>>;
+	loadTemplate(name: string): Promise<IOperationResult<string>>;
 
 	toPosixPath(path: string): string;
 
@@ -233,7 +233,7 @@ errors ${cpResult.errors}`;
 	}
 
 
-	public async loadJSONTemplate<TRet extends NotNull>(name: string): Promise<IResponse<TRet>> {
+	public async loadJSONTemplate<TRet extends NotNull>(name: string): Promise<IOperationResult<TRet>> {
 		const loadRes = await this.loadTemplate(name);
 		if (loadRes.error) {
 			return errorResult(loadRes.error);
@@ -247,7 +247,7 @@ errors ${cpResult.errors}`;
 		}
 	}
 
-	public async loadTemplate(name: string): Promise<IResponse<string>> {
+	public async loadTemplate(name: string): Promise<IOperationResult<string>> {
 		if (!name) {
 			return errorResult("no template name provided");
 		}
