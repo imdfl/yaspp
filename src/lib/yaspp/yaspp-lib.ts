@@ -5,6 +5,7 @@ import type { IResponse, NotNull } from "../../types";
 import { fileUtils } from "../fileUtils";
 import type { IYasppNavData } from "../../types/app";
 import YConstants from './constants';
+import { stringUtils } from "../stringUtils";
 
 
 async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IResponse<YASPP.IYasppContentConfig>> {
@@ -37,10 +38,11 @@ async function validateStyle(projectRoot: string, style?: Partial<YASPP.IYasppSt
 	if (!style) {
 		return successResult({ root: "" });
 	}
+	const classBindings = stringUtils.toStringArray(style.classBindings, { allowEmpty: false, unique: true });
 	if (!style?.root) {
 		return style?.sheets ? errorResult(`Style configuration does not contain a root property.
 but has a sheets property`)
-			: successResult({ root: "", sheets: [] });
+			: successResult({ root: "", sheets: [], classBindings });
 	}
 	const stylePath = fsPath.resolve(projectRoot, style.root);
 	if (!await fileUtils.isFolder(stylePath)) {
@@ -65,7 +67,8 @@ but has a sheets property`)
 	}
 	return successResult({
 		root: style.root,
-		sheets
+		sheets,
+		classBindings
 	})
 }
 
@@ -78,9 +81,9 @@ async function validateNav(projectRoot: string, config?: YASPP.IYasppNavConfig):
 	if (!await fileUtils.isFile(navPath)) {
 		return errorResult(`Navigation configuration ${config.index} not found at ${navPath}`);
 	}
-	const navConfig = await fileUtils.readJSON<IYasppNavData>(navPath, { canFail: true });
-	if (!navConfig) {
-		return errorResult(`Invalid configuration file ${config.index} (${navPath})`);
+	const {error, result: navConfig} = await fileUtils.readJSON<IYasppNavData>(navPath, { canFail: true });
+	if (error) {
+		return errorResult(`Invalid configuration file ${config.index} (${navPath}): ${error}`);
 	}
 	const isValid = (key: keyof IYasppNavData) => {
 		const data = navConfig[key];
@@ -340,9 +343,9 @@ export async function getYasppProjectPath(projectPath?: string): Promise<string>
 export async function loadYasppConfig(projectRoot: string): Promise<IResponse<YASPP.IYasppConfig>> {
 	try {
 		const configPath = fsPath.resolve(projectRoot, YConstants.CONFIG_FILE);
-		const userConfig = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
+		const { result: userConfig, error } = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
 		if (!userConfig) {
-			return errorResult(`Missing or invalid yaspp configuration file (${configPath})`);
+			return errorResult(`Missing or invalid yaspp configuration file (${configPath}): ${error || "unknown error"}`);
 		}
 		return validateConfig(projectRoot, userConfig);
 	}

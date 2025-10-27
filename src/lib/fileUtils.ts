@@ -1,9 +1,9 @@
-import { parse as parseJSON } from 'json5';
 import { promises as fs } from 'fs';
 import fsPath from "path";
 import { rimraf } from "rimraf";
-import type { IResponse } from "../../src/types";
+import type { IResponse, OperationPromise } from "../../src/types";
 import { errorResult, operationResult } from './yaspp/yaspp-lib';
+import { stringUtils } from './stringUtils';
 
 
 export type FileType = "" | "file" | "folder" | "other";
@@ -12,11 +12,11 @@ interface ILnkOptions {
 	cwd: string;
 	force: boolean;
 	rename: string;
-	type: "default" | "hard" | "symbolic" | "junction" |"directory"
+	type: "default" | "hard" | "symbolic" | "junction" | "directory"
 }
 
-type LnkFunction = (targets: string | string[], 
-	directory: string, 
+type LnkFunction = (targets: string | string[],
+	directory: string,
 	options?: Partial<ILnkOptions>) => Promise<Array<string | undefined>>;
 
 const linkIt = require("lnk") as LnkFunction;
@@ -91,7 +91,7 @@ export interface IFileUtils {
 	 * Simple wrapper to read json/jsonc
 	 * @param path
 	 */
-	readJSON<T = Record<string, string>>(path: string, options?: { canFail?: boolean }): Promise<T | null>;
+	readJSON<T extends object = Record<string, string>>(path: string, options?: { canFail?: boolean }): OperationPromise<T>;
 
 	/**
 	 * Simple wrapper to read file content, swallws errors
@@ -110,7 +110,7 @@ export interface IFileUtils {
 
 class FileUtils implements IFileUtils {
 
-	public 	assertFileExtension(fileName: string, extension: string): string {
+	public assertFileExtension(fileName: string, extension: string): string {
 		if (!fileName) {
 			return "";
 		}
@@ -118,18 +118,12 @@ class FileUtils implements IFileUtils {
 		return fileName.replace(/\.[^.]+$/, "") + extension;
 	}
 
-	public async readJSON<T = Record<string, string>>(path: string, options?: { canFail?: boolean }): Promise<T | null> {
-		try {
-			const str = await this.readFile(path, options);
-			if (str === null) {
-				return null;
-			}
-			return parseJSON<T>(str);
+	public async readJSON<T extends object = Record<string, string>>(path: string, options?: { canFail?: boolean }): OperationPromise<T> {
+		const str = await this.readFile(path, options);
+		if (str === null) {
+			return { error: `no data in ${path}` };
 		}
-		catch (err) {
-			console.error(`Error reading json data from ${path}: ${err}`);
-			return null;
-		}
+		return stringUtils.parseJSON<T>(str);
 	}
 
 	public async readFile(path: string, options?: { canFail?: boolean }): Promise<string | null> {

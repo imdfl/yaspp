@@ -1,0 +1,23 @@
+{
+    "bindings": {
+        "type": "array",
+        "items": {
+            "$ref": "#definitions/bindingBlock"
+        }
+    },
+    "definitions": {
+        "bindingBlock": {
+            "type": "object",
+            "additionalProperties": {
+                "oneOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "number"
+                    }
+                ]
+            }
+        }
+    }
+}

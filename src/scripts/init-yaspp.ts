@@ -6,15 +6,20 @@
 /* eslint-disable no-inner-declarations */
 
 import fsPath from "path";
+import * as zod from "zod";
 import { promises as fs } from "fs";
 import { yasppUtils } from "./utils";
 import { fileUtils } from "@lib/fileUtils";
+import { stringUtils } from "@lib/stringUtils";
 import type { I18NConfig } from "types/locale";
 import type { YASPP } from "yaspp-types";
-import type { IResponse } from "types";
+import type { IOperationResult, IResponse } from "types";
 import { errorResult, getYasppProjectPath, loadYasppConfig, successResult } from "@lib/yaspp/yaspp-lib";
 import YConstants from "../lib/yaspp/constants";
-
+import type {
+	IYasppBindingsFile, IYasppClassTree,
+	IYasppClassOverrides
+} from "types/styles";
 /**
  * The root of the  yaspp module
  */
@@ -33,6 +38,8 @@ interface ILoadNamespacesOptions {
 	locales: ReadonlyArray<string>;
 	namespaces: ReadonlyArray<string>;
 }
+
+type ClassBindings = ReadonlyArray<IYasppClassTree> | IYasppClassTree;
 
 async function loadAllNamespaces({ folder, locales, namespaces }: ILoadNamespacesOptions): Promise<IResponse<NSRecord[]>> {
 	if (!await fileUtils.isFolder(folder)) {
@@ -63,6 +70,83 @@ function toNSString(namespaces: NSRecord[]): string {
 		return `["${ns}",[${locs.join(',')}]]`
 	});
 	return parts.join(',');
+}
+
+const ClassesSchema = zod.array(zod.string());
+const ChangeSchema: zod.ZodType<Partial<IYasppClassOverrides>> = zod.object({
+	add: zod.array(zod.string()).optional(),
+	remove: zod.array(zod.string()).optional()
+})
+const ClassRecSchema = zod.union([ClassesSchema, ChangeSchema]);
+
+const ClassConfigSchema = zod.object({
+	classes: ClassRecSchema.optional()
+});
+
+const ClassPartSchema = zod.lazy(() => zod.object({
+	classes: ClassRecSchema.optional()
+}).catchall(ClassPartSchema));
+
+const ClassTreeSchema = zod.record(zod.string(), ClassPartSchema);
+
+function testZod() {
+	const parseIt = (schema: zod.ZodType<unknown>, obj: unknown) => {
+		const res = schema.safeParse(obj);
+		if (res.error) {
+			console.error(res.error);
+			return null;
+		}
+		return res.data;
+
+	}
+	// let res = parseIt(ClassConfigSchema, { classes: true });
+	// res = parseIt(ClassConfigSchema, { classes: ["man"] });
+	// res = parseIt(ClassConfigSchema, { classes: ["", 12] });
+	// res = parseIt(ClassConfigSchema, { classes: { add: "not" } });
+	// res = parseIt(ClassConfigSchema, { classes: { add: ["not"], remove: [], rabak: ["hashish"] } });
+	// res = parseIt(ClassConfigSchema, { classes: { add: ["not"], remove: ["hashish"] } });
+	let res = parseIt(ClassTreeSchema,
+		{
+			"button": {
+				"classes": ["container-center", "control"]
+			},
+			"menu": {
+				"menu-item": {
+					"classes": ["vcontainer-left"],
+					"button": {
+						"classes": {
+							"add": ["control-hover"],
+							"remove": ["control"]
+						}
+					}
+				}
+			}
+		});
+
+	console.log(ClassPartSchema, ClassConfigSchema);
+
+
+	return res;
+}
+
+
+function validateClassBindings(bindings: ClassBindings): IOperationResult<IYasppClassTree[]> {
+	const ret = [];
+	const b: IYasppClassTree[] = Array.isArray(bindings) ? bindings : [bindings];
+	const errors: string[] = [];
+	for (const bindings of b) {
+		const res = ClassTreeSchema.safeParse(bindings);
+		if (!res.success) {
+			errors.push(`Binding validation error(${res.error?.message || "unknown"}`)
+		}
+		else if (res.data) {
+			ret.push(res.data);
+		}
+	}
+
+	return errors.length ? {
+		error: errors.join('\n')
+	} : { result: ret };
 }
 async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfig): Promise<string> {
 	const values = {
@@ -159,6 +243,49 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 	return "";
 }
 
+async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<string> {
+	const { classBindings } = config ?? {} as Partial<YASPP.IYasppStyleConfig>;
+	try {
+		const stylePaths = [
+			fsPath.resolve(ROOT_FOLDER, "public/styles/bindings/default.json")
+		];
+		if (classBindings.length) {
+			const c = stringUtils.toStringArray(classBindings, { unique: true, allowEmpty: false });
+			if (!c.length) {
+				console.warn(`Invalid classBindings content ${classBindings}`);
+			}
+			stylePaths.push(...(c.map((s: string) => fsPath.resolve(projectRoot, s))));
+		}
+		const allBindings: IYasppClassTree[] = [];
+		const errors: string[] = [];
+		for await (const fpath of stylePaths) {
+			const jres = await fileUtils.readJSON<IYasppBindingsFile>(fpath);
+			if (!jres.result) {
+				errors.push(`Failed to find bindings file ${fpath}: ${jres.error || "uknown error"}`);
+			}
+			else {
+				const bres = validateClassBindings(jres.result.bindings);
+				if (bres.error) {
+					errors.push(`Error parsing ${fpath}: ${bres.error}`);
+				}
+				else {
+					allBindings.push(...bres.result);
+				}
+			}
+		}
+		if (errors.length) {
+			return errors.join('\n');
+		}
+		const outPath = fsPath.resolve(ROOT_FOLDER, "class-bindings.json");
+		await fs.writeFile(outPath, JSON.stringify({ bindings: allBindings }));
+
+		return "";
+	}
+	catch (e) {
+		return String(e);
+	}
+}
+
 /**
  * @param projectRoot
  * @param config known to be valid
@@ -229,7 +356,7 @@ async function run(projectRoot: string): Promise<string> {
 			return error;
 		}
 		const config = result,
-			{ locale } = config;
+			{ locale, style } = config;
 
 		const cleanErr = await createSiteRoot(/*projectRoot, config */);
 		if (cleanErr) {
@@ -238,6 +365,10 @@ async function run(projectRoot: string): Promise<string> {
 		const i18err = await generateI18N(projectPath, locale);
 		if (i18err) {
 			return i18err;
+		}
+		const styleErr = await generateStyles(projectPath, style);
+		if (styleErr) {
+			return styleErr;
 		}
 
 		const configErr = await generateLocalConfig(config);
@@ -253,6 +384,7 @@ if (!rootArg) {
 	yasppUtils.exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
 }
 else {
+	void testZod;
 	run(rootArg)
 		.then(err => {
 			yasppUtils.exitWith(err);

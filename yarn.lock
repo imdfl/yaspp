@@ -12160,8 +12160,8 @@ yargs@^17.3.1:
     yargs-parser "^21.1.1"
 
 "yaspp-types@git+https://github.com/imdfl/yaspp-types.git":
-  version "1.0.6"
-  resolved "git+https://github.com/imdfl/yaspp-types.git#2de6b5eb7963d3e2ba50112eabb9ac62758a07ef"
+  version "1.0.7"
+  resolved "git+https://github.com/imdfl/yaspp-types.git#8bc00555a4532f3cc3643d9185423020bbd5841a"
 
 yauzl@^2.10.0:
   version "2.10.0"
@@ -12195,3 +12195,8 @@ yup@1.3.3:
     tiny-case "^1.0.3"
     toposort "^2.0.2"
     type-fest "^2.19.0"
+
+zod@^4.1.12:
+  version "4.1.12"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-4.1.12.tgz#64f1ea53d00eab91853195653b5af9eee68970f0"
+  integrity sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==

@@ -1,0 +1,21 @@
+{
+	"$schema": "yaspp-bindings.schema.json",
+	"bindings": [
+		{
+			"button": {
+				"classes": [ "container-center", "control" ]
+			},
+			"menu": {
+				"menu-item": {
+					"classes": [ "vcontainer-left" ],
+					"button": {
+						"classes": {
+							"add": ["control-hover"],
+							"remove": [ "control" ]
+						}
+					}
+				}
+			}
+		}
+	]
+}

@@ -99,10 +99,11 @@ class YasppApp implements IYasppApp {
 		const index = config.index;
 
 		const navPath = fsPath.resolve(projectRoot, index);
-		const navData = await fileUtils.readJSON<YASPP.IYasppNavData>(navPath);
-		if (!navData) {
-			return `navigation items data not found in ${navPath}`;
+		const navRes = await fileUtils.readJSON<YASPP.IYasppNavData>(navPath);
+		if (!navRes.result) {
+			return `navigation items data not found in ${navPath} (${navRes.error || "unknown error"})`;
 		}
+		const navData = navRes.result;
 		if (!navData.items || !navData.sections || !navData.groups) {
 			return `nav.json must contain items, sections and groups`;
 		}
@@ -214,10 +215,11 @@ class YasppApp implements IYasppApp {
 		async function load(nsMap: Record<string, string>): Promise<ILocaleResult[]> {
 			const sys = Object.entries(nsMap).map(async ([ns, path]): Promise<ILocaleResult> => {
 				path = path.replace(/%LANG%/g, lang);
-				const data = await fileUtils.readJSON<LocaleNamespace>(path, { canFail: true });
+				// ignore errors
+				const res = await fileUtils.readJSON<LocaleNamespace>(path, { canFail: true });
 				return {
 					ns,
-					data
+					data: res.result
 				}
 			});
 			return await Promise.all(sys);

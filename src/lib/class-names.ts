@@ -1,8 +1,8 @@
 export type Value = string | boolean | undefined | null;
-export type Mapping = Record<string, boolean>;
+export type ClassNameMapping = Record<string, boolean>;
 // export interface ArgumentArray extends Array<Argument> {}
 export type ArgumentArray = ReadonlyArray<Argument>;
-export type Argument = Value | Mapping | ArgumentArray;
+export type Argument = Value | ClassNameMapping | ArgumentArray;
 /**
  * A simple JavaScript utility for conditionally joining classNames together.
  */
@@ -30,7 +30,7 @@ function isMapping(arg: unknown): boolean {
 	if (!arg || typeof arg !== "object") {
 		return false;
 	}
-	const ents = Object.entries(arg as Mapping);
+	const ents = Object.entries(arg as ClassNameMapping);
 	if (ents.length < 1) {
 		return false;
 	}
@@ -69,7 +69,7 @@ function parseValue (arg: Argument, classes: string[]): string | string[] {
 		return _classNames(classes, ...(arg as ArgumentArray));
 	}
 	if (isMapping(arg)) {
-		Object.entries(arg as Mapping)
+		Object.entries(arg as ClassNameMapping)
 			.forEach(([cls, isOn]) =>  {
 				toggleClass(classes, cls, isOn);
 			});
