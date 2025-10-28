@@ -36,7 +36,7 @@ interface IRuleToggleData {
 type IRuleData = IRuleToggleData | IRuleClassData;
 
 class StyleRegistry implements IStyleRegistry {
-	private readonly _cache: Map<string, ReadonlyArray<string>>;
+	private readonly _cache: Map<string, Map<string, ReadonlyArray<string>>>;
 	private readonly _rules: Map<string, IRuleData>;
 	/*
 		the map is indexed by component part name
@@ -59,7 +59,24 @@ class StyleRegistry implements IStyleRegistry {
 		Object.entries(bindings).forEach(([part, binding]) => {
 			this._registerBinding([], part, binding);
 		});
+		this._cache.clear();
 		this._sortChains();
+		// const l = (part: string, path: string[]) => {
+		// 	const c = this.getClassNames(part, path);
+		// 	console.log(`Class names for ${[...path, part]}: ${c}`);
+		// }
+		// l("button", []);
+		// l("button", ["menu"]);
+		// l("button", ["menu", "menu-item"]);
+		// l("button", ["menu-item", "menu"]);
+		// l("button", ["menu-item"]);
+		// l("button", ["site-horizontal-menu"]);
+		// l("button", ["site-horizontal-menu", "menu"]);
+		// l("button", ["site-horizontal-menu", "menu-item"]);
+		// l("button", ["site-horizontal-menu", "menu", "menu-item"]);
+		// l("menu-item", []);
+		// l("menu-item", ["menu"]);
+		// l("menu-item", ["site-horizontal-menu", "menu", "menu-item"]);
 	}
 
 	public getClassNames(part: string, path: ReadonlyArray<string>): string[] {
@@ -67,8 +84,8 @@ class StyleRegistry implements IStyleRegistry {
 		if (!b) {
 			return [];
 		}
-		const key = `${path.join('-')}-${part}`;
-		const cur = this._cache.get(key);
+		const cacheKey = path.join('-');
+		const cur = this._cache.get(part)?.get(cacheKey);
 		if (cur) {
 			return cur.slice();
 		}
@@ -83,17 +100,19 @@ class StyleRegistry implements IStyleRegistry {
 				}
 			})
 		}
+		const m = this._cache.get(part) ?? new Map<string, ReadonlyArray<string>>();
+		m.set(cacheKey, classes.slice());
+		this._cache.set(part, m);
 		return classes;
 	}
 
 	private _chainsMatch(targetPath: ReadonlyArray<string>, matchPath: ReadonlyArray<string>): boolean {
-		for (let ind = 0, lastInd = 0; ind < targetPath.length; ind++) {
-			const part = targetPath[ind],
-			partInd = matchPath.indexOf(part);
-			if (partInd < lastInd) {
+		for (let ind = 0, partInd = 0; ind < matchPath.length; ++ind) {
+			partInd = targetPath.indexOf(matchPath[ind], partInd);
+			if (partInd < 0) {
 				return false;
 			}
-			lastInd = partInd;			
+			++partInd;			
 		}
 		return true;
 	}

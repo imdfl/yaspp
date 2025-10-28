@@ -2,6 +2,8 @@ import React from "react";
 import classNames from "@lib/class-names";
 import styles from "./Table.module.scss";
 import type { YSPComponentPropsWithChildren } from "../../types/components";
+// import useClassNames from "@hooks/useClassNames";
+// import ComponentContextProvider from "@contexts/componentContext";
 
 type TableProps = {
 	className?: string;

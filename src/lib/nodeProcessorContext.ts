@@ -1,10 +1,10 @@
-import { MLParseContext } from './parserContext';
-import { MLNODE_TYPES } from 'types/nodes';
+import { MLParseContext } from "./parserContext";
+import { MLNODE_TYPES } from "types/nodes";
 import type {
 	IContentParseOptions,
 	INodeProcessorContext,
-} from 'types/parser/parser';
-import type { IMLParsedNode } from 'types/models';
+} from "types/parser/parser";
+import type { IMLParsedNode } from "types/models";
 
 export class NodeProcessorContext implements INodeProcessorContext {
 	constructor(private readonly context: MLParseContext) {}

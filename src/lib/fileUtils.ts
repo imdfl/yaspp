@@ -1,9 +1,9 @@
-import { promises as fs } from 'fs';
+import { promises as fs } from "fs";
 import fsPath from "path";
 import { rimraf } from "rimraf";
-import type { IResponse, OperationPromise } from "../../src/types";
-import { errorResult, operationResult } from './yaspp/yaspp-lib';
-import { stringUtils } from './stringUtils';
+import type { IOperationResult, OperationPromise } from "../../src/types";
+import { errorResult, operationResult } from "./yaspp/yaspp-lib";
+import { stringUtils } from "./stringUtils";
 
 
 export type FileType = "" | "file" | "folder" | "other";
@@ -56,7 +56,7 @@ export interface IFileUtils {
 	 * @param name Optional new name of the link
 	 * @returns Full path of symlink or empty string if failed
 	 */
-	symLink(options: ISymlinkOptions): Promise<IResponse<string>>;
+	symLink(options: ISymlinkOptions): Promise<IOperationResult<string>>;
 
 	/**
 	 * Handles various scenarios and swallows errors
@@ -114,7 +114,7 @@ class FileUtils implements IFileUtils {
 		if (!fileName) {
 			return "";
 		}
-		extension = '.' + (extension || "").replace(/^\.+/, '');
+		extension = "." + (extension || "").replace(/^\.+/, "");
 		return fileName.replace(/\.[^.]+$/, "") + extension;
 	}
 
@@ -148,7 +148,7 @@ class FileUtils implements IFileUtils {
 	 */
 	public async symLink({
 		srcPath, targetFolder, name, overwrite
-	}: ISymlinkOptions): Promise<IResponse<string>> {
+	}: ISymlinkOptions): Promise<IOperationResult<string>> {
 		if (!srcPath || !targetFolder) {
 			return errorResult(`symlink: missing source ${srcPath} or target ${targetFolder}`);
 		}

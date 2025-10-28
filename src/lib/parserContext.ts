@@ -1,10 +1,10 @@
-import { clonePlainObject } from 'utils/clonePlainObject';
-import { VALID_PARSE_MODES } from './parseModes';
-import { MLParseModes } from 'types/parser/modes';
-import type { IContentParseOptions } from 'types/parser/parser';
-import type { IMLParsedNode, IPageMetaData } from 'types/models';
-import type { IYasppApp } from 'types/app';
-import { wrapTranslate } from './locale/translate';
+import { clonePlainObject } from "utils/clonePlainObject";
+import { VALID_PARSE_MODES } from "./parseModes";
+import { MLParseModes } from "types/parser/modes";
+import type { IContentParseOptions } from "types/parser/parser";
+import type { IMLParsedNode, IPageMetaData } from "types/models";
+import type { IYasppApp } from "types/app";
+import { wrapTranslate } from "./locale/translate";
 
 export class MLParseContext {
 	private _linkDefs: Record<string, IMLParsedNode> = {};
@@ -76,7 +76,7 @@ class NodeIndexer {
 	}
 
 	public nextLine(): number {
-		return this.nextIndex('line');
+		return this.nextIndex("line");
 	}
 
 	public nextIndex(key: string): number {
@@ -95,7 +95,7 @@ class NodeIndexer {
 	}
 
 	public currentLine(): number {
-		return this.currentIndex('line');
+		return this.currentIndex("line");
 	}
 }
 

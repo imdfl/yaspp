@@ -2,6 +2,8 @@ import React, { PropsWithChildren } from "react";
 import Text from "../text/Text";
 import styles from "./Paragraph.module.scss";
 import classNames from "@lib/class-names";
+// import useClassNames from "@hooks/useClassNames";
+// import ComponentContextProvider from "@contexts/componentContext";
 
 type ParagraphProps = {
 	className?: string;

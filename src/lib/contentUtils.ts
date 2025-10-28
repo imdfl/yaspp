@@ -1,10 +1,10 @@
-import { MLNODE_TYPES } from 'types/nodes';
-import { DynamicContentTypes } from 'types/content';
-import type { IMLParsedNode } from 'types/models';
+import { MLNODE_TYPES } from "types/nodes";
+import { DynamicContentTypes } from "types/content";
+import type { IMLParsedNode } from "types/models";
 import type {
 	INodeProcessorContext,
 	MLNodeProcessorFunction,
-} from 'types/parser/parser';
+} from "types/parser/parser";
 
 /** describes a dynamic content item: its type and id */
 interface IDynamicContentRecord {
@@ -74,7 +74,7 @@ class ContentUtils implements IContentUtils {
 		};
 
 		if (contentData.type !== DynamicContentTypes.None) {
-			contentData.isRelative = url[0] !== '/';
+			contentData.isRelative = url[0] !== "/";
 		}
 
 		return contentData;
@@ -82,11 +82,11 @@ class ContentUtils implements IContentUtils {
 
 	public urlToContentId(url: string) {
 		if (!url) {
-			return '';
+			return "";
 		}
 		const parts = url.split('/');
 		const id = parts[parts.length - 1];
-		return (id && id.replace('#', '')) || '';
+		return (id && id.replace("#", "")) || "";
 	}
 
 	private urlToContentType(

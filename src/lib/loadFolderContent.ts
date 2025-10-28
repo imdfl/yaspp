@@ -1,21 +1,21 @@
-import { Dirent, promises as fs } from 'fs';
-import fsPath from 'path';
-import matter from 'gray-matter';
-// import getConfig from 'next/config';
-// import { setContentRootDir } from './contentRootDir';
-import type { ICaptionConfiguration, IFolderContent, ILocaleMap, IMLParsedNode, IPageMetaData, IParsedPageData, PageSortField, ParsedNode } from 'types/models';
-import { createMDParser } from './markdown-utils/markdownParser';
-import type { IContentParseOptions } from 'types/parser/parser';
+import { Dirent, promises as fs } from "fs";
+import fsPath from "path";
+import matter from "gray-matter";
+// import getConfig from "next/config";
+// import { setContentRootDir } from "./contentRootDir";
+import type { ICaptionConfiguration, IFolderContent, ILocaleMap, IMLParsedNode, IPageMetaData, IParsedPageData, PageSortField, ParsedNode } from "types/models";
+import { createMDParser } from "./markdown-utils/markdownParser";
+import type { IContentParseOptions } from "types/parser/parser";
 import {
 	LoadContentModes,
 	LoadFolderModes,
 	MLParseModes,
-} from 'types/parser/modes';
-import type { ILoadContentOptions } from './markdown-utils/types';
-import { mdUtils } from './markdown-utils/markdownUtils';
-import { MLNODE_TYPES } from '../types';
-import { parseDate, safeMerge } from '../utils';
-import { fileUtils } from './fileUtils';
+} from "types/parser/modes";
+import type { ILoadContentOptions } from "./markdown-utils/types";
+import { mdUtils } from "./markdown-utils/markdownUtils";
+import { MLNODE_TYPES } from "../types";
+import { parseDate, safeMerge } from "../utils";
+import { fileUtils } from "./fileUtils";
 
 /** Options for unspecified parse properties */
 const DEFAULT_PARSE_OPTIONS: IContentParseOptions = {
@@ -106,7 +106,7 @@ export const loadContentFolder = async (
 		}
 
 		try {
-			const fileContents = await fs.readFile(fullPath, 'utf8');
+			const fileContents = await fs.readFile(fullPath, "utf8");
 			//log.info(`parse - parsed "${fullPath}"`);
 
 			// Use gray-matter to parse the post metadata section

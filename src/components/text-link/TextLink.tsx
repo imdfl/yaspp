@@ -1,12 +1,12 @@
-import React, { PropsWithChildren, useMemo } from 'react';
+import React, { PropsWithChildren, useMemo } from "react";
 import Text, {
 	HeadingVariant,
 	SubtitleVariant,
 	type TextVariant,
-} from '../text/Text';
-import Link from '../link/Link';
-import styles from './TextLink.module.scss';
-import classNames from '@lib/class-names';
+} from "../text/Text";
+import Link from "../link/Link";
+import styles from "./TextLink.module.scss";
+import classNames from "@lib/class-names";
 
 export type TextLinkProps = {
 	href: string;
