@@ -1,4 +1,4 @@
 #!/bin/bash
 
-npx sass --watch public/styles &
+yarn sassqwatch &
 yarn dev-only

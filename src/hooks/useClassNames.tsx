@@ -17,8 +17,8 @@ export interface IUserClassNamesOptions {
 }
 
 function calcClassNames(registry: IStyleRegistry, path: ComponentPath, options: IUserClassNamesOptions): string {
-	void registry;
-	return classNames(options.classes);
+	const more = registry.getClassNames(options.part, path);
+	return classNames(options.classes, more);
 }
 /**
  * Returns an object with (possibly cached) parsed page data and parsed metaData (embedded in pages)

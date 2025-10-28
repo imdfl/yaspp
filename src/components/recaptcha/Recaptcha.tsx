@@ -1,6 +1,6 @@
 // eslint-disable @typescript-eslint/no-floating-promises
-import Script from 'next/script';
-import React from 'react';
+import Script from "next/script";
+import React from "react";
 
 type RecaptchaProps = {
 	siteKey: string;
@@ -30,8 +30,8 @@ const handleSubmit = ({
 			void window.grecaptcha.execute(siteKey, { action }).then(async () => {
 				try {
 					const response = await fetch(path, {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/json;charset=utf-8' },
+						method: "POST",
+						headers: { "Content-Type": "application/json;charset=utf-8" },
 						body: JSON.stringify(values),
 					});
 					if (response.ok) {
@@ -42,12 +42,12 @@ const handleSubmit = ({
 						throw new Error(response.statusText);
 					}
 				} catch (e: unknown) {
-					console.error('Recaptcha error', e);
+					console.error("Recaptcha error", e);
 					onError(e);
 				}
 			});
 		} catch (e: unknown) {
-			console.error('Recaptcha error', e);
+			console.error("Recaptcha error", e);
 			onError?.(e);
 		}
 	});

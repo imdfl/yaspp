@@ -32,7 +32,6 @@ const MenuDrawer = ({ items, onClose, className }: VerticalNavProps) => {
 									<NavItem
 										{...item}
 										onClick={onClose}
-										// key={`nav-item-${item.id}`}
 										title={item.title}
 										description={item.locale.description}
 										author={item.locale.author}

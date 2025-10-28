@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react';
-import { Slot } from '@radix-ui/react-slot';
-import classNames from '@lib/class-names';
-import styles from './Text.module.scss';
+import React, { PropsWithChildren } from "react";
+import { Slot } from "@radix-ui/react-slot";
+import classNames from "@lib/class-names";
+import styles from "./Text.module.scss";
 
-type HeadingVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-type SubtitleVariant = 'subtitle1' | 'subtitle2' | 'subtitle3' | 'subtitle4';
-type TextVariant = 'body1' | 'body2';
+type HeadingVariant = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+type SubtitleVariant = "subtitle1" | "subtitle2" | "subtitle3" | "subtitle4";
+type TextVariant = "body1" | "body2";
 
 type TextProps = {
 	asChild?: boolean;
@@ -22,7 +22,7 @@ const Text = ({
 	children,
 	className,
 }: PropsWithChildren<TextProps>) => {
-	const Comp = asChild ? Slot : 'span';
+	const Comp = asChild ? Slot : "span";
 
 	return (
 		<Comp data-variant={variant} className={classNames(styles.root, className)}>

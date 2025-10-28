@@ -1,6 +1,6 @@
-import React, { PropsWithChildren } from 'react';
-import styles from './PopoverDialog.module.scss';
-import classNames from '@lib/class-names';
+import React, { PropsWithChildren } from "react";
+import styles from "./PopoverDialog.module.scss";
+import classNames from "@lib/class-names";
 
 type PopoverDialogProps = {
 	className?: string;

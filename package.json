@@ -34,9 +34,9 @@
 	"scripts": {
 		"clean": "rm -rf .next",
 		"build": "next build",
-		"prebuild": "npx ts-node src/scripts/copy-content --clean",
-		"dev": "next dev",
-		"dev1": "bash scripts/dev.sh",
+		"prebuild": "yarn sass && npx ts-node src/scripts/copy-content --clean",
+		"dev-old": "next dev",
+		"dev": "bash scripts/dev.sh",
 		"sass": "sass public/styles",
 		"sassqwatch": "sass --watch public/styles",
 		"predev": "npx ts-node src/scripts/copy-content",

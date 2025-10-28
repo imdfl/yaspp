@@ -38,7 +38,6 @@ const Button = ({
 				disabled={disabled}
 				title={title}
 				{...props}
-				{...{ componentPath }}
 			>
 				{children}
 			</Comp>

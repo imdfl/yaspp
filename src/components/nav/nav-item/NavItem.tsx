@@ -1,7 +1,7 @@
-import { getIcon } from 'components/icons';
-import styles from './NavItem.module.scss';
-import classNames from '@lib/class-names';
-import Link from 'components/link/Link';
+import { getIcon } from "components/icons";
+import styles from "./NavItem.module.scss";
+import classNames from "@lib/class-names";
+import Link from "components/link/Link";
 
 type NavItemContentProps = {
 	title: string;
