@@ -1,7 +1,7 @@
-import React from 'react';
-import { ContentComponentProps } from 'types/models';
-import { ContentIterator } from '../contentIterator';
-import { ListItem, Text } from 'components/index';
+import React from "react";
+import { ContentComponentProps } from "types/models";
+import { ContentIterator } from "../contentIterator";
+import { ListItem, Text } from "components/index";
 
 export const ListItemContentBlock = ({
 	componentData,

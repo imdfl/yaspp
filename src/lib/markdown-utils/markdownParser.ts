@@ -1,14 +1,14 @@
-import { CaseInsensitiveMap } from '../caseInsensitiveCollections';
-import { NodeProcessorContext } from '../nodeProcessorContext';
-import { MLParseContext } from '../parserContext';
-import { ASTNODE_TYPES, MLNODE_TYPES } from 'types/nodes';
-import type { IMLParsedNode, ParsedNode, IPageMetaData } from 'types/models';
+import { CaseInsensitiveMap } from "../caseInsensitiveCollections";
+import { NodeProcessorContext } from "../nodeProcessorContext";
+import { MLParseContext } from "../parserContext";
+import { ASTNODE_TYPES, MLNODE_TYPES } from "types/nodes";
+import type { IMLParsedNode, ParsedNode, IPageMetaData } from "types/models";
 import type {
 	IContentParseOptions,
 	INodeProcessorContext,
 	MLNodeProcessorFunction,
-} from 'types/parser/parser';
-import { MLParseModes } from 'types/parser/modes';
+} from "types/parser/parser";
+import { MLParseModes } from "types/parser/modes";
 import {
 	// FIGURE_CONTAINER_TYPES,
 	IGNORED_AST_TYPES,
@@ -17,10 +17,10 @@ import {
 	NO_PARAGRAPH_TYPES,
 	TEXT_CONTAINER_TYPES,
 	TEXT_NODE_TYPES,
-} from './nodeTypes';
-import { IFigureInfo } from './types';
-import { mdUtils } from './markdownUtils';
-import { IYasppApp } from '../../types/app';
+} from "./nodeTypes";
+import { IFigureInfo } from "./types";
+import { mdUtils } from "./markdownUtils";
+import { IYasppApp } from "../../types/app";
 
 const INDEX_REGEXP = /%index%/i;
 
@@ -125,10 +125,10 @@ class MarkdownParser implements IMarkdownParser {
 		node: ParsedNode,
 		context: MLParseContext
 	): IMLParsedNode {
-		const def = (node.def || '').toLowerCase();
+		const def = (node.def || "").toLowerCase();
 
 		context.linkDefs[def] = {
-			key: '',
+			key: "",
 			type: MLNODE_TYPES.LINK,
 			line: 0,
 			target: node.target,
@@ -364,7 +364,7 @@ class MarkdownParser implements IMarkdownParser {
 			ordered: mdUtils.toValue(node.ordered, false),
 			target: mdUtils.toValue(node.target, null),
 			level: mdUtils.toValue(node.level, null),
-			text: typeof node.content === 'string' ? node.content : null,
+			text: typeof node.content === "string" ? node.content : null,
 			attributes:
 				(isHTML && node.attributes && Object.fromEntries(node.attributes)) ||
 				null,
@@ -506,7 +506,7 @@ class MarkdownParser implements IMarkdownParser {
 
 		// 2. If more than one, throw
 		if (nCaptions > 1) {
-			throw new Error('Figure node contains more than one caption');
+			throw new Error("Figure node contains more than one caption");
 		}
 
 		// 1. If there's a caption attribute
@@ -535,7 +535,7 @@ class MarkdownParser implements IMarkdownParser {
 			captionNode = nCaptions === 1 && captionNodes[0];
 		}
 
-		const figIndex = context.indexer.nextIndex('figure');
+		const figIndex = context.indexer.nextIndex("figure");
 		Object.assign(node, { sequence: figIndex + context.metaData.captions[MLNODE_TYPES.FIGURE].base });
 		this.processCaptionNode(captionNode, context);
 
@@ -563,7 +563,7 @@ class MarkdownParser implements IMarkdownParser {
 
 		if (node.text) {
 			const ind =
-				context.indexer.currentIndex('figure') + context.metaData.captions[MLNODE_TYPES.FIGURE].base;
+				context.indexer.currentIndex("figure") + context.metaData.captions[MLNODE_TYPES.FIGURE].base;
 
 			const newText = mdUtils.translateString(node.text.replace(INDEX_REGEXP, ind.toString()), context);
 
@@ -739,9 +739,9 @@ class MarkdownParser implements IMarkdownParser {
 	 */
 	private mergeTextElements(strings: Array<string>): ParsedNode[] {
 		const text = strings
-			.join('') // to string
-			.replace(/\r/g, '') // remove windows CR
-			.replace(/\n/g, ' '); // remove LF
+			.join("") // to string
+			.replace(/\r/g, "") // remove windows CR
+			.replace(/\n/g, " "); // remove LF
 
 		return [
 			{
@@ -761,9 +761,9 @@ class MarkdownParser implements IMarkdownParser {
 	 */
 	private breakTextToLines(strings: Array<string>): ParsedNode[] {
 		return strings
-			.join('') // to string
-			.replace(/\r/g, '') // remove windows CR
-			.split('\n') // split to lines
+			.join("") // to string
+			.replace(/\r/g, "") // remove windows CR
+			.split("\n") // split to lines
 			.reduce((acc, line, index): ParsedNode[] => {
 				if (index > 0) {
 					// insert newlines between each two text lines, so not on the first time
@@ -784,7 +784,7 @@ class MarkdownParser implements IMarkdownParser {
 	 ******************************************/
 	private isTextContainer(nodeOrType: ParsedNode | ASTNODE_TYPES): boolean {
 		const type: ASTNODE_TYPES =
-			typeof nodeOrType === 'string' ? nodeOrType : nodeOrType.type;
+			typeof nodeOrType === "string" ? nodeOrType : nodeOrType.type;
 		return TEXT_CONTAINER_TYPES.has(type);
 	}
 

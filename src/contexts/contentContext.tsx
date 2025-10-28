@@ -1,5 +1,5 @@
-import { IDynamicContentContext } from 'lib/types';
-import { Context, createContext } from 'react';
+import { IDynamicContentContext } from "lib/types";
+import { Context, createContext } from "react";
 
 const ctx = createContext<IDynamicContentContext>(null);
 

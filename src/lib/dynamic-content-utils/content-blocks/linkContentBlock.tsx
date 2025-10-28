@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { ContentComponentProps, IMLParsedNode, INodeAttributeData, NodeAttributeMap } from 'types/models';
-import { ContentIterator } from '../contentIterator';
-import { Link } from 'components/index';
-import { Nullable } from '../../../types';
-import { useComponentAttrs } from '@hooks/index';
+import React, { useEffect, useState } from "react";
+import { ContentComponentProps, IMLParsedNode, INodeAttributeData, NodeAttributeMap } from "types/models";
+import { ContentIterator } from "../contentIterator";
+import { Link } from "components/index";
+import { Nullable } from "types";
+import { useComponentAttrs } from "@hooks/index";
 
 export interface ILinkProps extends ContentComponentProps {
 	onClick?: (evt: React.MouseEvent) => boolean;
 }
 
-const isAnchor = (target: string) => target?.[0] === '#';
+const isAnchor = (target: string) => target?.[0] === "#";
 
 function nodeDataToAttributes(node: IMLParsedNode, attributes: NodeAttributeMap): NodeAttributeMap {
 	const defaults = {
-		target: '_blank',
-		rel: 'noreferrer',
-		href: ''
+		target: "_blank",
+		rel: "noreferrer",
+		href: ""
 	};
 	const attrs: Record<string, string> = {};
 	if (attributes && Object.keys(attributes).length) {

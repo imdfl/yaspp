@@ -1,4 +1,4 @@
-export type IconAnimtationTypes = 'rotate' | 'frames';
+export type IconAnimtationTypes = "rotate" | "frames";
 
 /**
  * The context is assumed to be cleared

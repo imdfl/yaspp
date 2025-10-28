@@ -1,12 +1,12 @@
-import React, { Context, createContext, PropsWithChildren } from 'react';
-import { createDynamicContentServer } from '@lib/dynamic-content-utils/dynamicContentServer';
-import type { IDynamicContentServer } from '@lib/types';
-import type { IPageContext } from 'types/contexts';
-import type { IYasppClassTree } from '../types/styles';
+import React, { Context, createContext, PropsWithChildren } from "react";
+import { createDynamicContentServer } from "@lib/dynamic-content-utils/dynamicContentServer";
+import type { IDynamicContentServer } from "@lib/types";
+import type { IPageContext } from "types/contexts";
+import type { IYasppClassTree } from "../types/styles";
 
-import type { INavSection, NavGroups } from 'types/nav';
-import { stringUtils } from '../lib/stringUtils';
-import { createStyleRegistry, type IStyleRegistry } from '../lib/styleRegistry';
+import type { INavSection, NavGroups } from "types/nav";
+import { stringUtils } from "../lib/stringUtils";
+import { createStyleRegistry, type IStyleRegistry } from "../lib/styleRegistry";
 export interface IPageContextOptions {
 	readonly dynamicContentServer: IDynamicContentServer,
 	readonly documentPath: string,

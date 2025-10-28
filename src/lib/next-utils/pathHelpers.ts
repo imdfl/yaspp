@@ -1,6 +1,6 @@
-import * as fsPath from 'path';
-import * as fs from 'fs';
-import { ICollectedPath } from './types';
+import * as fsPath from "path";
+import * as fs from "fs";
+import { ICollectedPath } from "./types";
 
 const DYNAMIC_ROUTE_REGEXP = /^\[([^\]]+)\]$/;
 
@@ -14,12 +14,12 @@ export async function pathToRelativePath(path: string): Promise<string> {
 		const stat = await fs.promises.lstat(path);
 		const contentFolder = stat.isDirectory()
 			? path
-			: fsPath.join(fsPath.dirname(path), fsPath.basename(path, '.js'));
+			: fsPath.join(fsPath.dirname(path), fsPath.basename(path, ".js"));
 		return contentFolder
-			.replace(/\\/g, '/')
-			.replace(/^.*?\/pages\/(.+)$/, '$1');
+			.replace(/\\/g, "/")
+			.replace(/^.*?\/pages\/(.+)$/, "$1");
 	} catch {
-		return '';
+		return "";
 	}
 }
 
@@ -29,7 +29,7 @@ export async function collectPathsIn(
 ): Promise<ICollectedPath[]> {
 	try {
 		const relativePath = await pathToRelativePath(contentFolder);
-		const parts = relativePath.split('/');
+		const parts = relativePath.split("/");
 
 		const allPaths = await _collectPaths({ root, parts });
 		const validPaths: ICollectedPath[] = [];
@@ -46,7 +46,7 @@ export async function collectPathsIn(
 			}
 		}
 		return validPaths.map((rec) => ({
-			path: rec.path.replace(root, '').replace(/\\/g, '/').replace(/^\//, ''),
+			path: rec.path.replace(root, "").replace(/\\/g, "/").replace(/^\//, ""),
 			idMap: rec.idMap,
 		}));
 	} catch (e) {

@@ -1,5 +1,5 @@
-import React from 'react';
-import { ContentComponentProps } from 'types/models';
+import React from "react";
+import { ContentComponentProps } from "types/models";
 
 export const TextContentBlock = ({
 	componentData,

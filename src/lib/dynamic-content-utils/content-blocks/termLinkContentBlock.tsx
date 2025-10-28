@@ -1,7 +1,7 @@
-import React from 'react';
-import { ContentIterator } from '../contentIterator';
-import type { ContentComponentProps } from 'types/models';
-import { Term } from 'components/index';
+import React from "react";
+import { ContentIterator } from "../contentIterator";
+import type { ContentComponentProps } from "types/models";
+import { Term } from "components/index";
 
 export const TermLinkContentBlock = ({
 	componentData,

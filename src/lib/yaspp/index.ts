@@ -1,14 +1,14 @@
-import * as fsPath from 'path';
-import { fileUtils } from '../fileUtils';
+import * as fsPath from "path";
+import { fileUtils } from "../fileUtils";
 import i18nconfig from "@root/i18n";
 import styleBindings from "@root/class-bindings.json";
-import type { IStylesheetUrl, IYasppApp } from 'types/app';
-import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from 'types';
-import type { INavSection, NavGroups } from 'types/nav';
-import type { IYasppBindingsFile, IYasppClassTree } from 'types/styles';
+import type { IStylesheetUrl, IYasppApp } from "types/app";
+import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from "types";
+import type { INavSection, NavGroups } from "types/nav";
+import type { IYasppBindingsFile, IYasppClassTree } from "types/styles";
 import type { YASPP } from "yaspp-types";
-import { getYasppProjectPath, loadYasppConfig, validateClassBindings } from './yaspp-lib';
-import YConstants from './constants';
+import { getYasppProjectPath, loadYasppConfig, validateClassBindings } from "./yaspp-lib";
+import YConstants from "./constants";
 
 interface ILocaleResult {
 	ns: string;

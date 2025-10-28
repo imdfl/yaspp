@@ -1,7 +1,7 @@
-import React from 'react';
-import { ContentIterator } from './contentIterator';
-import { MLNODE_TYPES } from 'types/nodes';
-import { LinkSelector } from './linkSelector';
+import React from "react";
+import { ContentIterator } from "./contentIterator";
+import { MLNODE_TYPES } from "types/nodes";
+import { LinkSelector } from "./linkSelector";
 import {
 	HeadingContentBlock,
 	ListItemContentBlock,
@@ -15,10 +15,10 @@ import {
 	CodeBlockContentBlock,
 	ListContentBlock,
 	TextContentBlock,
-} from './content-blocks';
-import type { ContentComponentProps } from 'types/models';
-import { ErrorMessage } from 'components/index';
-import { CaseInsensitiveMap } from '../caseInsensitiveCollections';
+} from "./content-blocks";
+import type { ContentComponentProps } from "types/models";
+import { ErrorMessage } from "components/index";
+import { CaseInsensitiveMap } from "../caseInsensitiveCollections";
 
 const HTMLTypeMap = new CaseInsensitiveMap<MLNODE_TYPES>([
 	["a", MLNODE_TYPES.LINK]
@@ -31,7 +31,7 @@ export const ContentComponent = ({
 	const { key, type } = node;
 
 	if (!key) {
-		console.warn('missing key on', node);
+		console.warn("missing key on", node);
 	}
 
 	const props = { key, componentData };

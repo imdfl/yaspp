@@ -1,23 +1,51 @@
 {
-    "bindings": {
-        "type": "array",
-        "items": {
-            "$ref": "#definitions/bindingBlock"
-        }
-    },
-    "definitions": {
-        "bindingBlock": {
-            "type": "object",
-            "additionalProperties": {
-                "oneOf": [
-                    {
-                        "type": "string"
-                    },
-                    {
-                        "type": "number"
-                    }
-                ]
-            }
-        }
-    }
+	"bindings": {
+		"type": "array",
+		"items": {
+			"$ref": "#/$defs/bindingBlock"
+		}
+	},
+	"$defs": {
+		"bindingBlock": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "object",
+				"properties": "#/$defs/componentBinding"
+			}
+		},
+		"stringArray": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"componentBinding": {
+			"type": "object",
+			"properties": {
+				"className": {
+					"anyOf": [
+						{
+							"$ref": "#/$defs/stringArray"
+						},
+						{
+							"type": "object",
+							"properties": {
+								"add": {
+									"$ref": "#/$defs/stringArray"
+								},
+								"remove": {
+									"$ref": "#/$defs/stringArray"
+								}
+							},
+							"required": []
+						}
+					]
+				}
+			},
+			"additionalProperties": {
+				"$ref": "#/$defs/bindingBlock"
+			},
+			"required": []
+		}
+	}
 }

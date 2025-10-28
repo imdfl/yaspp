@@ -1,8 +1,8 @@
-import { ParsedUrlQuery } from 'querystring';
-import { GetStaticPathsResult, GetStaticPropsResult } from 'next';
-import type { IContentParseOptions } from 'types/parser/parser';
-import type { LoadFolderModes } from 'types/parser/modes';
-import type { IFolderStaticProps } from 'types/folder';
+import { ParsedUrlQuery } from "querystring";
+import { GetStaticPathsResult, GetStaticPropsResult } from "next";
+import type { IContentParseOptions } from "types/parser/parser";
+import type { LoadFolderModes } from "types/parser/modes";
+import type { IFolderStaticProps } from "types/folder";
 
 /**************************************************
  * Extended Next.js types

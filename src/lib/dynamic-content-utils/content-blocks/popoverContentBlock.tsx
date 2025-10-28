@@ -1,23 +1,23 @@
-import React, { useContext } from 'react';
-import DynamicContentBrowser from '../components/contentBrowser';
-import { AnnotationContentBlock } from './annotationLinkContentBlock';
-import { TermLinkContentBlock } from './termLinkContentBlock';
-import { PopoverProvider } from '@contexts/popoverContext';
-import { useToolbar } from '../hooks/useToolbar';
-import { IPopoverContext } from '../types';
-// import I18nProvider from 'next-translate/I18nProvider';
-import { DynamicContentTypes } from 'types/content';
-// import glossaryEN from '../../../../locales/en/glossary.json';
-import { Popover } from 'components/index';
+import React, { useContext } from "react";
+import DynamicContentBrowser from "../components/contentBrowser";
+import { AnnotationContentBlock } from "./annotationLinkContentBlock";
+import { TermLinkContentBlock } from "./termLinkContentBlock";
+import { PopoverProvider } from "@contexts/popoverContext";
+import { useToolbar } from "../hooks/useToolbar";
+import { IPopoverContext } from "../types";
+// import I18nProvider from "next-translate/I18nProvider";
+import { DynamicContentTypes } from "types/content";
+// import glossaryEN from "../../../../locales/en/glossary.json";
+import { Popover } from "components/index";
 import type {
 	ContentComponentProps,
 	IContentComponentInitData,
-} from 'types/models';
-import { LocaleContext } from '@contexts/localeContext';
+} from "types/models";
+import { LocaleContext } from "@contexts/localeContext";
 
 type PopoverContentBlockProps = {
 	type: DynamicContentTypes;
-	'data-testid'?: string;
+	"data-testid"?: string;
 };
 
 const getContentBlock = (
@@ -41,7 +41,7 @@ export const PopoverContentBlock = ({
 	componentData,
 	type,
 	className,
-	'data-testid': dataTestId,
+	"data-testid": dataTestId,
 }: PopoverContentBlockProps & ContentComponentProps): JSX.Element => {
 	const toolbar = useToolbar();
 	const { locale, textDirection } = useContext(LocaleContext);
@@ -57,7 +57,7 @@ export const PopoverContentBlock = ({
 			<Popover
 				trigger={getContentBlock(type, componentData, className)}
 				toolbarItems={toolbar.items.map((item) => item.element)}
-				side={textDirection === 'ltr' ? 'right' : 'left'}
+				side={textDirection === "ltr" ? "right" : "left"}
 				locale={locale}
 				data-testid={dataTestId}
 			>

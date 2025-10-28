@@ -1,8 +1,8 @@
-import { StringMap } from 'types/models';
+import { StringMap } from "types/models";
 import {
 	CaseInsensitiveMap,
 	CaseInsensitiveSet,
-} from '../caseInsensitiveCollections';
+} from "../caseInsensitiveCollections";
 
 /** Provides utility functions for App Specific validating HTML content */
 interface IHTMLValidator {
@@ -68,7 +68,7 @@ class HTMLValidator implements IHTMLValidator {
 			return true;
 		}
 		return (
-			this.attributeMap.get('*').valid.has(key) ||
+			this.attributeMap.get("*").valid.has(key) ||
 			Boolean(this.attributeMap.get(tag)?.valid.has(key))
 		);
 	}

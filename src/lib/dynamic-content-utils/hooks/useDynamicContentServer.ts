@@ -1,15 +1,15 @@
-import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
-import { PageContext } from '@contexts/pageContext';
-import { DynamicContentTypes } from 'types/content';
-import { DynamicContentContext } from '@contexts/contentContext';
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import { PageContext } from "@contexts/pageContext";
+import { DynamicContentTypes } from "types/content";
+import { DynamicContentContext } from "@contexts/contentContext";
 import {
 	LOADING_INDICATOR_MIN_DISPLAY_TIME_MSEC,
 	SHOW_LOADING_INDICATOR_AFTER_MSEC,
-} from '../consts';
-import type { IParsedPageData } from 'types/models';
-import { contentUtils } from 'lib/contentUtils';
-import { LocaleContext } from '@contexts/localeContext';
+} from "../consts";
+import type { IParsedPageData } from "types/models";
+import { contentUtils } from "lib/contentUtils";
+import { LocaleContext } from "@contexts/localeContext";
 
 export type DynamicContentViewerProps = {
 	url: string;
@@ -17,7 +17,7 @@ export type DynamicContentViewerProps = {
 
 export const useDynamicContentServer = (url: string) => {
 	const [item, setItem] = useState<IParsedPageData>(null);
-	const [error, setError] = useState('');
+	const [error, setError] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 
 	const router = useRouter();
@@ -81,7 +81,7 @@ export const useDynamicContentServer = (url: string) => {
 					}, delay);
 				} else {
 					setIsLoading(false);
-					setError(t('errors:dynamicContentNotFound'));
+					setError(t("errors:dynamicContentNotFound"));
 				}
 			})
 			.catch((e) => {

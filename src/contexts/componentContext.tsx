@@ -1,5 +1,5 @@
-import React, { Context, createContext, PropsWithChildren } from 'react';
-import type { ComponentPath } from 'types/components';
+import React, { Context, createContext, PropsWithChildren } from "react";
+import type { ComponentPath } from "types/components";
 
 export interface IComponentContext {
 	readonly parentPath: ComponentPath

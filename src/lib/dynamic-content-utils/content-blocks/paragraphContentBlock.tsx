@@ -1,7 +1,7 @@
-import React from 'react';
-import { ContentComponentProps } from 'types/models';
-import { Paragraph } from 'components/index';
-import { renderNodes } from 'lib/dynamicContentHelpers';
+import React from "react";
+import { ContentComponentProps } from "types/models";
+import { Paragraph } from "components/index";
+import { renderNodes } from "lib/dynamicContentHelpers";
 
 export const ParagraphContentBlock = ({
 	componentData,

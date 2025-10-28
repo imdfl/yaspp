@@ -1,5 +1,5 @@
-import type { IToolbarItem } from './hooks/useToolbar';
-import type { IDynamicContentServer } from '../types';
+import type { IToolbarItem } from "./hooks/useToolbar";
+import type { IDynamicContentServer } from "../types";
 
 /** Contains objects and functions that are needed in various parts of the popover */
 export interface IPopoverContext {

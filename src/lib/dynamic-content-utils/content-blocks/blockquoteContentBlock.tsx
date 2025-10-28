@@ -1,8 +1,8 @@
-import React from 'react';
-import { ContentComponentProps } from 'types/models';
-import { useComponentAttrs } from '../../../hooks/useComponentAttrs';
-import { Blockquote, Paragraph } from 'components/index';
-import { renderNodes } from 'lib/dynamicContentHelpers';
+import React from "react";
+import { ContentComponentProps } from "types/models";
+import { useComponentAttrs } from "../../../hooks/useComponentAttrs";
+import { Blockquote, Paragraph } from "components/index";
+import { renderNodes } from "lib/dynamicContentHelpers";
 
 export const BlockquoteContentBlock = ({
 	componentData,

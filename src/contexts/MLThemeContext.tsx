@@ -1,4 +1,4 @@
-import React, { Context, createContext, PropsWithChildren } from 'react';
+import React, { Context, createContext, PropsWithChildren } from "react";
 
 export interface IMLThemeProvider {
 	readonly theme: string;

@@ -1,18 +1,18 @@
-import { GetStaticPathsResult, GetStaticPropsResult } from 'next';
-import { ParsedUrlQuery } from 'querystring';
-import { collectPathsIn, pathToRelativePath } from './pathHelpers';
-import { loadContentFolder } from 'lib/loadFolderContent';
-import { ILocaleMap } from 'types/models';
-import type { IContentParseOptions } from 'types/parser/parser';
+import { GetStaticPathsResult, GetStaticPropsResult } from "next";
+import { ParsedUrlQuery } from "querystring";
+import { collectPathsIn, pathToRelativePath } from "./pathHelpers";
+import { loadContentFolder } from "lib/loadFolderContent";
+import { ILocaleMap } from "types/models";
+import type { IContentParseOptions } from "types/parser/parser";
 import {
 	LoadContentModes,
 	LoadFolderModes,
 	MLParseModes,
-} from 'types/parser/modes';
-import { IFolderStaticProps } from 'types/folder';
-import { LocaleId } from 'types/locale';
-import type { IMLNextUtils, IStaticPathsParameters } from './types';
-import { initYaspp } from '../yaspp';
+} from "types/parser/modes";
+import { IFolderStaticProps } from "types/folder";
+import { LocaleId } from "types/locale";
+import type { IMLNextUtils, IStaticPathsParameters } from "./types";
+import { initYaspp } from "../yaspp";
 
 class MLNextUtils implements IMLNextUtils {
 	/**
@@ -28,11 +28,11 @@ class MLNextUtils implements IMLNextUtils {
 		let relative = await pathToRelativePath(path);
 
 		if (!relative) {
-			return '';
+			return "";
 		}
 
 		Object.entries(dict).forEach(([key, value]) => {
-			const re = new RegExp(`\\[${key}\\]`, 'g');
+			const re = new RegExp(`\\[${key}\\]`, "g");
 			relative = relative.replace(re, value);
 		});
 
