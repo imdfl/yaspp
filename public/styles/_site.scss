@@ -1,4 +1,4 @@
-@use 'sass:map';
+@use "sass:map";
 @use "colors";
 @use "typography";
 
@@ -10,15 +10,18 @@
 };
 
 @mixin root($colors: (), $typography: ()) {
-	$vars: load($colors, $typography);
-	$c: map.get($vars, colors);
-	$t: map.get($vars, typography);
-	:root {
-		--ml-color: #{map.get($c, text-color)};
-		--ml-background: #{map.get($c, background)};
-	}
-	body {
-		color: var(--ml-color);
-		background: var(--ml-background);
-	}
+	@include colors.root();
+	@include typography.root();
+	
+	// $vars: load($colors, $typography);
+	// $c: map.get($vars, colors);
+	// $t: map.get($vars, typography);
+	// :root {
+	// 	--ml-color: #{map.get($c, text-color)};
+	// 	--ml-background: #{map.get($c, background)};
+	// }
+	// body {
+	// 	color: var(--ml-color);
+	// 	background: var(--ml-background);
+	// }
 }

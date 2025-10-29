@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "lib/_merge" as merge;
 
 @function load($overrides: ()) {
@@ -12,10 +13,13 @@
 
 @mixin root($colors: ()) {
 	$vars: load($colors);
-	$c: map.get($vars, colors);
 	:root {
-		--ml-color: #{map.get($c, text-color)};
-		--ml-background: #{map.get($c, background)};
+		--ml-color: #{map.get($vars, text-color)};
+		--ml-background: #{map.get($vars, background)};
+	}
+	body {
+		color: var(--ml-color);
+		background-color: var(--ml-background);
 	}
 }
 

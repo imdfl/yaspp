@@ -1,0 +1,28 @@
+@use 'sass:map';
+@use 'sass:string';
+@use 'sass:meta';
+
+@function find($map, $key) {
+	$result: ();
+	$parts: string.split($key, '.');
+	$targetMap: $map;
+	$ret: null;
+
+	@each $part in $parts {
+		@if type-of($targetMap) != map {
+			@return null;
+		}
+		$val: map.get($targetMap, $part);
+		@if $val {
+			$targetMap: $val !global;
+			$ret: $val !global;
+		}
+		@else {
+			@return null;
+		}
+	}
+	@if type-of($ret) == string or type-of($ret) == number {
+		@return $ret;
+	}
+	@return null;
+}

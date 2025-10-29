@@ -1,10 +1,13 @@
+@use "sass:map";
+@use "sass:list";
 @use "lib/merge";
+@use "lib/lookup";
 
 @function load($overrides: ()) {
 	$default: (
 		font-family: (
 			font1: 'Roboto Slab, serif',
-			font2: 'Assistant, sans-serif',
+			font2: 'Assistant, sans-serif'
 		),
 		font-size: (
 			base: 14px,
@@ -46,10 +49,23 @@
 
 @mixin root($typography: ()) {
 	$vars: load($typography);
-	$t: map.get($vars, typography);
+	$fsz: map.get($vars, font-size);
+	$ffml: map.get($vars, font-family);
+	$fsz: map.get($vars, font-size);
+	@debug $fsz;
 	:root {
-		--ml-color: #{map.get($c, text-color)};
-		--ml-background: #{map.get($c, background)};
+		--ml-main-font: #{map.get($ffml, font1)};
+		--ml-aux-font: #{lookup.find($vars, "font-family.font2")};
+		--ml-font-size: #{map.get($fsz, base)};
+		@each $size in $fsz {
+			@debug "font size #{$size} #{type-of($size)}";
+			--ml-font-#{list.nth($size, 1)}: #{list.nth($size, 2)};
+		}
 	}
-}
+
+	.text-tiny {
+		font-size: --var(--ml-font-xs);
+	}
+};
+
 
