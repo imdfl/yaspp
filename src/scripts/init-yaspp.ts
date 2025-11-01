@@ -16,7 +16,8 @@ import { fileUtils } from "@lib/fileUtils";
 import { stringUtils } from "@lib/stringUtils";
 import {
 	errorResult, getYasppProjectPath, loadClassBindings,
-	loadYasppConfig, successResult
+	loadYasppConfig, successResult,
+	validateThemes
 } from "@lib/yaspp/yaspp-lib";
 import YConstants from "../lib/yaspp/constants";
 /**
@@ -245,6 +246,27 @@ async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConf
 	}
 }
 
+async function generateThemes(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<string> {
+	const { root, themes = ["dark", "light"] } = config ?? {} as Partial<YASPP.IYasppStyleConfig>;
+	try {
+		const t = stringUtils.toStringArray(themes, { unique: true, allowEmpty: false });
+		if (!t.length) {
+			return (`Invalid themes content ${themes}`);
+		}
+
+		const styleRoot = fsPath.resolve(projectRoot, root);
+		if (!await fileUtils.isFolder(styleRoot)) {
+			return `Styles root ${root} not found under ${projectRoot}`;
+		}
+
+		const themeErr = await validateThemes({	themes: t, siteRoot: ROOT_FOLDER, styleRoot })
+		return themeErr.error ?? "";
+	}
+	catch (e) {
+		return String(e);
+	}
+}
+
 /**
  * @param projectRoot
  * @param config known to be valid
@@ -306,32 +328,36 @@ async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> 
  */
 async function run(projectRoot: string): Promise<string> {
 	try {
-		const projectPath = await getYasppProjectPath(projectRoot);
+		const { project: projectPath, root } = await getYasppProjectPath(projectRoot);
 		if (!projectPath) {
 			return `project folder not found at ${projectRoot}`;
 		}
-		const { error, result } = await loadYasppConfig(projectPath);
+		const { error, result } = await loadYasppConfig(projectPath, root);
 		if (error) {
 			return error;
 		}
 		const config = result,
 			{ locale, style } = config;
 
-		const cleanErr = await createSiteRoot(/*projectRoot, config */);
-		if (cleanErr) {
-			return cleanErr;
+		let err = await createSiteRoot(/*projectRoot, config */);
+		if (err) {
+			return err;
 		}
-		const i18err = await generateI18N(projectPath, locale);
-		if (i18err) {
-			return i18err;
+		err = await generateI18N(projectPath, locale);
+		if (err) {
+			return err;
 		}
-		const styleErr = await generateStyles(projectPath, style);
-		if (styleErr) {
-			return styleErr;
+		err = await generateStyles(projectPath, style);
+		if (err) {
+			return err;
+		}
+		err = await generateThemes(projectPath, style);
+		if (err) {
+			return err;
 		}
 
-		const configErr = await generateLocalConfig(config);
-		return configErr;
+		err = await generateLocalConfig(config);
+		return err;
 	}
 	catch (e) {
 		return `Error loading yaspp.json: ${e}`;

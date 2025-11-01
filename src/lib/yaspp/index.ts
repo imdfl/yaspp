@@ -2,12 +2,12 @@ import * as fsPath from "path";
 import { fileUtils } from "../fileUtils";
 import i18nconfig from "@root/i18n";
 import styleBindings from "@root/class-bindings.json";
-import type { IStylesheetUrl, IYasppApp } from "types/app";
+import type { IStylesheetUrl, IThemeUrl, IYasppApp } from "types/app";
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from "types";
 import type { INavSection, NavGroups } from "types/nav";
 import type { IYasppBindingsFile, IYasppClassTree } from "types/styles";
 import type { YASPP } from "yaspp-types";
-import { getYasppProjectPath, loadYasppConfig, validateClassBindings } from "./yaspp-lib";
+import { getYasppProjectPath, IYasppProjectPath, loadYasppConfig, validateClassBindings } from "./yaspp-lib";
 import YConstants from "./constants";
 
 interface ILocaleResult {
@@ -26,6 +26,7 @@ class YasppApp implements IYasppApp {
 	private readonly _navItems: Record<string, INavSection[]> = {};
 	private readonly _styleUrls: IStylesheetUrl[] = [];
 	private readonly _classBindings: Array<IYasppClassTree> = [];
+	private readonly _themes: IThemeUrl[] = [];
 
 	public get isLoading() {
 		return this._state === "loading";
@@ -51,6 +52,10 @@ class YasppApp implements IYasppApp {
 		return this._styleUrls.slice();
 	}
 
+	public get themeUrls(): ReadonlyArray<IThemeUrl> {
+		return [];
+	}
+
 	public get nav(): NavGroups {
 		return {
 			...this._navItems
@@ -61,7 +66,7 @@ class YasppApp implements IYasppApp {
 		return this._classBindings.slice();
 	}
 
-	public async init(projectRoot: string): Promise<string> {
+	public async init({ project: projectRoot, root }: IYasppProjectPath): Promise<string> {
 		if (this._state !== "none") {
 			throw new Error("Can't call yaspp app init more than once");
 		}
@@ -76,7 +81,7 @@ class YasppApp implements IYasppApp {
 				return returnError(`path ${projectRoot} is not a folder, can't find ${YConstants.CONFIG_FILE}`);
 			}
 			this._root = projectRoot;
-			const configResult = await loadYasppConfig(projectRoot);
+			const configResult = await loadYasppConfig(projectRoot, root);
 			if (configResult.error) {
 				return returnError(configResult.error);
 			}

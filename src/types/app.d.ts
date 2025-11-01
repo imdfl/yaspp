@@ -10,6 +10,11 @@ export interface IStylesheetUrl {
 	readonly base: string;
 	readonly full: string;
 }
+
+export interface IThemeUrl {
+	readonly name: string;
+	readonly path: string;
+}
 export interface IYasppApp {
 	/**
 	 * The full path of the content folder
@@ -44,6 +49,8 @@ export interface IYasppApp {
 	readonly styleClassBindings: ReadonlyArray<IYasppClassTree>;
 
 	readonly styleUrls: ReadonlyArray<IStylesheetUrl>;
+
+	readonly themeUrls: ReadonlyArray<IThemeUrl>;
 }
 
 /**

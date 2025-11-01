@@ -4,11 +4,21 @@ import * as zod from "zod";
 import type { YASPP } from "yaspp-types";
 import type { IOperationResult, NotNull, OperationPromise } from "types";
 import { fileUtils } from "../fileUtils";
-import type { IYasppNavData } from "types/app";
+import type { IThemeUrl, IYasppNavData } from "types/app";
 import YConstants from './constants';
 import { stringUtils } from "../stringUtils";
 import type { IYasppBindingsFile, IYasppClassOverrides, IYasppClassTree } from "types/styles";
 
+export interface IValidateThemesOptions {
+	readonly themes: string | ReadonlyArray<string>;
+	readonly styleRoot: string;
+	readonly siteRoot: string;
+}
+
+export interface IYasppProjectPath {
+	readonly root: string;
+	readonly project: string;
+}
 
 const ClassesSchema = zod.array(zod.string());
 const ChangeSchema: zod.ZodType<Partial<IYasppClassOverrides>> = zod.object({
@@ -54,41 +64,55 @@ async function validateContent(projectRoot: string, content?: Partial<YASPP.IYas
 		}
 	}
 }
-async function validateStyle(projectRoot: string, style?: Partial<YASPP.IYasppStyleConfig>):
+async function validateStyle(projectRoot: string, siteRoot: string, style?: Partial<YASPP.IYasppStyleConfig>):
 	Promise<IOperationResult<YASPP.IYasppStyleConfig>> {
+	const themes = [];
 	if (!style) {
-		return successResult({ root: "" });
+		return successResult({ root: "", themes }); // default themes will be set later
 	}
 	const classBindings = stringUtils.toStringArray(style.classBindings, { allowEmpty: false, unique: true });
 	if (!style?.root) {
-		return style?.sheets ? errorResult(`Style configuration does not contain a root property.
+		return style?.sheets?.length || style?.themes.length ? errorResult(`Style configuration does not contain a root property.
 but has a sheets property`)
-			: successResult({ root: "", sheets: [], classBindings });
+			: successResult({ root: "", sheets: [], classBindings, themes });
 	}
-	const stylePath = fsPath.resolve(projectRoot, style.root);
-	if (!await fileUtils.isFolder(stylePath)) {
-		return errorResult(`Can't find style folder ${style.root} (${stylePath})`);
+	const styleRoot = fsPath.resolve(projectRoot, style.root);
+	if (!await fileUtils.isFolder(styleRoot)) {
+		return errorResult(`Can't find style folder ${style.root} (${styleRoot})`);
 	}
 
 	const rawSheets = style.sheets;
 
-	const allSheets = typeof rawSheets === "string" ?
-		rawSheets.split(',')
-		: Array.isArray(rawSheets) ?
-			rawSheets.slice()
-			: ((rawSheets && console.error(`Invalid sheets entry in configuration ${typeof rawSheets}`)), []);
+	const sheets = stringUtils.toStringArray(rawSheets, { allowEmpty: false, trim: true });
 
-	const sheets: string[] = allSheets.map(s => s.trim()).filter(Boolean);
 	for await (const ss of sheets) {
-		const sheetPath = fsPath.resolve(stylePath, ss);
+		const sheetPath = fsPath.resolve(styleRoot, ss);
 		const targetSheet = fileUtils.assertFileExtension(sheetPath, "css");
 		if (!await fileUtils.isFile(targetSheet)) {
-			return errorResult(`Stylesheet ${ss} not found in ${stylePath}`);
+			return errorResult(`Stylesheet ${ss} not found in ${styleRoot}`);
 		}
+	}
+	themes.push(...(style.themes?.length ? stringUtils.toStringArray(style.themes, {
+		allowEmpty: false, unique: true
+	}) : ["dark", "light"]));
+	const themeRes = await validateThemes({
+		themes,
+		siteRoot,
+		styleRoot
+	});
+	if (themeRes.error) {
+		return errorResult(themeRes.error);
+	}
+	const theme = style.theme || "light";
+	const themeNames = themeRes.result.map(u => u.name);
+	if (!themeNames.includes(theme as string)) {
+		return errorResult(`Theme field in style configuration contains unknown theme ${theme}`);
 	}
 	return successResult({
 		root: style.root,
 		sheets,
+		theme,
+		themes: themeNames,
 		classBindings
 	})
 }
@@ -184,11 +208,11 @@ async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYaspp
  * @param projectRoot 
  * @param config 
  */
-async function validateConfig(projectRoot: string, config?: Partial<YASPP.IYasppConfig>):
+async function validateConfig(projectRoot: string, siteRoot: string, config?: Partial<YASPP.IYasppConfig>):
 	Promise<IOperationResult<YASPP.IYasppConfig>> {
 	const validContent = await validateContent(projectRoot, config?.content),
 		validLocale = await validateLocale(projectRoot, config?.locale),
-		validStyle = await validateStyle(projectRoot, config?.style),
+		validStyle = await validateStyle(projectRoot, siteRoot, config?.style),
 		validAsssets = await validateAssets(projectRoot, config?.assets),
 		validNav = await validateNav(projectRoot, config?.nav);
 
@@ -213,6 +237,44 @@ async function validateConfig(projectRoot: string, config?: Partial<YASPP.IYaspp
 ///////////////////////////////////////////////////////////////////////
 ///////////// Exported members ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
+
+/**
+ * Returns an error message
+ * @param themes array of theme names, can also be a comma separated string
+ */
+export async function validateThemes({ themes, styleRoot, siteRoot }: IValidateThemesOptions): OperationPromise<IThemeUrl[]> {
+	const t = stringUtils.toStringArray(themes, { unique: true, allowEmpty: false });
+	const errors = [];
+	const ret = [] as IThemeUrl[];
+	for await (const theme of t) {
+		const tname = fileUtils.assertFileExtension(theme, "css"),
+			themeName = fileUtils.assertFileExtension(tname, ""),
+			stname = themeName + ".scss";
+		const sysPath1 = fsPath.resolve(siteRoot, "public/styles/themes", stname),
+			sysPath2 = fsPath.resolve(siteRoot, "public/styles/themes", tname);
+
+		if (await fileUtils.isFile(sysPath1) || await fileUtils.isFile(sysPath2)) {
+			ret.push({
+				path: `/styles/themes/${tname}`,
+				name: themeName
+			})
+		}
+		else {
+			const uPath1 = fsPath.resolve(styleRoot, "themes", stname),
+				uPath2 = fsPath.resolve(styleRoot, "themes", tname);
+			if (await fileUtils.isFile(uPath1) || await fileUtils.isFile(uPath2)) {
+				ret.push({
+					path: `/${YConstants.STYLES_PATH}/themes/${tname}`,
+					name: themeName
+				})
+			}
+			else {
+				errors.push(`Theme ${themeName} not found`);
+			}
+		}
+	}
+	return operationResult(errors.join('\n'), ret);
+}
 
 export async function captureProcessOutput(
 	{
@@ -351,24 +413,24 @@ export function operationResult<TResult extends NotNull>(error?: string, result?
  * @param projectPath if provided, this is the relative path of the project to process.cwd(), which is
  * assumed to be the yaspp root
  */
-export async function getYasppProjectPath(projectPath?: string): Promise<string> {
+export async function getYasppProjectPath(projectPath?: string): Promise<IYasppProjectPath> {
 	const root = process.cwd();
 	projectPath = projectPath || process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "..";
 	const projectRoot = fsPath.resolve(root, projectPath);
 	if (await fileUtils.isFolder(projectRoot)) {
-		return projectRoot;
+		return { root, project: projectRoot };
 	}
-	return "";
+	return { root, project: "" };
 }
 
-export async function loadYasppConfig(projectRoot: string): Promise<IOperationResult<YASPP.IYasppConfig>> {
+export async function loadYasppConfig(projectRoot: string, siteRoot: string): Promise<IOperationResult<YASPP.IYasppConfig>> {
 	try {
 		const configPath = fsPath.resolve(projectRoot, YConstants.CONFIG_FILE);
 		const { result: userConfig, error } = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
 		if (!userConfig) {
 			return errorResult(`Missing or invalid yaspp configuration file (${configPath}): ${error || "unknown error"}`);
 		}
-		return validateConfig(projectRoot, userConfig);
+		return validateConfig(projectRoot, siteRoot, userConfig);
 	}
 	catch (err) {
 		return errorResult(`Error loading yaspp config ${err}`);

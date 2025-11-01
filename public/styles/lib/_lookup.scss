@@ -1,28 +1,29 @@
 @use 'sass:map';
 @use 'sass:string';
+@use 'sass:list';
 @use 'sass:meta';
 
 @function find($map, $key) {
-	$result: ();
-	$parts: string.split($key, '.');
-	$targetMap: $map;
-	$ret: null;
+	@if type-of($map) != map {
+			@debug "lookup.find map type is #{type-of($map)}, returning null";
+			@return null;
+		}
 
-	@each $part in $parts {
-		@if type-of($targetMap) != map {
-			@return null;
-		}
-		$val: map.get($targetMap, $part);
-		@if $val {
-			$targetMap: $val !global;
-			$ret: $val !global;
-		}
-		@else {
-			@return null;
-		}
+	$parts: string.split($key, '.');
+	$len: list.length($parts);
+	// @debug "find: #{$key} has #{$len} parts";
+	@if $len < 1 {
+		@return null;
 	}
-	@if type-of($ret) == string or type-of($ret) == number {
-		@return $ret;
+	@if $len == 1 {
+		@return map.get($map, $key);
 	}
-	@return null;
+	$submap: map.get($map, list.nth($parts, 1));
+	$partInd: string.index($key, '.');
+	$subkey: string.slice($key, $partInd + 1);
+	@return find($submap, $subkey);
+	// @if type-of($ret) == string or type-of($ret) == number {
+	// 	@return $ret;
+	// }
+	// @return null;
 }

@@ -10,23 +10,23 @@ import { YASPP } from "yaspp-types";
 import YConstants from "../lib/yaspp/constants"
 import { fileUtils } from "../lib/fileUtils";
 
-const rootPath = fsPath.resolve(__dirname, "../..");
+const ROOT_PATH = fsPath.resolve(__dirname, "../..");
 
 /**
  * Returns an error message, empty if no error
  */
 async function run(clean: boolean, projectRoot?: string): Promise<string> {
-	const projectPath = await getYasppProjectPath(projectRoot);
+	const { project: projectPath, root } = await getYasppProjectPath(projectRoot);
 	if (!projectPath) {
 		return `Failed to find yaspp project root`;
 	}
-	const { error, result } = await loadYasppConfig(projectPath);
+	const { error, result } = await loadYasppConfig(projectPath, root);
 	if (error) {
 		return error;
 	}
 	try {
 		const config: YASPP.IYasppConfig = result;
-		const publicPath = fsPath.resolve(rootPath, YConstants.PUBLIC_PATH);
+		const publicPath = fsPath.resolve(ROOT_PATH, YConstants.PUBLIC_PATH);
 		const { locale, style, assets, content, nav } = config;
 
 		async function copyOne(target: string, root?: string): Promise<string> {

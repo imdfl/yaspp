@@ -108,14 +108,18 @@ export interface IFileUtils {
 
 }
 
+const EXT_RE = /\.([^.]*)$/;
 class FileUtils implements IFileUtils {
 
 	public assertFileExtension(fileName: string, extension: string): string {
 		if (!fileName) {
 			return "";
 		}
+		if (!extension) {
+			return fileName.replace(EXT_RE, "");
+		}
 		extension = "." + (extension || "").replace(/^\.+/, "");
-		return fileName.replace(/\.[^.]+$/, "") + extension;
+		return fileName.replace(EXT_RE, "") + extension;
 	}
 
 	public async readJSON<T extends object = Record<string, string>>(path: string, options?: { canFail?: boolean }): OperationPromise<T> {

@@ -1,0 +1,24 @@
+@use 'sass:map';
+@use 'sass:string';
+@use 'sass:list';
+@use 'sass:meta';
+
+@mixin vars($map, $prefix, $class-prefix: null, $exclude: ()) {
+	@if type-of($map) != map {
+		@debug "varBlocks: map type is #{type-of($map)}, returning";
+	}
+
+	@else if type-of($prefix) != string {
+		@debug "varBlocks: prefix type is #{type-of($prefix)}, returning";
+	}
+
+	@else {
+		@each $key, $value in $map {
+			$ind: list.index($exclude, $key);
+
+			@if $ind == null {
+				--#{$prefix}-#{$key}: #{$value};
+			}
+		}
+	}
+}

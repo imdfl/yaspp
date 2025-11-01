@@ -2,6 +2,7 @@
 @use "sass:list";
 @use "lib/merge";
 @use "lib/lookup";
+@use "lib/varsblock";
 
 @function load($overrides: ()) {
 	$default: (
@@ -51,16 +52,34 @@
 	$vars: load($typography);
 	$fsz: map.get($vars, font-size);
 	$ffml: map.get($vars, font-family);
-	$fsz: map.get($vars, font-size);
-	@debug $fsz;
+	$fw: map.get($vars, font-weight);
+	$flh: map.get($vars, line-height);
+	$fsp: map.get($vars, spacing);
+	$prefixmap: (
+		font-family: "ml-font",
+		font-size: "ml-font-size",
+		font-weight: "ml-font-weight",
+		line-height: "ml-line-height",
+		spacing: "ml-line-spacing"
+	);
+
 	:root {
-		--ml-main-font: #{map.get($ffml, font1)};
-		--ml-aux-font: #{lookup.find($vars, "font-family.font2")};
-		--ml-font-size: #{map.get($fsz, base)};
-		@each $size in $fsz {
-			@debug "font size #{$size} #{type-of($size)}";
-			--ml-font-#{list.nth($size, 1)}: #{list.nth($size, 2)};
+		--ml-main-font: var(--ml-font-family-font1);
+		--ml-aux-font: var(--ml-font-family-font2);
+		--ml-font-size: var(--ml-font-size-base);
+		@each $key, $prefix in $prefixmap {
+			@include varsblock.vars($map: map.get($vars, $key), $prefix: $prefix);
 		}
+		// @include varsblock.vars($map: $fsz, $prefix: "ml-font");
+		// @each $size in $fsz {
+		// 	// @debug "font size #{$size} #{type-of($size)}";
+		// 	--ml-font-#{list.nth($size, 1)}: #{list.nth($size, 2)};
+		// }
+	}
+
+	body {
+		font-family: var(--ml-main-font);
+		font-size: var(--ml-font-size);
 	}
 
 	.text-tiny {

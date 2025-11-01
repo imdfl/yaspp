@@ -1,12 +1,17 @@
 @use "sass:map";
+@use "sass:string";
 @use "lib/_merge" as merge;
+@use "lib/varsblock";
 
 @function load($overrides: ()) {
 	$default: (
 		background: #FDFDFD,
 		background-hover: #BBB,
-		text-color: #222,
-		action-color: #22F
+		text: #222,
+		text-hover: #000,
+		text-action: #22F,
+		text-action-hover: #11B,
+
 	);
 	@return merge.deep($default, $overrides);
 };
@@ -14,12 +19,25 @@
 @mixin root($colors: ()) {
 	$vars: load($colors);
 	:root {
-		--ml-color: #{map.get($vars, text-color)};
-		--ml-background: #{map.get($vars, background)};
+		@include varsblock.vars($map: $vars, $prefix: "ml-color");
 	}
 	body {
 		color: var(--ml-color);
 		background-color: var(--ml-background);
+	}
+	@each $key, $value in $vars {
+		$var: --ml-color-#{$key};
+		$cls: '.ml-#{$key}'; 
+		@if string.index($key, 'background') == 0 {
+			#{$cls} {
+				background-color: #{$value};
+			}
+		}
+		@else {
+			#{$cls} {
+				color: #{$value};
+			}
+		}
 	}
 }
 
