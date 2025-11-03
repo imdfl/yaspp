@@ -51,6 +51,8 @@ export interface IYasppApp {
 	readonly styleUrls: ReadonlyArray<IStylesheetUrl>;
 
 	readonly themeUrls: ReadonlyArray<IThemeUrl>;
+
+	readonly theme: string;
 }
 
 /**

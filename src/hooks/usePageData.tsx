@@ -8,8 +8,8 @@ interface IComponentContentData {
 }
 
 export interface IParsedComponentData {
-	readonly pageData: IParsedPageData[];
-	readonly metaData: IParsedPageData[];
+	readonly pageData: ReadonlyArray<IParsedPageData>;
+	readonly metaData: ReadonlyArray<IParsedPageData>;
 }
 
 /**
@@ -20,21 +20,24 @@ export interface IParsedComponentData {
  * @returns
  */
 export const usePageData = (
-	props: IComponentContentData
+	{ content, metaData: _metaData }: IComponentContentData
 ): IParsedComponentData => {
 	const [pageData, setPageData] = useState<IParsedPageData[]>(
-		mlNextBrowserUtils.getParsedPagedData(props.content)
+		mlNextBrowserUtils.getParsedPagedData(content)
 	);
 
 	const [metaData, setMetaData] = useState<IParsedPageData[]>(
-		mlNextBrowserUtils.getParsedPagedData(props.metaData)
+		mlNextBrowserUtils.getParsedPagedData(_metaData)
 	);
 
 	// If the props changed, due to locale change, reparse the content
 	useEffect(() => {
-		setPageData(mlNextBrowserUtils.getParsedPagedData(props.content));
-		setMetaData(mlNextBrowserUtils.getParsedPagedData(props.metaData));
-	}, [props]);
+		setPageData(mlNextBrowserUtils.getParsedPagedData(content));
+	}, [content]);
+
+	useEffect(() => {
+		setMetaData(mlNextBrowserUtils.getParsedPagedData(_metaData));
+	}, [_metaData]);
 
 	return {
 		pageData,

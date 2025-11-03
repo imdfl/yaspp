@@ -1,13 +1,15 @@
 import Head from 'next/head';
+import { IThemeUrl } from '../types/app';
 
 type HeadProps = Readonly<{
-	title?: string;
-	name?: string;
-	description?: string;
-	theme?: string;
+	readonly title?: string;
+	readonly name?: string;
+	readonly description?: string;
+	readonly theme?: string;
+	readonly themeUrls: ReadonlyArray<IThemeUrl>;
 }>;
 
-const CustomHead = ({ title, name, description, theme }: HeadProps) => (
+const CustomHead = ({ title, name, description, theme, themeUrls }: HeadProps) => (
 	<Head>
 		<link
 			rel="icon"
@@ -33,10 +35,18 @@ const CustomHead = ({ title, name, description, theme }: HeadProps) => (
 		<meta name="og:title" content={title} />
 		<meta name="twitter:card" content="summary_large_image" />
 		{
-			theme && (
-				<link rel="stylesheet" href={`/styles/themes/${theme}.css`} />
+			themeUrls && themeUrls.map((url, ind) => {
+				const props = url.name === theme ? {
+					rel: "stylesheet"
+				 } : {
+					rel: "preload",
+					"as": "fetch"
+				 };
+				return (
+				<link 
+					{...props} href={url.path} key={ind}/>
 			)
-		}
+		})}
 		{/* {styles && styles.map((url, ind) => (
 			<link rel="stylesheet" href={url} key={ind} />
 		))} */}

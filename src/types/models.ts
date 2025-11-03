@@ -172,4 +172,6 @@ export interface IPageProps {
 	metaData?: string;
 	nav: string;
 	styleClassBindings: string;
+	theme: string;
+	themes: string;
 }

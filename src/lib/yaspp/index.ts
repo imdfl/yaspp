@@ -7,7 +7,7 @@ import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleName
 import type { INavSection, NavGroups } from "types/nav";
 import type { IYasppBindingsFile, IYasppClassTree } from "types/styles";
 import type { YASPP } from "yaspp-types";
-import { getYasppProjectPath, IYasppProjectPath, loadYasppConfig, validateClassBindings } from "./yaspp-lib";
+import { getYasppProjectPath, IYasppProjectPath, loadYasppConfig, validateClassBindings, validateThemes } from "./yaspp-lib";
 import YConstants from "./constants";
 
 interface ILocaleResult {
@@ -22,6 +22,7 @@ class YasppApp implements IYasppApp {
 	private _indexPage = "";
 	private _error: string = "";
 	private _state: YAppState = "none";
+	private _theme = "";
 	private _dictionary: LocaleDictionary | null = null;
 	private readonly _navItems: Record<string, INavSection[]> = {};
 	private readonly _styleUrls: IStylesheetUrl[] = [];
@@ -53,7 +54,11 @@ class YasppApp implements IYasppApp {
 	}
 
 	public get themeUrls(): ReadonlyArray<IThemeUrl> {
-		return [];
+		return this._themes.slice();
+	}
+
+	public get theme(): string {
+		return this._theme;
 	}
 
 	public get nav(): NavGroups {
@@ -81,15 +86,15 @@ class YasppApp implements IYasppApp {
 				return returnError(`path ${projectRoot} is not a folder, can't find ${YConstants.CONFIG_FILE}`);
 			}
 			this._root = projectRoot;
-			const configResult = await loadYasppConfig(projectRoot, root);
-			if (configResult.error) {
-				return returnError(configResult.error);
+			const { error: configErr, result: yConfig } = await loadYasppConfig(projectRoot, root);
+			if (configErr) {
+				return returnError(configErr);
 			}
-			const yConfig = configResult.result;
-			this._content = fsPath.resolve(projectRoot, yConfig.content.root);
+			const { content, style } = yConfig;
+			this._content = fsPath.resolve(projectRoot, content.root);
 			this._indexPage = yConfig.content.index;
 	
-			const styleErr = await this._processStyles(projectRoot, yConfig.style);
+			const styleErr = await this._processStyles(projectRoot, style);
 			if (styleErr) {
 				return returnError(styleErr);
 			}
@@ -102,6 +107,18 @@ class YasppApp implements IYasppApp {
 			if (bres.error) {
 				return returnError(bres.error);
 			}
+			const styleRoot = fsPath.resolve(projectRoot, style.root); // must exist
+
+			const { error: themeErr, result: themes} = await validateThemes({
+				siteRoot: root,
+				styleRoot,
+				themes: style.themes
+			});
+			if (themeErr) {
+				return returnError(themeErr);
+			}
+			this._themes.push(...themes);
+			this._theme = style.theme!;
 			this._classBindings.push(...bres.result);
 
 			const navErr = await this._loadNavItems(yConfig.nav, projectRoot);

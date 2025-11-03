@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps = async (
 ) => {
 	const relativePath = await mlNextUtils.populateDynamicPath(
 		__filename,
-		context.params as { [key: string]: string }
+		context.params as Record<string, string>
 	);
 
 	return mlNextUtils.getFolderStaticProps(

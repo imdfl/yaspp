@@ -246,8 +246,8 @@ async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConf
 	}
 }
 
-async function generateThemes(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<string> {
-	const { root, themes = ["dark", "light"] } = config ?? {} as Partial<YASPP.IYasppStyleConfig>;
+async function verifyThemes(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<string> {
+	const { root, themes } = config;
 	try {
 		const t = stringUtils.toStringArray(themes, { unique: true, allowEmpty: false });
 		if (!t.length) {
@@ -332,12 +332,11 @@ async function run(projectRoot: string): Promise<string> {
 		if (!projectPath) {
 			return `project folder not found at ${projectRoot}`;
 		}
-		const { error, result } = await loadYasppConfig(projectPath, root);
+		const { error, result: config } = await loadYasppConfig(projectPath, root);
 		if (error) {
 			return error;
 		}
-		const config = result,
-			{ locale, style } = config;
+		const { locale, style } = config;
 
 		let err = await createSiteRoot(/*projectRoot, config */);
 		if (err) {
@@ -351,7 +350,7 @@ async function run(projectRoot: string): Promise<string> {
 		if (err) {
 			return err;
 		}
-		err = await generateThemes(projectPath, style);
+		err = await verifyThemes(projectPath, style);
 		if (err) {
 			return err;
 		}

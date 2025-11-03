@@ -1,3 +1,4 @@
+
 export interface IFolderStaticProps {
 	/** Typically the stringified ParsedPageData */
 	readonly content: string | object;
@@ -8,4 +9,8 @@ export interface IFolderStaticProps {
 	readonly documentPath: string;
 
 	readonly styleClassBindings: string | object;
+
+	readonly theme: string;
+
+	readonly themes: string | object;
 }

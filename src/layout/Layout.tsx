@@ -1,7 +1,7 @@
 'use client';
 
 import React, { PropsWithChildren, useCallback, useContext, useMemo } from 'react';
-import { useTheme } from 'next-themes';
+// import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import { useIconAnimator, useWindowSize } from '@hooks/index';
 import { useDrawer } from '../hooks/useDrawer';
@@ -38,7 +38,7 @@ import { YasppOnload } from '../components/yaspp-components';
 import { MLThemeContext } from '../contexts/MLThemeContext';
 
 type RootLayoutProps = {
-	className?: string;
+	readonly className?: string;
 };
 
 const IS_DEBUG = process.env.NEXT_PUBLIC_ML_DEBUG;
@@ -51,14 +51,15 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	useIconAnimator(router);
 
 	const pathname = usePathname();
-	const { theme, setTheme } = useTheme();
+	// const { theme, setTheme } = useTheme();
 	const { t, locale: lang, locales, textDirection } = useContext(LocaleContext);
 	const { width: screenWidth } = useWindowSize();
-	const { theme: mlTheme, setTheme: setMLTheme} = useContext(MLThemeContext);
+	const { theme, setTheme, themes} = useContext(MLThemeContext);
 
 	const isHome = pathname === '/';
 	const isMobile = screenWidth <= MIN_DESKTOP_WIDTH;
-	const oppositeTheme = theme === 'dark' ? 'light' : 'dark';
+	const oppositeTheme = theme === themes[0].name ? themes[1]?.name ?? ""
+	 : theme === themes[1]?.name ? themes[0].name : "";
 
 	const { open: drawerOpen, toggle: toggleDrawer } = useDrawer(isMobile);
 
@@ -70,8 +71,8 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 
 	const setCurrentTheme = useCallback((theme: string) => {
 		setTheme(theme);
-		setMLTheme(theme);
-	}, [setTheme, setMLTheme])
+		// setMLTheme(theme);
+	}, [setTheme])
 
 	const setLocale = useCallback(
 		async (id: LocaleId) => {
@@ -85,9 +86,9 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	);
 
 	const themeLabel = useMemo(() => {
-		return t('common:button:toggleTheme', {
+		return oppositeTheme ? t('common:button:toggleTheme', {
 			theme: t(`common:theme:${oppositeTheme}:name`),
-		});
+		}) : "";
 	}, [oppositeTheme, t]);
 
 	const localeItems: LocaleOptionProps[] = useMemo(
@@ -119,7 +120,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 						{getIcon('close')}
 					</Button>
 					<div className={styles.menuHeader}>
-						<Logo mode={oppositeTheme} className={styles.logo} />
+						<Logo mode={oppositeTheme || theme} className={styles.logo} />
 						<TextLink title={siteTitle} linked={!isHome} href="/" variant="h1">
 							{siteTitle}
 						</TextLink>
@@ -133,12 +134,12 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 							className={styles.localeSelect}
 						/>
 						<Separator className={styles.separator} />
-						<ThemeSelect
+						{oppositeTheme && (<ThemeSelect
 							label={themeLabel}
 							theme={theme}
 							setTheme={setCurrentTheme}
 							className={styles.themeSelect}
-						/>
+						/>)}
 					</div>
 					<MenuDrawer
 						items={sidebarSections}
@@ -171,7 +172,8 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 				title={`${siteTitle} – ${siteSubtitle}`}
 				name={siteTitle}
 				description={siteSubtitle}
-				theme={mlTheme}
+				theme={theme}
+				themeUrls={themes}
 			/>
 			<Scrollbar
 				textDirection={textDirection}

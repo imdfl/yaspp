@@ -103,10 +103,11 @@ but has a sheets property`)
 	if (themeRes.error) {
 		return errorResult(themeRes.error);
 	}
-	const theme = style.theme || "light";
 	const themeNames = themeRes.result.map(u => u.name);
+	const theme = style.theme || (themeNames.includes("light") ? "light"
+		: themeNames.includes("dark") ? "dark" : themeNames[0]);
 	if (!themeNames.includes(theme as string)) {
-		return errorResult(`Theme field in style configuration contains unknown theme ${theme}`);
+		return errorResult(`Theme field in style configuration contains unknown theme "${theme}"`);
 	}
 	return successResult({
 		root: style.root,
