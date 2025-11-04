@@ -1,35 +1,54 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getIcon } from 'components/icons';
 import ToggleButton from '../../components/toggle/toggle-button/ToggleButton';
 import styles from './ThemeSelect.module.scss';
 import classNames from '@lib/class-names';
+import { useMountGuard } from '../../hooks/useMountGuard';
 
 type ThemeSelectProps = {
-	label: string;
-	theme: string;
-	setTheme: (val: string) => void;
-	className?: string;
+	readonly label: string;
+	readonly theme: string;
+	readonly themes: ReadonlyArray<string>;
+	readonly setTheme: (val: string) => void;
+	readonly className?: string;
 };
 
 const ThemeSelect = ({
 	label,
 	theme,
 	setTheme,
+	themes,
 	className,
 }: ThemeSelectProps): JSX.Element => {
-	const [mounted, setMounted] = useState(false);
+	const [curThemeIndex, setCurThemeIndex] = useState<number>(themes.indexOf(theme));
+	const { mounted } = useMountGuard();
 
-	useEffect(() => setMounted(true), []);
+	const toggleTheme = useCallback(() => {
+		if (themes.length < 2) {
+			return;
+		}
+		let nextInd = curThemeIndex === 0 ? 1 : 0;
+		setTheme(themes[nextInd]);
+		
+	}, [curThemeIndex, themes, setTheme])
 
-	if (!mounted) return null;
+	useEffect(() => {
+		setCurThemeIndex(themes.indexOf(theme));
+	}, [themes, theme]);
 
-	const isDark = theme === 'dark';
+	if (!mounted) {
+		return null;
+	}
+	if (themes.length < 2 || curThemeIndex < 0) {
+		return null;
+	}
+
 
 	return (
 		<ToggleButton
 			title={label}
-			isToggled={isDark}
-			onClick={() => setTheme(isDark ? 'light' : 'dark')}
+			isToggled={curThemeIndex === 1}
+			onClick={toggleTheme}
 			className={classNames(styles.root, className)}
 		>
 			{getIcon(theme)}

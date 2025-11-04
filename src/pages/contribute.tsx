@@ -15,9 +15,7 @@ const Contribute: NextPage<IPageProps> = (props) => {
 	const { pageData } = usePageData(props);
 	const { metaData } = usePageMetadata(pageData);
 	const { t } = useContext(LocaleContext);
-	const pageTitle = `
-		${t('common:site:title')} – ${t('pages:contribute:title')}
-	`;
+	const pageTitle = `${t('common:site:title')} – ${t('pages:contribute:title')}`;
 
 	return (
 		<Layout>

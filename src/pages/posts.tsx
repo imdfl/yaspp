@@ -1,24 +1,29 @@
-import React, { useContext } from 'react';
-import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
-import { GetStaticProps } from 'next';
-import { ContentTypes } from 'types/content';
-import { mlNextUtils } from '../lib/next-utils/nextUtils';
-import type { IPageProps, IParsedPageData } from 'types/models';
-import { usePageData } from '../hooks/usePageData';
-import orderBy from 'lodash.orderby';
-import Layout from 'layout/Layout';
-import Head from 'next/head';
-import { getMetadata, renderElements } from 'lib/dynamicContentHelpers';
-import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
-import styles from '../custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss';
-import { LocaleContext } from '@contexts/localeContext';
+import React, { useCallback, useContext } from "react";
+import { LoadContentModes, LoadFolderModes } from "types/parser/modes";
+import { GetStaticProps } from "next";
+import { ContentTypes } from "types/content";
+import { mlNextUtils } from "../lib/next-utils/nextUtils";
+import type { IPageProps, IParsedPageData } from "types/models";
+import { usePageData } from "../hooks/usePageData";
+import orderBy from "lodash.orderby";
+import Layout from "layout/Layout";
+import Head from "next/head";
+import { getMetadata, renderElements } from "lib/dynamicContentHelpers";
+import { GenericContentLayout } from "custom-layouts/generic-content-layout/GenericContentLayout";
+import styles from "../custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss";
+import { LocaleContext } from "@contexts/localeContext";
+import { useTranslatedString } from "@hooks/useTranslatedString";
 
 export default function Blog(props: IPageProps) {
 	const { pageData } = usePageData(props);
 	const { t, locale } = useContext(LocaleContext);
-	const pageTitle = `${t('common:site:title')} – ${t('pages:blog:title')}`;
-	const sortedItems = orderBy(pageData, ['metaData.date'], ['desc']);
+	const setTitle = useCallback(() => {
+		return `${t("common:site:title")} – ${t("pages:blog:title")}`;
+	}, [t]);
+	const { text: pageTitle} = useTranslatedString(setTitle);
+	const sortedItems = orderBy(pageData, ["metaData.date"], ["desc"]);
 	const items = sortedItems || pageData;
+
 
 	return (
 		<Layout>
@@ -26,12 +31,12 @@ export default function Blog(props: IPageProps) {
 				<title>{pageTitle}</title>
 			</Head>
 
-			<GenericContentLayout caption={t('pages:blog:title')} title={'Posts'}>
+			<GenericContentLayout caption={t("pages:blog:title")} title={"Posts"}>
 				{items.map((page: IParsedPageData) => {
 					const { path } = page;
 					// const { metaData } = usePageMetadata([page]);
 					const [title, date, author] = getMetadata(
-						['title', 'date', 'author'],
+						["title", "date", "author"],
 						[page]
 					);
 					// return (

@@ -22,13 +22,25 @@ interface IMLThemeContextOptions extends IMLThemeOptions {
 	readonly setNextTheme?: SetThemeFunc;
 }
 class MLThemeContextImpl implements IMLThemeProvider {
-	private _theme: string;
-	private readonly _themes: IThemeUrl[];
+	private _theme: string = "";
+	private readonly _themes: IThemeUrl[] = [];
 	private readonly _setNextTheme: SetThemeFunc;
+	private readonly _setTheme: SetThemeFunc;
 	constructor({ themes, theme, setNextTheme }: IMLThemeContextOptions) {
 		this._theme = theme;
-		this._setNextTheme = setNextTheme;
-		this._themes = [];
+		this._setNextTheme = setNextTheme ?? (() => void 0);
+		this._setTheme = (theme: string) => {
+			if (this._isValidTheme(theme)) {
+				this._theme = theme ?? "";
+				if (window?.localStorage) {
+					window.localStorage.setItem(STOAGE_KEY, this._theme);
+				}
+				this._setNextTheme(theme);
+			}
+			else {
+				console.warn(`setTheme: unknown theme ${theme}`);
+			}
+		};
 		if (typeof themes === "string") {
 			const { error, result: ts} = stringUtils.parseJSON<IThemeUrl[]>(themes);
 			if (error) {
@@ -41,7 +53,7 @@ class MLThemeContextImpl implements IMLThemeProvider {
 		else if (Array.isArray(themes)) {
 			this._themes.push(...(themes as IThemeUrl[]));
 		}
-		else {
+		else if (themes) {
 			console.error(`MLThemeProvider: Missing or invalid themes in input`);
 		}
 	}
@@ -54,15 +66,12 @@ class MLThemeContextImpl implements IMLThemeProvider {
 	}
 
 	public get setTheme(): SetThemeFunc {
-		return (theme: string) => {
-			this._theme = theme ?? "";
-			if (window?.localStorage) {
-				window.localStorage.setItem(STOAGE_KEY, this._theme);
-			}
-			this._setNextTheme(theme);
-		}
+		return this._setTheme;
 	}
 
+	private _isValidTheme(theme: string): boolean {
+		return Boolean(theme && this._themes.find(u => u.name === theme));
+	}
 }
 
 const ctx = createContext<IMLThemeProvider>(new MLThemeContextImpl({

@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import React, { PropsWithChildren, useCallback, useContext, useMemo } from 'react';
-// import { useTheme } from 'next-themes';
-import { usePathname } from 'next/navigation';
-import { useIconAnimator, useWindowSize } from '@hooks/index';
-import { useDrawer } from '../hooks/useDrawer';
+import React, { PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useIconAnimator, useWindowSize } from "@hooks/index";
+import { useDrawer } from "../hooks/useDrawer";
 import {
 	Button,
 	Container,
@@ -22,20 +21,20 @@ import {
 	TextLink,
 	ThemeSelect,
 	MenuDrawer,
-} from '../components/index';
-import { getIcon } from 'components/icons';
-import CustomHead from './customHead';
-import { Analytics } from './analytics';
-import { LocaleId } from 'types';
-import { useRouter } from 'next/router';
-import { NavSectionId } from './data/nav';
-import classNames from '@lib/class-names';
-import styles from './Layout.module.scss';
-import type { LocaleOptionProps } from 'layout/locale-select/LocaleSelect';
-import { LocaleContext } from '../contexts/localeContext';
-import useNavItems from '../hooks/useNavItems';
-import { YasppOnload } from '../components/yaspp-components';
-import { MLThemeContext } from '../contexts/MLThemeContext';
+} from "../components/index";
+import { getIcon } from "components/icons";
+import CustomHead from "./customHead";
+import { Analytics } from "./analytics";
+import { LocaleId } from "types";
+import { useRouter } from "next/router";
+import { NavSectionId } from "./data/nav";
+import classNames from "@lib/class-names";
+import styles from "./Layout.module.scss";
+import type { LocaleOptionProps } from "layout/locale-select/LocaleSelect";
+import { LocaleContext } from "../contexts/localeContext";
+import useNavItems from "@hooks/useNavItems";
+import { YasppOnload } from "../components/yaspp-components";
+import { MLThemeContext } from "../contexts/MLThemeContext";
 
 type RootLayoutProps = {
 	readonly className?: string;
@@ -55,11 +54,29 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	const { t, locale: lang, locales, textDirection } = useContext(LocaleContext);
 	const { width: screenWidth } = useWindowSize();
 	const { theme, setTheme, themes} = useContext(MLThemeContext);
+	const [oppositeTheme, setOppositeTheme] = useState("");
 
-	const isHome = pathname === '/';
+	const [ themeNames, setThemeNames ] = useState<ReadonlyArray<string>>(themes?.map(u => u.name) ?? []);
+
+	useEffect(() => {
+		setThemeNames(themes?.map(u => u.name) ?? []);
+	}, [themes]);
+
+	useEffect(() => {
+		let op = "";
+		const t = theme,
+			ts = themes;
+		if (t && ts?.length) {
+			op = ((t === ts[0].name) ?
+				ts[1]?.name : 
+				(t === ts[1]?.name) ? ts[0].name
+				: "") ?? "";
+		}
+		setOppositeTheme(op);
+	}, [theme, themes])
+
+	const isHome = pathname === "/";
 	const isMobile = screenWidth <= MIN_DESKTOP_WIDTH;
-	const oppositeTheme = theme === themes[0].name ? themes[1]?.name ?? ""
-	 : theme === themes[1]?.name ? themes[0].name : "";
 
 	const { open: drawerOpen, toggle: toggleDrawer } = useDrawer(isMobile);
 
@@ -77,16 +94,12 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 	const setLocale = useCallback(
 		async (id: LocaleId) => {
 			await localeContext.setLocale(id);
-			// return router.push(router.asPath, router.asPath, {
-			// 	locale: id,
-			// 	scroll: true,
-			// })
 		},
 		[localeContext]
 	);
 
 	const themeLabel = useMemo(() => {
-		return oppositeTheme ? t('common:button:toggleTheme', {
+		return oppositeTheme ? t("common:button:toggleTheme", {
 			theme: t(`common:theme:${oppositeTheme}:name`),
 		}) : "";
 	}, [oppositeTheme, t]);
@@ -101,31 +114,31 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 		[locales, t]
 	);
 
-	const siteTitle = t('common:site:title');
-	const siteSubtitle = t('common:site:subtitle');
-	const siteLicense = t('common:site:license', {
+	const siteTitle = t("common:site:title");
+	const siteSubtitle = t("common:site:subtitle");
+	const siteLicense = t("common:site:license", {
 		toYear: new Date().getFullYear(),
 	});
 
 	const menuDrawer = useMemo(
 		() => (
 			<Drawer
-				direction={textDirection === 'ltr' ? 'right' : 'left'}
+				direction={textDirection === "ltr" ? "right" : "left"}
 				open={drawerOpen}
 				onClose={toggleDrawer}
 				className={styles.drawer}
 			>
 				<Scrollbar textDirection={textDirection} height="100vh">
 					<Button onClick={toggleDrawer} asChild>
-						{getIcon('close')}
+						{getIcon("close")}
 					</Button>
 					<div className={styles.menuHeader}>
 						<Logo mode={oppositeTheme || theme} className={styles.logo} />
 						<TextLink title={siteTitle} linked={!isHome} href="/" variant="h1">
 							{siteTitle}
-						</TextLink>
+					</TextLink>
 					</div>
-					<Strip />
+				<Strip />
 					<div className={styles.panel}>
 						<LocaleSelect
 							defaultValue={lang}
@@ -137,6 +150,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 						{oppositeTheme && (<ThemeSelect
 							label={themeLabel}
 							theme={theme}
+							themes={themeNames}
 							setTheme={setCurrentTheme}
 							className={styles.themeSelect}
 						/>)}
@@ -155,6 +169,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 			drawerOpen,
 			toggleDrawer,
 			oppositeTheme,
+			themeNames,
 			siteTitle,
 			isHome,
 			lang,
@@ -193,7 +208,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 				>
 					<header data-testid="topbar">
 						<Container alignItemsCenter className={styles.title}>
-							<Logo mode={theme || 'light'} className={styles.logo} />
+							<Logo mode={theme || "light"} className={styles.logo} />
 							<TextLink
 								variant="subtitle1"
 								title={siteTitle}
@@ -209,7 +224,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 						</Container>
 						{isMobile ? (
 							<Button onClick={toggleDrawer} asChild>
-								{getIcon('hamburger')}
+								{getIcon("hamburger")}
 							</Button>
 						) : (
 							<Container alignItemsCenter>
@@ -227,6 +242,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 									<ThemeSelect
 										label={themeLabel}
 										theme={theme}
+										themes={themeNames}
 										setTheme={setCurrentTheme}
 										className={styles.themeSelect}
 									/>
@@ -246,7 +262,7 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 										{siteLicense}
 									</Text>
 									<Text>{siteSubtitle}</Text>
-									<Text>{t('common:site:shortSiteDescription')}</Text>
+									<Text>{t("common:site:shortSiteDescription")}</Text>
 								</div>
 								{footerSections.map((section) => (
 									<Container className={styles.column} key={`container-${section.id}`}>

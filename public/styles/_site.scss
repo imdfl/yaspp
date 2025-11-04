@@ -10,9 +10,9 @@
 };
 
 @mixin root($colors: (), $typography: ()) {
-	@include colors.root();
-	@include typography.root();
-	
+	@include colors.root($colors);
+	@include typography.root($typography);
+
 	// $vars: load($colors, $typography);
 	// $c: map.get($vars, colors);
 	// $t: map.get($vars, typography);

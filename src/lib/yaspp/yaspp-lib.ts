@@ -104,9 +104,9 @@ but has a sheets property`)
 		return errorResult(themeRes.error);
 	}
 	const themeNames = themeRes.result.map(u => u.name);
-	const theme = style.theme || (themeNames.includes("light") ? "light"
+	const theme: string = style.theme || (themeNames.includes("light") ? "light"
 		: themeNames.includes("dark") ? "dark" : themeNames[0]);
-	if (!themeNames.includes(theme as string)) {
+	if (!themeNames.includes(theme)) {
 		return errorResult(`Theme field in style configuration contains unknown theme "${theme}"`);
 	}
 	return successResult({

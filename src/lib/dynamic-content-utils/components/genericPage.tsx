@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import Layout from 'layout/Layout';
 import Head from 'next/head';
 import type { IContentComponentData, IMLParsedNode } from 'types/models';
 import { ContentIterator } from '../contentIterator';
-import { usePageData } from '../../../hooks/usePageData';
+import { usePageData } from '@hooks/usePageData';
 import { MLNODE_TYPES } from 'types/nodes';
 import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
 import { usePageMetadata } from 'lib/dynamicContentHelpers';
 import { LocaleContext } from '@contexts/localeContext';
+import { useTranslatedString } from '@hooks/useTranslatedString';
 
 const GenericPage = ({ pageProps, className }: IContentComponentData) => {
 	const { pageData } = usePageData(pageProps);
@@ -20,10 +21,12 @@ const GenericPage = ({ pageProps, className }: IContentComponentData) => {
 	};
 	const { t } = useContext(LocaleContext);
 	const { metaData } = usePageMetadata(pageData);
+	const setTitle = useCallback(() => {
+		return `${t('common:site:title')} – ${t('common:site:subtitle')} – ${metaData.title}`;
+	}, [t, metaData]);
 
-	const pageTitle = `
-		${t('common:site:title')} – ${t('common:site:subtitle')} – ${metaData.title}
-	`;
+	const { text: pageTitle } = useTranslatedString(setTitle);
+	// `${t('common:site:title')} – ${t('common:site:subtitle')} – ${metaData.title}`;
 
 	if (!node) {
 		return <></>;

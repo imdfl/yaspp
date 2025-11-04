@@ -64,8 +64,8 @@
 	);
 
 	:root {
-		--ml-main-font: var(--ml-font-family-font1);
-		--ml-aux-font: var(--ml-font-family-font2);
+		--ml-main-font: var(--ml-font-font1);
+		--ml-aux-font: var(--ml-font-font2);
 		--ml-font-size: var(--ml-font-size-base);
 		@each $key, $prefix in $prefixmap {
 			@include varsblock.vars($map: map.get($vars, $key), $prefix: $prefix);

@@ -21,9 +21,10 @@ const Desktop: Story = {
 	args: {
 		label: 'selected label',
 		theme: 'light',
+		themes: [ "light", "dark" ]
 	},
 	render: function Render({ label }) {
-		return <ThemeSelect label={label} theme="light" setTheme={() => {}} />;
+		return <ThemeSelect label={label} theme="light" setTheme={() => {}}  themes={["light", "dark"]} />;
 	},
 };
 

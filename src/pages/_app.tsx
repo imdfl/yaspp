@@ -8,22 +8,19 @@ import '../styles/app.scss';
 import type { IPageProps } from 'types/models';
 import { LocaleContextProvider } from '../contexts/localeContext';
 import MLThemeContextProvider from '../contexts/MLThemeContext';
-// import { usePageData } from '../hooks';
 
 const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	const fontStyles = css`
 		${fontFaceDecls}
 	`;
-	// const { pageData } = usePageData({ content: pageProps.content })
-
-	// const ref = useRef<HTMLStyleElement>(null);
 
 	return (
 		<LocaleContextProvider router={router}>
 			<ThemeProvider
-				defaultTheme={pageProps.theme}
+				defaultTheme={pageProps.theme || "light"}
 				storageKey="ml-theme"
 				attribute="data-ml-theme"
+				
 			>
 				<MLThemeContextProvider themes={pageProps.themes}>
 					<PageProvider 

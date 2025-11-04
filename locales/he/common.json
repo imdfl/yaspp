@@ -9,7 +9,7 @@
 	"button:backToTarget": "חזרה {{ sep }}{{ target }}",
 	"button:toggleTheme": "החלפת צבע אתר ל{{ theme }}",
 	"button:back": "חזרה",
-	"theme:light:name": "מואר",
-	"theme:dark:name": "אפל",
+	"theme:light:name": "תצוגה מוארת",
+	"theme:dark:name": "תצוגה אפלה",
 	"markdown:tags:figure:abbr": "תרשים"
 }

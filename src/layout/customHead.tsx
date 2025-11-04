@@ -40,7 +40,7 @@ const CustomHead = ({ title, name, description, theme, themeUrls }: HeadProps) =
 					rel: "stylesheet"
 				 } : {
 					rel: "preload",
-					"as": "fetch"
+					"as": "style"
 				 };
 				return (
 				<link 

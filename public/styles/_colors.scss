@@ -22,20 +22,20 @@
 		@include varsblock.vars($map: $vars, $prefix: "ml-color");
 	}
 	body {
-		color: var(--ml-color);
-		background-color: var(--ml-background);
+		color: var(--ml-color-text);
+		background-color: var(--ml-color-background);
 	}
 	@each $key, $value in $vars {
 		$var: --ml-color-#{$key};
 		$cls: '.ml-#{$key}'; 
 		@if string.index($key, 'background') == 0 {
 			#{$cls} {
-				background-color: #{$value};
+				background-color: #{$var};
 			}
 		}
 		@else {
 			#{$cls} {
-				color: #{$value};
+				color: #{$var};
 			}
 		}
 	}
