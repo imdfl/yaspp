@@ -1,22 +1,19 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import Text from "../text/Text";
 import styles from "./Paragraph.module.scss";
 import classNames from "@lib/class-names";
+import type { YSPComponentPropsWithChildren } from "types/components";
 // import useClassNames from "@hooks/useClassNames";
 // import ComponentContextProvider from "@contexts/componentContext";
 
-type ParagraphProps = {
-	className?: string;
-};
 
 export const Paragraph = ({
 	children,
 	className,
-}: PropsWithChildren<ParagraphProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren): JSX.Element => (
 	<p className={classNames(styles.root, className)}>
 		<Text variant="body1">{children}</Text>
 	</p>
 );
 
 export default Paragraph;
-export type { ParagraphProps };

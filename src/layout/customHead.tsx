@@ -38,18 +38,17 @@ const CustomHead = ({ title, name, description, theme, themeUrls }: HeadProps) =
 			themeUrls && themeUrls.map((url, ind) => {
 				const props = url.name === theme ? {
 					rel: "stylesheet"
-				 } : {
+				} : {
 					rel: "preload",
-					"as": "style"
-				 };
+					"as": "style",
+					fetchpriority: "low" as const
+				};
+
 				return (
-				<link 
-					{...props} href={url.path} key={ind}/>
-			)
-		})}
-		{/* {styles && styles.map((url, ind) => (
-			<link rel="stylesheet" href={url} key={ind} />
-		))} */}
+					<link
+						{...props} href={url.path} key={ind} />
+				)
+			})}
 	</Head>
 );
 

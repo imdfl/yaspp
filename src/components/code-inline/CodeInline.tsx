@@ -1,15 +1,12 @@
-import React, { PropsWithChildren } from 'react';
-import styles from './CodeInline.module.scss';
-import classNames from '@lib/class-names';
-
-type CodeInlineProps = {
-	className?: string;
-};
+import React from "react";
+import styles from "./CodeInline.module.scss";
+import classNames from "@lib/class-names";
+import { YSPComponentPropsWithChildren } from "types/components";
 
 const CodeInline = ({
 	children,
 	className,
-}: PropsWithChildren<CodeInlineProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren): JSX.Element => (
 	<code className={classNames(styles.root, className)}>{children}</code>
 );
 

@@ -11,7 +11,6 @@ type ButtonProps = {
 	disabled?: boolean;
 	onClick?: (e: SyntheticEvent | string | number | boolean) => void;
 	type?: "submit";
-	className?: string;
 };
 
 const Button = ({
@@ -19,6 +18,7 @@ const Button = ({
 	disabled,
 	children,
 	className,
+	partName,
 	title,
 	onClick,
 	...props
@@ -27,7 +27,7 @@ const Button = ({
 	const Comp = asChild && typeof children !== "string" ? Slot : "button";
 	const { componentClass, componentPath } = useClassNames({
 		classes: [styles.root, className],
-		part: "button",
+		part: partName || "button",
 	});
 
 	return (

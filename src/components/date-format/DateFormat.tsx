@@ -1,19 +1,19 @@
-import classNames from '@lib/class-names';
-import styles from './DateFormat.module.scss';
-import { useContext, useEffect, useState } from 'react';
-import { LocaleContext } from '../../contexts/localeContext';
+import classNames from "@lib/class-names";
+import styles from "./DateFormat.module.scss";
+import { useContext, useEffect, useState } from "react";
+import { LocaleContext } from "../../contexts/localeContext";
+import { YSPComponentPropsWithChildren } from "../../types/components";
 
-type DateFormatProps = {
-	date: Date;
-	locale?: string;
-	className?: string;
+interface DateFormatProps {
+	readonly date: Date;
+	readonly locale?: string;
 };
 
 const DateFormat = ({
 	date,
 	locale,
 	className,
-}: DateFormatProps): JSX.Element => {
+}: YSPComponentPropsWithChildren<DateFormatProps>): JSX.Element => {
 	const ctx = useContext(LocaleContext);
 	const [label, setLabel] = useState("");
 

@@ -251,21 +251,21 @@ export async function validateThemes({ themes, styleRoot, siteRoot }: IValidateT
 		const tname = fileUtils.assertFileExtension(theme, "css"),
 			themeName = fileUtils.assertFileExtension(tname, ""),
 			stname = themeName + ".scss";
-		const sysPath1 = fsPath.resolve(siteRoot, "public/styles/themes", stname),
-			sysPath2 = fsPath.resolve(siteRoot, "public/styles/themes", tname);
-
-		if (await fileUtils.isFile(sysPath1) || await fileUtils.isFile(sysPath2)) {
+		const uPath1 = fsPath.resolve(styleRoot, "themes", stname),
+			uPath2 = fsPath.resolve(styleRoot, "themes", tname);
+		if (await fileUtils.isFile(uPath1) || await fileUtils.isFile(uPath2)) {
 			ret.push({
-				path: `/styles/themes/${tname}`,
+				path: `/${YConstants.STYLES_PATH}/themes/${tname}`,
 				name: themeName
 			})
 		}
+
 		else {
-			const uPath1 = fsPath.resolve(styleRoot, "themes", stname),
-				uPath2 = fsPath.resolve(styleRoot, "themes", tname);
-			if (await fileUtils.isFile(uPath1) || await fileUtils.isFile(uPath2)) {
+			const sysPath1 = fsPath.resolve(siteRoot, "public/styles/themes", stname),
+				sysPath2 = fsPath.resolve(siteRoot, "public/styles/themes", tname);
+			if (await fileUtils.isFile(sysPath1) || await fileUtils.isFile(sysPath2)) {
 				ret.push({
-					path: `/${YConstants.STYLES_PATH}/themes/${tname}`,
+					path: `/styles/themes/${tname}`,
 					name: themeName
 				})
 			}

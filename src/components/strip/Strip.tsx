@@ -1,16 +1,13 @@
 import React from "react";
 import styles from "./Strip.module.scss";
 import classNames from "@lib/class-names";
+import type { YSPComponentPropsWithChildren } from "types/components";
 // import useClassNames from "@hooks/useClassNames";
 // import ComponentContextProvider from "@contexts/componentContext";
 
-type StripProps = {
-	className?: string;
-};
 
-const Strip = ({ className }: StripProps) => (
+const Strip = ({ className }: YSPComponentPropsWithChildren) => (
 	<div className={classNames(styles.root, className)} />
 );
 
 export default Strip;
-export type { StripProps };

@@ -1,8 +1,9 @@
-import React, { PropsWithChildren } from 'react';
-import { getIcon } from 'components/icons';
-import classNames from '@lib/class-names';
-import styles from './ErrorMessage.module.scss';
-import { Link } from '..';
+import React from "react";
+import { getIcon } from "components/icons";
+import classNames from "@lib/class-names";
+import styles from "./ErrorMessage.module.scss";
+import { Link } from "..";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type ErrorMessageProps = {
 	message?: string;
@@ -10,17 +11,16 @@ type ErrorMessageProps = {
 	label?: string;
 	reportIssueUrl?: string;
 	issueTrackerUrl?: string;
-	className?: string;
 };
 
 const ErrorMessage = ({
 	message,
-	icon = 'cross',
+	icon = "cross",
 	label,
 	issueTrackerUrl,
 	children,
 	className,
-}: PropsWithChildren<ErrorMessageProps>) => (
+}: YSPComponentPropsWithChildren<ErrorMessageProps>) => (
 	<div className={classNames(styles.root, className)}>
 		{getIcon(icon)} {message}
 		{children ?? children}

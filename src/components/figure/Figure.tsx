@@ -5,7 +5,6 @@ import type { YSPComponentPropsWithChildren } from 'types/components';
 
 type FigureProps = {
 	elementId: string;
-	className?: string;
 };
 
 const Figure = ({

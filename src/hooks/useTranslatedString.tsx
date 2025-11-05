@@ -9,7 +9,7 @@ export interface ITranslatedString {
  * @returns an object with a `text` string prop
  */
 export const useTranslatedString = (generate: () => string): ITranslatedString => {
-	const [text, setText] = useState(generate());
+	const [text, setText] = useState("");
 
 	useEffect(() => {
 		setText(generate());

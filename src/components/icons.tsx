@@ -39,7 +39,7 @@ const ICON_MAP = new Map<string, IconData>([
 	[ "caretDown", CaretDownIcon ], 
 	[ "chevronLeft", ChevronLeftIcon ], 
 	[ "chevronRight", ChevronRightIcon ], 
-	[ "arrowLeft", ArrowLeftIcon ], 
+[ "arrowLeft", ArrowLeftIcon ], 
 	[ "arrowRight", ArrowRightIcon ], 
 	[ "person", PersonIcon ], 
 	[ "closed-envelope", EnvelopeClosedIcon ], 

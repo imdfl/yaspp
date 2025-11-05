@@ -1,21 +1,16 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import styles from "./Term.module.scss";
 import classNames from "@lib/class-names";
-// import useClassNames from "@hooks/useClassNames";
-// import ComponentContextProvider from "@contexts/componentContext";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
-type TermProps = {
-	className?: string;
-};
 
 export const Term = ({
 	children,
 	className,
-}: PropsWithChildren<TermProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren): JSX.Element => (
 	<span className={classNames(styles.root, className)}>
 		<dfn className={styles.label}>{children}</dfn>
 	</span>
 );
 
 export default Term;
-export type { TermProps };

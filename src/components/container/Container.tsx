@@ -1,14 +1,15 @@
-import React, { PropsWithChildren } from 'react';
-import { Slot } from '@radix-ui/react-slot';
-import classNames from '@lib/class-names';
-import styles from './Container.module.scss';
+import React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import classNames from "@lib/class-names";
+import styles from "./Container.module.scss";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type ContainerProps = {
 	/** Container fixed `position` */
 	sticky?: boolean;
 
 	/** `sticky` position options */
-	position?: 'top' | 'bottom';
+	position?: "top" | "bottom";
 
 	/** Add even space between container elements */
 	spaceBetween?: boolean;
@@ -28,13 +29,10 @@ type ContainerProps = {
 	/** Add horizontal gutter */
 	horizontalGutter?: boolean;
 
-	flexDirection?: 'row' | 'column';
+	flexDirection?: "row" | "column";
 
 	/** Render container as slot  */
 	asChild?: boolean;
-
-	/** Classname */
-	className?: string;
 };
 
 const Container = ({
@@ -51,8 +49,8 @@ const Container = ({
 	asChild,
 	className,
 	...rest
-}: PropsWithChildren<ContainerProps>) => {
-	const Comp = asChild ? Slot : 'div';
+}: YSPComponentPropsWithChildren<ContainerProps>) => {
+	const Comp = asChild ? Slot : "div";
 
 	return (
 		<Comp

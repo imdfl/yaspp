@@ -35,6 +35,7 @@ import { LocaleContext } from "../contexts/localeContext";
 import useNavItems from "@hooks/useNavItems";
 import { YasppOnload } from "../components/yaspp-components";
 import { MLThemeContext } from "../contexts/MLThemeContext";
+import { useTranslatedString } from "../hooks/useTranslatedString";
 
 type RootLayoutProps = {
 	readonly className?: string;
@@ -114,11 +115,14 @@ const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
 		[locales, t]
 	);
 
-	const siteTitle = t("common:site:title");
-	const siteSubtitle = t("common:site:subtitle");
-	const siteLicense = t("common:site:license", {
+	const siteTitleGen = useCallback(() => t("common:site:title"), [t]);
+	const siteSubtitleGen = useCallback(() => t("common:site:subtitle"), [t]);
+	const siteLicenseGen = useCallback(() => t("common:site:license", {
 		toYear: new Date().getFullYear(),
-	});
+	}), [t]);
+	const { text: siteTitle } = useTranslatedString(siteTitleGen);
+	const { text: siteSubtitle } = useTranslatedString(siteSubtitleGen);
+	const { text: siteLicense } = useTranslatedString(siteLicenseGen);
 
 	const menuDrawer = useMemo(
 		() => (

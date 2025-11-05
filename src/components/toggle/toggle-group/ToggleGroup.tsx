@@ -1,15 +1,15 @@
-import React, { PropsWithChildren, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import * as ToggleGroupPrimitives from '@radix-ui/react-toggle-group';
 // import { ToggleGroupItemProps } from './toggle-group-item/ToggleGroupItem';
 import classNames from '@lib/class-names';
 import styles from './ToggleGroup.module.scss';
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type ToggleGroupProps = {
 	defaultValue: string;
 	// options?: ToggleGroupItemProps[];
 	onSelect?: (val: string) => void;
 	type: 'single';
-	className?: string;
 };
 
 const ToggleGroup = ({
@@ -18,7 +18,7 @@ const ToggleGroup = ({
 	onSelect,
 	children,
 	className,
-}: PropsWithChildren<ToggleGroupProps>): JSX.Element => {
+}: YSPComponentPropsWithChildren<ToggleGroupProps>): JSX.Element => {
 	const childrenWithProps = useMemo(
 		() =>
 			React.Children.map(children, (child) => {

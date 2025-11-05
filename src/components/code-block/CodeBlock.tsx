@@ -1,15 +1,12 @@
-import React, { PropsWithChildren } from 'react';
-import classNames from '@lib/class-names';
-import styles from './CodeBlock.module.scss';
-
-type CodeProps = {
-	className?: string;
-};
+import React from "react";
+import classNames from "@lib/class-names";
+import styles from "./CodeBlock.module.scss";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 const CodeBlock = ({
 	children,
 	className,
-}: PropsWithChildren<CodeProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren): JSX.Element => (
 	<div className={classNames(styles.root, className)}>
 		<pre className={styles.pre}>
 			<code className={styles.code}>{children}</code>
@@ -18,4 +15,3 @@ const CodeBlock = ({
 );
 
 export default CodeBlock;
-export type { CodeProps };

@@ -1,16 +1,16 @@
-import React from 'react';
-import styles from './CustomImage.module.scss';
-import classNames from '@lib/class-names';
+import React from "react";
+import styles from "./CustomImage.module.scss";
+import classNames from "@lib/class-names";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type CustomImageProps = {
 	src: string;
-	className?: string;
 };
 
 export const CustomImage = ({
 	src,
 	className,
-}: CustomImageProps): JSX.Element => (
+}: YSPComponentPropsWithChildren<CustomImageProps>): JSX.Element => (
 	<img className={classNames(styles.root, className)} src={src} />
 );
 

@@ -6,14 +6,14 @@ import styles from "./MenuDrawer.module.scss";
 import type { INavSection } from "types/nav";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type VerticalNavProps = {
 	items: ReadonlyArray<INavSection>;
 	onClose?: () => void;
-	className?: string;
 };
 
-const MenuDrawer = ({ items, onClose, className }: VerticalNavProps) => {
+const MenuDrawer = ({ items, onClose, className }: YSPComponentPropsWithChildren<VerticalNavProps>) => {
 	const { componentClass, componentPath } = useClassNames({
 		classes: [styles.root, className],
 		part: "menu-drawer",

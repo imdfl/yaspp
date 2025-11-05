@@ -1,8 +1,9 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import { default as ModernDrawer } from "react-modern-drawer";
 import styles from "./Drawer.module.scss";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type DrawerProps = {
 	open: boolean;
@@ -14,13 +15,7 @@ type DrawerProps = {
 	overlayColor?: string;
 	size?: number | string;
 	zIndex?: number;
-	className?: string;
 	onClose?: () => void;
-	/*
-	customIdSuffix?: string;
-	overlayClassName?: string;
-	style?: React.CSSProperties;
-	*/
 };
 
 const Drawer = ({
@@ -32,7 +27,7 @@ const Drawer = ({
 	onClose,
 	children,
 	className,
-}: PropsWithChildren<DrawerProps>) => {
+}: YSPComponentPropsWithChildren<DrawerProps>) => {
 	const { componentClass, componentPath } = useClassNames({
 		classes: [styles.root, className],
 		part: "drawer",

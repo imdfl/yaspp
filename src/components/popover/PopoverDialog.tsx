@@ -1,17 +1,15 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import styles from "./PopoverDialog.module.scss";
 import classNames from "@lib/class-names";
+import type { YSPComponentPropsWithChildren } from "types/components";
 // import useClassNames from "@hooks/useClassNames";
 // import ComponentContextProvider from "@contexts/componentContext";
 
-type PopoverDialogProps = {
-	className?: string;
-};
 
 const PopoverDialog = ({
 	className,
 	children,
-}: PropsWithChildren<PopoverDialogProps>) => {
+}: YSPComponentPropsWithChildren) => {
 	return <div className={classNames(styles.root, className)}>{children}</div>;
 };
 

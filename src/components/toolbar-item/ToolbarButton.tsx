@@ -1,19 +1,19 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import Button from '../button/Button';
 import PopoverToolbarItem from './ToolbarItem';
 import styles from './ToolbarButton.module.scss';
+import type { YSPComponentPropsWithChildren } from "types/components";
 
-type ToolbarButtonProps = {
-	title: string;
-	onClick: () => void;
-	className?: string;
+interface ToolbarButtonProps {
+	readonly title: string;
+	readonly onClick: () => void;
 };
 
 const ToolbarButton = ({
 	title,
 	onClick,
 	children,
-}: PropsWithChildren<ToolbarButtonProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren<ToolbarButtonProps>): JSX.Element => (
 	<PopoverToolbarItem>
 		<Button title={title} onClick={onClick} className={styles.root}>
 			{children}

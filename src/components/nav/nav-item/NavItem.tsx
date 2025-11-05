@@ -2,16 +2,16 @@ import { getIcon } from "components/icons";
 import styles from "./NavItem.module.scss";
 import classNames from "@lib/class-names";
 import Link from "components/link/Link";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
-type NavItemContentProps = {
-	title: string;
-	description: string;
-	author: string;
-	icon?: string;
-	url?: string;
-	target?: string;
-	onClick?: () => void;
-	className?: string;
+interface NavItemContentProps {
+	readonly title: string;
+	readonly description: string;
+	readonly author: string;
+	readonly icon?: string;
+	readonly url?: string;
+	readonly target?: string;
+	readonly onClick?: () => void;
 };
 
 const NavItemContent = ({
@@ -23,7 +23,7 @@ const NavItemContent = ({
 	author,
 	onClick,
 	className,
-}: NavItemContentProps) => (
+}: YSPComponentPropsWithChildren<NavItemContentProps>) => (
 	<Link
 		href={url}
 		target={target}

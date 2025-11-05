@@ -1,13 +1,13 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import * as ToggleRoot from "@radix-ui/react-toggle";
 import classNames from "@lib/class-names";
 import styles from "./ToggleButton.module.scss";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
-type ToggleButtonProps = {
-	title: string;
-	isToggled: boolean;
-	onClick?: () => void;
-	className?: string;
+interface ToggleButtonProps {
+	readonly title: string;
+	readonly isToggled: boolean;
+	readonly onClick?: () => void;
 };
 
 const ToggleButton = ({
@@ -17,7 +17,7 @@ const ToggleButton = ({
 	onClick,
 	className,
 	...rest
-}: PropsWithChildren<ToggleButtonProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren<ToggleButtonProps>): JSX.Element => (
 	<div className={styles.root}>
 		<ToggleRoot.Root
 			onPressedChange={onClick}

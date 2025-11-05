@@ -12,10 +12,10 @@ import type { TextDirection } from "types/locale";
 import type { YASPP } from "yaspp-types";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
-type NavProps = {
-	items: ReadonlyArray<INavSection>;
-	className?: string;
+interface NavProps {
+	readonly items: ReadonlyArray<INavSection>;
 	textDirection?: TextDirection;
 };
 
@@ -58,7 +58,7 @@ const renderSections = (sections: ReadonlyArray<INavSection>) =>
 		</NavigationMenu.Item>
 	));
 
-const MenuBar = ({ items, textDirection, className }: NavProps) => {
+const MenuBar = ({ items, textDirection, className }: YSPComponentPropsWithChildren<NavProps>) => {
 	const locale = useContext(LocaleContext);
 	const { componentClass, componentPath } = useClassNames({
 		classes: [styles.root, className],

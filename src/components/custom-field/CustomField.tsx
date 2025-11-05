@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
-import { getIcon } from 'components/icons';
-import styles from './CustomField.module.scss';
-import classNames from '@lib/class-names';
-import type { PropsWithChildren, SyntheticEvent } from 'react';
+import React, { useMemo } from "react";
+import { getIcon } from "components/icons";
+import styles from "./CustomField.module.scss";
+import classNames from "@lib/class-names";
+import type { SyntheticEvent } from "react";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type CustomFieldProps = {
 	name?: string;
@@ -11,14 +12,13 @@ type CustomFieldProps = {
 	required?: boolean;
 	placeholder?: string;
 	field?: object;
-	type?: 'text' | 'number' | 'tel' | 'email' | 'textarea';
+	type?: "text" | "number" | "tel" | "email" | "textarea";
 	value?: string | number;
 	isInvalid?: boolean;
 	isValid?: boolean;
 	errorMessage?: string;
 	onChange?: (e: SyntheticEvent) => void;
 	onBlur?: (e: SyntheticEvent) => void;
-	className?: string;
 };
 
 const CustomField = ({
@@ -35,7 +35,7 @@ const CustomField = ({
 	errorMessage,
 	children,
 	...rest
-}: PropsWithChildren<CustomFieldProps>) => {
+}: YSPComponentPropsWithChildren<CustomFieldProps>) => {
 	const childrenWithProps = useMemo(
 		() =>
 			React.Children.map(children, (child) => {
@@ -95,7 +95,7 @@ const CustomField = ({
 									<span
 										className={classNames(
 											styles.validation,
-											isInvalid ? styles.showValidation : ''
+											isInvalid ? styles.showValidation : ""
 										)}
 									>
 										{errorMessage}

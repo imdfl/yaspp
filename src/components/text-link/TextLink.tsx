@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useMemo } from "react";
+import React, { useMemo } from "react";
 import Text, {
 	HeadingVariant,
 	SubtitleVariant,
@@ -7,6 +7,7 @@ import Text, {
 import Link from "../link/Link";
 import styles from "./TextLink.module.scss";
 import classNames from "@lib/class-names";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 export type TextLinkProps = {
 	href: string;
@@ -14,7 +15,6 @@ export type TextLinkProps = {
 	linked?: boolean;
 	variant?: TextVariant | HeadingVariant | SubtitleVariant;
 	asChild?: boolean;
-	className?: string;
 };
 
 const TextLink = ({
@@ -25,7 +25,7 @@ const TextLink = ({
 	children,
 	asChild,
 	className,
-}: PropsWithChildren<TextLinkProps>): JSX.Element => {
+}: YSPComponentPropsWithChildren<TextLinkProps>): JSX.Element => {
 	const text = useMemo(
 		() => (
 			<Text variant={variant} className={styles.label}>
