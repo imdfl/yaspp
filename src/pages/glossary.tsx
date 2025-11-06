@@ -1,19 +1,21 @@
-import React, { useContext } from 'react';
-import { GetStaticProps, NextPage } from 'next';
-import { ContentTypes } from 'types/content';
-import { mlNextUtils } from '../lib/next-utils/nextUtils';
-import type { IPageProps } from 'types/models';
-import { usePageData } from '../hooks/usePageData';
-import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
-import { Link, Text } from 'components/index';
-import Layout from 'layout/Layout';
-import Head from 'next/head';
-import { LocaleContext } from '@contexts/localeContext';
+import React, { useCallback, useContext } from "react";
+import Head from "next/head";
+import { GetStaticProps, NextPage } from "next";
+import { ContentTypes } from "types/content";
+import { mlNextUtils } from "../lib/next-utils/nextUtils";
+import type { IPageProps } from "types/models";
+import { usePageData } from "../hooks/usePageData";
+import { LoadContentModes, LoadFolderModes } from "types/parser/modes";
+import { Link, Text } from "components/index";
+import Layout from "layout/Layout";
+import { LocaleContext } from "@contexts/index";
+import { useTranslatedString } from "../hooks/useTranslatedString";
 
 const Glossary: NextPage<IPageProps> = (props) => {
 	const { metaData } = usePageData(props);
 	const { t } = useContext(LocaleContext);
-	const pageTitle = `${t('common:site:title')} – ${t('pages:glossary:title')}`;
+	const titleGen = useCallback(() => `${t('common:site:title')} – ${t('pages:glossary:title')}`, [t]);
+	const { text: pageTitle } = useTranslatedString(titleGen);
 
 	const getItem = (page, index) => {
 		const term = page.metaData;
