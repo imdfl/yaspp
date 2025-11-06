@@ -13,4 +13,4 @@ export interface IYSPComponentProps {
 	readonly partName?: string;
 }
 
-export type YSPComponentPropsWithChildren<TProps extends object = object> = PropsWithChildren<TProps> & IYSPComponentProps
+export type YSPComponentPropsWithChildren<TProps extends object = object> = PropsWithChildren<TProps & IYSPComponentProps>

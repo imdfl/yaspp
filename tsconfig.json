@@ -26,6 +26,7 @@
 			"context/*": ["context/*"],
 			"@hooks/*": ["hooks/*"],
 			"components/*": ["components/*"],
+			"@components/*": ["components/*"],
 			"styles/*": ["styles/*"],
 			"@public/*": ["../public/*"],
 			"@types/*": ["../public/*"],

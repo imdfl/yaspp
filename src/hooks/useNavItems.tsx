@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
-import type { YASPP } from 'yaspp-types';
-import { PageContext } from '../contexts/pageContext';
-import { LocaleContext } from '../contexts/localeContext';
-import type  { LocalizeFunction } from '../lib/locale';
-import type { INavSection } from '../types/nav';
+import { useContext, useEffect, useState } from "react";
+import type { YASPP } from "yaspp-types";
+import { PageContext } from "../contexts/pageContext";
+import { LocaleContext } from "../contexts/localeContext";
+import type  { LocalizeFunction } from "../lib/locale";
+import type { INavSection } from "../types/nav";
 
 export interface INavItemsData {
 	sections: ReadonlyArray<INavSection>;

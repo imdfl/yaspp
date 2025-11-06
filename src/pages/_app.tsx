@@ -1,13 +1,13 @@
-import css from 'styled-jsx/css';
-import { AppProps } from 'next/app';
-import { ThemeProvider } from 'next-themes';
-import { PageProvider } from '../contexts/pageContext';
-import { fontFaceDecls } from '../siteFonts';
-import 'normalize.css/normalize.css';
-import '../styles/app.scss';
-import type { IPageProps } from 'types/models';
-import { LocaleContextProvider } from '../contexts/localeContext';
-import MLThemeContextProvider from '../contexts/MLThemeContext';
+import css from "styled-jsx/css";
+import { AppProps } from "next/app";
+import { ThemeProvider } from "next-themes";
+import { PageProvider } from "@contexts/pageContext";
+import { fontFaceDecls } from "../siteFonts";
+import "normalize.css/normalize.css";
+import "../styles/app.scss";
+import type { IPageProps } from "types/models";
+import { LocaleContextProvider } from "@contexts/localeContext";
+import MLThemeContextProvider from "@contexts/MLThemeContext";
 
 const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	const fontStyles = css`
@@ -19,8 +19,7 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 			<ThemeProvider
 				defaultTheme={pageProps.theme || "light"}
 				storageKey="ml-theme"
-				attribute="data-ml-theme"
-				
+				attribute="data-ml-theme"	
 			>
 				<MLThemeContextProvider themes={pageProps.themes}>
 					<PageProvider 

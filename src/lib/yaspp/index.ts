@@ -71,14 +71,15 @@ class YasppApp implements IYasppApp {
 		return this._classBindings.slice();
 	}
 
-	public async init({ project: projectRoot, root }: IYasppProjectPath): Promise<string> {
+	public async init(options: IYasppProjectPath): Promise<string> {
+		const { project: projectRoot, root } = options;
 		if (this._state !== "none") {
 			throw new Error("Can't call yaspp app init more than once");
 		}
 		this._state = "loading";
 		const returnError = (err: string) => {
 			this._state  = err ? "error" : "loaded";
-			this._error = err ? `Yaspp init error: ${err}\ncwd: ${process.cwd()}\nProject root: ${projectRoot}` : "";
+			this._error = err ? `Yaspp init error: ${err}\ncwd: ${process.cwd()}\nroot: ${root}\nProject root: ${projectRoot}` : "";
 			return err;
 		}
 		try {

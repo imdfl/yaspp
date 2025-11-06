@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import { mlNextUtils } from '../lib/next-utils/nextUtils';
 import { usePageData } from '../hooks/usePageData';
@@ -11,15 +11,15 @@ import { renderElements, usePageMetadata } from '../lib/dynamicContentHelpers';
 import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
 import type { IPageProps } from 'types/models';
 import { LocaleContext } from '@contexts/localeContext';
+import { useTranslatedString } from '../hooks/useTranslatedString';
 
 const Index: NextPage<IPageProps> = (props) => {
 	const { t } = useContext(LocaleContext);
 	const { pageData } = usePageData(props);
 	const { metaData } = usePageMetadata(pageData);
-	const [s] = useState<[title: string, moto: string] | null>(null);
-	void s;
 
-	const pageTitle = `${t('common:site:title')} – ${t('common:site:subtitle')}`;
+	const pageTitleGen = useCallback(() => `${t('common:site:title')} – ${t('common:site:subtitle')}`, [t]);
+	const { text: pageTitle } = useTranslatedString(pageTitleGen); 
 	
 	return (
 		<Layout>

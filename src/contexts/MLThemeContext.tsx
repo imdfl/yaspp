@@ -1,6 +1,6 @@
 import React, { Context, createContext, PropsWithChildren } from "react";
-import { IThemeUrl } from "../types/app";
-import { stringUtils } from "../lib/stringUtils";
+import { IThemeUrl } from "types/app";
+import { stringUtils } from "@lib/stringUtils";
 import { useTheme } from "next-themes";
 
 export type SetThemeFunc = (theme: string) => unknown;
@@ -22,12 +22,12 @@ interface IMLThemeContextOptions extends IMLThemeOptions {
 	readonly setNextTheme?: SetThemeFunc;
 }
 class MLThemeContextImpl implements IMLThemeProvider {
-	private _theme: string = "";
+	private _theme: string;
 	private readonly _themes: IThemeUrl[] = [];
 	private readonly _setNextTheme: SetThemeFunc;
 	private readonly _setTheme: SetThemeFunc;
 	constructor({ themes, theme, setNextTheme }: IMLThemeContextOptions) {
-		this._theme = theme;
+		this._theme = theme ?? "";
 		this._setNextTheme = setNextTheme ?? (() => void 0);
 		this._setTheme = (theme: string) => {
 			if (this._isValidTheme(theme)) {
@@ -41,28 +41,34 @@ class MLThemeContextImpl implements IMLThemeProvider {
 				console.warn(`setTheme: unknown theme ${theme}`);
 			}
 		};
+		if (!themes?.length) {
+			return;
+		}
+		let themeUrls: IThemeUrl[];
 		if (typeof themes === "string") {
-			const { error, result: ts} = stringUtils.parseJSON<IThemeUrl[]>(themes);
+			const { error, result } = stringUtils.parseJSON<IThemeUrl[]>(themes);
 			if (error) {
 				console.error(`Error parsing themes data: ${error}`);
 			}
 			else {
-				this._themes.push(...ts);
+				themeUrls = result!;
 			}
 		}
-		else if (Array.isArray(themes)) {
-			this._themes.push(...(themes as IThemeUrl[]));
+		else {
+			themeUrls = themes as IThemeUrl[];
 		}
-		else if (themes) {
-			console.error(`MLThemeProvider: Missing or invalid themes in input`);
+		if (Array.isArray(themeUrls)) {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+			this._themes.push(...themeUrls);
 		}
 	}
+
 	public get theme(): string {
 		return this._theme;
 	}
 
-	public get themes(): IThemeUrl[] {
-		return this._themes.slice();
+	public get themes(): ReadonlyArray<IThemeUrl> {
+		return this._themes;
 	}
 
 	public get setTheme(): SetThemeFunc {
@@ -85,7 +91,7 @@ export const MLThemeContext: Context<IMLThemeProvider> = ctx;
 type MLThemeProps = PropsWithChildren<IMLThemeOptions>;
 
 export const MLThemeContextProvider = ({ children, themes }: MLThemeProps) => {
-	const { theme, setTheme: setNextTheme} = useTheme();
+	const { theme, setTheme: setNextTheme } = useTheme();
 	return <MLThemeContext.Provider
 		value={
 			new MLThemeContextImpl({ theme, themes, setNextTheme })

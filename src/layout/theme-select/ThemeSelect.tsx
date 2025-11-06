@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { getIcon } from 'components/icons';
-import ToggleButton from '../../components/toggle/toggle-button/ToggleButton';
-import styles from './ThemeSelect.module.scss';
-import classNames from '@lib/class-names';
-import { useMountGuard } from '../../hooks/useMountGuard';
+import React, { useCallback, useEffect, useState } from "react";
+import { getIcon } from "@components/icons";
+import ToggleButton from "@components/toggle/toggle-button/ToggleButton";
+import styles from "./ThemeSelect.module.scss";
+import classNames from "@lib/class-names";
+import { useMountGuard } from "@hooks/useMountGuard";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type ThemeSelectProps = {
 	readonly label: string;
 	readonly theme: string;
 	readonly themes: ReadonlyArray<string>;
 	readonly setTheme: (val: string) => void;
-	readonly className?: string;
 };
 
 const ThemeSelect = ({
@@ -19,7 +19,7 @@ const ThemeSelect = ({
 	setTheme,
 	themes,
 	className,
-}: ThemeSelectProps): JSX.Element => {
+}: YSPComponentPropsWithChildren<ThemeSelectProps>): JSX.Element => {
 	const [curThemeIndex, setCurThemeIndex] = useState<number>(themes.indexOf(theme));
 	const { mounted } = useMountGuard();
 

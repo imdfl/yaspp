@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 
 export interface IToolbarItem {
 	element: React.ReactNode;
 	id: string;
 	enabled: boolean;
-	position?: 'first' | 'last';
+	position?: "first" | "last";
 }
 
 export interface IUseToolbar {
@@ -59,7 +59,7 @@ class Toolbar {
 	}
 
 	public removeItems(ids: string | string[]) {
-		if (typeof ids === 'string') {
+		if (typeof ids === "string") {
 			ids = [ids];
 		}
 
@@ -74,16 +74,20 @@ class Toolbar {
 	}
 
 	private findItemIndex(item: IToolbarItem | string): number {
-		const id = typeof item === 'string' ? item : item.id;
+		const id = typeof item === "string" ? item : item.id;
 		return this._items.findIndex((item) => item.id === id);
 	}
 }
 
 export const useToolbar = (): IUseToolbar => {
-	const [toolbar] = useState<Toolbar>(new Toolbar());
-	const [toolbarItems, setToolbarItems] = useState<IToolbarItem[]>(
-		toolbar.items
-	);
+	const [toolbar, setToolbar] = useState<Toolbar>(null);
+	const [toolbarItems, setToolbarItems] = useState<IToolbarItem[]>([]);
+	useEffect(() => {
+		setToolbar(new Toolbar());
+	}, []);
+	useEffect(() => {
+		setToolbarItems(toolbar?.items ?? []);
+	}, [toolbar])
 
 	return {
 		items: toolbarItems,

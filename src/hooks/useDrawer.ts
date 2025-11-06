@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 type DrawerState = {
 	open: boolean;
@@ -16,12 +16,12 @@ const useDrawer = (initialState: boolean): DrawerState => {
 		if (!open) return;
 
 		const handleKeydown = ({ key }) => {
-			if (key === 'Escape') setDrawerState(false);
+			if (key === "Escape") setDrawerState(false);
 		};
 
-		window.addEventListener('keydown', handleKeydown);
+		window.addEventListener("keydown", handleKeydown);
 
-		return () => window.document.removeEventListener('keydown', handleKeydown);
+		return () => window.document.removeEventListener("keydown", handleKeydown);
 	}, [open]);
 
 	const toggle = () => {

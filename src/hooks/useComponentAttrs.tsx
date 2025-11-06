@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { IMLParsedNode, INodeAttributeData } from 'types/models';
-import { mlNextBrowserUtils } from '../lib/next-runtime-utils/nextRunetimeUtils';
+import { useEffect, useState } from "react";
+import { IMLParsedNode, INodeAttributeData } from "types/models";
+import { mlNextBrowserUtils } from "../lib/next-runtime-utils/nextRunetimeUtils";
 
 
 /**

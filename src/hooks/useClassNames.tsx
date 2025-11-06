@@ -1,9 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { PageContext } from '../contexts/pageContext';
-import classNames from '@lib/class-names';
-import { ComponentPath } from '../types/components';
-import { IStyleRegistry } from '../lib/styleRegistry';
-import { ComponentContext } from '../contexts/componentContext';
+import { useContext, useEffect, useState } from "react";
+import { PageContext, ComponentContext } from "@contexts/index";
+import classNames from "@lib/class-names";
+import { ComponentPath } from "types/components";
 
 export interface IClassNamesData {
 	readonly componentClass: string;
@@ -16,10 +14,6 @@ export interface IUserClassNamesOptions {
 	readonly classes: ReadonlyArray<string>;
 }
 
-function calcClassNames(registry: IStyleRegistry, path: ComponentPath, options: IUserClassNamesOptions): string {
-	const more = registry.getClassNames(options.part, path);
-	return classNames(options.classes, more);
-}
 /**
  * Returns an object with (possibly cached) parsed page data and parsed metaData (embedded in pages)
  *
@@ -31,11 +25,13 @@ export const useClassNames = (options: IUserClassNamesOptions): IClassNamesData 
 	const { styleRegistry } = useContext(PageContext);
 	const { parentPath } = useContext(ComponentContext);
 
-	const [className, setClassName] = useState(calcClassNames(styleRegistry, parentPath, options));
+	const [className, setClassName] = useState("");
 	const [ componentPath ] = useState<ComponentPath>(parentPath?.concat(options.part) ?? [options.part])
 	// If the props changed, due to locale change, reparse the content
 	useEffect(() => {
-		setClassName(calcClassNames(styleRegistry, parentPath, options));
+		const more = styleRegistry.getClassNames(options.part, parentPath);
+		const cs = classNames(options.classes, more);
+		setClassName(cs);
 	}, [ styleRegistry, parentPath, options]);
 
 	return {

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useIconAnimator, useWindowSize } from "@hooks/index";
 import { useDrawer } from "../hooks/useDrawer";
@@ -31,21 +31,17 @@ import { NavSectionId } from "./data/nav";
 import classNames from "@lib/class-names";
 import styles from "./Layout.module.scss";
 import type { LocaleOptionProps } from "layout/locale-select/LocaleSelect";
-import { LocaleContext } from "../contexts/localeContext";
+import { LocaleContext } from "@contexts/localeContext";
 import useNavItems from "@hooks/useNavItems";
 import { YasppOnload } from "../components/yaspp-components";
-import { MLThemeContext } from "../contexts/MLThemeContext";
-import { useTranslatedString } from "../hooks/useTranslatedString";
-
-type RootLayoutProps = {
-	readonly className?: string;
-};
+import { MLThemeContext } from "@contexts/MLThemeContext";
+import { useTranslatedString } from "@hooks/useTranslatedString";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 const IS_DEBUG = process.env.NEXT_PUBLIC_ML_DEBUG;
 const MIN_DESKTOP_WIDTH = 1024;
 
-
-const Layout = ({ children }: PropsWithChildren<RootLayoutProps>) => {
+const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const router = useRouter();
 
 	useIconAnimator(router);
