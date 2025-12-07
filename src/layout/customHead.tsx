@@ -41,7 +41,7 @@ const CustomHead = ({ title, name, description, theme, themeUrls }: HeadProps) =
 				} : {
 					rel: "preload",
 					"as": "style",
-					fetchpriority: "low" as const
+					fetchPriority: "low" as const
 				};
 
 				return (

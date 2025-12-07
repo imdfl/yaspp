@@ -25,7 +25,7 @@ const TextLink = ({
 	children,
 	asChild,
 	className,
-}: YSPComponentPropsWithChildren<TextLinkProps>): JSX.Element => {
+}: YSPComponentPropsWithChildren<TextLinkProps>): React.JSX.Element => {
 	const text = useMemo(
 		() => (
 			<Text variant={variant} className={styles.label}>

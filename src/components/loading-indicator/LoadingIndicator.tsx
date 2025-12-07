@@ -12,7 +12,7 @@ type LoadingIndicatorProps = {
 const LoadingIndicator = ({
 	delay,
 	label,
-}: LoadingIndicatorProps): JSX.Element => {
+}: LoadingIndicatorProps): React.JSX.Element => {
 	const [show, setShow] = useState(false);
 
 	useEffect(() => {

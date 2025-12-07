@@ -6,7 +6,7 @@ import { YSPComponentPropsWithChildren } from "types/components";
 const CodeInline = ({
 	children,
 	className,
-}: YSPComponentPropsWithChildren): JSX.Element => (
+}: YSPComponentPropsWithChildren): React.JSX.Element => (
 	<code className={classNames(styles.root, className)}>{children}</code>
 );
 

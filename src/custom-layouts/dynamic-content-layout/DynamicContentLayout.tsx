@@ -15,7 +15,7 @@ type ContentLayoutProps = {
 const ContentLayout = ({
 	textDirection,
 	children,
-}: PropsWithChildren<ContentLayoutProps>): JSX.Element => (
+}: PropsWithChildren<ContentLayoutProps>): React.JSX.Element => (
 	<Scrollbar textDirection={textDirection}>
 		<section className={styles.root}>{children}</section>
 	</Scrollbar>

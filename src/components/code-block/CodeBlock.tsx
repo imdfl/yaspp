@@ -6,7 +6,7 @@ import type { YSPComponentPropsWithChildren } from "types/components";
 const CodeBlock = ({
 	children,
 	className,
-}: YSPComponentPropsWithChildren): JSX.Element => (
+}: YSPComponentPropsWithChildren): React.JSX.Element => (
 	<div className={classNames(styles.root, className)}>
 		<pre className={styles.pre}>
 			<code className={styles.code}>{children}</code>

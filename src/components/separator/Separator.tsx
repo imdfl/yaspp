@@ -16,7 +16,7 @@ const Separator = ({
 	decorative = true,
 	asChild,
 	className,
-}: YSPComponentPropsWithChildren<SeparatorProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren<SeparatorProps>): React.JSX.Element => (
 	<SeparatorPrimitive.Root
 		asChild={asChild}
 		decorative={decorative}

@@ -11,7 +11,7 @@ const PopoverTrigger = ({
 	opened,
 	children,
 	className,
-}: YSPComponentPropsWithChildren<PopoverTriggerProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren<PopoverTriggerProps>): React.JSX.Element => (
 	<span
 		data-popover-state={opened ? "open" : "closed"}
 		className={classNames(styles.root, className)}

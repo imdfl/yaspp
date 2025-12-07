@@ -13,7 +13,7 @@ const DateFormat = ({
 	date,
 	locale,
 	className,
-}: YSPComponentPropsWithChildren<DateFormatProps>): JSX.Element => {
+}: YSPComponentPropsWithChildren<DateFormatProps>): React.JSX.Element => {
 	const ctx = useContext(LocaleContext);
 	const [label, setLabel] = useState("");
 

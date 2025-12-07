@@ -4,6 +4,6 @@ import CodeInline from "components/code-inline/CodeInline";
 
 export const CodeInlineContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => (
+}: ContentComponentProps): React.JSX.Element => (
 	<CodeInline>{componentData.node.text}</CodeInline>
 );

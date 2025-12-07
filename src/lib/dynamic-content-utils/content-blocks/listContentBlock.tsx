@@ -5,7 +5,7 @@ import { renderNodes } from "lib/dynamicContentHelpers";
 
 export const ListContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { key, children, ordered } = node;
 	return (

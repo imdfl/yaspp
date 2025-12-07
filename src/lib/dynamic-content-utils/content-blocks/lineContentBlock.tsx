@@ -6,7 +6,7 @@ import { MLNODE_TYPES } from "types/nodes";
 
 export const LineContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { line, children } = node;
 	const anchor = <a id={`line${line + 1}`}></a>;

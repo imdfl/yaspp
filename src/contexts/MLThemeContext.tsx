@@ -92,13 +92,15 @@ type MLThemeProps = PropsWithChildren<IMLThemeOptions>;
 
 export const MLThemeContextProvider = ({ children, themes }: MLThemeProps) => {
 	const { theme, setTheme: setNextTheme } = useTheme();
-	return <MLThemeContext.Provider
-		value={
-			new MLThemeContextImpl({ theme, themes, setNextTheme })
-		}
-	>
-		{children}
-	</MLThemeContext.Provider>
+	return (
+        <MLThemeContext
+            value={
+                new MLThemeContextImpl({ theme, themes, setNextTheme })
+            }
+        >
+            {children}
+        </MLThemeContext>
+    );
 }
 
 export default MLThemeContextProvider;

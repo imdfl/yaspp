@@ -7,7 +7,7 @@ import type { YSPComponentPropsWithChildren } from "types/components";
 export const Term = ({
 	children,
 	className,
-}: YSPComponentPropsWithChildren): JSX.Element => (
+}: YSPComponentPropsWithChildren): React.JSX.Element => (
 	<span className={classNames(styles.root, className)}>
 		<dfn className={styles.label}>{children}</dfn>
 	</span>

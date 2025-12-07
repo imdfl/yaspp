@@ -9,7 +9,7 @@ type NoteContentLayoutProps = {
 const NoteContentLayout = ({
 	children,
 	className,
-}: PropsWithChildren<NoteContentLayoutProps>): JSX.Element => (
+}: PropsWithChildren<NoteContentLayoutProps>): React.JSX.Element => (
 	<div role="note" className={classNames(styles.root, className)}>
 		{children}
 	</div>

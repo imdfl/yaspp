@@ -18,7 +18,7 @@ const ToggleGroup = ({
 	onSelect,
 	children,
 	className,
-}: YSPComponentPropsWithChildren<ToggleGroupProps>): JSX.Element => {
+}: YSPComponentPropsWithChildren<ToggleGroupProps>): React.JSX.Element => {
 	const childrenWithProps = useMemo(
 		() =>
 			React.Children.map(children, (child) => {

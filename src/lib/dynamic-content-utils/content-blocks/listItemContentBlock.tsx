@@ -5,7 +5,7 @@ import { ListItem, Text } from "components/index";
 
 export const ListItemContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	return (
 		<ListItem>
 			<Text variant="body1">

@@ -42,7 +42,7 @@ export const PopoverContentBlock = ({
 	type,
 	className,
 	"data-testid": dataTestId,
-}: PopoverContentBlockProps & ContentComponentProps): JSX.Element => {
+}: PopoverContentBlockProps & ContentComponentProps): React.JSX.Element => {
 	const toolbar = useToolbar();
 	const { locale, textDirection } = useContext(LocaleContext);
 	const { node } = componentData;

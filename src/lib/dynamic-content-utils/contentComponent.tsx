@@ -26,7 +26,7 @@ const HTMLTypeMap = new CaseInsensitiveMap<MLNODE_TYPES>([
 
 export const ContentComponent = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { key, type } = node;
 
@@ -34,7 +34,7 @@ export const ContentComponent = ({
 		console.warn("missing key on", node);
 	}
 
-	const props = { key, componentData };
+	const props = { componentData };
 	const renderType = HTMLTypeMap.get(type) || type;
 
 	switch (renderType) {
@@ -56,34 +56,34 @@ export const ContentComponent = ({
 				/>
 			);
 		case MLNODE_TYPES.LINK:
-			return <LinkSelector {...props} />;
+			return <LinkSelector key={key} {...props} />;
 		case MLNODE_TYPES.TEXT:
-			return <TextContentBlock {...props} />;
+			return <TextContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.PARAGRAPH:
-			return <ParagraphContentBlock {...props} />;
+			return <ParagraphContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.LINE:
-			return <LineContentBlock {...props} />;
+			return <LineContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.CODE:
-			return <CodeInlineContentBlock {...props} />;
+			return <CodeInlineContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.CODEBLOCK:
-			return <CodeBlockContentBlock {...props} />;
+			return <CodeBlockContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.BLOCKQUOTE:
-			return <BlockquoteContentBlock {...props} />;
+			return <BlockquoteContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.LIST:
-			return <ListContentBlock {...props} />;
+			return <ListContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.LIST_ITEM:
-			return <ListItemContentBlock {...props} />;
+			return <ListItemContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.IMAGE:
-			return <CustomImageContentBlock {...props} />;
+			return <CustomImageContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.FIGURE:
-			return <FigureContentBlock {...props} />;
+			return <FigureContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.TABLE:
-			return <TableContentBlock {...props} />;
+			return <TableContentBlock key={key} {...props} />;
 		case MLNODE_TYPES.HR:
 			return <hr />;
 		default:
 			if (/heading/i.test(type)) {
-				return <HeadingContentBlock {...props} />;
+				return <HeadingContentBlock key={key} {...props} />;
 			}
 			return <ErrorMessage message={`Type "${node.type}" not found`} />;
 	}

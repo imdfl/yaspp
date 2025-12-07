@@ -13,7 +13,7 @@ import { renderNodes } from "lib/dynamicContentHelpers";
 export const ContentIterator = ({
 	componentData,
 	className,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { attributes, style } = useComponentAttrs(node);
 	const { children, text } = node ?? {};
@@ -24,7 +24,7 @@ export const ContentIterator = ({
 	}
 
 	const elements: IMLParsedNode[] = Array.isArray(children) && children;
-	const Tag = componentData.tag as keyof JSX.IntrinsicElements;
+	const Tag = componentData.tag as keyof React.JSX.IntrinsicElements;
 
 	if (!elements?.length) {
 		if (Tag) {

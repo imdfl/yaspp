@@ -13,7 +13,7 @@ const ToolbarButton = ({
 	title,
 	onClick,
 	children,
-}: YSPComponentPropsWithChildren<ToolbarButtonProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren<ToolbarButtonProps>): React.JSX.Element => (
 	<PopoverToolbarItem>
 		<Button title={title} onClick={onClick} className={styles.root}>
 			{children}

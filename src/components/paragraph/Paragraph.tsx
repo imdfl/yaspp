@@ -10,7 +10,7 @@ import type { YSPComponentPropsWithChildren } from "types/components";
 export const Paragraph = ({
 	children,
 	className,
-}: YSPComponentPropsWithChildren): JSX.Element => (
+}: YSPComponentPropsWithChildren): React.JSX.Element => (
 	<p className={classNames(styles.root, className)}>
 		<Text variant="body1">{children}</Text>
 	</p>

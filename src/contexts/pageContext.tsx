@@ -80,7 +80,7 @@ export const PageContext: Context<IPageContext> = ctx;
 export type PageContextProps = PropsWithChildren<Omit<IPageContextOptions, "dynamicContentServer">>;
 
 export const PageProvider = ({ documentPath, nav, children, styleClassBindings }: PageContextProps) => (
-	<PageContext.Provider
+	<PageContext
 		value={
 			new PageContextClass({
 				dynamicContentServer: createDynamicContentServer(),
@@ -91,7 +91,7 @@ export const PageProvider = ({ documentPath, nav, children, styleClassBindings }
 		}
 	>
 		{children}
-	</PageContext.Provider>
+	</PageContext>
 );
 
 export default PageProvider;

@@ -7,7 +7,7 @@ import type { YSPComponentPropsWithChildren } from "types/components";
 const PopoverToolbarItem = ({
 	className,
 	children,
-}: YSPComponentPropsWithChildren): JSX.Element => (
+}: YSPComponentPropsWithChildren): React.JSX.Element => (
 	<div className={classNames(styles.root, className)}>{children}</div>
 );
 

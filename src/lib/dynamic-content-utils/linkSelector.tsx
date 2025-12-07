@@ -7,7 +7,7 @@ import { NODE_DISPLAY_TYPES } from "types/nodes";
 
 export const LinkSelector = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { displayType, key } = node;
 	const ctx = useContext(DynamicContentContext);

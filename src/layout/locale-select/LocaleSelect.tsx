@@ -22,7 +22,7 @@ const LocaleSelect = ({
 	options,
 	onSelect,
 	className,
-}: LocaleSelectProps): JSX.Element => options.length > 1 ? (
+}: LocaleSelectProps): React.JSX.Element => options.length > 1 ? (
 	<ToggleGroup
 		type="single"
 		defaultValue={defaultValue}

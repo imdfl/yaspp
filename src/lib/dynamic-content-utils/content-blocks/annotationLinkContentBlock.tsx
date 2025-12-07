@@ -4,6 +4,6 @@ import { Annotation } from "../../../components";
 
 export const AnnotationContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => (
+}: ContentComponentProps): React.JSX.Element => (
 	<Annotation index={componentData.node.sequence} />
 );

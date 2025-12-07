@@ -5,7 +5,7 @@ import { Term } from "components/index";
 
 export const TermLinkContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	return (
 		<Term>
 			<ContentIterator componentData={componentData} />

@@ -34,7 +34,7 @@ const List = ({
 	children,
 	className,
 }: PropsWithChildren<ListProps> &
-	HTMLAttributes<HTMLDivElement>): JSX.Element => {
+	HTMLAttributes<HTMLDivElement>): React.JSX.Element => {
 	const Tag = ordered ? 'ol' : 'ul';
 	return (
 		<div className={classNames(styles.root, className)}>

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import List from './List';
 import { ListItem } from '..';
+import React from 'react';
 
 const meta = {
 	title: 'UI/List',
@@ -18,10 +19,12 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
 	args: {},
 	render: function Render() {
+		const ref = React.createRef<HTMLLIElement>(),
+			ref2 = React.createRef<HTMLLIElement>();
 		return (
 			<List>
-				<ListItem>Item 1</ListItem>
-				<ListItem>Item 2</ListItem>
+				<ListItem ref={ref}>Item 1</ListItem>
+				<ListItem ref={ref2}>Item 2</ListItem>
 			</List>
 		);
 	},

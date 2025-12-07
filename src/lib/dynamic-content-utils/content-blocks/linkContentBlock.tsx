@@ -34,7 +34,7 @@ function nodeDataToAttributes(node: IMLParsedNode, attributes: NodeAttributeMap)
 export const LinkContentBlock = ({
 	componentData,
 	onClick,
-}: ILinkProps): JSX.Element => {
+}: ILinkProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { attributes, style } = useComponentAttrs(node);
 
