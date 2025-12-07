@@ -28,13 +28,15 @@ type ComponentContextProps = PropsWithChildren<IComponentContextOptions>;
 
 export const ComponentContextProvider = (props: ComponentContextProps) => {
 	const { children } = props;
-	return <ComponentContext.Provider
-		value={
-			new MLComponentContextImpl(props.parentPath)
-		}
-	>
-		{children}
-	</ComponentContext.Provider>
+	return (
+        <ComponentContext
+            value={
+                new MLComponentContextImpl(props.parentPath)
+            }
+        >
+            {children}
+        </ComponentContext>
+    );
 }
 
 export default ComponentContextProvider;

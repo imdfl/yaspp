@@ -86,8 +86,8 @@ export const LocaleContext: Context<ILocaleContext> = ctx;
 export const LocaleContextProvider = ({ children, router }) => {
 	const { t, lang } = useTranslation();
 	return (
-		<LocaleContext.Provider value={new LocaleContextImpl({ router, locale: lang, translate: t })}>
-			{children}
-		</LocaleContext.Provider>
-	);
+        (<LocaleContext value={new LocaleContextImpl({ router, locale: lang, translate: t })}>
+            {children}
+        </LocaleContext>)
+    );
 };

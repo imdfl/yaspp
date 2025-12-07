@@ -53,11 +53,11 @@ export default function DynamicContentBrowser(
 	};
 
 	return (
-		<DynamicContentContext.Provider value={ctx}>
-			<>
+        (<DynamicContentContext value={ctx}>
+            <>
 				<DynamicContentToolbar pages={pages} />
 				<DynamicContentViewer url={url} />
 			</>
-		</DynamicContentContext.Provider>
-	);
+        </DynamicContentContext>)
+    );
 }
