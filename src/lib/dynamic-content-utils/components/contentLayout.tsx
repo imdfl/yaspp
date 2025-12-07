@@ -11,7 +11,7 @@ export const DynamicContentLayout = ({
 	term,
 	sources,
 	children,
-}: PropsWithChildren<ContentLayoutProps>): JSX.Element => {
+}: PropsWithChildren<ContentLayoutProps>): React.JSX.Element => {
 	let dynamicLayout = null;
 
 	const { t, locale, textDirection } = useContext(LocaleContext);

@@ -18,7 +18,7 @@ function onLoadRef(node: HTMLElement) {
  * Used to mimic document onload. Place this component at the end of your layout
  * @returns 
  */
-const YasppOnload = (): JSX.Element => {
+const YasppOnload = (): React.JSX.Element => {
 	return (
 		<span ref={onLoadRef} data-yaspp-stub></span>
 	);

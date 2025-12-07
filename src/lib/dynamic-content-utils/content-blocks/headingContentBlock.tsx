@@ -5,7 +5,7 @@ import { Heading } from "components/index";
 
 export const HeadingContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	return (
 		<Heading level={node.level || 1} key={node.key}>

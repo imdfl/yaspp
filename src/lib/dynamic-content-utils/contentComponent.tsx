@@ -26,7 +26,7 @@ const HTMLTypeMap = new CaseInsensitiveMap<MLNODE_TYPES>([
 
 export const ContentComponent = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { key, type } = node;
 

@@ -14,7 +14,7 @@ const backButtonKey = 'popover-toolbar-back-button';
 
 export default function DynamicContentToolbar({
 	pages,
-}: IDynamicContentToolbarProps): JSX.Element {
+}: IDynamicContentToolbarProps): React.JSX.Element {
 	const [prevPageId, setPrevPageId] = useState('');
 	const { t, textDirection } = useContext(LocaleContext);
 	const popoverContext = useContext(PopoverContext);

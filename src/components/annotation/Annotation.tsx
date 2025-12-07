@@ -9,7 +9,7 @@ interface AnnotationProps {
 	readonly hasPrefix?: boolean;
 };
 
-const Annotation = ({ index, hasPrefix = true, className }: YSPComponentPropsWithChildren<AnnotationProps>): JSX.Element => (
+const Annotation = ({ index, hasPrefix = true, className }: YSPComponentPropsWithChildren<AnnotationProps>): React.JSX.Element => (
 	<span className={classNames(styles.root, className)}>
 		<span
 			className={styles.content}

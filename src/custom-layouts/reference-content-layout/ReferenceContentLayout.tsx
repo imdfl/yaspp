@@ -19,7 +19,7 @@ export const ReferenceContentLayout = ({
 	sources,
 	sourcesLabel,
 	children,
-}: PropsWithChildren<ReferenceContentLayoutProps>): JSX.Element => (
+}: PropsWithChildren<ReferenceContentLayoutProps>): React.JSX.Element => (
 	<article className={styles.root}>
 		<header className={styles.header}>
 			<div role="caption" className={styles.caption}>

@@ -26,7 +26,7 @@ export const GenericContentLayout = ({
 	path,
 	locale,
 	className,
-}: PropsWithChildren<GenericContentLayoutProps>): JSX.Element => (
+}: PropsWithChildren<GenericContentLayoutProps>): React.JSX.Element => (
 	<article className={classNames(styles.root, className)}>
 		{caption && (
 			<Container alignItemsCenter>

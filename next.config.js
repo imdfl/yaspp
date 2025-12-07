@@ -28,7 +28,7 @@ const nextConfig = async () => {
 	}
 	const config = {
 		reactStrictMode: true,
-		optimizeFonts: true,
+		// optimizeFonts: true,
 		sassOptions: {
 			includePaths: [path.join(__dirname, 'public/styles')],
 		},

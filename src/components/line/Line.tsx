@@ -8,7 +8,7 @@ type LineProps = {
 export const Line = ({
 	index,
 	children,
-}: PropsWithChildren<LineProps>): JSX.Element => {
+}: PropsWithChildren<LineProps>): React.JSX.Element => {
 	if (!children) {
 		return <span className="empty text-line"></span>;
 	}

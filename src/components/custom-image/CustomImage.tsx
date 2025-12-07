@@ -10,7 +10,7 @@ type CustomImageProps = {
 export const CustomImage = ({
 	src,
 	className,
-}: YSPComponentPropsWithChildren<CustomImageProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren<CustomImageProps>): React.JSX.Element => (
 	<img className={classNames(styles.root, className)} src={src} />
 );
 

@@ -6,7 +6,7 @@ import { renderNodes } from "lib/dynamicContentHelpers";
 
 export const FigureContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { attributes, style } = useComponentAttrs(node);
 	const { key, children, elementId } = node;

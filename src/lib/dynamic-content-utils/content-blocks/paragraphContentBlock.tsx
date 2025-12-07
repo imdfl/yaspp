@@ -5,7 +5,7 @@ import { renderNodes } from "lib/dynamicContentHelpers";
 
 export const ParagraphContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { key, children } = node;
 	return <Paragraph key={key}>{renderNodes(children)}</Paragraph>;

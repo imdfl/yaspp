@@ -15,7 +15,7 @@ type DynamicContentViewerProps = {
 
 export const DynamicContentViewer = ({
 	url,
-}: DynamicContentViewerProps): JSX.Element => {
+}: DynamicContentViewerProps): React.JSX.Element => {
 	const { error, isLoading, item } = useDynamicContentServer(url);
 	const { t } = useContext(LocaleContext);
 

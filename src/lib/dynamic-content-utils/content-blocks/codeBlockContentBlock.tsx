@@ -4,7 +4,7 @@ import { ContentComponentProps } from "types/models";
 
 export const CodeBlockContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	return <CodeBlock key={node.key}>{node.text}</CodeBlock>;
 };

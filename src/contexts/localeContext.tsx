@@ -12,7 +12,7 @@ import { isRTL, LocalizeFunction, localizeString } from "@lib/locale";
 
 class LocaleContextImpl implements ILocaleContext {
 	private _locale: string;
-	private _locales: string[];
+	private _locales: ReadonlyArray<string>;
 	// private _translate: (s: string, lang?: LocaleId) => string;
 	private readonly _router: NextRouter;
 	private readonly _t: Translate;

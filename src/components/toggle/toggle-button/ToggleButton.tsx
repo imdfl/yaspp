@@ -17,7 +17,7 @@ const ToggleButton = ({
 	onClick,
 	className,
 	...rest
-}: YSPComponentPropsWithChildren<ToggleButtonProps>): JSX.Element => (
+}: YSPComponentPropsWithChildren<ToggleButtonProps>): React.JSX.Element => (
 	<div className={styles.root}>
 		<ToggleRoot.Root
 			onPressedChange={onClick}

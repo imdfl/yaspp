@@ -12,8 +12,8 @@ export const Heading = ({
 	level,
 	className,
 	children,
-}: YSPComponentPropsWithChildren<HeadingProps>): JSX.Element => {
-	const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+}: YSPComponentPropsWithChildren<HeadingProps>): React.JSX.Element => {
+	const Tag = `h${level}` as keyof React.JSX.IntrinsicElements;
 	return (
 		<Tag role="heading" className={classNames(styles.root, className)}>
 			<Text variant={Tag as HeadingVariant}>{children}</Text>

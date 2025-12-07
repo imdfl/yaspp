@@ -19,7 +19,7 @@ const ThemeSelect = ({
 	setTheme,
 	themes,
 	className,
-}: YSPComponentPropsWithChildren<ThemeSelectProps>): JSX.Element => {
+}: YSPComponentPropsWithChildren<ThemeSelectProps>): React.JSX.Element => {
 	const [curThemeIndex, setCurThemeIndex] = useState<number>(themes.indexOf(theme));
 	const { mounted } = useMountGuard();
 

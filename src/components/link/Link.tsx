@@ -26,7 +26,7 @@ const Link = ({
 	onClick,
 	children,
 	className,
-}: YSPComponentPropsWithChildren<LinkProps>): JSX.Element => {
+}: YSPComponentPropsWithChildren<LinkProps>): React.JSX.Element => {
 	const Comp = asChild ? Slot : "span";
 
 	return (

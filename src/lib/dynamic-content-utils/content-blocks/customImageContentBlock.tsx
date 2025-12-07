@@ -4,7 +4,7 @@ import { CustomImage } from "components/index";
 
 export const CustomImageContentBlock = ({
 	componentData,
-}: ContentComponentProps): JSX.Element => (
+}: ContentComponentProps): React.JSX.Element => (
 	<CustomImage src={componentData.node.target} />
 );
 
