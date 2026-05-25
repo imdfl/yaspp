@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import * as yup from 'yup';
-import { Field, Formik, Form as FormikForm } from 'formik';
-import { getIcon } from 'components/icons';
+import React, { useState } from "react";
+import * as yup from "yup";
+import { Field, Formik, Form as FormikForm } from "formik";
+import { getIcon } from "@components/icons";
 import {
 	Container,
 	Button,
 	LoadingIndicator,
 	Recaptcha,
 	CustomField,
-} from 'components/index';
-import { handleSubmit } from 'components/recaptcha/Recaptcha';
-import { ApiRoutes } from '../../apiRoutes';
-import styles from './Form.module.scss';
+} from "@components/index";
+import { handleSubmit } from "@components/recaptcha/Recaptcha";
+import { ApiRoutes } from "../../apiRoutes";
+import styles from "./Form.module.scss";
 
 type FormFieldProps = {
 	name: string;

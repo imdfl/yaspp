@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import sendEmail from './sendgrid';
+import { NextApiRequest, NextApiResponse } from "next";
+import sendEmail from "./sendgrid";
 
 const contact = async (req: NextApiRequest, res: NextApiResponse) => {
 	const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;

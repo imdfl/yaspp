@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Text from './Text';
+import type { Meta, StoryObj } from "@storybook/react";
+import Text from "./Text";
 
 const meta = {
 	title: 'UI/Text',

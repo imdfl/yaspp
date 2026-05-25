@@ -1,10 +1,10 @@
-import React, { PropsWithChildren, useState } from 'react';
-import * as PopoverPrimitive from '@radix-ui/react-popover';
-import { getIcon } from 'components/icons';
-import { Button, ToolbarItem } from '..';
-import styles from './Popover.module.scss';
-import PopoverTrigger from './PopoverTrigger';
-import PopoverDialog from './PopoverDialog';
+import React, { PropsWithChildren, useState } from "react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { getIcon } from "@components/icons";
+import { Button, ToolbarItem } from "..";
+import styles from "./Popover.module.scss";
+import PopoverTrigger from "./PopoverTrigger";
+import PopoverDialog from "./PopoverDialog";
 // import useClassNames from "@hooks/useClassNames";
 // import ComponentContextProvider from "@contexts/componentContext";
 

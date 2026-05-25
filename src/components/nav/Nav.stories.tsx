@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import MenuBar from 'components/nav/menu-bar/MenuBar';
-import MenuDrawer from './menu-drawer/MenuDrawer';
+import type { Meta, StoryObj } from "@storybook/react";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+import MenuBar from "@components/nav/menu-bar/MenuBar";
+import MenuDrawer from "./menu-drawer/MenuDrawer";
 
 const meta = {
 	title: 'Site/Nav',

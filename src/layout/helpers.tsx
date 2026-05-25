@@ -1,7 +1,7 @@
 import type {
 	NavItemLocaleProps,
 	INavSection,
-} from 'types/nav';
+} from "types/nav";
 
 import type { YASPP } from "yaspp-types";
 

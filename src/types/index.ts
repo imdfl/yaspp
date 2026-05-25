@@ -26,5 +26,5 @@ export interface IOperationResult<T extends NotNull> {
 export type OperationPromise<T extends object> = Promise<IOperationResult<T>>;
 
 
-export * from './locale';
-export * from './nodes';
+export * from "./locale";
+export * from "./nodes";

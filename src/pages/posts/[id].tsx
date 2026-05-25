@@ -1,17 +1,17 @@
-import { GetStaticProps, GetStaticPaths, GetStaticPropsContext } from 'next';
-import type { IPageProps } from 'types/models';
-import { LoadFolderModes } from 'types/parser/modes';
-import { ContentTypes } from 'types/content';
-import { mlNextUtils } from '../../lib/next-utils/nextUtils';
-import { usePageData } from '../../hooks/usePageData';
-import { Container, Link } from 'components/index';
-import Layout from 'layout/Layout';
-import { getIcon } from 'components/icons';
-import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
-import { renderElements, usePageMetadata } from 'lib/dynamicContentHelpers';
-import styles from '../../custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss';
-import { LocaleContext } from '@contexts/localeContext';
-import { useContext } from 'react';
+import { GetStaticProps, GetStaticPaths, GetStaticPropsContext } from "next";
+import type { IPageProps } from "types/models";
+import { LoadFolderModes } from "types/parser/modes";
+import { ContentTypes } from "types/content";
+import { mlNextUtils } from "../../lib/next-utils/nextUtils";
+import { usePageData } from "../../hooks/usePageData";
+import { Container, Link } from "@components/index";
+import Layout from "@src/layout/Layout";
+import { getIcon } from "@components/icons";
+import { GenericContentLayout } from "custom-layouts/generic-content-layout/GenericContentLayout";
+import { renderElements, usePageMetadata } from "@lib/dynamicContentHelpers";
+import styles from "../../custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss";
+import { LocaleContext } from "@contexts/localeContext";
+import { useContext } from "react";
 
 export default function Doc(props: IPageProps) {
 	const { pageData } = usePageData(props);

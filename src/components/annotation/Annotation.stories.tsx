@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Annotation from './Annotation';
+import type { Meta, StoryObj } from "@storybook/react";
+import Annotation from "./Annotation";
 
 const meta = {
 	title: 'UI/Annotation',

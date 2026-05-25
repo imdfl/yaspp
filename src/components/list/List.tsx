@@ -1,9 +1,9 @@
-import React, { HTMLAttributes, PropsWithChildren } from 'react';
-import Link from '../link/Link';
-import Text from '../text/Text';
-import ListItem, { ListItemProps } from '../list-item/ListItem';
-import classNames from '@lib/class-names';
-import styles from './List.module.scss';
+import React, { HTMLAttributes, PropsWithChildren } from "react";
+import Link from "../link/Link";
+import Text from "../text/Text";
+import ListItem, { ListItemProps } from "../list-item/ListItem";
+import classNames from "@lib/class-names";
+import styles from "./List.module.scss";
 
 type ListProps = {
 	items?: ListItemProps[];

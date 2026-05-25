@@ -1,7 +1,7 @@
-import React from 'react';
-import classNames from '@lib/class-names';
-import styles from './Figure.module.scss';
-import type { YSPComponentPropsWithChildren } from 'types/components';
+import React from "react";
+import classNames from "@lib/class-names";
+import styles from "./Figure.module.scss";
+import type { YSPComponentPropsWithChildren } from "types/components";
 
 type FigureProps = {
 	elementId: string;

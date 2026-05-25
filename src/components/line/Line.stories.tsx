@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Line from './Line';
+import type { Meta, StoryObj } from "@storybook/react";
+import Line from "./Line";
 
 const meta = {
 	title: 'UI/Line',

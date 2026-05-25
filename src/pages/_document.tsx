@@ -6,9 +6,9 @@ import Document, {
 	DocumentInitialProps,
 	DocumentContext,
 	DocumentProps,
-} from 'next/document';
-import { fontFaceLinks } from '../siteFonts';
-import { initYaspp } from '../lib/yaspp';
+} from "next/document";
+import { fontFaceLinks } from "../siteFonts";
+import { initYaspp } from "../lib/yaspp";
 
 interface IStyleProps {
 	readonly styleUrls: ReadonlyArray<string>;

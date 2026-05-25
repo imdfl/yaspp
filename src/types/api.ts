@@ -1,6 +1,6 @@
-import { DynamicContentTypes } from './content';
-import { LocaleId } from './locale';
-import { IParsedPageData } from './models';
+import { DynamicContentTypes } from "./content";
+import { LocaleId } from "./locale";
+import { IParsedPageData } from "./models";
 
 export interface IMLApiResponse<T> {
 	error?: string;

@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import sendgrid from '@sendgrid/mail';
+import { NextApiRequest, NextApiResponse } from "next";
+import sendgrid from "@sendgrid/mail";
 
 sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
 

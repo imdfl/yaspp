@@ -1,7 +1,7 @@
-import { getIcon } from "components/icons";
+import { getIcon } from "@components/icons";
 import styles from "./NavItem.module.scss";
 import classNames from "@lib/class-names";
-import Link from "components/link/Link";
+import Link from "@components/link/Link";
 import type { YSPComponentPropsWithChildren } from "types/components";
 
 interface NavItemContentProps {

@@ -1,7 +1,7 @@
 import { GetStaticPathsResult, GetStaticPropsResult } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { collectPathsIn, pathToRelativePath } from "./pathHelpers";
-import { loadContentFolder } from "lib/loadFolderContent";
+import { loadContentFolder } from "@lib/loadFolderContent";
 import { ILocaleMap } from "types/models";
 import type { IContentParseOptions } from "types/parser/parser";
 import {

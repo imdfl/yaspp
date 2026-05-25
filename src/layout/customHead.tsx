@@ -1,5 +1,5 @@
-import Head from 'next/head';
-import { IThemeUrl } from '../types/app';
+import Head from "next/head";
+import { IThemeUrl } from "../types/app";
 
 type HeadProps = Readonly<{
 	readonly title?: string;

@@ -17,7 +17,7 @@ import {
 	TextContentBlock,
 } from "./content-blocks";
 import type { ContentComponentProps } from "types/models";
-import { ErrorMessage } from "components/index";
+import { ErrorMessage } from "@components/index";
 import { CaseInsensitiveMap } from "../caseInsensitiveCollections";
 
 const HTMLTypeMap = new CaseInsensitiveMap<MLNODE_TYPES>([

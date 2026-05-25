@@ -1,7 +1,7 @@
-import React, { PropsWithChildren } from 'react';
-import { Link, List, ListItem, Text } from '../../components/index';
-import styles from './ReferenceContentLayout.module.scss';
-import type { RefOrSourceProps } from 'types/components';
+import React, { PropsWithChildren } from "react";
+import { Link, List, ListItem, Text } from "../../components/index";
+import styles from "./ReferenceContentLayout.module.scss";
+import type { RefOrSourceProps } from "types/components";
 
 type ReferenceContentLayoutProps = {
 	term: string;

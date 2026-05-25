@@ -21,7 +21,7 @@ import {
 	FileTextIcon,
 	TwitterLogoIcon,
 	ExclamationTriangleIcon
-} from '@radix-ui/react-icons';
+} from "@radix-ui/react-icons";
 
 type IconData = typeof CheckIcon;
 const ICON_MAP = new Map<string, IconData>([

@@ -34,10 +34,11 @@ function isMapping(arg: unknown): boolean {
 	if (ents.length < 1) {
 		return false;
 	}
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const ind = ents.findIndex(([cls, isOn]) => {
 		return !cls
 		|| typeof cls !== "string"
-		|| typeof isOn !== "boolean"
+		// || typeof isOn !== "boolean"
 	});
 	return ind < 0;
 }
@@ -71,7 +72,7 @@ function parseValue (arg: Argument, classes: string[]): string | string[] {
 	if (isMapping(arg)) {
 		Object.entries(arg as ClassNameMapping)
 			.forEach(([cls, isOn]) =>  {
-				toggleClass(classes, cls, isOn);
+				toggleClass(classes, cls, Boolean(isOn));
 			});
 		return "";
 	}

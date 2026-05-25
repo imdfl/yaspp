@@ -5,7 +5,7 @@ import type { YASPP } from "yaspp-types";
 import type { IOperationResult, NotNull, OperationPromise } from "types";
 import { fileUtils } from "../fileUtils";
 import type { IThemeUrl, IYasppNavData } from "types/app";
-import YConstants from './constants';
+import YConstants from "./constants";
 import { stringUtils } from "../stringUtils";
 import type { IYasppBindingsFile, IYasppClassOverrides, IYasppClassTree } from "types/styles";
 

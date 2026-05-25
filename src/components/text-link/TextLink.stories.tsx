@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import TextLink from 'components/text-link/TextLink';
+import type { Meta, StoryObj } from "@storybook/react";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+import TextLink from "@components/text-link/TextLink";
 
 const meta = {
 	title: 'UI/TextLink',

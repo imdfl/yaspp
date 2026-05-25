@@ -6,8 +6,8 @@ import { mlNextUtils } from "../lib/next-utils/nextUtils";
 import type { IPageProps } from "types/models";
 import { usePageData } from "../hooks/usePageData";
 import { LoadContentModes, LoadFolderModes } from "types/parser/modes";
-import { Link, Text } from "components/index";
-import Layout from "layout/Layout";
+import { Link, Text } from "@components/index";
+import Layout from "@src/layout/Layout";
 import { LocaleContext } from "@contexts/index";
 import { useTranslatedString } from "../hooks/useTranslatedString";
 

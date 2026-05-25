@@ -8,7 +8,7 @@ import { IPopoverContext } from "../types";
 // import I18nProvider from "next-translate/I18nProvider";
 import { DynamicContentTypes } from "types/content";
 // import glossaryEN from "../../../../locales/en/glossary.json";
-import { Popover } from "components/index";
+import { Popover } from "@components/index";
 import type {
 	ContentComponentProps,
 	IContentComponentInitData,

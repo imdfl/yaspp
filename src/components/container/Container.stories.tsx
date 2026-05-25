@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Container from './Container';
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+import type { Meta, StoryObj } from "@storybook/react";
+import Container from "./Container";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 
 const meta = {
 	title: 'UI/Container',

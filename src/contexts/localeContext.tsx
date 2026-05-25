@@ -1,5 +1,5 @@
 import React, { Context, createContext } from "react";
-import useTranslation from 'next-translate/useTranslation';
+import useTranslation from "next-translate/useTranslation";
 import type {
 	ILocaleContext,
 	ILocaleContextProps,

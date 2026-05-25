@@ -1,6 +1,6 @@
-import { DynamicContentTypes } from 'types/content';
-import { MLParseModes } from './parser/modes';
-import { ASTNODE_TYPES, MLNODE_TYPES, NODE_DISPLAY_TYPES } from './nodes';
+import { DynamicContentTypes } from "types/content";
+import { MLParseModes } from "./parser/modes";
+import { ASTNODE_TYPES, MLNODE_TYPES, NODE_DISPLAY_TYPES } from "./nodes";
 
 /** A single node in a parsed markdown AST */
 export type ParsedNode = {

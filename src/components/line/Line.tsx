@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from 'react';
-import styles from './Line.module.scss';
+import React, { PropsWithChildren } from "react";
+import styles from "./Line.module.scss";
 
 type LineProps = {
 	index: number;

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Form, { FormFieldProps } from './Form';
-import * as yup from 'yup';
+import type { Meta, StoryObj } from "@storybook/react";
+import Form, { FormFieldProps } from "./Form";
+import * as yup from "yup";
 
 const meta = {
 	title: 'Site/Form',

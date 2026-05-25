@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from 'react';
-import Scrollbar from '../../components/scrollbar/Scrollbar';
-import styles from './DynamicContentLayout.module.scss';
-import type { DynamicContentTypes } from 'types/content';
-import type { RefOrSourceProps } from 'types/components';
-import type { TextDirection } from 'types/locale';
+import React, { PropsWithChildren } from "react";
+import Scrollbar from "../../components/scrollbar/Scrollbar";
+import styles from "./DynamicContentLayout.module.scss";
+import type { DynamicContentTypes } from "types/content";
+import type { RefOrSourceProps } from "types/components";
+import type { TextDirection } from "types/locale";
 
 type ContentLayoutProps = {
 	type: DynamicContentTypes;

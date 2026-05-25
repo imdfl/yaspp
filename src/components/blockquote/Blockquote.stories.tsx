@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Blockquote from './Blockquote';
+import type { Meta, StoryObj } from "@storybook/react";
+import Blockquote from "./Blockquote";
 
 const meta = {
 	title: 'Semantic/Blockquote',

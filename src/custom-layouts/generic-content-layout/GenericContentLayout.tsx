@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from 'react';
-import { Text, Container } from 'components/index';
-import { DateFormat, Heading, TextLink } from 'components/index';
-import classNames from '@lib/class-names';
-import styles from './GenericContentLayout.module.scss';
+import React, { PropsWithChildren } from "react";
+import { Text, Container } from "@components/index";
+import { DateFormat, Heading, TextLink } from "@components/index";
+import classNames from "@lib/class-names";
+import styles from "./GenericContentLayout.module.scss";
 
 type GenericContentLayoutProps = {
 	caption?: string;

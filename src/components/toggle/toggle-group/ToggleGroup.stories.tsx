@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import ToggleGroup from './ToggleGroup';
+import type { Meta, StoryObj } from "@storybook/react";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+import ToggleGroup from "./ToggleGroup";
 
 const meta = {
 	title: 'UI/Toggle/Group',

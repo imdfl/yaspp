@@ -1,5 +1,5 @@
-import React from 'react';
-import Script from 'next/script';
+import React from "react";
+import Script from "next/script";
 
 export const Analytics = () => {
 	const analyticsId = process.env.NEXT_PUBLIC_ANALYTICS_ID;

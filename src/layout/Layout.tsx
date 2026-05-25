@@ -22,7 +22,7 @@ import {
 	ThemeSelect,
 	MenuDrawer,
 } from "../components/index";
-import { getIcon } from "components/icons";
+import { getIcon } from "@components/icons";
 import CustomHead from "./customHead";
 import { Analytics } from "./analytics";
 import { LocaleId } from "types";

@@ -1,5 +1,5 @@
-import { flattenArray } from 'utils/index';
-import { default as siteFontData } from './layout/data/typography';
+import { flattenArray } from "utils/index";
+import { default as siteFontData } from "./layout/data/typography";
 
 const fontBasePath = '/assets/fonts';
 

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { DynamicContentContext } from '@contexts/contentContext';
-import { ContentStack } from '../contentStack';
-import { DynamicContentViewer } from './contentViewer';
-import DynamicContentToolbar from './contentToolbar';
-import { IMLParsedNode, IParsedPageData } from 'types/models';
-import { IDynamicContentContext } from 'lib/types';
+import React, { useEffect, useState } from "react";
+import { DynamicContentContext } from "@contexts/contentContext";
+import { ContentStack } from "../contentStack";
+import { DynamicContentViewer } from "./contentViewer";
+import DynamicContentToolbar from "./contentToolbar";
+import { IMLParsedNode, IParsedPageData } from "types/models";
+import { IDynamicContentContext } from "@lib/types";
 
 export interface IStackBrowserProps {
 	node: IMLParsedNode;

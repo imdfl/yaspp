@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Paragraph from './Paragraph';
+import type { Meta, StoryObj } from "@storybook/react";
+import Paragraph from "./Paragraph";
 
 const meta = {
 	title: 'Semantic/Paragraph',

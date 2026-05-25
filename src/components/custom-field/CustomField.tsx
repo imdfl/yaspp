@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { getIcon } from "components/icons";
+import { getIcon } from "@components/icons";
 import styles from "./CustomField.module.scss";
 import classNames from "@lib/class-names";
 import type { SyntheticEvent } from "react";

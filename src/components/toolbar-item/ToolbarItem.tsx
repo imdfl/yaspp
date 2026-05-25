@@ -1,6 +1,6 @@
-import React from 'react';
-import styles from './ToolbarItem.module.scss';
-import classNames from '@lib/class-names';
+import React from "react";
+import styles from "./ToolbarItem.module.scss";
+import classNames from "@lib/class-names";
 import type { YSPComponentPropsWithChildren } from "types/components";
 
 

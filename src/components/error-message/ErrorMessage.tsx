@@ -1,5 +1,5 @@
 import React from "react";
-import { getIcon } from "components/icons";
+import { getIcon } from "@components/icons";
 import classNames from "@lib/class-names";
 import styles from "./ErrorMessage.module.scss";
 import { Link } from "..";

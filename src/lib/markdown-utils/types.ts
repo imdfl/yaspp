@@ -1,7 +1,7 @@
-import { LoadFolderModes } from 'types/parser/modes';
-import type { IContentParseOptions } from 'types/parser/parser';
-import type { IYasppApp } from 'types/app';
-import type { LocaleDictionary, LocaleId } from 'types';
+import { LoadFolderModes } from "types/parser/modes";
+import type { IContentParseOptions } from "types/parser/parser";
+import type { IYasppApp } from "types/app";
+import type { LocaleDictionary, LocaleId } from "types";
 
 export interface ILoadContentOptions {
 	readonly app: IYasppApp;

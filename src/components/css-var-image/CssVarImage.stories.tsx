@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import CssVarImage from './CssVarImage';
+import type { Meta, StoryObj } from "@storybook/react";
+import CssVarImage from "./CssVarImage";
 
 const meta = {
 	title: 'UI/CssVarImage',

@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import CustomField, {
 	type CustomFieldProps,
-} from "components/custom-field/CustomField";
-import { getValidityErrorMessage } from "components/custom-field/helpers";
+} from "@components/custom-field/CustomField";
+import { getValidityErrorMessage } from "@components/custom-field/helpers";
 import { useInputValidation } from "@hooks/useInputValidation";
 import classNames from "@lib/class-names";
 import styles from "./Input.module.scss";

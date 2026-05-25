@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import List from './List';
-import { ListItem } from '..';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import List from "./List";
+import { ListItem } from "..";
+import React from "react";
 
 const meta = {
 	title: 'UI/List',

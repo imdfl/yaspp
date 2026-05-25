@@ -1,17 +1,17 @@
-import React, { useCallback, useContext } from 'react';
-import { GetStaticProps, NextPage } from 'next';
-import { mlNextUtils } from '../lib/next-utils/nextUtils';
-import { usePageData } from '../hooks/usePageData';
-import Head from 'next/head';
-import Layout from 'layout/Layout';
-import { GenericContentLayout } from 'custom-layouts/generic-content-layout/GenericContentLayout';
-// import { ContentTypes } from '../types/content';
-import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
-import { renderElements, usePageMetadata } from '../lib/dynamicContentHelpers';
-import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
-import type { IPageProps } from 'types/models';
-import { LocaleContext } from '@contexts/localeContext';
-import { useTranslatedString } from '../hooks/useTranslatedString';
+import React, { useCallback, useContext } from "react";
+import { GetStaticProps, NextPage } from "next";
+import { mlNextUtils } from "../lib/next-utils/nextUtils";
+import { usePageData } from "../hooks/usePageData";
+import Head from "next/head";
+import Layout from "@src/layout/Layout";
+import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout/GenericContentLayout";
+// import { ContentTypes } from "../types/content";
+import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
+import { renderElements, usePageMetadata } from "@lib/dynamicContentHelpers";
+import { LoadContentModes, LoadFolderModes } from "types/parser/modes";
+import type { IPageProps } from "types/models";
+import { LocaleContext } from "@contexts/localeContext";
+import { useTranslatedString } from "../hooks/useTranslatedString";
 
 const Index: NextPage<IPageProps> = (props) => {
 	const { t } = useContext(LocaleContext);

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import LoadingIndicator from 'components/loading-indicator/LoadingIndicator';
+import type { Meta, StoryObj } from "@storybook/react";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+import LoadingIndicator from "@components/loading-indicator/LoadingIndicator";
 
 const meta = {
 	title: 'UI/LoadingIndicator',

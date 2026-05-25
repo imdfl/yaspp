@@ -1,16 +1,16 @@
-import { MLParseContext } from 'lib/parserContext';
-import { VALID_PARSE_MODES } from 'lib/parseModes';
-import * as mdParser from 'simple-markdown';
-import { ASTNODE_TYPES, MLNODE_TYPES } from 'types/nodes';
+import { MLParseContext } from "@lib/parserContext";
+import { VALID_PARSE_MODES } from "@lib/parseModes";
+import * as mdParser from "simple-markdown";
+import { ASTNODE_TYPES, MLNODE_TYPES } from "types/nodes";
 import {
 	AST2MLTypeMap,
 	HTML_VALIDATION_MAP,
 	NORMAL_MODE_AST_TYPES,
 	VERSE_MODE_AST_TYPES,
-} from './nodeTypes';
-import { MLParseModes } from 'types/parser/modes';
-import type { IMLParsedNode, ParsedNode } from 'types/models';
-import { localizeString } from '../locale';
+} from "./nodeTypes";
+import { MLParseModes } from "types/parser/modes";
+import type { IMLParsedNode, ParsedNode } from "types/models";
+import { localizeString } from "../locale";
 
 
 export interface IMarkdownUtils {

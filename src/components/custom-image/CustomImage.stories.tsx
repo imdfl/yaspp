@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import CustomImage from './CustomImage';
+import type { Meta, StoryObj } from "@storybook/react";
+import CustomImage from "./CustomImage";
 
 const meta = {
 	title: 'UI/CustomImage',

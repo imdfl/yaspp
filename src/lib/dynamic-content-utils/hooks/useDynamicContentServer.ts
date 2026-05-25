@@ -8,7 +8,7 @@ import {
 	SHOW_LOADING_INDICATOR_AFTER_MSEC,
 } from "../consts";
 import type { IParsedPageData } from "types/models";
-import { contentUtils } from "lib/contentUtils";
+import { contentUtils } from "@lib/contentUtils";
 import { LocaleContext } from "@contexts/localeContext";
 
 export type DynamicContentViewerProps = {

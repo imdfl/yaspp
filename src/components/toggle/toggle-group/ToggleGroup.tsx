@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import * as ToggleGroupPrimitives from '@radix-ui/react-toggle-group';
-// import { ToggleGroupItemProps } from './toggle-group-item/ToggleGroupItem';
-import classNames from '@lib/class-names';
-import styles from './ToggleGroup.module.scss';
+import React, { useMemo } from "react";
+import * as ToggleGroupPrimitives from "@radix-ui/react-toggle-group";
+// import { ToggleGroupItemProps } from "./toggle-group-item/ToggleGroupItem";
+import classNames from "@lib/class-names";
+import styles from "./ToggleGroup.module.scss";
 import type { YSPComponentPropsWithChildren } from "types/components";
 
 type ToggleGroupProps = {

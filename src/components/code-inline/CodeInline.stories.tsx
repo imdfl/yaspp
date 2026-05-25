@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import CodeInline from './CodeInline';
+import type { Meta, StoryObj } from "@storybook/react";
+import CodeInline from "./CodeInline";
 
 const meta = {
 	title: 'UI/CodeInline',

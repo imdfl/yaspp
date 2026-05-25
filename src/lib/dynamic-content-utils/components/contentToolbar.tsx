@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { IParsedPageData } from 'types/models';
-import { DynamicContentContext } from '@contexts/contentContext';
-import { PopoverContext } from '@contexts/popoverContext';
-import { getIcon } from 'components/icons';
-import { ToolbarButton } from 'components/index';
-import { LocaleContext } from '@contexts/localeContext';
+import React, { useContext, useEffect, useState } from "react";
+import { IParsedPageData } from "types/models";
+import { DynamicContentContext } from "@contexts/contentContext";
+import { PopoverContext } from "@contexts/popoverContext";
+import { getIcon } from "@components/icons";
+import { ToolbarButton } from "@components/index";
+import { LocaleContext } from "@contexts/localeContext";
 
 export interface IDynamicContentToolbarProps {
 	pages: IParsedPageData[];

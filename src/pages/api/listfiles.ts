@@ -1,9 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from "next";
 import type {
 	IMLApiResponse,
-} from 'types/api';
-import * as fsPath from 'path';
-import { promises as fs } from 'fs';
+} from "types/api";
+import * as fsPath from "path";
+import { promises as fs } from "fs";
 
 const INTERACTIVE_TEMPLATE = `<!DOCTYPE html><html>
 <html>

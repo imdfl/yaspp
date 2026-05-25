@@ -1,5 +1,5 @@
-import { IMLParsedNode } from '../models';
-import { LoadContentModes, MLParseModes } from './modes';
+import { IMLParsedNode } from "../models";
+import { LoadContentModes, MLParseModes } from "./modes";
 
 /**
  * Provides information about the parse context and

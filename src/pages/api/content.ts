@@ -1,18 +1,18 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { ContentTypes } from 'types/content';
-import { mlApiUtils } from '../../lib/apiUtils';
-import { LoadContentModes, LoadFolderModes } from 'types/parser/modes';
-import { loadContentFolder } from '../../lib/loadFolderContent';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { ContentTypes } from "types/content";
+import { mlApiUtils } from "../../lib/apiUtils";
+import { LoadContentModes, LoadFolderModes } from "types/parser/modes";
+import { loadContentFolder } from "../../lib/loadFolderContent";
 import type {
 	IMLApiResponse,
 	IMLDynamicContentParams,
 	IMLDynamicContentResponse,
-} from 'types/api';
-import * as fsPath from 'path';
-import { promises as fs } from 'fs';
-import { createPopoverLinksNodeProcessor } from 'lib/processors/createPopoverLinksNodeProcessor';
-import { initYaspp } from '../../lib/yaspp';
-import type { IYasppApp } from 'types/app';
+} from "types/api";
+import * as fsPath from "path";
+import { promises as fs } from "fs";
+import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
+import { initYaspp } from "../../lib/yaspp";
+import type { IYasppApp } from "types/app";
 
 const TypeMap: { [key: string]: ContentTypes } = {
 	annotation: ContentTypes.Annotation,

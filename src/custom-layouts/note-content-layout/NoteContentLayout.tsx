@@ -1,6 +1,6 @@
-import React, { PropsWithChildren } from 'react';
-import classNames from '@lib/class-names';
-import styles from './NoteContentLayout.module.scss';
+import React, { PropsWithChildren } from "react";
+import classNames from "@lib/class-names";
+import styles from "./NoteContentLayout.module.scss";
 
 type NoteContentLayoutProps = {
 	className?: string;

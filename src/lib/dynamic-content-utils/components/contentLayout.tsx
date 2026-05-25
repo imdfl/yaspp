@@ -1,10 +1,10 @@
-import React, { PropsWithChildren, useContext } from 'react';
-import { DynamicContentTypes } from 'types/content';
-import type { ContentLayoutProps } from '../../../custom-layouts/dynamic-content-layout/DynamicContentLayout';
-import NoteContentLayout from '../../../custom-layouts/note-content-layout/NoteContentLayout';
-import ReferenceContentLayout from '../../../custom-layouts/reference-content-layout/ReferenceContentLayout';
-import ContentLayout from '../../../custom-layouts/dynamic-content-layout/DynamicContentLayout';
-import { LocaleContext } from '@contexts/localeContext';
+import React, { PropsWithChildren, useContext } from "react";
+import { DynamicContentTypes } from "types/content";
+import type { ContentLayoutProps } from "../../../custom-layouts/dynamic-content-layout/DynamicContentLayout";
+import NoteContentLayout from "../../../custom-layouts/note-content-layout/NoteContentLayout";
+import ReferenceContentLayout from "../../../custom-layouts/reference-content-layout/ReferenceContentLayout";
+import ContentLayout from "../../../custom-layouts/dynamic-content-layout/DynamicContentLayout";
+import { LocaleContext } from "@contexts/localeContext";
 
 export const DynamicContentLayout = ({
 	type,

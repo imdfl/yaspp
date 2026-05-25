@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { GetStaticProps, NextPage } from 'next';
-import Layout from 'layout/Layout';
-import Head from 'next/head';
-import { LocaleContext } from '@contexts/localeContext';
+import React, { useContext } from "react";
+import { GetStaticProps, NextPage } from "next";
+import Layout from "@src/layout/Layout";
+import Head from "next/head";
+import { LocaleContext } from "@contexts/localeContext";
 
 const Error404: NextPage = () => {
 	const { t } = useContext(LocaleContext);
