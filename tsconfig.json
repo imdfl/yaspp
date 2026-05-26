@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "node16",
+		"module": "nodenext",
 		"target": "ES2018",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,

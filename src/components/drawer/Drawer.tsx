@@ -3,7 +3,7 @@ import { default as ModernDrawer } from "react-modern-drawer";
 import styles from "./Drawer.module.scss";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type DrawerProps = {
 	open: boolean;

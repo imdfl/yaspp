@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Term.module.scss";
 import classNames from "@lib/class-names";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 
 export const Term = ({

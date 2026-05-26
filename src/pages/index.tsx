@@ -8,8 +8,8 @@ import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout
 // import { ContentTypes } from "../types/content";
 import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
 import { renderElements, usePageMetadata } from "@lib/dynamicContentHelpers";
-import { LoadContentModes, LoadFolderModes } from "types/parser/modes";
-import type { IPageProps } from "types/models";
+import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
+import type { IPageProps } from "@src/types/models";
 import { LocaleContext } from "@contexts/localeContext";
 import { useTranslatedString } from "../hooks/useTranslatedString";
 

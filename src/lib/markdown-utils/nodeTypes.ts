@@ -1,4 +1,4 @@
-import { ASTNODE_TYPES, MLNODE_TYPES } from "types/nodes";
+import { ASTNODE_TYPES, MLNODE_TYPES } from "@src/types/nodes";
 
 export const AST2MLTypeMap: Map<ASTNODE_TYPES, MLNODE_TYPES> = new Map<
 	ASTNODE_TYPES,

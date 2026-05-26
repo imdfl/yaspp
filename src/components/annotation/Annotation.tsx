@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Annotation.module.scss";
 import { leadingZero } from "./helpers";
 import classNames from "@lib/class-names";
-import { YSPComponentPropsWithChildren } from "types/components";
+import { YSPComponentPropsWithChildren } from "@src/types/components";
 
 interface AnnotationProps {
 	readonly index: number;

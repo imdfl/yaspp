@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IParsedPageData } from "types/models";
+import { IParsedPageData } from "@src/types/models";
 import { DynamicContentContext } from "@contexts/contentContext";
 import { PopoverContext } from "@contexts/popoverContext";
 import { getIcon } from "@components/icons";

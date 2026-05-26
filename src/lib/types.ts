@@ -1,5 +1,5 @@
-import { DynamicContentTypes } from "types/content";
-import type { IMLParsedNode, IParsedPageData } from "types/models";
+import { DynamicContentTypes } from "@src/types/content";
+import type { IMLParsedNode, IParsedPageData } from "@src/types/models";
 
 export interface IDynamicContentRequest {
 	type: DynamicContentTypes;

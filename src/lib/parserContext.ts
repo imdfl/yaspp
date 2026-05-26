@@ -1,9 +1,9 @@
 import { clonePlainObject } from "utils/clonePlainObject";
 import { VALID_PARSE_MODES } from "./parseModes";
-import { MLParseModes } from "types/parser/modes";
-import type { IContentParseOptions } from "types/parser/parser";
-import type { IMLParsedNode, IPageMetaData } from "types/models";
-import type { IYasppApp } from "types/app";
+import { MLParseModes } from "@src/types/parser/modes";
+import type { IContentParseOptions } from "@src/types/parser/parser";
+import type { IMLParsedNode, IPageMetaData } from "@src/types/models";
+import type { IYasppApp } from "@src/types/app";
 import { wrapTranslate } from "./locale/translate";
 
 export class MLParseContext {

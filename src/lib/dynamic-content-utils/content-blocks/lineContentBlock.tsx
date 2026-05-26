@@ -1,8 +1,8 @@
 import React from "react";
-import type { ContentComponentProps } from "types/models";
+import type { ContentComponentProps } from "@src/types/models";
 import { ContentComponent } from "../contentComponent";
 import { Line } from "@components/index";
-import { MLNODE_TYPES } from "types/nodes";
+import { MLNODE_TYPES } from "@src/types/nodes";
 
 export const LineContentBlock = ({
 	componentData,

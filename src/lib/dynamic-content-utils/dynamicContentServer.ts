@@ -1,6 +1,6 @@
-import { DynamicContentTypes } from "types/content";
+import { DynamicContentTypes } from "@src/types/content";
 import type { IDynamicContentRequest, IDynamicContentServer } from "../types";
-import { IParsedPageData } from "types/models";
+import { IParsedPageData } from "@src/types/models";
 
 interface LocalizedContentMap {
 	[id: string]: IParsedPageData;

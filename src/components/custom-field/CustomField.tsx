@@ -3,7 +3,7 @@ import { getIcon } from "@components/icons";
 import styles from "./CustomField.module.scss";
 import classNames from "@lib/class-names";
 import type { SyntheticEvent } from "react";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type CustomFieldProps = {
 	name?: string;

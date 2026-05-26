@@ -2,7 +2,7 @@ import React from "react";
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
 import styles from "./Separator.module.scss";
 import classNames from "@lib/class-names";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 // import useClassNames from "@hooks/useClassNames";
 
 interface SeparatorProps {

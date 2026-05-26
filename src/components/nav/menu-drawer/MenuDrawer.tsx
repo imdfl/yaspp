@@ -3,10 +3,10 @@ import NavItem from "../nav-item/NavItem";
 import List from "../../list/List";
 import ListItem from "../../list-item/ListItem";
 import styles from "./MenuDrawer.module.scss";
-import type { INavSection } from "types/nav";
+import type { INavSection } from "@src/types/nav";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type VerticalNavProps = {
 	items: ReadonlyArray<INavSection>;

@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./CssVarImage.module.scss";
 import classNames from "@lib/class-names";
 import { getCustomStyle } from "./helpers";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 interface CssVarImageProps {
 	readonly varName: string;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ContentComponent } from "./dynamic-content-utils/contentComponent";
-import type { IMLParsedNode, IPageMetaData, IParsedPageData } from "types/models";
+import type { IMLParsedNode, IPageMetaData, IParsedPageData } from "@src/types/models";
 
 export const renderElements = (pageData: ReadonlyArray<IParsedPageData>) => {
 	const page = pageData[0] || ({} as IParsedPageData);

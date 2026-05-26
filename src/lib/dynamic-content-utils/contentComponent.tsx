@@ -1,6 +1,6 @@
 import React from "react";
 import { ContentIterator } from "./contentIterator";
-import { MLNODE_TYPES } from "types/nodes";
+import { MLNODE_TYPES } from "@src/types/nodes";
 import { LinkSelector } from "./linkSelector";
 import {
 	HeadingContentBlock,
@@ -16,7 +16,7 @@ import {
 	ListContentBlock,
 	TextContentBlock,
 } from "./content-blocks";
-import type { ContentComponentProps } from "types/models";
+import type { ContentComponentProps } from "@src/types/models";
 import { ErrorMessage } from "@components/index";
 import { CaseInsensitiveMap } from "../caseInsensitiveCollections";
 

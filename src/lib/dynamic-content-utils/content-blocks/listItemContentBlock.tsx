@@ -1,5 +1,5 @@
 import React from "react";
-import { ContentComponentProps } from "types/models";
+import { ContentComponentProps } from "@src/types/models";
 import { ContentIterator } from "../contentIterator";
 import { ListItem, Text } from "@components/index";
 

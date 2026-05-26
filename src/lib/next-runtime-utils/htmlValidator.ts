@@ -1,4 +1,4 @@
-import { StringMap } from "types/models";
+import { StringMap } from "@src/types/models";
 import {
 	CaseInsensitiveMap,
 	CaseInsensitiveSet,

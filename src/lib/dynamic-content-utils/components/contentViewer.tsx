@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { DynamicContentLayout } from "./contentLayout";
 import { Text, LoadingIndicator } from "@components/index";
-import { DynamicContentTypes } from "types/content";
+import { DynamicContentTypes } from "@src/types/content";
 import { useDynamicContentServer } from "../hooks/useDynamicContentServer";
 import { SHOW_LOADING_INDICATOR_AFTER_MSEC } from "../consts";
-import { RefOrSourceProps } from "types/components";
+import { RefOrSourceProps } from "@src/types/components";
 import { contentUtils } from "@lib/contentUtils";
 import { renderNodes } from "@lib/dynamicContentHelpers";
 import { LocaleContext } from "@contexts/localeContext";

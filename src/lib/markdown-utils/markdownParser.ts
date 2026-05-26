@@ -1,14 +1,14 @@
 import { CaseInsensitiveMap } from "../caseInsensitiveCollections";
 import { NodeProcessorContext } from "../nodeProcessorContext";
 import { MLParseContext } from "../parserContext";
-import { ASTNODE_TYPES, MLNODE_TYPES } from "types/nodes";
-import type { IMLParsedNode, ParsedNode, IPageMetaData } from "types/models";
+import { ASTNODE_TYPES, MLNODE_TYPES } from "@src/types/nodes";
+import type { IMLParsedNode, ParsedNode, IPageMetaData } from "@src/types/models";
 import type {
 	IContentParseOptions,
 	INodeProcessorContext,
 	MLNodeProcessorFunction,
-} from "types/parser/parser";
-import { MLParseModes } from "types/parser/modes";
+} from "@src/types/parser/parser";
+import { MLParseModes } from "@src/types/parser/modes";
 import {
 	// FIGURE_CONTAINER_TYPES,
 	IGNORED_AST_TYPES,

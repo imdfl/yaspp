@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { GetStaticProps, NextPage } from "next";
-import { ContentTypes } from "types/content";
+import { ContentTypes } from "@src/types/content";
 import { mlNextUtils } from "../lib/next-utils/nextUtils";
-import type { IPageProps } from "types/models";
+import type { IPageProps } from "@src/types/models";
 import { usePageData } from "../hooks/usePageData";
-import { LoadContentModes, LoadFolderModes } from "types/parser/modes";
+import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
 import { Link } from "@components/index";
 import Layout from "@src/layout/Layout";
 import { LocaleContext } from "@contexts/localeContext";

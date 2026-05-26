@@ -7,7 +7,7 @@ import Text, {
 import Link from "../link/Link";
 import styles from "./TextLink.module.scss";
 import classNames from "@lib/class-names";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 export type TextLinkProps = {
 	href: string;

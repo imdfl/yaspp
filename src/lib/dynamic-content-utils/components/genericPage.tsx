@@ -1,11 +1,11 @@
 import React, { useCallback, useContext } from "react";
-import Layout from "layout/Layout";
+import Layout from "@src/layout/Layout";
 import Head from "next/head";
-import type { IContentComponentData, IMLParsedNode } from "types/models";
+import type { IContentComponentData, IMLParsedNode } from "@src/types/models";
 import { ContentIterator } from "../contentIterator";
 import { usePageData } from "@hooks/usePageData";
-import { MLNODE_TYPES } from "types/nodes";
-import { GenericContentLayout } from "custom-layouts/generic-content-layout/GenericContentLayout";
+import { MLNODE_TYPES } from "@src/types/nodes";
+import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout/GenericContentLayout";
 import { usePageMetadata } from "@lib/dynamicContentHelpers";
 import { LocaleContext } from "@contexts/localeContext";
 import { useTranslatedString } from "@hooks/useTranslatedString";

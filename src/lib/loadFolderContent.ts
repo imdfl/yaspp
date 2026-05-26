@@ -3,14 +3,14 @@ import fsPath from "path";
 import matter from "gray-matter";
 // import getConfig from "next/config";
 // import { setContentRootDir } from "./contentRootDir";
-import type { ICaptionConfiguration, IFolderContent, ILocaleMap, IMLParsedNode, IPageMetaData, IParsedPageData, PageSortField, ParsedNode } from "types/models";
+import type { ICaptionConfiguration, IFolderContent, ILocaleMap, IMLParsedNode, IPageMetaData, IParsedPageData, PageSortField, ParsedNode } from "@src/types/models";
 import { createMDParser } from "./markdown-utils/markdownParser";
-import type { IContentParseOptions } from "types/parser/parser";
+import type { IContentParseOptions } from "@src/types/parser/parser";
 import {
 	LoadContentModes,
 	LoadFolderModes,
 	MLParseModes,
-} from "types/parser/modes";
+} from "@src/types/parser/modes";
 import type { ILoadContentOptions } from "./markdown-utils/types";
 import { mdUtils } from "./markdown-utils/markdownUtils";
 import { MLNODE_TYPES } from "../types";

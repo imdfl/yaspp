@@ -6,7 +6,7 @@ import { getValidityErrorMessage } from "@components/custom-field/helpers";
 import { useInputValidation } from "@hooks/useInputValidation";
 import classNames from "@lib/class-names";
 import styles from "./Input.module.scss";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type InputProps = {
 	readonly translateFn: (s: string) => string;

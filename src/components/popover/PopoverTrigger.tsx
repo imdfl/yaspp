@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./PopoverTrigger.module.scss";
 import classNames from "@lib/class-names";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type PopoverTriggerProps = {
 	opened?: boolean;

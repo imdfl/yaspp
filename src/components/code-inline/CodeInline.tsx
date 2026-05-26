@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./CodeInline.module.scss";
 import classNames from "@lib/class-names";
-import { YSPComponentPropsWithChildren } from "types/components";
+import { YSPComponentPropsWithChildren } from "@src/types/components";
 
 const CodeInline = ({
 	children,

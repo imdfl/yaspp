@@ -8,7 +8,7 @@ import { promises as fs } from "fs";
 import fsPath from "path";
 import { parse as parseJSON } from "json5";
 
-import type { IOperationResult, NotNull } from "types";
+import type { IOperationResult, NotNull } from "@src/types";
 import { fileUtils } from "@lib/fileUtils";
 import { captureProcessOutput, errorResult, successResult } from "@lib/yaspp/yaspp-lib";
 
@@ -234,12 +234,12 @@ errors ${cpResult.errors}`;
 
 
 	public async loadJSONTemplate<TRet extends NotNull>(name: string): Promise<IOperationResult<TRet>> {
-		const loadRes = await this.loadTemplate(name);
-		if (loadRes.error) {
-			return errorResult(loadRes.error);
+		const { error, result } = await this.loadTemplate(name);
+		if (error) {
+			return errorResult<TRet>(error);
 		}
 		try {
-			const ret = parseJSON<TRet>(loadRes.result);
+			const ret = parseJSON<TRet>(result);
 			return ret ? successResult(ret) : errorResult(`Failed to load template ${name}`)
 		}
 		catch (err) {

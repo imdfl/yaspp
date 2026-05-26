@@ -3,7 +3,7 @@ import styles from "./ListItem.module.scss";
 import type { LinkTargetProps } from "../link/Link";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
-import { YSPComponentPropsWithChildren } from "types/components";
+import { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type ListItemProps = {
 	label?: string;

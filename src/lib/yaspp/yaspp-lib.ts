@@ -2,12 +2,12 @@ import { spawn } from "child_process";
 import fsPath from "path";
 import * as zod from "zod";
 import type { YASPP } from "yaspp-types";
-import type { IOperationResult, NotNull, OperationPromise } from "types";
+import type { IOperationResult, NotNull, OperationPromise } from "@src/types";
 import { fileUtils } from "../fileUtils";
-import type { IThemeUrl, IYasppNavData } from "types/app";
+import type { IThemeUrl, IYasppNavData } from "@src/types/app";
 import YConstants from "./constants";
 import { stringUtils } from "../stringUtils";
-import type { IYasppBindingsFile, IYasppClassOverrides, IYasppClassTree } from "types/styles";
+import type { IYasppBindingsFile, IYasppClassOverrides, IYasppClassTree } from "@src/types/styles";
 
 export interface IValidateThemesOptions {
 	readonly themes: string | ReadonlyArray<string>;
@@ -391,7 +391,7 @@ export function trimPath(path: string): string {
 
 export function errorResult<TResult extends NotNull>(err: string): IOperationResult<TResult> {
 	return {
-		result: null,
+		// result: null,
 		error: err
 	}
 }
@@ -471,7 +471,7 @@ export async function loadClassBindings(path: string): OperationPromise<IYasppCl
 			errors.push(`Error parsing ${path}: ${bres.error}`);
 		}
 		else {
-			allBindings.push(...bres.result);
+			allBindings.push(...(bres.result));
 		}
 	}
 	return operationResult(errors.join('\n'), allBindings)

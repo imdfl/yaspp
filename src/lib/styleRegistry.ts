@@ -1,6 +1,6 @@
 
 
-import type { IYasppClassBindings, IYasppClassTree, IYasppClassOverrides } from "types/styles";
+import type { IYasppClassBindings, IYasppClassTree, IYasppClassOverrides } from "@src/types/styles";
 import { Mutable } from "../types";
 import { stringUtils } from "./stringUtils";
 import { unique } from "utils/unique";

@@ -5,8 +5,6 @@ import { Button, ToolbarItem } from "..";
 import styles from "./Popover.module.scss";
 import PopoverTrigger from "./PopoverTrigger";
 import PopoverDialog from "./PopoverDialog";
-// import useClassNames from "@hooks/useClassNames";
-// import ComponentContextProvider from "@contexts/componentContext";
 
 type CustomPopoverProps = {
 	trigger: React.ReactNode;

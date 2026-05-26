@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import styles from "./Link.module.scss";
 import { Slot } from "@radix-ui/react-slot";
 import classNames from "@lib/class-names";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type LinkTargetProps = string;
 

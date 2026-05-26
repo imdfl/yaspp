@@ -4,7 +4,7 @@ import ToggleButton from "@components/toggle/toggle-button/ToggleButton";
 import styles from "./ThemeSelect.module.scss";
 import classNames from "@lib/class-names";
 import { useMountGuard } from "@hooks/useMountGuard";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type ThemeSelectProps = {
 	readonly label: string;

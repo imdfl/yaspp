@@ -1,6 +1,6 @@
 import React, { SyntheticEvent } from "react";
 import { Slot } from "@radix-ui/react-slot";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 import styles from "./Button.module.scss";
 import useClassNames from "@hooks/useClassNames";
 import ComponentContextProvider from "@contexts/componentContext";

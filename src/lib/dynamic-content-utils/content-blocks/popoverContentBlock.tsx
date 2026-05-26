@@ -6,13 +6,13 @@ import { PopoverProvider } from "@contexts/popoverContext";
 import { useToolbar } from "../hooks/useToolbar";
 import { IPopoverContext } from "../types";
 // import I18nProvider from "next-translate/I18nProvider";
-import { DynamicContentTypes } from "types/content";
+import { DynamicContentTypes } from "@src/types/content";
 // import glossaryEN from "../../../../locales/en/glossary.json";
 import { Popover } from "@components/index";
 import type {
 	ContentComponentProps,
 	IContentComponentInitData,
-} from "types/models";
+} from "@src/types/models";
 import { LocaleContext } from "@contexts/localeContext";
 
 type PopoverContentBlockProps = {

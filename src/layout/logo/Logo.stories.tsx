@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
-import Logo from "layout/logo/Logo";
+import Logo from "@src/layout/logo/Logo";
 
 const meta = {
 	title: 'Site/Logo',

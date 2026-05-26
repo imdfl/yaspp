@@ -5,7 +5,7 @@ import { PageProvider } from "@contexts/pageContext";
 import { fontFaceDecls } from "../siteFonts";
 import "normalize.css/normalize.css";
 import "../styles/app.scss";
-import type { IPageProps } from "types/models";
+import type { IPageProps } from "@src/types/models";
 import { LocaleContextProvider } from "@contexts/localeContext";
 import MLThemeContextProvider from "@contexts/MLThemeContext";
 

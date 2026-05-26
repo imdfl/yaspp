@@ -1,10 +1,10 @@
-import { MLNODE_TYPES } from "types/nodes";
-import { DynamicContentTypes } from "types/content";
-import type { IMLParsedNode } from "types/models";
+import { MLNODE_TYPES } from "@src/types/nodes";
+import { DynamicContentTypes } from "@src/types/content";
+import type { IMLParsedNode } from "@src/types/models";
 import type {
 	INodeProcessorContext,
 	MLNodeProcessorFunction,
-} from "types/parser/parser";
+} from "@src/types/parser/parser";
 
 /** describes a dynamic content item: its type and id */
 interface IDynamicContentRecord {

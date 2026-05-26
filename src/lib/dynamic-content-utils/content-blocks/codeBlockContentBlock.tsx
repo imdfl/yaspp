@@ -1,6 +1,6 @@
 import React from "react";
 import CodeBlock from "@components/code-block/CodeBlock";
-import { ContentComponentProps } from "types/models";
+import { ContentComponentProps } from "@src/types/models";
 
 export const CodeBlockContentBlock = ({
 	componentData,

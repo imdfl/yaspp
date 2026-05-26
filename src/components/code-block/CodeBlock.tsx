@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "@lib/class-names";
 import styles from "./CodeBlock.module.scss";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 const CodeBlock = ({
 	children,

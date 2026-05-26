@@ -1,4 +1,4 @@
-import { DynamicContentTypes } from "types/content";
+import { DynamicContentTypes } from "@src/types/content";
 import { MLParseModes } from "./parser/modes";
 import { ASTNODE_TYPES, MLNODE_TYPES, NODE_DISPLAY_TYPES } from "./nodes";
 

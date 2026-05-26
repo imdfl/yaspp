@@ -1,5 +1,5 @@
 import React, { Context, createContext, PropsWithChildren } from "react";
-import { IThemeUrl } from "types/app";
+import { IThemeUrl } from "@src/types/app";
 import { stringUtils } from "@lib/stringUtils";
 import { useTheme } from "next-themes";
 

@@ -2,7 +2,7 @@ import React from "react";
 import * as ToggleRoot from "@radix-ui/react-toggle";
 import classNames from "@lib/class-names";
 import styles from "./ToggleButton.module.scss";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 interface ToggleButtonProps {
 	readonly title: string;

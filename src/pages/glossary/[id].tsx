@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { GetStaticProps, GetStaticPaths, GetStaticPropsContext } from "next";
-import { ContentTypes } from "types/content";
+import { ContentTypes } from "@src/types/content";
 import { mlNextUtils } from "../../lib/next-utils/nextUtils";
-import { LoadFolderModes } from "types/parser/modes";
-import { MLNODE_TYPES } from "types/nodes";
-import type { IMLParsedNode, IPageProps } from "types/models";
+import { LoadFolderModes } from "@src/types/parser/modes";
+import { MLNODE_TYPES } from "@src/types/nodes";
+import type { IMLParsedNode, IPageProps } from "@src/types/models";
 import { usePageData } from "../../hooks/usePageData";
 import { Link, List } from "@components/index";
 import { ContentIterator } from "@lib/dynamic-content-utils/contentIterator";

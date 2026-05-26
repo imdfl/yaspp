@@ -1,5 +1,5 @@
 import React from "react";
-import { ContentComponentProps } from "types/models";
+import { ContentComponentProps } from "@src/types/models";
 import { List } from "@components/index";
 import { renderNodes } from "@lib/dynamicContentHelpers";
 

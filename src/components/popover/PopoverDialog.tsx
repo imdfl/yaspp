@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./PopoverDialog.module.scss";
 import classNames from "@lib/class-names";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 // import useClassNames from "@hooks/useClassNames";
 // import ComponentContextProvider from "@contexts/componentContext";
 

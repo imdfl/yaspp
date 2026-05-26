@@ -1,5 +1,5 @@
 import React from "react";
-import { ContentComponentProps } from "types/models";
+import { ContentComponentProps } from "@src/types/models";
 import { useComponentAttrs } from "../../../hooks/useComponentAttrs";
 import { Figure } from "@components/index";
 import { renderNodes } from "@lib/dynamicContentHelpers";

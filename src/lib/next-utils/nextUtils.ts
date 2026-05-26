@@ -2,15 +2,15 @@ import { GetStaticPathsResult, GetStaticPropsResult } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { collectPathsIn, pathToRelativePath } from "./pathHelpers";
 import { loadContentFolder } from "@lib/loadFolderContent";
-import { ILocaleMap } from "types/models";
-import type { IContentParseOptions } from "types/parser/parser";
+import { ILocaleMap } from "@src/types/models";
+import type { IContentParseOptions } from "@src/types/parser/parser";
 import {
 	LoadContentModes,
 	LoadFolderModes,
 	MLParseModes,
-} from "types/parser/modes";
-import { IFolderStaticProps } from "types/folder";
-import { LocaleId } from "types/locale";
+} from "@src/types/parser/modes";
+import { IFolderStaticProps } from "@src/types/folder";
+import { LocaleId } from "@src/types/locale";
 import type { IMLNextUtils, IStaticPathsParameters } from "./types";
 import { initYaspp } from "../yaspp";
 

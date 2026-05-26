@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { PageContext, ComponentContext } from "@contexts/index";
 import classNames from "@lib/class-names";
-import { ComponentPath } from "types/components";
+import { ComponentPath } from "@src/types/components";
 
 export interface IClassNamesData {
 	readonly componentClass: string;

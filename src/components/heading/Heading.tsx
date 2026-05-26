@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Heading.module.scss";
 import classNames from "@lib/class-names";
 import Text, { type HeadingVariant } from "../text/Text";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type HeadingProps = {
 	level: number | string;

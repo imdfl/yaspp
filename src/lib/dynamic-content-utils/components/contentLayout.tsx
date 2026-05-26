@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useContext } from "react";
-import { DynamicContentTypes } from "types/content";
+import { DynamicContentTypes } from "@src/types/content";
 import type { ContentLayoutProps } from "../../../custom-layouts/dynamic-content-layout/DynamicContentLayout";
 import NoteContentLayout from "../../../custom-layouts/note-content-layout/NoteContentLayout";
 import ReferenceContentLayout from "../../../custom-layouts/reference-content-layout/ReferenceContentLayout";

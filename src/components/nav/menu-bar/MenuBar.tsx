@@ -6,13 +6,13 @@ import Button from "../../button/Button";
 import List from "../../list/List";
 import NavItem from "../nav-item/NavItem";
 import styles from "./MenuBar.module.scss";
-import type { INavSection } from "types/nav";
+import type { INavSection } from "@src/types/nav";
 import { LocaleContext } from "@contexts/localeContext";
-import type { TextDirection } from "types/locale";
+import type { TextDirection } from "@src/types/locale";
 import type { YASPP } from "yaspp-types";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 interface NavProps {
 	readonly items: ReadonlyArray<INavSection>;

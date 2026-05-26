@@ -3,7 +3,7 @@ import { getIcon } from "@components/icons";
 import classNames from "@lib/class-names";
 import styles from "./ErrorMessage.module.scss";
 import { Link } from "..";
-import type { YSPComponentPropsWithChildren } from "types/components";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type ErrorMessageProps = {
 	message?: string;

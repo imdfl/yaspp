@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ContentComponentProps, IMLParsedNode, INodeAttributeData, NodeAttributeMap } from "types/models";
+import { ContentComponentProps, IMLParsedNode, INodeAttributeData, NodeAttributeMap } from "@src/types/models";
 import { ContentIterator } from "../contentIterator";
 import { Link } from "@components/index";
-import { Nullable } from "types";
+import { Nullable } from "@src/types";
 import { useComponentAttrs } from "@hooks/index";
 
 export interface ILinkProps extends ContentComponentProps {
