@@ -2,23 +2,8 @@
 @use '../../styles/lib/states' as *;
 @use '../../styles/lib/component' as *;
 @use '../../styles/lib/states' as *;
-@use '../../styles/lib/hooks' as *;
+@use '../../styles/lib/refs' as *;
 
-$__stylesheet__: (
-	name: popover-trigger,
-);
-$states: merge.deep(
-	$COMPONENT_STATES,
-	(
-		selected: open,
-		selected-hovered: (
-			(open, hover),
-		),
-		selected-clicked: (
-			(open, active),
-		),
-	)
-);
 
 @function -text-color($state: '') {
 	@return compRef("popover-trigger", text-color, $state);
@@ -29,7 +14,7 @@ $states: merge.deep(
 }
 
 @function -suffix-color($state: '') {
-	@return compRef("popover-trigger", astriek-color, $state);
+	@return compRef("popover-trigger", asterisk-color, $state);
 }
 
 $color: to-css-var(popover-trigger-text-color);

@@ -8,11 +8,11 @@
 $toggleRef: "toggle-button";
 
 @function default($prop, $state: '') {
-	@return "layout"#{$toggleRef}-default-#{$prop}#{$state};
+	@return "layout#{$toggleRef}-default-#{$prop}#{$state}";
 }
 
 @function sidebar-menu($prop, $state: '') {
-	@return "layout"#{$toggleRef}-variants-sidebar-menu-#{$prop}#{$state};
+	@return "layout#{$toggleRef}-variants-sidebar-menu-#{$prop}#{$state}";
 }
 
 $toggle: (

@@ -2,8 +2,14 @@
 @use '../../../styles/lib/merge' as merge;
 @use "../../../styles/lib/hooks/direction" as *;
 @use "../../../styles/lib/hooks/box" as *;
-@use "./MenuBar.meta" as *;
+@use "../../../styles/lib/states" as *;
 
+$states: merge.deep(
+	$COMPONENT_STATES,
+	(
+		opened: open,
+	)
+);
 
 .root {
 	@include mixins.caret-mixin("site-horizontal-menu-trigger-caret");

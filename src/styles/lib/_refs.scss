@@ -1,7 +1,6 @@
 // stylelint-disable scss/at-function-pattern
 @use 'sass:string';
-@use '../config';
-@use "../config/consts";
+@use "../config/consts" as consts;
 
 @function prefix($prefix) {
 	$t: if(string.length($prefix) > 0,

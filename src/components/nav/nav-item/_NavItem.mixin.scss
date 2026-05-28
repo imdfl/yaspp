@@ -15,16 +15,17 @@
 // private mixin, used by this mixin
 @mixin -text-refs-mixin(
 	$var,
-	$text-transform: refs.ref("nav-item-"#{$var}-text-transform),
+	$text-transform: refs.ref("nav-item-#{$var}-text-transform"),
 	$font-weight: 100,
 	$text-color: blue,
 	$text-color-hover: green
 ) {
+	$hov: state(hovered);
 	// hooks helper sass variables
-	$textTransformVar: refs.use("nav-item-"#{$var}-text-transform);
-	$fontWeightVar: refs.use("nav-item-"#{$var}-font-weight);
-	$textColorVar: refs.use("nav-item-"#{$var}-text-color);
-	$textColorHoverVar: refs.use("nav-item-"#{$var}-text-color#{state(hovered)});
+	$textTransformVar: refs.use("nav-item-#{$var}-text-transform");
+	$fontWeightVar: refs.use("nav-item-#{$var}-font-weight");
+	$textColorVar: refs.use("nav-item-#{$var}-text-color");
+	$textColorHoverVar: refs.use("nav-item-#{$var}-text-color#{$hov}");
 
 	#{$textTransformVar}: $text-transform;
 	#{$fontWeightVar}: $font-weight;
@@ -34,7 +35,7 @@
 
 @mixin item($radius: 0, $bg-color-hover: red) {
 	$borderRadius: refs.use("nav-item-radius");
-	$bgColorHover: refs.use("nav-item-background-color"#{state(hovered)});
+	$bgColorHover: refs.use("nav-item-background-color#{state(hovered)}");
 
 	#{$borderRadius}: $radius;
 	#{$bgColorHover}: $bg-color-hover;

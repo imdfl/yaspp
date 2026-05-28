@@ -6,6 +6,7 @@
 @use './mixins/navItemMixin' as nav-item-mixin;
 @use './refs/toggleRefs' as toggle-refs;
 @use './refs/navItemRefs' as nav-item-refs;
+@use '../styles/lib/component' as *;
 @use '../styles/lib/hooks/box' as *;
 @use "../styles/lib/hooks/flex" as *;
 

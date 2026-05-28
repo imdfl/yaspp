@@ -14,14 +14,14 @@
 ) {
 	// hooks helper sass variables
 	$textColor: refs.use("toggle-button-text-color");
-	$textColorHovered: refs.use("toggle-button-text-color"#{state(hovered)});
-	$textColorSelected: refs.use("toggle-button-text-color"#{state(selected)});
+	$textColorHovered: refs.use("toggle-button-text-color#{state(hovered)}");
+	$textColorSelected: refs.use("toggle-button-text-color#{state(selected)}");
 
 	$bgColor: refs.use("toggle-button-background-color");
 	$bgColorHovered: refs.use(
-		"toggle-button-background-color"#{state(hovered)});
+		"toggle-button-background-color#{state(hovered)}");
 	$bgColorSelected: refs.use(
-		"toggle-button-background-color"#{state(selected)});
+		"toggle-button-background-color#{state(selected)}");
 
 	#{$textColor}: $text-color;
 	#{$textColorHovered}: $text-color-hover;

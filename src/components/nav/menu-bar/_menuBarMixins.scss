@@ -3,6 +3,7 @@
 @use './menuBarAnimationMixin' as animations;
 @use "../../../styles/lib/hooks/animation" as *;
 @use "../../../styles/lib/hooks/text" as *;
+@use "../../../styles/lib/hooks/box" as *;
 
 @mixin caret-mixin($var) {
 	.caret {

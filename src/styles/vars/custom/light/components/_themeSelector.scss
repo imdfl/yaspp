@@ -1,10 +1,10 @@
-@use '../../../../../components/theme-select/ThemeSelect.module' as theme-select;
 @use '../../../../lib/refs';
+@use '../../../../lib/states';
 
 $vars: (
 	icon: (
 		text-color: refs.ref(color-surface-contrast),
-		theme-select.state(hovered): (
+		states.state(hovered): (
 			text-color: refs.ref(color-surface-contrast),
 		),
 	),

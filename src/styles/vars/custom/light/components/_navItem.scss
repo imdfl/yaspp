@@ -1,5 +1,6 @@
 @use '../../../../lib/refs';
 @use '../../../../../components/nav/nav-item/NavItem.module' as comp;
+@use '../../../../lib/states';
 
 $vars: (
 	radius: refs.globalRef(radius-md),
@@ -20,7 +21,7 @@ $vars: (
 	subtitle: (
 		text-tranform: uppercase,
 	),
-	comp.state(hovered): (
+	states.state(hovered): (
 		background-color: refs.ref(color-surface-main),
 	),
 );

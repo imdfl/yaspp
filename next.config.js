@@ -11,7 +11,7 @@ const { withAxiom } = require('next-axiom');
 async function testConfig() {
 	try {
 		const projectPath = process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "..";
-		const configPath = path.resolve(process.cwd(), projectPath, "yaspp.config.json");
+		const configPath = path.resolve(/*turbopackIgnore: true*/ process.cwd(), projectPath, "yaspp.config.json");
 		const stat = await fs.promises.lstat(configPath);
 		return stat.isFile();
 	}
@@ -30,7 +30,7 @@ const nextConfig = async () => {
 		reactStrictMode: true,
 		// optimizeFonts: true,
 		sassOptions: {
-			includePaths: [path.join(__dirname, 'public/styles')],
+			includePaths: [/*turbopackIgnore: true*/ path.join(__dirname, 'public/styles')],
 			"silenceDeprecations": ["if-function"]
 		},
 		async redirects() {

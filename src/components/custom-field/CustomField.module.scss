@@ -1,9 +1,5 @@
 @use '../../styles/lib/merge';
-@use '../../styles/lib/refs';
 @use '../../styles/lib/states' as *;
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/hooks/box' as *;
-@use '../../styles/lib/hooks/text' as *;
 
 $__stylesheet__: (
 	name: custom-field,
@@ -24,6 +20,10 @@ $states: merge.deep(
 		),
 	)
 );
+@use '../../styles/lib/refs';
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/hooks/box' as *;
+@use '../../styles/lib/hooks/text' as *;
 
 @mixin input-field-mixin($module) {
 	@include use-background-color($module);
@@ -45,29 +45,27 @@ $states: merge.deep(
 	}
 
 	&:hover {
-		@include use-outline("custom-field-"#{$module}-input#{ state(hovered)});
+		@include use-outline("custom-field-#{$module}-input#{state(hovered)}");
 	}
 
 	&:focus {
-		@include use-outline("custom-field-"#{$module}-input#{state(focused)});
-		@include use-background-color("custom-field-"#{$module}-input#{state(focused)});
+		@include use-outline("custom-field-#{$module}-input#{state(focused)}");
+		@include use-background-color("custom-field-#{$module}-input#{state(focused)}");
 	}
 
 	&[data-is-invalid='true'] {
-		@include use-outline("custom-field-"#{$module}-input#{state(invalid)});
+		@include use-outline("custom-field-#{$module}-input#{state(invalid)}");
 
 		&:hover {
-			@include use-outline("custom-field-"#{$module}-input#{state(invalid-hovered)});
+			@include use-outline("custom-field-#{$module}-input#{state(invalid-hovered)}");
 		}
 
 		&:focus {
-			@include use-outline("custom-field-"#{$module}-input#{state(invalid-focused)});
+			@include use-outline("custom-field-#{$module}-input#{state(invalid-focused)}");
 
 			&:hover {
 				@include use-outline(
-					"custom-field"#{$module}-input,
-					state(invalid-focused-hovered)
-				);
+					"custom-field#{$module}-input#{state(invalid-focused-hovered)}");
 			}
 		}
 	}

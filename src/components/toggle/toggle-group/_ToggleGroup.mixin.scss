@@ -13,13 +13,13 @@
 ) {
 	// hooks helper sass variables
 	$textColor: refs.use("toggle-group-button-text-color");
-	$textColorHovered: refs.use("toggle-group-button-text-color"#{state(hovered)});
-	$textColorSelected: refs.use("toggle-group_button-text-color"#{state(selected)});
+	$textColorHovered: refs.use("toggle-group-button-text-color#{state(hovered)}");
+	$textColorSelected: refs.use("toggle-group_button-text-color#{state(selected)}");
 
 	$bgColor: refs.use("toggle-group-button-background-color");
-	$bgColorHovered: refs.use("toggle-group-button-background-color"#{state(hovered)});
+	$bgColorHovered: refs.use("toggle-group-button-background-color#{state(hovered)}");
 	$bgColorSelected: refs.use(
-		"toggle-group-button-background-color"#{state(selected)});
+		"toggle-group-button-background-color#{state(selected)}");
 
 	#{$textColor}: $text-color;
 	#{$textColorHovered}: $text-color-hover;

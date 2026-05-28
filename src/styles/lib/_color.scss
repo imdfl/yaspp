@@ -4,9 +4,9 @@
 @use 'sass:color';
 
 @function -hex-to-rgb($hex) {
-	$r: color.red($hex);
-	$g: color.green($hex);
-	$b: color.blue($hex);
+	$r: color.channel($hex, "red");
+	$g: color.channel($hex, "green");
+	$b: color.channel($hex, "blue");
 
 	@return ($r, $g, $b);
 }
