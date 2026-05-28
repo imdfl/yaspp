@@ -1,8 +1,9 @@
+@use "sass:color";
 @use "../site";
 
 $colors: (
 	background: #222,
-	background-hover: lighten(#222, 20%),
+	background-hover: color.adjust(#222, $lightness: 20%),
 	text: #FEFEFE,
 	action-color: #BBF
 );

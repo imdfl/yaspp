@@ -35,13 +35,10 @@ const nextConfig = async () => {
 		},
 		async redirects() {
 			return legacyRedirects;
-		},
-		turbopack: {
-			root: "./"
 		}
 	}
 
-	return withAxiom(nextTranslate(config));
+	return withAxiom(nextTranslate(config, { turbopack: true }));
 };
 
 module.exports = nextConfig;

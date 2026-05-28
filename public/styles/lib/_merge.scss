@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:meta';
 
 @function deep($maps...) {
 	$result: ();
@@ -7,7 +8,7 @@
 		@each $key, $value in $map {
 			$existing-value: map.get($result, $key);
 
-			@if type-of($value) == map and type-of($existing-value) == map {
+			@if meta.type-of($value) == map and meta.type-of($existing-value) == map {
 				$result: map.merge(
 					$result,
 					(

@@ -1,4 +1,4 @@
-import React, { Context, createContext } from "react";
+import { Context, createContext } from "react";
 import useTranslation from "next-translate/useTranslation";
 import type {
 	ILocaleContext,
@@ -84,7 +84,8 @@ const ctx = createContext<ILocaleContext>(new LocaleContextImpl(null));
 export const LocaleContext: Context<ILocaleContext> = ctx;
 
 export const LocaleContextProvider = ({ children, router }) => {
-	const { t, lang } = useTranslation();
+	const ut = useTranslation();
+	const { t, lang } = ut;
 	return (
         (<LocaleContext value={new LocaleContextImpl({ router, locale: lang, translate: t })}>
             {children}

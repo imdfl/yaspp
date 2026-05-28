@@ -4,8 +4,8 @@
 @use 'sass:meta';
 
 @function find($map, $key) {
-	@if type-of($map) != map {
-			@debug "lookup.find map type is #{type-of($map)}, returning null";
+	@if meta.type-of($map) != map {
+			@debug "lookup.find map type is #{meta.type-of($map)}, returning null";
 			@return null;
 		}
 
@@ -22,7 +22,7 @@
 	$partInd: string.index($key, '.');
 	$subkey: string.slice($key, $partInd + 1);
 	@return find($submap, $subkey);
-	// @if type-of($ret) == string or type-of($ret) == number {
+	// @if meta.type-of($ret) == string or meta.type-of($ret) == number {
 	// 	@return $ret;
 	// }
 	// @return null;

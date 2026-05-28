@@ -10798,24 +10798,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-translate-plugin@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "next-translate-plugin@npm:2.6.2"
+"next-translate-plugin@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "next-translate-plugin@npm:3.1.3"
   dependencies:
-    typescript: "npm:4.5.2"
+    typescript: "npm:5.9.3"
   peerDependencies:
     next-translate: ">= 2.4.1"
-  checksum: 10c0/7b4e4d5fac1342d5150ec909a45a3f46fb4f36fc7b7a6a35bcda83d77f78c7c6260c382b2ac52badf63666db1dc354ee63adcc7e2a06d813f604f58e2b7b1016
+  checksum: 10c0/ed013abad51d6dab46734402015f20c3c57062eaa2676a94478860ef37dc097347056d97f65b0668dfff3c1dec35677ebea0a6219721dd2cc3c64d44f38f24c5
   languageName: node
   linkType: hard
 
-"next-translate@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "next-translate@npm:2.6.2"
+"next-translate@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "next-translate@npm:3.1.3"
   peerDependencies:
     next: ">= 13.2.5"
     react: ">= 18.0.0"
-  checksum: 10c0/6cc61dd41c44cfd695508ba7c0342029b5e9b3617c8633edb64bac0b02852b5589f84861f6f388dc6d0074fa552b2dcc6f56a70cb2a9022ebacf0e66f8e6ed1a
+  checksum: 10c0/836ced288dade983cbe2dd01d552057fc12c9df565c1b61c7df2c46a0dd5854faa1894c126b002d2e8922d902d2bb110371ea1a582b2eb337508e2d429742474
   languageName: node
   linkType: hard
 
@@ -13944,16 +13944,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.5.2":
-  version: 4.5.2
-  resolution: "typescript@npm:4.5.2"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/8fc40b886018889ad2099cb1b477c4f0373528c9fca83860ad33e898fe19ada22568477aca91741fbeabf0402e203f0e2d6d14ed6973ad826893cc13b2dfd459
-  languageName: node
-  linkType: hard
-
 "typescript@npm:5.3.3":
   version: 5.3.3
   resolution: "typescript@npm:5.3.3"
@@ -13964,13 +13954,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.5.2#optional!builtin<compat/typescript>":
-  version: 4.5.2
-  resolution: "typescript@patch:typescript@npm%3A4.5.2#optional!builtin<compat/typescript>::version=4.5.2&hash=f1b8ea"
+"typescript@npm:5.9.3":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/826f19dba38b0c9d1e398b363d50b0c72a033c79af5fe0a22c3952c8de92e1ce3c203c5e79e1f85be67ff1e5975bc3b28ed4c7aad474eed71752fc79291644f9
+  checksum: 10c0/6bd7552ce39f97e711db5aa048f6f9995b53f1c52f7d8667c1abdc1700c68a76a308f579cd309ce6b53646deb4e9a1be7c813a93baaf0a28ccd536a30270e1c5
   languageName: node
   linkType: hard
 
@@ -13981,6 +13971,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/1d0a5f4ce496c42caa9a30e659c467c5686eae15d54b027ee7866744952547f1be1262f2d40de911618c242b510029d51d43ff605dba8fb740ec85ca2d3f9500
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>":
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/ad09fdf7a756814dce65bc60c1657b40d44451346858eea230e10f2e95a289d9183b6e32e5c11e95acc0ccc214b4f36289dcad4bf1886b0adb84d711d336a430
   languageName: node
   linkType: hard
 
@@ -14689,8 +14689,8 @@ __metadata:
     next-router-mock: "npm:^0.9.12"
     next-sitemap: "npm:4.2.3"
     next-themes: "npm:0.2.1"
-    next-translate: "npm:^2.6.2"
-    next-translate-plugin: "npm:^2.6.2"
+    next-translate: "npm:^3.1.3"
+    next-translate-plugin: "npm:^3.1.3"
     normalize.css: "npm:8.0.1"
     path: "npm:0.12.7"
     react: "npm:19.2.6"
