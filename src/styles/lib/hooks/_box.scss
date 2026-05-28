@@ -1,186 +1,188 @@
+@use "../component";
+
 @use '../refs' as refs;
 
 // background-color
-@mixin use-background-color($v: name(), $s: '') {
-	@include refs.use(background-color, background-color, $v, $s);
+@mixin use-background-color($v: component.name(), $s: '') {
+	@include refs.combine(background-color, background-color, $v, $s);
 }
 
-@mixin use-outline($v: name(), $s: '') {
-	@include refs.use(outline, outline, $v, $s);
+@mixin use-outline($v: component.name(), $s: '') {
+	@include refs.combine(outline, outline, $v, $s);
 }
 
 // gradient-color
-@mixin use-gradient($v: name(), $s: '') {
-	@include refs.use(background, background-color, $v, $s);
+@mixin use-gradient($v: component.name(), $s: '') {
+	@include refs.combine(background, background-color, $v, $s);
 }
 
 // border-top
-@mixin use-border-top-size($v: name(), $s: '') {
-	@include refs.use(border-top-width, border-top-size, $v, $s);
+@mixin use-border-top-size($v: component.name(), $s: '') {
+	@include refs.combine(border-top-width, border-top-size, $v, $s);
 }
-@mixin use-border-top-style($v: name(), $s: '') {
-	@include refs.use(border-top-style, border-top-style, $v, $s);
+@mixin use-border-top-style($v: component.name(), $s: '') {
+	@include refs.combine(border-top-style, border-top-style, $v, $s);
 }
-@mixin use-border-top-color($v: name(), $s: '') {
-	@include refs.use(border-top-color, border-top-color, $v, $s);
+@mixin use-border-top-color($v: component.name(), $s: '') {
+	@include refs.combine(border-top-color, border-top-color, $v, $s);
 }
 
 // border-right
-@mixin use-border-right-size($v: name(), $s: '') {
-	@include refs.use(border-right-width, border-right-size, $v, $s);
+@mixin use-border-right-size($v: component.name(), $s: '') {
+	@include refs.combine(border-right-width, border-right-size, $v, $s);
 }
-@mixin use-border-right-color($v: name(), $s: '') {
-	@include refs.use(border-right-color, border-right-color, $v, $s);
+@mixin use-border-right-color($v: component.name(), $s: '') {
+	@include refs.combine(border-right-color, border-right-color, $v, $s);
 }
-@mixin use-border-right-style($v: name(), $s: '') {
-	@include refs.use(border-right-style, border-right-style, $v, $s);
+@mixin use-border-right-style($v: component.name(), $s: '') {
+	@include refs.combine(border-right-style, border-right-style, $v, $s);
 }
 
 // border-left
-@mixin use-border-left-size($v: name(), $s: '') {
-	@include refs.use(border-left-width, border-left-size, $v, $s);
+@mixin use-border-left-size($v: component.name(), $s: '') {
+	@include refs.combine(border-left-width, border-left-size, $v, $s);
 }
-@mixin use-border-left-style($v: name(), $s: '') {
-	@include refs.use(border-left-style, border-left-style, $v, $s);
+@mixin use-border-left-style($v: component.name(), $s: '') {
+	@include refs.combine(border-left-style, border-left-style, $v, $s);
 }
-@mixin use-border-left-color($v: name(), $s: '') {
-	@include refs.use(border-left-color, border-left-color, $v, $s);
+@mixin use-border-left-color($v: component.name(), $s: '') {
+	@include refs.combine(border-left-color, border-left-color, $v, $s);
 }
 
 // border-bottom
-@mixin use-border-bottom-size($v: name(), $s: '') {
-	@include refs.use(border-bottom-width, border-bottom-size, $v, $s);
+@mixin use-border-bottom-size($v: component.name(), $s: '') {
+	@include refs.combine(border-bottom-width, border-bottom-size, $v, $s);
 }
-@mixin use-border-bottom-style($v: name(), $s: '') {
-	@include refs.use(border-bottom-style, border-bottom-style, $v, $s);
+@mixin use-border-bottom-style($v: component.name(), $s: '') {
+	@include refs.combine(border-bottom-style, border-bottom-style, $v, $s);
 }
-@mixin use-border-bottom-color($v: name(), $s: '') {
-	@include refs.use(border-bottom-color, border-bottom-color, $v, $s);
+@mixin use-border-bottom-color($v: component.name(), $s: '') {
+	@include refs.combine(border-bottom-color, border-bottom-color, $v, $s);
 }
 
 // margin-top
-@mixin use-margin-top($v: name(), $s: '') {
-	@include refs.use(margin-top, margin-top, $v, $s);
+@mixin use-margin-top($v: component.name(), $s: '') {
+	@include refs.combine(margin-top, margin-top, $v, $s);
 }
 
 // margin-bottom
-@mixin use-margin-bottom($v: name(), $s: '') {
-	@include refs.use(margin-bottom, margin-bottom, $v, $s);
+@mixin use-margin-bottom($v: component.name(), $s: '') {
+	@include refs.combine(margin-bottom, margin-bottom, $v, $s);
 }
 
 // margin-right
-@mixin use-margin-right($v: name(), $s: '') {
-	@include refs.use(margin-right, margin-right, $v, $s);
+@mixin use-margin-right($v: component.name(), $s: '') {
+	@include refs.combine(margin-right, margin-right, $v, $s);
 }
 
 // margin-left
-@mixin use-margin-left($v: name(), $s: '') {
-	@include refs.use(margin-left, margin-left, $v, $s);
+@mixin use-margin-left($v: component.name(), $s: '') {
+	@include refs.combine(margin-left, margin-left, $v, $s);
 }
 
 // margin-start
-@mixin use-margin-start($v: name(), $s: '') {
-	@include refs.use(margin-inline-start, margin-start, $v, $s);
+@mixin use-margin-start($v: component.name(), $s: '') {
+	@include refs.combine(margin-inline-start, margin-start, $v, $s);
 }
 
 // margin-end
-@mixin use-margin-end($v: name(), $s: '') {
-	@include refs.use(margin-inline-end, margin-end, $v, $s);
+@mixin use-margin-end($v: component.name(), $s: '') {
+	@include refs.combine(margin-inline-end, margin-end, $v, $s);
 }
 
 // padding-top
-@mixin use-padding-top($v: name(), $s: '') {
-	@include refs.use(padding-top, padding-top, $v, $s);
+@mixin use-padding-top($v: component.name(), $s: '') {
+	@include refs.combine(padding-top, padding-top, $v, $s);
 }
 
 // padding-bottom
-@mixin use-padding-bottom($v: name(), $s: '') {
-	@include refs.use(padding-bottom, padding-bottom, $v, $s);
+@mixin use-padding-bottom($v: component.name(), $s: '') {
+	@include refs.combine(padding-bottom, padding-bottom, $v, $s);
 }
 
 // padding-right
-@mixin use-padding-right($v: name(), $s: '') {
-	@include refs.use(padding-right, padding-right, $v, $s);
+@mixin use-padding-right($v: component.name(), $s: '') {
+	@include refs.combine(padding-right, padding-right, $v, $s);
 }
 
 // padding-left
-@mixin use-padding-left($v: name(), $s: '') {
-	@include refs.use(padding-left, padding-left, $v, $s);
+@mixin use-padding-left($v: component.name(), $s: '') {
+	@include refs.combine(padding-left, padding-left, $v, $s);
 }
 
 // gutter - inner
-@mixin use-inner-gutter($v: name(), $s: '') {
-	@include refs.use(padding, gutter, $v, $s);
+@mixin use-inner-gutter($v: component.name(), $s: '') {
+	@include refs.combine(padding, gutter, $v, $s);
 }
 
 // gutter - outer
-@mixin use-outer-gutter($v: name(), $s: '') {
-	@include refs.use(margin, gutter, $v, $s);
+@mixin use-outer-gutter($v: component.name(), $s: '') {
+	@include refs.combine(margin, gutter, $v, $s);
 }
 
 // box-shadow
-@mixin use-shadow($v: name(), $s: '') {
-	@include refs.use(box-shadow, shadow, $v, $s);
+@mixin use-shadow($v: component.name(), $s: '') {
+	@include refs.combine(box-shadow, shadow, $v, $s);
 }
 
 // height
-@mixin use-height($v: name(), $s: '') {
-	@include refs.use(height, height, $v, $s);
+@mixin use-height($v: component.name(), $s: '') {
+	@include refs.combine(height, height, $v, $s);
 }
 
 // @mixin useMinHeight($v: name(), $s: '') {
-// 	@include refs.use(min-height, height, $v, $s);
+// 	@include refs.combine(min-height, height, $v, $s);
 // }
 
 // width
-@mixin use-width($v: name(), $s: '') {
-	@include refs.use(width, width, $v, $s);
+@mixin use-width($v: component.name(), $s: '') {
+	@include refs.combine(width, width, $v, $s);
 }
 
 // @mixin useMinWidth($v: name(), $s: '') {
-// 	@include refs.use(min-width, width, $v, $s);
+// 	@include refs.combine(min-width, width, $v, $s);
 // }
 
 // radius
-@mixin use-radius($v: name(), $s: '') {
-	@include refs.use(border-radius, radius, $v, $s);
+@mixin use-radius($v: component.name(), $s: '') {
+	@include refs.combine(border-radius, radius, $v, $s);
 }
 
 // --------
-@mixin use-horizontal-padding($v: name(), $s: '') {
+@mixin use-horizontal-padding($v: component.name(), $s: '') {
 	@include use-padding-right($v, $s: $s);
 	@include use-padding-left($v, $s: $s);
 }
 
 // @mixin use-horizontal-margin($v: name(), $s: '') {
-// 	@include refs.use(margin-right, horizontal-margin, $v, $s);
-// 	@include refs.use(margin-left, horizontal-margin, $v, $s);
+// 	@include refs.combine(margin-right, horizontal-margin, $v, $s);
+// 	@include refs.combine(margin-left, horizontal-margin, $v, $s);
 // }
 
-@mixin use-vertical-margin($v: name(), $s: '') {
-	@include use-margin-top($v: name(), $s: '');
-	@include use-margin-bottom($v: name(), $s: '');
+@mixin use-vertical-margin($v: component.name(), $s: '') {
+	@include use-margin-top($v: component.name(), $s: '');
+	@include use-margin-bottom($v: component.name(), $s: '');
 }
 
-@mixin use-vertical-padding($v: name(), $s: '') {
-	@include use-padding-top($v: name(), $s: $s);
-	@include use-padding-bottom($v: name(), $s: $s);
+@mixin use-vertical-padding($v: component.name(), $s: '') {
+	@include use-padding-top($v: component.name(), $s: $s);
+	@include use-padding-bottom($v: component.name(), $s: $s);
 }
 
 // margin all
-@mixin use-margin($v: name(), $s: '') {
-	@include use-margin-top($v: name(), $s: '');
-	@include use-margin-right($v: name(), $s: '');
-	@include use-margin-bottom($v: name(), $s: '');
-	@include use-margin-left($v: name(), $s: '');
+@mixin use-margin($v: component.name(), $s: '') {
+	@include use-margin-top($v: component.name(), $s: '');
+	@include use-margin-right($v: component.name(), $s: '');
+	@include use-margin-bottom($v: component.name(), $s: '');
+	@include use-margin-left($v: component.name(), $s: '');
 }
 
 // padding all
-@mixin use-padding($v: name(), $s: '') {
-	@include use-padding-top($v: name(), $s: $s);
-	@include use-padding-right($v: name(), $s: $s);
-	@include use-padding-bottom($v: name(), $s: $s);
-	@include use-padding-left($v: name(), $s: $s);
+@mixin use-padding($v: component.name(), $s: '') {
+	@include use-padding-top($v: component.name(), $s: $s);
+	@include use-padding-right($v: component.name(), $s: $s);
+	@include use-padding-bottom($v: component.name(), $s: $s);
+	@include use-padding-left($v: component.name(), $s: $s);
 }
 
 // @mixin useBorder($v: name(), $s: '') {
@@ -190,18 +192,18 @@
 // }
 
 // border all
-@mixin use-border-size($v: name(), $s: '') {
-	@include refs.use(border-width, border-size, $v, $s);
+@mixin use-border-size($v: component.name(), $s: '') {
+	@include refs.combine(border-width, border-size, $v, $s);
 }
-@mixin use-border-style($v: name(), $s: '') {
-	@include refs.use(border-style, border-style, $v, $s);
+@mixin use-border-style($v: component.name(), $s: '') {
+	@include refs.combine(border-style, border-style, $v, $s);
 }
-@mixin use-border-color($v: name(), $s: '') {
-	@include refs.use(border-color, border-color, $v, $s);
+@mixin use-border-color($v: component.name(), $s: '') {
+	@include refs.combine(border-color, border-color, $v, $s);
 }
 
 // size all
-@mixin use-size($v: name(), $s: '') {
-	@include refs.use(height, size, $v, $s);
-	@include refs.use(width, size, $v, $s);
+@mixin use-size($v: component.name(), $s: '') {
+	@include refs.combine(height, size, $v, $s);
+	@include refs.combine(width, size, $v, $s);
 }

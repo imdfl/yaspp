@@ -1,3 +1,4 @@
+@use "sass:meta";
 @use 'sass:map';
 @use 'sass:list';
 @use 'sass:string';
@@ -37,7 +38,7 @@ $states: $COMPONENT_STATES;
 		$state: map.get($states, $key);
 		$val: $state;
 
-		@if type-of($state) == 'list' {
+		@if meta.type-of($state) == 'list' {
 			$s: '';
 
 			@each $stateMap in $state {

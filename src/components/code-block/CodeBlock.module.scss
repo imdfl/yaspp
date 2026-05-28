@@ -1,4 +1,6 @@
-@import '../component';
+@use '../component';
+@use "../../styles/lib/hooks/text" as *;
+@use "../../styles/lib/hooks/box" as *;
 
 $__stylesheet__: (
 	name: code-block,

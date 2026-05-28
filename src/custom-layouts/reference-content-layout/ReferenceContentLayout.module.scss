@@ -1,5 +1,13 @@
-@use '../../styles/lib/hooks';
-@import '../../styles/lib/component';
+@use "../../styles/lib/hooks/text" as *;
+@use "../../styles/lib/hooks/box" as *;
+@use "../../styles/lib/hooks/content" as *;
+@use "../../styles/lib/hooks/flex" as *;
+@use "../../styles/lib/hooks/animation" as *;
+@use "../../styles/lib/hooks/position" as *;
+@use "../../styles/lib/hooks/direction" as *;
+@use "../../styles/lib/hooks/display" as *;
+
+@use "../../styles/lib/component" as *;
 
 $__stylesheet__: (
 	name: reference-content-layout,
@@ -30,7 +38,7 @@ $__stylesheet__: (
 			color: #fff;
 			font-size: 1em;
 
-			@include hooks.use-text-color;
+			@include use-text-color;
 
 			// padding: 0 0.25em;
 			// margin-bottom: 1em;

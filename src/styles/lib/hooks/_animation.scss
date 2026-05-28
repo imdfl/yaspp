@@ -1,3 +1,5 @@
+@use "../component";
+
 @use '../refs' as refs;
 
 @mixin use-animation($anim, $comp) {
@@ -10,8 +12,8 @@
 	@include use-animation($anim, #{$comp}-#{$anim});
 }
 
-@mixin use-transform($var: name(), $state: '') {
-	@include use(transform, transform, $var, $state);
+@mixin use-transform($var: component.name(), $state: '') {
+	@include refs.combine(transform, transform, $var, $state);
 }
 
 // TODO:

@@ -1,4 +1,4 @@
-import { IPageMetaData } from 'types/models';
+import { IPageMetaData } from "@src/types/models";
 
 const figTmpl = "common:markdown:tags:figure:abbr"
 export default [

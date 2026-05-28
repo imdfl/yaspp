@@ -1,7 +1,8 @@
 @use '../../../styles/lib/refs';
 @use '../../button/Button.variants' as buttons;
 @use './menuBarAnimationMixin' as animations;
-@import '../../../styles/lib/hooks';
+@use "../../../styles/lib/hooks/animation" as *;
+@use "../../../styles/lib/hooks/text" as *;
 
 @mixin caret-mixin($var) {
 	.caret {

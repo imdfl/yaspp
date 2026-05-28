@@ -1,7 +1,8 @@
 @use 'sass:meta';
 @use '../../styles/lib/refs';
-@import '../../styles/lib/hooks';
-@import '../../styles/lib/states';
+@use '../../styles/lib/hooks/text' as *;
+@use '../../styles/lib/hooks/box' as *;
+@use "../../styles/lib/states" as *;
 
 @mixin toggle-button($ref) {
 	display: flex;

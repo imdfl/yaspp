@@ -1,9 +1,12 @@
+@use "../component";
+@use "../refs";
+
 // offset x
-@mixin use-offset-x($var: name(), $state: '') {
-	@include use(left, offset-x, $var, $state);
+@mixin use-offset-x($var: component.name(), $state: '') {
+	@include refs.combine(left, offset-x, $var, $state);
 }
 
 // offset y
-@mixin use-offset-y($var: name(), $state: '') {
-	@include use(top, offset-y, $var, $state);
+@mixin use-offset-y($var: component.name(), $state: '') {
+	@include refs.combine(top, offset-y, $var, $state);
 }

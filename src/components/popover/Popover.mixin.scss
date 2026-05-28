@@ -1,4 +1,6 @@
-@import '../component';
+@use '../component' as *;
+@use "../../styles/lib/hooks/box" as *;
+@use "../../styles/lib/hooks/text" as *;
 
 @mixin trigger($comp: '', $state: '') {
 	cursor: pointer;

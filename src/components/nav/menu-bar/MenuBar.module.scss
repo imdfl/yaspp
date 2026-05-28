@@ -1,9 +1,12 @@
 @use './menuBarMixins' as mixins;
-@use '../../../styles/lib/merge';
-@import './MenuBar.meta';
+@use '../../../styles/lib/merge' as merge;
+@use "../../../styles/lib/hooks/direction" as *;
+@use "../../../styles/lib/hooks/box" as *;
+@use "./MenuBar.meta" as *;
+
 
 .root {
-	@include mixins.caret-mixin(name(trigger-caret));
+	@include mixins.caret-mixin("site-horizontal-menu-trigger-caret");
 
 	.menuSectionTriggers {
 		display: flex;
@@ -15,12 +18,12 @@
 		}
 
 		.menuSectionTriggerButton {
-			@include mixins.trigger-button-mixin(name(trigger), $states);
+			@include mixins.trigger-button-mixin("site-horizontal-menu-trigger", $states);
 		}
 	}
 
 	.sectionItemsList {
-		@include use-inner-gutter(name(list));
+		@include use-inner-gutter("site-horizontal-menu-list");
 		@include use-direction(locale);
 
 		ul {
@@ -34,24 +37,24 @@
 	}
 
 	.content {
-		@include mixins.content-mixin(name(viewport));
+		@include mixins.content-mixin("site-horizontal-menu-viewport");
 	}
 
 	.indicator {
-		@include mixins.indicator-mixin(name(indicator));
+		@include mixins.indicator-mixin("site-horizontal-menu-indicator");
 	}
 
 	.arrow {
-		@include mixins.arrow-mixin(name(arrow-indicator));
+		@include mixins.arrow-mixin("site-horizontal-menu-arrow-indicator");
 	}
 
 	.viewport {
-		@include mixins.viewport-mixin(name(viewport));
+		@include mixins.viewport-mixin("site-horizontal-menu-viewport");
 	}
 
 	// stylelint-disable-next-line selector-class-pattern
 	.viewportPosition {
-		@include mixins.viewport-position-mixin(name(viewport));
+		@include mixins.viewport-position-mixin("site-horizontal-menu-viewport");
 	}
 
 	&[data-direction='ltr'] {

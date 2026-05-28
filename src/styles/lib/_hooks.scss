@@ -1,9 +1,9 @@
-@import './refs';
-@import './hooks/text';
-@import './hooks/box';
-@import './hooks/content';
-@import './hooks/flex';
-@import './hooks/animation';
-@import './hooks/position';
-@import './hooks/direction';
-@import './hooks/display';
+@use 'refs'as *;
+@use 'hooks/text'as *;
+@use 'hooks/box'as *;
+@use 'hooks/content'as *;
+@use 'hooks/flex'as *;
+@use 'hooks/animation'as *;
+@use 'hooks/position'as *;
+@use 'hooks/direction'as *;
+@use 'hooks/display'as *;

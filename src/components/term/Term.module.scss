@@ -1,7 +1,10 @@
 @use '../annotation/Annotation.mixin' as annotation;
 @use '../popover/Popover.mixin' as popover;
 @use '../popover/PopoverTrigger.module' as trigger;
-@import '../component';
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use '../../styles/lib/hooks/text' as *;
+@use '../../styles/lib/hooks/position' as *;
 
 $__stylesheet__: (
 	name: term,
@@ -14,15 +17,15 @@ $__stylesheet__: (
 
 	.label {
 		@include use-font-style;
-		@include popover.trigger(trigger.name());
+		@include popover.trigger("popover-trigger");
 	}
 
 	&::after {
 		position: relative;
 		cursor: pointer;
 
-		@include use-text-color(name(suffix));
-		@include use-offset-y(name(suffix));
-		@include annotation.suffix(name());
+		@include use-text-color("term-suffix");
+		@include use-offset-y("term-suffix");
+		@include annotation.suffix("term");
 	}
 }

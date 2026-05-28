@@ -3,12 +3,12 @@
 @use 'sass:string';
 @use 'sass:list';
 @use './refs';
-@use '../config';
+@use '../../styles/config/consts' as config;
 
 $default-state-delim: config.$theme-state-delim;
 
 @function -is-empty-var-map($vars) {
-	@return (type-of($vars) == 'list') and (length($vars) == 0);
+	@return (meta.type-of($vars) == 'list') and (length($vars) == 0);
 }
 
 @function -remove-nth($list, $nth) {
@@ -64,7 +64,7 @@ $default-state-delim: config.$theme-state-delim;
 			$variable-name: #{$prefix}#{$key}#{$states};
 		}
 
-		@if type-of($value) == map {
+		@if meta.type-of($value) == map {
 			$result: map.merge($result, transform($value, $variable-name));
 		} @else {
 			// unquote all values, except special case of `content` properties,

@@ -6,8 +6,9 @@
 @use './mixins/navItemMixin' as nav-item-mixin;
 @use './refs/toggleRefs' as toggle-refs;
 @use './refs/navItemRefs' as nav-item-refs;
+@use '../styles/lib/hooks/box' as *;
+@use "../styles/lib/hooks/flex" as *;
 
-@import './Layout.meta';
 
 $footerMinheight: 20vh;
 $gutter: 2em;
@@ -27,11 +28,11 @@ $gutter: 2em;
 	}
 
 	.topbar {
-		@include use-background-color(name(header));
-		@include use-height(name(header));
+		@include use-background-color("layout-header");
+		@include use-height("layout-header");
 
 		.title {
-			@include use-gap(name(logo));
+			@include use-gap("layout-logo");
 		}
 
 		.panel {
@@ -51,7 +52,7 @@ $gutter: 2em;
 
 	.page {
 		@include page-container-mixin(name());
-		@include use-margin-top(name(page));
+		@include use-margin-top("layout-page");
 
 		min-height: calc(100vh - $footerMinheight);
 	}
@@ -60,7 +61,7 @@ $gutter: 2em;
 		display: flex;
 		flex-direction: row;
 
-		@include use-background-color(name(footer));
+		@include use-background-color("layout-footer");
 
 		.container {
 			@include page-container-mixin(name());

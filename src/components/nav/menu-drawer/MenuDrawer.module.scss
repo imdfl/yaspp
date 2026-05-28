@@ -1,4 +1,6 @@
-@import './MenuDrawer.meta';
+@use "./MenuDrawer.meta" as *;
+@use '../../../styles/lib/hooks/box' as *;
+@use '../../../styles/lib/hooks/text' as *;
 
 $__stylesheet__: (
 	name: menu-drawer,
@@ -8,17 +10,17 @@ $__stylesheet__: (
 	.sectionTitle {
 		padding: 1em;
 
-		@include use-border-top-style(name(section-title));
-		@include use-border-top-color(name(section-title));
-		@include use-border-top-size(name(section-title));
+		@include use-border-top-style("menu-drawer-section-title");
+		@include use-border-top-color("menu-drawer-section-title");
+		@include use-border-top-size("menu-drawer-section-title");
 		@include use-text-color;
 	}
 
 	.list {
 		.listItem:not(:last-child) {
-			@include use-border-bottom-style(name(list-item));
-			@include use-border-bottom-color(name(list-item));
-			@include use-border-bottom-size(name(list-item));
+			@include use-border-bottom-style("menu-drawer-list-item");
+			@include use-border-bottom-color("menu-drawer-list-item");
+			@include use-border-bottom-size("menu-drawer-list-item");
 		}
 	}
 }

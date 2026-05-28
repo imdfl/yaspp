@@ -1,10 +1,12 @@
 @use './Text.variants' as variants;
-@import '../component';
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use '../../styles/lib/hooks' as *;
 
 $__stylesheet__: (
 	name: text,
 );
 
 .root {
-	@include variants.variants(name(variants));
+	@include variants.variants("text-variants");
 }

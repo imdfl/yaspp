@@ -1,5 +1,5 @@
-import { describe, expect, test } from '@jest/globals';
-import { htmlValidator } from './../../src/lib/next-runtime-utils/htmlValidator';
+import { describe, expect, test } from "@jest/globals";
+import { htmlValidator } from "./../../src/lib/next-runtime-utils/htmlValidator";
 
 describe('htmlValidator', () => {
 	test('Filter generic attrs', async () => {

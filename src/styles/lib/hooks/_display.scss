@@ -1,4 +1,7 @@
+@use "../component";
+@use "../refs";
+
 // opacity
-@mixin use-opacity($var: name(), $state: '') {
-	@include use(opacity, opacity, $var, $state);
+@mixin use-opacity($var: component.name(), $state: '') {
+	@include refs.combine(opacity, opacity, $var, $state);
 }

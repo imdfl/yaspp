@@ -1,6 +1,9 @@
 // stylelint-disable selector-no-vendor-prefix
 
-@import '../component';
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use "../../styles/lib/hooks/box" as *;
+@use "../../styles/lib/hooks/text" as *;
 
 $__stylesheet__: (
 	name: link,
@@ -28,11 +31,11 @@ $__stylesheet__: (
 
 	&:hover,
 	a:-webkit-any-link:hover {
-		@include use-text-color(name(), state(hovered));
+		@include use-text-color("link", state(hovered));
 	}
 
 	&:active,
 	a:-webkit-any-link:active {
-		@include use-text-color(name(), state(clicked));
+		@include use-text-color("link", state(clicked));
 	}
 }

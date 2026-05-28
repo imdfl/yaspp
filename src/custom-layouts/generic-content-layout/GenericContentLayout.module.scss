@@ -1,6 +1,14 @@
 @use '../../styles/lib/refs';
-@use '../../styles/lib/hooks';
-@import '../../styles/lib/component';
+@use "../../styles/lib/hooks/text" as *;
+@use "../../styles/lib/hooks/box" as *;
+@use "../../styles/lib/hooks/content" as *;
+@use "../../styles/lib/hooks/flex" as *;
+@use "../../styles/lib/hooks/animation" as *;
+@use "../../styles/lib/hooks/position" as *;
+@use "../../styles/lib/hooks/direction" as *;
+@use "../../styles/lib/hooks/display" as *;
+
+@use "../../styles/lib/component" as *;
 
 $__stylesheet__: (
 	name: generic-content-layout,
@@ -10,10 +18,10 @@ $__stylesheet__: (
 	user-select: text;
 	width: 100%;
 
-	@include hooks.use-radius;
-	@include hooks.use-shadow;
-	@include hooks.use-padding;
-	@include hooks.use-margin;
+	@include use-radius;
+	@include use-shadow;
+	@include use-padding;
+	@include use-margin;
 
 	.article {
 		width: 100%;
@@ -24,7 +32,7 @@ $__stylesheet__: (
 	// }
 
 	.title {
-		@include hooks.use-background-color(name('title'));
+		@include use-background-color("generic-content-layout-title");
 	}
 
 	// .abstract {

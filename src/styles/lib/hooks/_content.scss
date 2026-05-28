@@ -1,16 +1,18 @@
+@use "../component";
+
 @use '../refs' as refs;
 
 // content
-@mixin use-content($v: name(), $s: '') {
-	@include refs.use(content, content, $v, $s);
+@mixin use-content($v: component.name(), $s: '') {
+	@include refs.combine(content, content, $v, $s);
 }
 
 // content-url
-@mixin use-content-url($v: name(), $s: '') {
-	@include refs.use(content, url, $v, $s);
+@mixin use-content-url($v: "component", $s: '') {
+	@include refs.combine(content, url, $v, $s);
 }
 
 // icon-color
-@mixin use-icon-color($v: name(), $s: '') {
-	@include refs.use(color, icon-color, $v, $s);
+@mixin use-icon-color($v: component.name(), $s: '') {
+	@include refs.combine(color, icon-color, $v, $s);
 }

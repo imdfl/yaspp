@@ -1,4 +1,6 @@
-@import '../component';
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use "../../styles/lib/hooks/box" as *;
 
 $__stylesheet__: (
 	name: scrollbar,
@@ -20,15 +22,15 @@ $__stylesheet__: (
 		user-select: none;
 
 		&[data-orientation='vertical'] {
-			@include use-width(name(thumb-vertical));
-			@include use-margin-right(name(thumb-vertical));
-			@include use-margin-left(name(thumb-vertical));
+			@include use-width("scrollbar-thumb-vertical");
+			@include use-margin-right("scrollbar-thumb-vertical");
+			@include use-margin-left("scrollbar-thumb-vertical");
 		}
 
 		&[data-orientation='horizontal'] {
-			@include use-width(name(thumb-horizontal));
-			@include use-margin-right(name(thumb-horizontal));
-			@include use-margin-left(name(thumb-horizontal));
+			@include use-width("scrollbar-thumb-horizontal");
+			@include use-margin-right("scrollbar-thumb-horizontal");
+			@include use-margin-left("scrollbar-thumb-horizontal");
 		}
 	}
 

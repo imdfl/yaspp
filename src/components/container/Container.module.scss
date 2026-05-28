@@ -1,4 +1,6 @@
-@import '../component';
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use '../../styles/lib/hooks/box' as *;
 
 $__stylesheet__: (
 	name: container,

@@ -1,50 +1,85 @@
 {
-	"compilerOptions": {
-		"module": "nodenext",
-		"target": "ES2018",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": false,
-		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"esModuleInterop": true,
-		"moduleResolution": "node16",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"incremental": true,
-		"sourceMap": true,
-		"allowSyntheticDefaultImports": true,
-		"paths": {
-			"types/*": ["./src/types/*"],
-			"@lib/*": ["./src/lib/*"],
-			"utils/*": ["./src/utils/*"],
-			"config/*": ["./src/config/*"],
-			"locale/*": ["./src/locale/*"],
-			"context/*": ["./src/context/*"],
-			"@hooks/*": ["./src/hooks/*"],
-			"@components/*": ["./src/components/*"],
-			"styles/*": ["./src/styles/*"],
-			"@public/*": ["./public/*"],
-			"@types/*": ["./public/*"],
-			"@locales/*": ["./locales/*"],
-			"@dynamicContent/*": ["./src/lib/dynamic-content-utils/*"],
-			"@contexts/*": ["./src/contexts/*"],
-			"@root/*": ["./*"],
-			"@src/*": ["./src/*"],
-		}
-	},
-	"include": [
-		"src",
-		"src/components.tsx",
-		"next-env.d.ts",
-		"globals.d.ts",
-		"**/**/*.ts",
-		"**/**/*.tsx",
-		"src/**/*",
-		"src/pages/docs/[id]/pages/[pageId]",
-		"locales"
-	],
-	"exclude": ["node_modules", "**/*.ignore.*", "scripts", "temp"]
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "ES2018",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@lib/*": [
+        "./src/lib/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ],
+      "@locale/*": [
+        "./src/locale/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
+      "@public/*": [
+        "./public/*"
+      ],
+      "@types/*": [
+        "./public/*"
+      ],
+      "@locales/*": [
+        "./locales/*"
+      ],
+      "@dynamicContent/*": [
+        "./src/lib/dynamic-content-utils/*"
+      ],
+      "@contexts/*": [
+        "./src/contexts/*"
+      ],
+      "@root/*": [
+        "./*"
+      ],
+      "@src/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "src/components.tsx",
+    "next-env.d.ts",
+    "globals.d.ts",
+    "**/**/*.ts",
+    "**/**/*.tsx",
+    "src/**/*",
+    "src/pages/docs/[id]/pages/[pageId]",
+    "locales"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.ignore.*",
+    "scripts",
+    "temp"
+  ]
 }

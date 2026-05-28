@@ -2,10 +2,10 @@
 @use '../Layout.meta' as layout;
 @use '../../components/nav/nav-item/NavItem.meta' as nav-item;
 @use '../../styles/lib/refs';
-@import '../../styles/lib/states';
+@use '../../styles/lib/component' as comp;
 
 @function sidebar-menu-nav-item($prop, $state: '') {
-	@return layout.name(#{nav-item.name()}-variants-sidebar-menu-#{$prop}, $state);
+	@return "layout-nav-item-variants-sidebar-menu-"#{$prop}#{$state};
 }
 
 $nav-item: (

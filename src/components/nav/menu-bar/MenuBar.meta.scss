@@ -1,4 +1,5 @@
-@import '../../component';
+@use '../../../styles/lib/merge';
+@use "../../../styles/lib/states" as *;
 
 $__stylesheet__: (
 	name: site-horizontal-menu,

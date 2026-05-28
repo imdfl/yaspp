@@ -1,5 +1,11 @@
+// @use "../../components/annotation/Annotation.module";
+
 @use 'sass:map';
 @use 'sass:string';
+
+$__stylesheet__: (
+	name: "default"
+) !default;
 
 @function name($part: '', $state: '') {
 	@if string.length($part) > 0 {

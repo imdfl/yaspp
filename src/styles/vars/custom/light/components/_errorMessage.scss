@@ -1,4 +1,4 @@
-@import '../../../../lib/refs';
+@use "../../../../lib/refs" as *;
 
 $vars: (
 	text-color: red,

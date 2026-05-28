@@ -1,4 +1,7 @@
-@import '../component';
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use '../../styles/lib/hooks/text' as *;
+@use '../../styles/lib/hooks/box' as *;
 
 $__stylesheet__: (
 	name: blockquote,
@@ -13,7 +16,7 @@ $__stylesheet__: (
 
 	// todo: implement cite properly
 	cite {
-		@include use-vertical-padding(name(cite));
-		@include use-horizontal-padding(name(cite));
+		@include use-vertical-padding("blockquote-cite");
+		@include use-horizontal-padding("blockquote-cite");
 	}
 }

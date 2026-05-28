@@ -1,4 +1,4 @@
-@import '../component';
+@use '../../styles/lib/hooks/text' as *;
 
 $__stylesheet__: (
 	name: error-message,

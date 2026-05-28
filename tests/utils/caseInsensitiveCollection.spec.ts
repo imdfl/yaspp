@@ -1,8 +1,8 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from "@jest/globals";
 import {
 	CaseInsensitiveMap,
 	CaseInsensitiveSet,
-} from '../../src/lib/caseInsensitiveCollections';
+} from "../../src/lib/caseInsensitiveCollections";
 
 describe('CaseInsensitiveCollection', () => {
 	describe('Map', () => {

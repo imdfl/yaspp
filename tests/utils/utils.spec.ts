@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from "@jest/globals";
 import {
 	stringArrayToMap,
 	flattenArray,
@@ -6,7 +6,7 @@ import {
 	arrayToMap,
 	parseDate,
 	clonePlainObject,
-} from '../../src/utils/index';
+} from "../../src/utils/index";
 
 describe('MLUtils', () => {
 	describe('flattenArray', () => {

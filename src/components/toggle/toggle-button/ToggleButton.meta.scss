@@ -1,5 +1,5 @@
-@import '../../component';
-@import '../states';
+@use "../../component" as *;
+@use "../states" as *;
 
 $__stylesheet__: (
 	name: toggle,

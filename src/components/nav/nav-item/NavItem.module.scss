@@ -1,5 +1,15 @@
 @use './NavItem.mixin' as mixins;
-@import './NavItem.meta';
+@use "./NavItem.meta" as *;
+@use '../../../styles/lib/component' as *;
+@use '../../../styles/lib/states' as *;
+@use "../../../styles/lib/hooks/text" as *;
+@use "../../../styles/lib/hooks/box" as *;
+@use "../../../styles/lib/hooks/content" as *;
+@use "../../../styles/lib/hooks/flex" as *;
+@use "../../../styles/lib/hooks/animation" as *;
+@use "../../../styles/lib/hooks/position" as *;
+@use "../../../styles/lib/hooks/direction" as *;
+@use "../../../styles/lib/hooks/display" as *;
 
 .root {
 	text-decoration: none;
@@ -12,50 +22,50 @@
 		display: flex;
 		flex-direction: row;
 
-		@include use-gap(name(item));
-		@include use-padding-top(name(item));
-		@include use-padding-bottom(name(item));
-		@include use-padding-right(name(item));
-		@include use-padding-left(name(item));
+		@include use-gap("nav-item-item");
+		@include use-padding-top("nav-item-item");
+		@include use-padding-bottom("nav-item-item");
+		@include use-padding-right("nav-item-item");
+		@include use-padding-left("nav-item-item");
 
 		.icon {
 			position: relative;
 			top: 0.1em; // todo: use offset
 
-			@include use-text-color(name(icon));
+			@include use-text-color("nav-item-icon");
 		}
 
 		.meta {
 			display: flex;
 			flex-direction: column;
 
-			@include use-gap(name(content));
+			@include use-gap("nav-item-content");
 
 			.title {
-				@include mixins.text-hooks-mixin(name(title));
+				@include mixins.text-hooks-mixin("nav-item-title");
 			}
 
 			.author,
 			.description {
-				@include mixins.text-hooks-mixin(name(subtitle));
+				@include mixins.text-hooks-mixin("nav-item-subtitle");
 			}
 		}
 	}
 
 	&:hover {
-		@include use-background-color(name(), state(hovered));
+		@include use-background-color("nav-item", state(hovered));
 		.content {
 			.title {
-				@include use-text-color(name(title), state(hovered));
+				@include use-text-color("nav-item-title", state(hovered));
 			}
 
 			.author,
 			.description {
-				@include use-text-color(name(subtitle), state(hovered));
+				@include use-text-color("nav-item-subtitle", state(hovered));
 			}
 
 			.icon {
-				@include use-text-color(name(icon), state(hovered));
+				@include use-text-color("nav-item-icon", state(hovered));
 			}
 		}
 	}

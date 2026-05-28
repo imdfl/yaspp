@@ -31,10 +31,14 @@ const nextConfig = async () => {
 		// optimizeFonts: true,
 		sassOptions: {
 			includePaths: [path.join(__dirname, 'public/styles')],
+			"silenceDeprecations": ["if-function"]
 		},
 		async redirects() {
 			return legacyRedirects;
 		},
+		turbopack: {
+			root: "./"
+		}
 	}
 
 	return withAxiom(nextTranslate(config));

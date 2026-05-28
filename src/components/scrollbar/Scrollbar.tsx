@@ -1,6 +1,6 @@
 import React from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import type { ScrollAreaScrollbarVisibleProps } from "@radix-ui/react-scroll-area";
+import type { ScrollAreaViewportProps } from "@radix-ui/react-scroll-area";
 import type { TextDirection } from "@src/types/locale";
 import type { IYSPComponentProps } from "@src/types/components";
 import styles from "./Scrollbar.module.scss";
@@ -10,7 +10,7 @@ import ComponentContextProvider from "@contexts/componentContext";
 type ScrollbarProps = {
 	height?: string;
 	textDirection: TextDirection;
-} & IYSPComponentProps & ScrollAreaScrollbarVisibleProps;
+} & IYSPComponentProps & ScrollAreaViewportProps;
 
 const Scrollbar = ({
 	children,

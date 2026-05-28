@@ -24,7 +24,7 @@ $vars: (
 		gap: 0.5em,
 	),
 
-	nav-item.name(): (
+	"nav-item": (
 		default: (
 			empty: true,
 		),
@@ -53,7 +53,7 @@ $vars: (
 		),
 	),
 
-	toggle.name(): (
+	"toggle": (
 		default: (
 			background-color: none,
 			text-color: refs.ref(color-surface-contrast),

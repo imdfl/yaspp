@@ -1,5 +1,8 @@
+@use '../../../styles/lib/component' as *;
+@use '../../../styles/lib/states' as *;
+@use "../../../styles/lib/hooks/flex" as *;
 @use '../mixin' as base;
-@import './ToggleGroup.meta';
+@use "./ToggleGroup.meta" as *;
 
 .root {
 	--gap: 4px;
@@ -9,6 +12,6 @@
 	@include use-gap;
 
 	.item {
-		@include base.toggle-button(name(button));
+		@include base.toggle-button("toggle-group-button");
 	}
 }

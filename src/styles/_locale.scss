@@ -1,11 +1,18 @@
 @use './config/locales';
 @use './lib/refs';
-@use './lib/hooks';
+@use "./lib/hooks/text" as *;
+@use "./lib/hooks/box" as *;
+@use "./lib/hooks/content" as *;
+@use "./lib/hooks/flex" as *;
+@use "./lib/hooks/animation" as *;
+@use "./lib/hooks/position" as *;
+@use "./lib/hooks/direction" as *;
+@use "./lib/hooks/display" as *;
 
 @mixin base($var) {
-	@include hooks.use-font-family($var);
-	@include hooks.use-font-size($var);
-	@include hooks.use-font-weight($var);
+	@include use-font-family($var);
+	@include use-font-size($var);
+	@include use-font-weight($var);
 }
 
 @each $locale in locales.$index {

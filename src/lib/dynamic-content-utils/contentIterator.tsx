@@ -1,7 +1,7 @@
 import React from "react";
 import { ContentComponentProps, IMLParsedNode } from "@src/types/models";
 import { useComponentAttrs } from "../../hooks/useComponentAttrs";
-import { unique } from "utils/unique";
+import { unique } from "@utils/unique";
 import { renderNodes } from "@lib/dynamicContentHelpers";
 
 /**

@@ -1,7 +1,7 @@
 @use './ToggleGroup.meta' as item;
 @use '../../../styles/lib/refs';
-@import '../../../styles/lib/hooks';
-@import '../../../styles/lib/states';
+@use "../../../styles/lib/hooks" as *;
+@use "../../../styles/lib/states" as *;
 
 @mixin -button-refs-mixin(
 	$text-color: red,
@@ -12,15 +12,14 @@
 	$bg-color-selected: blue
 ) {
 	// hooks helper sass variables
-	$textColor: refs.use(item.name(button-text-color));
-	$textColorHovered: refs.use(item.name(button-text-color, state(hovered)));
-	$textColorSelected: refs.use(item.name(button-text-color, state(selected)));
+	$textColor: refs.use("toggle-group-button-text-color");
+	$textColorHovered: refs.use("toggle-group-button-text-color"#{state(hovered)});
+	$textColorSelected: refs.use("toggle-group_button-text-color"#{state(selected)});
 
-	$bgColor: refs.use(item.name(button-background-color));
-	$bgColorHovered: refs.use(item.name(button-background-color, state(hovered)));
+	$bgColor: refs.use("toggle-group-button-background-color");
+	$bgColorHovered: refs.use("toggle-group-button-background-color"#{state(hovered)});
 	$bgColorSelected: refs.use(
-		item.name(button-background-color, state(selected))
-	);
+		"toggle-group-button-background-color"#{state(selected)});
 
 	#{$textColor}: $text-color;
 	#{$textColorHovered}: $text-color-hover;

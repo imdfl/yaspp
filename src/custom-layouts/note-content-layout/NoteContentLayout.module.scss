@@ -1,4 +1,4 @@
-@import '../../styles/lib/component';
+@use "../../styles/lib/component" as *;
 
 $__stylesheet__: (
 	name: custom-layout-note,

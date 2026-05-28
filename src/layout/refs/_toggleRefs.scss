@@ -2,17 +2,17 @@
 @use '../Layout.meta' as layout;
 @use '../../components/toggle/toggle-button/ToggleButton.meta' as toggle-button;
 @use '../../styles/lib/refs';
-@import '../../styles/lib/states';
+@use "../../styles/lib/states" as *;
 
 // toggle
-$toggleRef: toggle-button.name();
+$toggleRef: "toggle-button";
 
 @function default($prop, $state: '') {
-	@return layout.name(#{$toggleRef}-default-#{$prop}, $state);
+	@return "layout"#{$toggleRef}-default-#{$prop}#{$state};
 }
 
 @function sidebar-menu($prop, $state: '') {
-	@return layout.name(#{$toggleRef}-variants-sidebar-menu-#{$prop}, $state);
+	@return "layout"#{$toggleRef}-variants-sidebar-menu-#{$prop}#{$state};
 }
 
 $toggle: (

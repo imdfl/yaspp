@@ -1,13 +1,14 @@
 // stylelint-disable scss/at-function-pattern
 @use 'sass:string';
-@import '../config';
+@use '../config';
+@use "../config/consts";
 
 @function prefix($prefix) {
-	$path: #{$theme-namespace-prefix}#{if(
-			string.length($prefix) > 0,
+	$t: if(string.length($prefix) > 0,
 			-#{$prefix},
 			''
-		)};
+		);
+	$path: #{consts.$theme-namespace-prefix}#{$t};
 
 	@return $path;
 }
@@ -36,11 +37,11 @@
 // global-ref
 // create a css var which is mapped to a global variable
 @function globalRef($key) {
-	@return ref($key, $theme-global-prefix);
+	@return ref($key, consts.$theme-global-prefix);
 }
 
 // ref with component-specific namespace and states
-@function compRef($ns, $key, $state: '', $prefix: $theme-namespace-prefix) {
+@function compRef($ns, $key, $state: '', $prefix: consts.$theme-namespace-prefix) {
 	$compState: '';
 
 	@if string.length($state) > 0 {
@@ -55,6 +56,6 @@
 
 // create property decleration mapped to component specific css ref with states
 // used to define theme points in component style implementation
-@mixin use($cssProperty, $themeProperty, $varName: 'generic', $state: '') {
+@mixin combine($cssProperty, $themeProperty, $varName: 'generic', $state: '') {
 	#{$cssProperty}: compRef($varName, $themeProperty, $state);
 }

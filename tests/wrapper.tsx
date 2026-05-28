@@ -1,14 +1,14 @@
-import { render } from '@testing-library/react';
-import { ThemeProvider } from 'next-themes';
-import PageProvider from '@contexts/pageContext';
-import I18nProvider from 'next-translate/I18nProvider';
-import commonEN from '../locales/en/common.json';
-import localeEN from '../locales/en/locale.json';
-import navEN from '../locales/en/nav.json';
-import pagesEN from '../locales/en/pages.json';
-// import authorsEN from '../locales/en/authors.json';
-import { NextPage } from 'next';
-import { IPageProps } from 'types/models';
+import { render } from "@testing-library/react";
+import { ThemeProvider } from "next-themes";
+import PageProvider from "@contexts/pageContext";
+import I18nProvider from "next-translate/I18nProvider";
+import commonEN from "../locales/en/common.json";
+import localeEN from "../locales/en/locale.json";
+import navEN from "../locales/en/nav.json";
+import pagesEN from "../locales/en/pages.json";
+// import authorsEN from "../locales/en/authors.json";
+import { NextPage } from "next";
+import { IPageProps } from "@src/types/models";
 
 const locale = 'en';
 const translateEN = {
@@ -48,6 +48,6 @@ const customRender = (
 		...options,
 	});
 
-export * from '@testing-library/react';
+export * from "@testing-library/react";
 
 export { customRender as render };

@@ -1,4 +1,7 @@
-@import '../../styles/lib/hooks';
+@use '../../styles/lib/hooks/box' as *;
+@use '../../styles/lib/hooks/content' as *;
+@use '../../styles/lib/hooks/text' as *;
+@use '../../styles/lib/hooks/display' as *;
 
 @mixin prefix($module: default) {
 	@include use-content(#{$module}-#{prefix});

@@ -1,11 +1,11 @@
-import { expect, jest, test } from '@jest/globals';
-import { render, screen, within } from './wrapper';
-import getT from 'next-translate/getT';
-import { Translate } from 'next-translate';
-import Page from '../src/pages/about';
-import mockAboutPageData from './mocks/pages/mockAboutPageData';
-import mockContent from './mocks/mockContent';
-import { watchMediaMock } from './mocks/watchMediaMock';
+import { expect, jest, test } from "@jest/globals";
+import { render, screen, within } from "./wrapper";
+import getT from "next-translate/getT";
+import { Translate } from "next-translate";
+import Page from "../src/pages/about";
+import mockAboutPageData from "./mocks/pages/mockAboutPageData";
+import mockContent from "./mocks/mockContent";
+import { watchMediaMock } from "./mocks/watchMediaMock";
 
 describe('App', () => {
 	let t: Translate;

@@ -1,4 +1,4 @@
-import { clonePlainObject } from "utils/clonePlainObject";
+import { clonePlainObject } from "@utils/clonePlainObject";
 import { VALID_PARSE_MODES } from "./parseModes";
 import { MLParseModes } from "@src/types/parser/modes";
 import type { IContentParseOptions } from "@src/types/parser/parser";

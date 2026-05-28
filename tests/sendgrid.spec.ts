@@ -1,5 +1,5 @@
-import { describe, expect, test } from '@jest/globals';
-import { validateRequest } from '../src/pages/api/sendgrid';
+import { describe, expect, test } from "@jest/globals";
+import { validateRequest } from "../src/pages/api/sendgrid";
 
 describe('validateRequest', () => {
 	test('should allow normal content', () => {

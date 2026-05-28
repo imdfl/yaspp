@@ -1,5 +1,5 @@
-import { describe, expect, test } from '@jest/globals';
-import { mlApiUtils } from '../../src/lib/apiUtils';
+import { describe, expect, test } from "@jest/globals";
+import { mlApiUtils } from "../../src/lib/apiUtils";
 
 describe('ApiUtils', () => {
 	test('saveToCache', async () => {

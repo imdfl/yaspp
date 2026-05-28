@@ -1,5 +1,8 @@
 @use '../../styles/mixins/animations' as keyframes;
-@import '../component';
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use '../../styles/lib/hooks/box' as *;
+@use '../../styles/lib/hooks/content' as *;
 
 $__stylesheet__: (
 	name: loading-indicator,
@@ -18,7 +21,7 @@ $__stylesheet__: (
 	@include use-height;
 
 	.image {
-		@include keyframes.rotation(name());
+		@include keyframes.rotation("loading-indicator");
 
 		animation-iteration-count: infinite;
 		animation-timing-function: linear;
@@ -33,6 +36,6 @@ $__stylesheet__: (
 
 		display: block;
 
-		@include use-vertical-margin(name(label));
+		@include use-vertical-margin("loading-indicator-label");
 	}
 }

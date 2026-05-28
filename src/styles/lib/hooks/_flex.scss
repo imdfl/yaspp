@@ -1,6 +1,8 @@
+@use "../component";
+
 @use '../refs' as refs;
 
 // gap
-@mixin use-gap($var: name(), $state: '') {
-	@include refs.use(gap, gap, $var, $state);
+@mixin use-gap($var: component.name(), $state: '') {
+	@include refs.combine(gap, gap, $var, $state);
 }

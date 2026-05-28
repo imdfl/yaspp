@@ -1,4 +1,7 @@
+@use "../component";
+@use "../refs";
+
 // direction
-@mixin use-direction($var: name(), $state: '') {
-	@include use(direction, direction, $var, $state);
+@mixin use-direction($var: component.name(), $state: '') {
+	@include refs.combine(direction, direction, $var, $state);
 }

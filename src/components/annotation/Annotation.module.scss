@@ -1,11 +1,15 @@
+
+$stylesheet__: (
+	name: annotation,
+);
+
 @use '../popover/Popover.mixin' as popover;
 @use '../popover/PopoverTrigger.module' as trigger;
 @use './Annotation.mixin' as mixin;
-@import '../component';
-
-$__stylesheet__: (
-	name: annotation,
-);
+// @use '../component' as component2;
+@use "../../styles/lib/component";
+@use "../../styles/lib/hooks/position";
+@use "../../styles/lib/hooks/text" as text;
 
 .root {
 	--font-size: 0.75em;
@@ -18,20 +22,20 @@ $__stylesheet__: (
 
 	position: relative;
 
-	@include use-font-size;
-	@include use-line-height;
-	@include use-offset-y;
-	@include popover.trigger(trigger.name());
+	@include text.use-font-size;
+	@include text.use-line-height;
+	@include position.use-offset-y;
+	@include popover.trigger("popover-trigger");
 
 	.content {
-		@include mixin.suffix-content-data(name(), var(--data-content));
+		@include mixin.suffix-content-data("annotation", var(--data-content));
 	}
 
 	&::before {
-		@include mixin.prefix(name());
+		@include mixin.prefix("annotation");
 	}
 
 	&::after {
-		@include mixin.suffix(name());
+		@include mixin.suffix("annotation");
 	}
 }

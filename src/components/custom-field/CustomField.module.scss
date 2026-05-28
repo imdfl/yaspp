@@ -1,6 +1,9 @@
 @use '../../styles/lib/merge';
 @use '../../styles/lib/refs';
-@import '../component';
+@use '../../styles/lib/states' as *;
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/hooks/box' as *;
+@use '../../styles/lib/hooks/text' as *;
 
 $__stylesheet__: (
 	name: custom-field,
@@ -42,27 +45,27 @@ $states: merge.deep(
 	}
 
 	&:hover {
-		@include use-outline(name(#{$module}-input), state(hovered));
+		@include use-outline("custom-field-"#{$module}-input#{ state(hovered)});
 	}
 
 	&:focus {
-		@include use-outline(name(#{$module}-input), state(focused));
-		@include use-background-color(name(#{$module}-input), state(focused));
+		@include use-outline("custom-field-"#{$module}-input#{state(focused)});
+		@include use-background-color("custom-field-"#{$module}-input#{state(focused)});
 	}
 
 	&[data-is-invalid='true'] {
-		@include use-outline(name(#{$module}-input), state(invalid));
+		@include use-outline("custom-field-"#{$module}-input#{state(invalid)});
 
 		&:hover {
-			@include use-outline(name(#{$module}-input), state(invalid-hovered));
+			@include use-outline("custom-field-"#{$module}-input#{state(invalid-hovered)});
 		}
 
 		&:focus {
-			@include use-outline(name(#{$module}-input), state(invalid-focused));
+			@include use-outline("custom-field-"#{$module}-input#{state(invalid-focused)});
 
 			&:hover {
 				@include use-outline(
-					name(#{$module}-input),
+					"custom-field"#{$module}-input,
 					state(invalid-focused-hovered)
 				);
 			}
@@ -92,7 +95,7 @@ $states: merge.deep(
 		padding: 0 0 0.5em;
 		cursor: pointer;
 
-		@include use-text-color(name(label));
+		@include use-text-color("custom-field-label");
 
 		.text {
 			display: flex;
@@ -108,7 +111,7 @@ $states: merge.deep(
 
 			.icon {
 				display: flex;
-				@include use-text-color(name(icon));
+				@include use-text-color("custom-field-icon");
 			}
 		}
 
@@ -126,7 +129,7 @@ $states: merge.deep(
 
 	.input {
 		width: 100%;
-		@include input-field-mixin(name(input));
+		@include input-field-mixin("custom-field-input");
 	}
 
 	.validation {
@@ -135,7 +138,7 @@ $states: merge.deep(
 		opacity: 1;
 		transition: opacity 275ms ease-in;
 
-		@include use-text-color(name(validation));
+		@include use-text-color("custom-field-validation");
 
 		&.showValidation {
 			visibility: visible;
@@ -145,17 +148,17 @@ $states: merge.deep(
 
 	&[data-is-invalid='true'] {
 		.label {
-			@include use-text-color(name(label), state(invalid));
+			@include use-text-color("custom-field-label", state(invalid));
 		}
 
 		.input {
-			@include use-outline(name(input), state(invalid));
+			@include use-outline("custom-field-input", state(invalid));
 		}
 	}
 
 	&[data-is-valid='true'] {
 		.label {
-			@include use-text-color(name(label), state(invalid));
+			@include use-text-color("custom-field-label", state(invalid));
 
 			.text {
 				.requiredIndicator {

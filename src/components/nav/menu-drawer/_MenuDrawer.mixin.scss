@@ -1,6 +1,6 @@
 @use './MenuDrawer.meta' as meta;
 @use '../../../styles/lib/refs' as refs;
-@import '../../../styles/lib/states';
+@use "../../../styles/lib/states" as *;
 
 @mixin list-item($border-size: 1px, $border-style: solid, $border-color: red) {
 	#{refs.use(menu-drawer-list-item-border-bottom-size)}: $border-size;

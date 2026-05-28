@@ -1,12 +1,12 @@
-import { describe, expect, test } from '@jest/globals';
-import { getMarkdownLinks } from '../../e2e/utils/termsTestUtils';
+import { describe, expect, test } from "@jest/globals";
+import { getMarkdownLinks } from "../../e2e/utils/termsTestUtils";
 import {
 	baseDir,
 	getFrontMatter,
 	stripMarkdown,
-} from '../../e2e/utils/mdTestUtils';
-import { ASTRIEK_MOCK, EMPTY_STRING } from '../../e2e/utils/patterns';
-import { getLocalePath } from '../../e2e/utils/localeTestUtils';
+} from "../../e2e/utils/mdTestUtils";
+import { ASTRIEK_MOCK, EMPTY_STRING } from "../../e2e/utils/patterns";
+import { getLocalePath } from "../../e2e/utils/localeTestUtils";
 const whitespace = '    ';
 
 describe('E2E Test Utils', () => {

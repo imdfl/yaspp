@@ -1,4 +1,8 @@
-@import './Separator.meta';
+@use "./Separator.meta" as *;
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use "../../styles/lib/hooks/box" as *;
+
 
 .root {
 	@include use-background-color;

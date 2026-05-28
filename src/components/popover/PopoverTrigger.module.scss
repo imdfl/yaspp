@@ -1,5 +1,8 @@
 @use '../../styles/lib/merge';
-@import '../component';
+@use '../../styles/lib/states' as *;
+@use '../../styles/lib/component' as *;
+@use '../../styles/lib/states' as *;
+@use '../../styles/lib/hooks' as *;
 
 $__stylesheet__: (
 	name: popover-trigger,
@@ -18,20 +21,20 @@ $states: merge.deep(
 );
 
 @function -text-color($state: '') {
-	@return compRef(name(), text-color, $state);
+	@return compRef("popover-trigger", text-color, $state);
 }
 
 @function -bg-color($state: '') {
-	@return compRef(name(), background-color, $state);
+	@return compRef("popover-trigger", background-color, $state);
 }
 
 @function -suffix-color($state: '') {
-	@return compRef(name(), astriek-color, $state);
+	@return compRef("popover-trigger", astriek-color, $state);
 }
 
-$color: varName(popover-trigger-text-color);
-$bgColor: varName(popover-trigger-background-color);
-$suffixColor: varName(term-suffix-text-color);
+$color: to-css-var(popover-trigger-text-color);
+$bgColor: to-css-var(popover-trigger-background-color);
+$suffixColor: to-css-var(term-suffix-text-color);
 
 .root {
 	&[data-popover-state='closed'] {
