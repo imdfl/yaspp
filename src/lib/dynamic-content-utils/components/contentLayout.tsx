@@ -26,7 +26,7 @@ export const DynamicContentLayout = ({
 				<ReferenceContentLayout
 					caption={t(`common:caption:glossary`)}
 					title={t(`glossary:term:${term}`)}
-					term={locale !== 'en' && t(`glossaryEN:term:${term}`)}
+					term={locale !== 'en' && t(`glossary:en:term:${term}`)}
 					sources={sources}
 					sourcesLabel={t(
 						`common:caption:source:${

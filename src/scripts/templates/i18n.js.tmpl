@@ -8,37 +8,54 @@ module.exports = {
 	dictionaries: %DICTIONARIES%, // Replace with e.g. JSON.stringify({ system: { docs: "./locales/%LANG%/docs.json" }, project: { authors: "./public/locales/%LANG%/authors.json" } }, )
 	loadLocaleFrom: async (lang, ns) => {
 		const ret = {};
+		const defLang = "%DEFAULT%";
 
-        const sarr = sns.get(ns);
-		if (sarr) {
-            if (lang != "%DEFAULT%" && sarr.includes(lang)) {
-                const m = await import(`./locales/${lang}/${ns}.json`);
-                Object.assign(ret, m.default);
-            }
-            else if (sarr.includes("%DEFAULT%")) {
-                const m = await import(`./locales/%DEFAULT%/${ns}.json`);
-                Object.assign(ret, m.default);
-            }
-            else {
-                console.warn(`no system locale found for namespace ${ns}`);
-            }
+		const sLangModule = sns.get(ns)?.includes(lang)? await import(`./locales/${lang}/${ns}.json`) : null;
+		const sDefModule = (lang === defLang) ?
+			sLangModule
+			: (sns.get(ns)?.includes(defLang) ? await import(`./locales/${defLang}/${ns}.json`) : null);
+		const sEngModule = (lang === "en") ?
+			sLangModule
+			: (defLang === "en") ?
+				sDefModule
+				: (sns.get(ns)?.includes("en")? await import(`./locales/en/${ns}.json`): null);
+
+		const uLangModule = uns.get(ns)?.includes(lang) ? await import(`./public/yaspp/locales/${lang}/${ns}.json`) : null;
+		const uDefModule = lang === defLang ?
+			uLangModule
+			: uns.get(ns)?.includes(defLang)?
+				await import(`./public/yaspp/locales/${defLang}/${ns}.json`)
+				: null;
+		const uEngModule = lang === "en" ? uLangModule
+			: defLang === "en" ?
+				uDefModule
+				: uns.get(ns)?.includes("en")?
+					await import(`./public/yaspp/locales/en/${ns}.json`)
+					: null;
+
+		const doIt = function (mod, defMod, engMod) {
+			const mData = mod?.default,
+				defData = defMod?.default,
+				engData = engMod?.default;
+			if (mData) {
+				Object.assign(ret, mData);
+			}
+			else if (defData) {
+				Object.assign(ret, defData);
+			}
+			if (engData) {
+				Object.entries(engData).forEach(([key, value]) => {
+					ret[`en:${key}`] = value;
+				});
+			}
+			return Boolean(mData || defData);
 		}
-
-        const uarr = uns.get(ns);
-		if (uarr) {
-            if (lang != "%DEFAULT%" && uarr.includes((lang))) {
-                const m = await import(`./public/yaspp/locales/${lang}/${ns}.json`);
-                Object.assign(ret, m.default);
-            }
-            else if (uarr.includes("%DEFAULT%")) {
-                const m = await import(`./public/yaspp/locales/%DEFAULT%/${ns}.json`);
-                Object.assign(ret, m.default);
-            }
-            else {
-                console.warn(`no user locale found for namespace ${ns}`);
-            }
+		const foundS = doIt(sLangModule, sDefModule, sEngModule);
+		const foundU = doIt(uLangModule, uDefModule, uEngModule);
+		if (!foundS && !foundU) {
+			console.warn(`no user locale found for namespace ${ns} (requested ${lang})`);
 		}
-
+		// console.log("loaded dictionary", ns, "locale", lang, ret);
 		return ret;
 	}
 }

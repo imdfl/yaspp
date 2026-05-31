@@ -2,11 +2,11 @@ import { ITranslateStringOptions } from "../markdown-utils/types";
 
 export const _translate = ({ text, locale, dictionary, defaultLocale }: ITranslateStringOptions): string => {
 	const parts = text?.split(':');
-	function wrapStr() {
-		return `%${locale}_${text}$%`;
-	}
 	if (!(parts?.length > 1)) {
 		return text;
+	}
+	function wrapStr() {
+		return `%${locale}_${text}$%`;
 	}
 	function tryDefault(): string {
 		if (defaultLocale && locale !== defaultLocale) {
