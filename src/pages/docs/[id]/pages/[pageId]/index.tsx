@@ -4,7 +4,7 @@ import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
 import { IPageProps } from "@src/types/models";
 import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
 import GenericPage from "@lib/dynamic-content-utils/components/genericPage";
-import styles from "../../../../../custom-layouts/generic-content-layout/mixins/CodexArticleLayoutMixin.module.scss";
+import styles from "@src/custom-layouts/generic-content-layout/mixins/CodexArticleLayoutMixin.module.scss";
 
 export default function Doc(props: IPageProps) {
 	return <GenericPage pageProps={props} className={styles.root} />;

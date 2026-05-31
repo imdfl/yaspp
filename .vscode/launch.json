@@ -16,7 +16,7 @@
 			"name": "Debug server side with pretask",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "yarn dev",
+			"command": "yarn predev && yarn dev",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}
