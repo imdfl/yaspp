@@ -4,5 +4,6 @@
 	"blog:title": "בלוג",
 	"contact:title": "צרו קשר",
 	"contribute:title": "השתתפות ותמיכה",
-	"glossary:title": "מילון מונחים"
+	"glossary:title": "מילון מונחים",
+	"404:title": "Unfortunately, this path is not recognized."
 }

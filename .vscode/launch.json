@@ -31,6 +31,15 @@
 			}
 		},
 		{
+			"name": "Debug Build",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "yarn build",
+			"env": {
+				"NODE_OPTIONS": "--inspect"
+			}
+		},
+		{
 			"name": "Copy Content",
 			"type": "node-terminal",
 			"request": "launch",

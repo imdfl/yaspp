@@ -3,5 +3,6 @@
 	"docs:title": "Docs",
 	"blog:title": "Blog",
 	"contribute:title": "Contribute",
-	"glossary:title": "Glossary"
+	"glossary:title": "Glossary",
+	"404:title": "Unfortunately, this path is not recognized."
 }

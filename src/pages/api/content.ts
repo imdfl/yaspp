@@ -133,9 +133,6 @@ const collectFSData = async () => {
 		const cacheKey = `dc-${contentType}-${clientPath}${clientPath && '-'}${params.locale
 			}`;
 		try {
-			// const contentPath = fsPath.resolve(process.cwd(), 'public');
-			// console.log(`using content path ${contentPath}`);
-
 			const payload = await mlApiUtils.getFromCache(cacheKey);
 
 			if (payload) {

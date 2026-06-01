@@ -2,7 +2,18 @@ import * as fsPath from "path";
 import * as fs from "fs";
 import { ICollectedPath } from "./types";
 
-const DYNAMIC_ROUTE_REGEXP = /^\[([^\]]+)\]$/;
+const DYNAMIC_ROUTE_RE = /^\[([^\]]+)\]$/;
+const DYNAMIC_FILENAME_RE = /^\[([^\]]+)\]\.[a-z0-9_-]+$/i;
+
+const ROOT_FOLDER = process.cwd();
+
+export function decodePath(path: string): string {
+	if (!path) {
+		return "";
+	}
+	const p1 = path.replace(/^\/ROOT/, ROOT_FOLDER);
+	return p1.replace(DYNAMIC_FILENAME_RE, "$1");
+}
 
 /**
  * Converts an OS path to xxx/yyy/zzz relative to the first /pages/ folder in the hierarchy
@@ -12,9 +23,11 @@ const DYNAMIC_ROUTE_REGEXP = /^\[([^\]]+)\]$/;
 export async function pathToRelativePath(path: string): Promise<string> {
 	try {
 		const stat = await fs.promises.lstat(path);
+		const slug = path.match(DYNAMIC_FILENAME_RE);
+
 		const contentFolder = stat.isDirectory()
 			? path
-			: fsPath.join(fsPath.dirname(path), fsPath.basename(path, ".js"));
+			: fsPath.join(fsPath.dirname(path), fsPath.basename(path, fsPath.extname(path)));
 		return contentFolder
 			.replace(/\\/g, "/")
 			.replace(/^.*?\/pages\/(.+)$/, "$1");
@@ -34,7 +47,7 @@ export async function collectPathsIn(
 		const allPaths = await _collectPaths({ root, parts });
 		const validPaths: ICollectedPath[] = [];
 		// use only valid (existing) paths to folders
-		for (let rec of allPaths) {
+		for await (const rec of allPaths) {
 			try {
 				const stat = await fs.promises.lstat(rec.path);
 				if (stat.isDirectory()) {
@@ -73,25 +86,35 @@ async function _collectPaths(params: {
 	}
 
 	const top = parts.shift(); // parts now shorter
-	const folderMatch = top.match(DYNAMIC_ROUTE_REGEXP),
-		isKey = Boolean(folderMatch?.length); // indicates that the path contains a dynamic part, /[XXX]
+	const folderMatch = top.match(DYNAMIC_ROUTE_RE),
+		fileMatch = top.match(DYNAMIC_FILENAME_RE),
+		isKey = Boolean(folderMatch?.length || fileMatch?.length); // indicates that the path contains a dynamic part, /[XXX]
 	const topFolder = isKey ? params.root : fsPath.join(params.root, top);
+	const isLastPart = parts.length === 0;
 
 	if (isKey) {
 		const allPaths: ICollectedPath[] = [];
 		const key: string = folderMatch[1];
 
 		try {
-			for (let nextFolder of paths) {
+			for await (const nextFolder of paths) {
 				const children = await fs.promises.readdir(nextFolder.path, {
 					withFileTypes: true,
 				});
-				for (let folder of children) {
+				for await (const folder of children) {
+					if (folder.isFile() && isLastPart) {
+						allPaths.push({
+							path: nextFolder.path,
+							idMap: { ...nextFolder.idMap },
+
+						});
+						continue;
+					}
 					if (!folder.isDirectory()) {
 						continue;
 					}
 					const subPaths = await _collectPaths({
-						parts,
+						parts: parts.length === 0 ? ["[stub]"] : parts,
 						root: fsPath.join(params.root, folder.name),
 						paths: paths.map((rec) => ({
 							path: fsPath.join(rec.path, folder.name),

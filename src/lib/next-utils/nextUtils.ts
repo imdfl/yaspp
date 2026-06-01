@@ -1,6 +1,6 @@
 import { GetStaticPathsResult, GetStaticPropsResult } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { collectPathsIn, pathToRelativePath } from "./pathHelpers";
+import { collectPathsIn, decodePath, pathToRelativePath } from "./pathHelpers";
 import { loadContentFolder } from "@lib/loadFolderContent";
 import { ILocaleMap } from "@src/types/models";
 import type { IContentParseOptions } from "@src/types/parser/parser";
@@ -25,7 +25,7 @@ class MLNextUtils implements IMLNextUtils {
 		path: string,
 		dict:  Record<string, string>
 	): Promise<string> {
-		let relative = await pathToRelativePath(path);
+		let relative = await pathToRelativePath(decodePath(path));
 
 		if (!relative) {
 			return "";
@@ -128,7 +128,9 @@ class MLNextUtils implements IMLNextUtils {
 			}
 		}
 		const paths: ILocaleMap[] = [];
-		const allPaths = await collectPathsIn(app.contentPath, options.contentFolder);
+		const contentFolder = decodePath(options.contentFolder);
+
+		const allPaths = await collectPathsIn(app.contentPath, contentFolder);
 
 		for (let rec of allPaths) {
 			for (let locale of options.locales) {

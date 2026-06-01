@@ -15,7 +15,6 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 		contentFolder: __filename,
 		locales: context.locales,
 	});
-
 	return paths;
 };
 

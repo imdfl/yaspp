@@ -109,7 +109,7 @@ function getPathError(path: string): string {
 
 async function loadContent(path: string): Promise<IMLApiResponse<IShowFileResponse>> {
 	try {
-		const root = fsPath.resolve(process.cwd(), path);
+		const root = fsPath.resolve(/*turbopackIgnore: true*/ process.cwd(), path);
 		if (!await fileUtils.isFile(root)) {
 			return { data: null, error: `File ${path} (${root}) not found` };
 		}
