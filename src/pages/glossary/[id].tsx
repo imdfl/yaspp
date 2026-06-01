@@ -61,8 +61,11 @@ export default function GlossaryTerm(props: IPageProps) {
 	);
 }
 
-export const getStaticPaths: GetStaticPaths = async (context) =>
-	mlNextUtils.getFolderStaticPaths(ContentTypes.Glossary, context.locales);
+export const getStaticPaths: GetStaticPaths = async (context) => {
+	const paths = await mlNextUtils.getFolderStaticPaths(ContentTypes.Glossary, context.locales);
+	console.log(`\nGlossary id page found ${paths.paths.length} paths`);
+	return paths;
+}
 
 export const getStaticProps: GetStaticProps = async (
 	context: GetStaticPropsContext

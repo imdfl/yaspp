@@ -1,7 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import sendgrid from "@sendgrid/mail";
 
-sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+const _SGEnabled = Boolean(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+if (_SGEnabled) {
+	sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+}
+else {
+	console.log(`SendGrid API key not set`);
+}
 
 export interface IEmailTemplate extends NextApiRequest {
 	fullName: string;
@@ -34,6 +40,10 @@ export const validateRequest = (
 };
 
 async function sendEmail(req: NextApiRequest, res: NextApiResponse) {
+	if (!_SGEnabled) {
+		return res.status(403)
+			.json({ error: "No API Key" });
+	}
 	try {
 		const emailData = validateRequest(req.body as IEmailTemplate);
 		await sendgrid.send({
