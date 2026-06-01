@@ -54,7 +54,6 @@ export default function Doc(props: IPageProps) {
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
 	const paths = await mlNextUtils.getFolderStaticPaths(ContentTypes.Posts, context.locales);
-	console.log(`POSTS id page get paths ${paths.paths}`);
 	return paths;
 }
 

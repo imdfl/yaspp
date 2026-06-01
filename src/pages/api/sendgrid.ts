@@ -6,7 +6,7 @@ if (_SGEnabled) {
 	sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
 }
 else {
-	console.log(`SendGrid API key not set`);
+	console.warn(`SendGrid API key not set`);
 }
 
 export interface IEmailTemplate extends NextApiRequest {

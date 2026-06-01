@@ -11,12 +11,10 @@ export default function Doc(props: IPageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-	console.log(`\nPAGES/slug get paths`);
 	const paths = await mlNextUtils.getNestedStaticPaths({
 		contentFolder: __filename,
 		locales: context.locales,
 	});
-	console.log(`\npages[slug] found ${paths.paths.length} paths`);
 	return paths;
 };
 
