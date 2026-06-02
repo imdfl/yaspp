@@ -12,16 +12,4 @@
 @mixin root($colors: (), $typography: ()) {
 	@include colors.root($colors);
 	@include typography.root($typography);
-
-	// $vars: load($colors, $typography);
-	// $c: map.get($vars, colors);
-	// $t: map.get($vars, typography);
-	// :root {
-	// 	--ml-color: #{map.get($c, text-color)};
-	// 	--ml-background: #{map.get($c, background)};
-	// }
-	// body {
-	// 	color: var(--ml-color);
-	// 	background: var(--ml-background);
-	// }
 }

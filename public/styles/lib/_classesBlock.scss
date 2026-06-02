@@ -5,11 +5,11 @@
 
 @mixin classes($map, $prefix, $prop, $exclude: ()) {
 	@if meta.type-of($map) != map {
-		@debug "varBlocks: map type is #{meta.type-of($map)}, returning";
+		@debug "classes mixin: map type is #{meta.type-of($map)}, returning";
 	}
 
 	@else if meta.type-of($prefix) != string or meta.type-of($prop) != string {
-		@debug "varBlocks: prefix type is #{meta.type-of($prefix)}, classes type is #{meta.type-of($prop)}, returning";
+		@debug "classes mixin: prefix type is #{meta.type-of($prefix)}, classes type is #{meta.type-of($prop)}, returning";
 	}
 
 	@else {

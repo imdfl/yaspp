@@ -3,7 +3,7 @@
 @use 'sass:list';
 @use 'sass:meta';
 
-@mixin vars($map, $prefix, $class-prefix: null, $exclude: ()) {
+@mixin vars($map, $prefix, $exclude: ()) {
 	@if meta.type-of($map) != map {
 		@debug "varBlocks: map type is #{meta.type-of($map)}, returning";
 	}
