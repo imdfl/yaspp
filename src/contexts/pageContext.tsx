@@ -29,12 +29,12 @@ export class PageContextClass implements IPageContext {
 		const bindings: IYasppClassTree[] = [];
 		if (sb) {
 			if (typeof sb === "string") {
-				const parseRes = stringUtils.parseJSON<IYasppClassTree[]>(sb);
-				if (parseRes.error || !Array.isArray(parseRes.result)) {
-					console.error(`Error parsing class bindings ${parseRes.error || "unknown"}`);
+				const { error, result} = stringUtils.parseJSON<IYasppClassTree[]>(sb);
+				if (error || !Array.isArray(result)) {
+					console.error(`Error parsing class bindings ${error || "unknown"}`);
 				}
 				else {
-					bindings.push(...parseRes.result);
+					bindings.push(...result);
 				}
 			}
 			else if (Array.isArray(sb)) {

@@ -1,9 +1,9 @@
 import React, { PropsWithChildren, useContext } from "react";
 import { DynamicContentTypes } from "@src/types/content";
-import type { ContentLayoutProps } from "../../../custom-layouts/dynamic-content-layout/DynamicContentLayout";
-import NoteContentLayout from "../../../custom-layouts/note-content-layout/NoteContentLayout";
-import ReferenceContentLayout from "../../../custom-layouts/reference-content-layout/ReferenceContentLayout";
-import ContentLayout from "../../../custom-layouts/dynamic-content-layout/DynamicContentLayout";
+import type { ContentLayoutProps } from "@src/custom-layouts/dynamic-content-layout/DynamicContentLayout";
+import NoteContentLayout from "@src/custom-layouts/note-content-layout/NoteContentLayout";
+import ReferenceContentLayout from "@src/custom-layouts/reference-content-layout/ReferenceContentLayout";
+import ContentLayout from "@src/custom-layouts/dynamic-content-layout/DynamicContentLayout";
 import { LocaleContext } from "@contexts/localeContext";
 
 export const DynamicContentLayout = ({
@@ -26,7 +26,7 @@ export const DynamicContentLayout = ({
 				<ReferenceContentLayout
 					caption={t(`common:caption:glossary`)}
 					title={t(`glossary:term:${term}`)}
-					term={locale !== 'en' && t(`glossary:en:term:${term}`)}
+					term={locale === "en" ? "" : t(`glossary:en:term:${term}`)}
 					sources={sources}
 					sourcesLabel={t(
 						`common:caption:source:${
