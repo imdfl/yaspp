@@ -1,26 +1,18 @@
 'use client';
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useIconAnimator, useWindowSize } from "@hooks/index";
 import { useDrawer } from "../hooks/useDrawer";
 import {
-	Button,
-	Container,
-	Drawer,
-	MenuBar,
-	Link,
-	List,
-	ListItem,
-	LocaleSelect,
-	Logo,
-	Scrollbar,
-	Separator,
-	Strip,
-	Text,
-	TextLink,
-	ThemeSelect,
-	MenuDrawer,
+	Button, Container,
+	Drawer, MenuBar,
+	Link, List,
+	ListItem, LocaleSelect,
+	Logo, Scrollbar,
+	Separator, Strip,
+	Text, TextLink,
+	ThemeSelect, MenuDrawer,
 } from "../components/index";
 import { getIcon } from "@components/icons";
 import CustomHead from "./customHead";
@@ -41,6 +33,30 @@ import type { YSPComponentPropsWithChildren } from "@src/types/components";
 const IS_DEBUG = process.env.NEXT_PUBLIC_ML_DEBUG;
 const MIN_DESKTOP_WIDTH = 1024;
 
+let _globalStyles: string[] | null = null;
+
+async function loadStyles(styleUrls?: string[]) {
+	if (_globalStyles) {
+		return _globalStyles;
+	}
+	if (!styleUrls?.length) {
+		return [];
+	}
+	const styles: string[] = [];
+
+	for await (const url of styleUrls) {
+		const cssModule = await import(/* webpackIgnore: true */ url, { with: { type: "css" } });
+		const css = (cssModule.default as CSSStyleSheet);
+		if (css?.cssRules?.length) {
+			const cssText = Array.from(css.cssRules).map(rule => rule.cssText).join('\n');
+			styles.push(cssText);
+		}
+	}
+	_globalStyles = styles;
+	return _globalStyles;
+}
+
+
 const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const router = useRouter();
 
@@ -52,25 +68,9 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const { width: screenWidth } = useWindowSize();
 	const { theme, setTheme, themes} = useContext(MLThemeContext);
 	const [oppositeTheme, setOppositeTheme] = useState("");
+	const [loadedStyle, setLoadedstyle] = useState<string | null>("");
 
 	const [ themeNames, setThemeNames ] = useState<ReadonlyArray<string>>(themes?.map(u => u.name) ?? []);
-
-	useEffect(() => {
-		setThemeNames(themes?.map(u => u.name) ?? []);
-	}, [themes]);
-
-	useEffect(() => {
-		let op = "";
-		const t = theme,
-			ts = themes;
-		if (t && ts?.length) {
-			op = ((t === ts[0].name) ?
-				ts[1]?.name : 
-				(t === ts[1]?.name) ? ts[0].name
-				: "") ?? "";
-		}
-		setOppositeTheme(op);
-	}, [theme, themes])
 
 	const isHome = pathname === "/";
 	const isMobile = screenWidth <= MIN_DESKTOP_WIDTH;
@@ -181,15 +181,56 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 		]
 	);
 
+	useEffect(() => {
+		setThemeNames(themes?.map(u => u.name) ?? []);
+	}, [themes]);
+
+	useEffect(() => {
+		const run = async (): Promise<string[]> => {
+			const t = themes?.find(t => t.name === theme);
+			if (!t) {
+				return [];
+			}
+			return await loadStyles([t.path]);
+		};
+
+		run()
+			.then(strs => {
+				setLoadedstyle(strs?.length ? strs.join('\n') : "")
+			})
+			.catch
+	}, [themes, theme])
+
+	useEffect(() => {
+		let op = "";
+		const t = theme,
+			ts = themes;
+		if (t && ts?.length) {
+			op = ((t === ts[0].name) ?
+				ts[1]?.name : 
+				(t === ts[1]?.name) ? ts[0].name
+				: "") ?? "";
+		}
+		setOppositeTheme(op);
+	}, [theme, themes])
+
+
+
+	if (loadedStyle === null) {
+		return <></>
+	}
+
 	return (
 		<>
 			<CustomHead
 				title={`${siteTitle} – ${siteSubtitle}`}
 				name={siteTitle}
 				description={siteSubtitle}
-				theme={theme}
-				themeUrls={themes}
-			/>
+			>
+				{loadedStyle && (
+					<style jsx global>{loadedStyle}</style>
+				)}
+				</CustomHead>
 			<Scrollbar
 				textDirection={textDirection}
 				height="100vh"

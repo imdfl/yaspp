@@ -36,15 +36,11 @@ class CustomDocument extends Document<IStyleProps> {
 	}
 
 	render() {
+		void fontFaceLinks;
 		return (
 			<Html>
 				<Head>
-					{fontFaceLinks}
-					{
-						this.styleUrls.map((url, ind) => (
-							<link data-yaspp-position="last" rel="stylesheet" href={url} key={ind} />
-						))
-					}
+					{/* {fontFaceLinks} */}
 				</Head>
 				<body>
 					<Main />

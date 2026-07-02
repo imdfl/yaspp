@@ -1,5 +1,5 @@
 import { flattenArray } from "@utils/index";
-import { default as siteFontData } from "./layout/data/typography";
+import siteFontData from "./layout/data/typography/siteFonts.json";
 
 const fontBasePath = '/assets/fonts';
 
@@ -46,9 +46,9 @@ export const fontFaceDecls = siteFontData
 			.map(({ weight, format, href }) =>
 				FontFaceDecl({ name, id, href, weight, format })
 			)
-			.join('');
+			.join('\n');
 	})
-	.join('');
+	.join('\n');
 
 export const fontFaceLinks = flattenArray(
 	siteFontData.map(({ id, family }) =>

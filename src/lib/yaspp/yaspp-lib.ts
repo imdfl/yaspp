@@ -87,7 +87,7 @@ but has a sheets property`)
 
 	for await (const ss of sheets) {
 		const sheetPath = fsPath.resolve(styleRoot, ss);
-		const targetSheet = fileUtils.assertFileExtension(sheetPath, "css");
+		const targetSheet = fileUtils.ensureFileExtension(sheetPath, "css");
 		if (!await fileUtils.isFile(targetSheet)) {
 			return errorResult(`Stylesheet ${ss} not found in ${styleRoot}`);
 		}
@@ -248,8 +248,8 @@ export async function validateThemes({ themes, styleRoot, siteRoot }: IValidateT
 	const errors = [];
 	const ret = [] as IThemeUrl[];
 	for await (const theme of t) {
-		const tname = fileUtils.assertFileExtension(theme, "css"),
-			themeName = fileUtils.assertFileExtension(tname, ""),
+		const tname = fileUtils.ensureFileExtension(theme, "css"),
+			themeName = fileUtils.ensureFileExtension(tname, ""),
 			stname = themeName + ".scss";
 		const uPath1 = fsPath.resolve(styleRoot, "themes", stname),
 			uPath2 = fsPath.resolve(styleRoot, "themes", tname);

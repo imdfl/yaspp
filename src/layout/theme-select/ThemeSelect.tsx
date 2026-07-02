@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { getIcon } from "@components/icons";
 import ToggleButton from "@components/toggle/toggle-button/ToggleButton";
-import styles from "./ThemeSelect.module.scss";
 import classNames from "@lib/class-names";
 import { useMountGuard } from "@hooks/useMountGuard";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
+
+import styles from "./ThemeSelect.module.scss";
 
 type ThemeSelectProps = {
 	readonly label: string;

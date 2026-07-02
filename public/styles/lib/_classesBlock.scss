@@ -16,7 +16,7 @@
 		@each $key, $value in $map {
 			$ind: list.index($exclude, $key);
 
-			@if $ind !=null {
+			@if $ind == null {
 				$cls: '.' + #{$prefix}-#{$key};
 				#{$cls} {
 					#{$prop}: #{$value};

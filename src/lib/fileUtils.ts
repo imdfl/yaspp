@@ -47,7 +47,7 @@ export interface IFileUtils {
 	 * @param fileName can be with or without an extension
 	 * @param extension can be with or without initial `.`
 	 */
-	assertFileExtension(fileName: string, extension: string): string;
+	ensureFileExtension(fileName: string, extension: string): string;
 
 	/**
 	 * Tries to create a symlink to srcPath in targetFolder
@@ -111,7 +111,7 @@ export interface IFileUtils {
 const EXT_RE = /\.([^.]*)$/;
 class FileUtils implements IFileUtils {
 
-	public assertFileExtension(fileName: string, extension: string): string {
+	public ensureFileExtension(fileName: string, extension: string): string {
 		if (!fileName) {
 			return "";
 		}
@@ -127,7 +127,7 @@ class FileUtils implements IFileUtils {
 		if (str === null) {
 			return { error: `no data in ${path}` };
 		}
-		return stringUtils.parseJSON<T>(str);
+		return stringUtils.parseJSON<T>(str, false);
 	}
 
 	public async readFile(path: string, options?: { canFail?: boolean }): Promise<string | null> {

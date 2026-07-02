@@ -1,3 +1,4 @@
+import { IThemeUrl } from "./app";
 
 export interface IFolderStaticProps {
 	/** Typically the stringified ParsedPageData */
@@ -12,5 +13,7 @@ export interface IFolderStaticProps {
 
 	readonly theme: string;
 
-	readonly themes: string | object;
+	readonly themes: IThemeUrl[];
+
+	readonly styleUrls: ReadonlyArray<string>;
 }

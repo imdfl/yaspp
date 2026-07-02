@@ -1,3 +1,4 @@
 import { default as siteFonts } from "./siteFonts.json";
 
-export default siteFonts;
+// TODO delete
+// export default siteFonts;

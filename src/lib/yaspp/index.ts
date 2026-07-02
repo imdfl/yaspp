@@ -234,7 +234,7 @@ class YasppApp implements IYasppApp {
 			if (rawSheet.includes("..") || !/^[a-z_]/i.test(rawSheet)) {
 				return `Illegal stylesheet url ${rawSheet}`
 			}
-			const sheet = fileUtils.assertFileExtension(rawSheet, "css");
+			const sheet = fileUtils.ensureFileExtension(rawSheet, "css");
 			const sheetPath = fsPath.resolve(styleRoot, sheet);
 			if (!await fileUtils.isFile(sheetPath)) {
 				return `Stylesheet ${sheetPath} not found`;

@@ -40,25 +40,33 @@ export interface IStringUtils {
 	): Array<TString>;
 
 	parseJSON<T extends object>(
-		data: string,
+		data: unknown,
+		allowEmpty: boolean,
 		reviver?: ((this: unknown, key: string, value: unknown) => unknown)
 	): IOperationResult<T>;
 }
 
 class StringUtils implements IStringUtils {
 	public parseJSON<T extends object>(
-		data: string,
+		data: unknown,
+		allowEmpty: boolean,
 		reviver?: ((this: unknown, key: string, value: unknown) => unknown)
 	): IOperationResult<T> {
 
-		try {
-			return { result: parseJSON(data, reviver) }
+		if (!data) {
+			return allowEmpty ? {} : { error: "no data" };
 		}
-		catch (e) {
-			return {
-				error: String(e)
+		if (typeof data === "string") {
+			try {
+				return { result: parseJSON(data, reviver) }
+			}
+			catch (e) {
+				return {
+					error: String(e)
+				}
 			}
 		}
+		return { result: data as T };
 	}
 
 

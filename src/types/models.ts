@@ -1,6 +1,7 @@
 import { DynamicContentTypes } from "@src/types/content";
 import { MLParseModes } from "./parser/modes";
 import { ASTNODE_TYPES, MLNODE_TYPES, NODE_DISPLAY_TYPES } from "./nodes";
+import { IThemeUrl } from "./app";
 
 /** A single node in a parsed markdown AST */
 export type ParsedNode = {
@@ -173,5 +174,6 @@ export interface IPageProps {
 	nav: string;
 	styleClassBindings: string;
 	theme: string;
-	themes: string;
+	themes: IThemeUrl[];
+	styleUrls: string[]
 }

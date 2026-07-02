@@ -14,7 +14,7 @@ export interface IMLThemeProvider {
 const STOAGE_KEY = "ml:theme";
 
 interface IMLThemeOptions {
-	readonly themes: string | ReadonlyArray<IThemeUrl>;
+	readonly themes: ReadonlyArray<IThemeUrl>;
 }
 
 interface IMLThemeContextOptions extends IMLThemeOptions {
@@ -41,25 +41,9 @@ class MLThemeContextImpl implements IMLThemeProvider {
 				console.warn(`setTheme: unknown theme ${theme}`);
 			}
 		};
-		if (!themes?.length) {
-			return;
-		}
-		let themeUrls: IThemeUrl[];
-		if (typeof themes === "string") {
-			const { error, result } = stringUtils.parseJSON<IThemeUrl[]>(themes);
-			if (error) {
-				console.error(`Error parsing themes data: ${error}`);
-			}
-			else {
-				themeUrls = result!;
-			}
-		}
-		else {
-			themeUrls = themes as IThemeUrl[];
-		}
-		if (Array.isArray(themeUrls)) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-			this._themes.push(...themeUrls);
+		const { result } = stringUtils.parseJSON<IThemeUrl[]>(themes, true);
+		if (result?.length) {
+			this._themes.push(...result);
 		}
 	}
 

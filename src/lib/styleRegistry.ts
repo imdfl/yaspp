@@ -188,7 +188,7 @@ class StyleRegistry implements IStyleRegistry {
 		let ruleId = "";
 		const strArrayOptions = { allowEmpty: false, unique: true };
 		if (Array.isArray(classes)) {
-			ruleId = rawId && this._rules.has(rawId) ? rawId : unique.id("rule-");
+			ruleId = (rawId && this._rules.has(rawId)) ? rawId : unique.id("rule-");
 			this._rules.set(ruleId, {
 				classes: stringUtils.toStringArray(classes, strArrayOptions)
 			});

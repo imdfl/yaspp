@@ -55,7 +55,8 @@ class MLNextUtils implements IMLNextUtils {
 					nav: "",
 					styleClassBindings: "",
 					theme: "",
-					themes: ""
+					styleUrls: [],
+					themes: []
 				}
 			}
 		}
@@ -79,7 +80,8 @@ class MLNextUtils implements IMLNextUtils {
 				nav: JSON.stringify(app.nav),
 				styleClassBindings: JSON.stringify(app.styleClassBindings),
 				theme: app.theme,
-				themes: JSON.stringify(app.themeUrls)
+				themes: app.themeUrls.slice(),
+				styleUrls: app.styleUrls.map(r => r.full)
 			},
 		};
 	}

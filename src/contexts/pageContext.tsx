@@ -25,20 +25,11 @@ export class PageContextClass implements IPageContext {
 		let ni: NavGroups = {};
 		this.navItems = new Map();
 
-		const sb = options.styleClassBindings;
 		const bindings: IYasppClassTree[] = [];
-		if (sb) {
-			if (typeof sb === "string") {
-				const { error, result} = stringUtils.parseJSON<IYasppClassTree[]>(sb);
-				if (error || !Array.isArray(result)) {
-					console.error(`Error parsing class bindings ${error || "unknown"}`);
-				}
-				else {
-					bindings.push(...result);
-				}
-			}
-			else if (Array.isArray(sb)) {
-				bindings.push(...sb);
+		if (options.styleClassBindings) {
+			const { error, result } = stringUtils.parseJSON<IYasppClassTree[]>(options.styleClassBindings, true);
+			if (result?.length) {
+				bindings.push(...result);
 			}
 		}
 		const reg = this._styleReg = createStyleRegistry();
