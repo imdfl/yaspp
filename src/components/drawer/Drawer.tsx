@@ -1,4 +1,3 @@
-import React from "react";
 import { default as ModernDrawer } from "react-modern-drawer";
 import styles from "./Drawer.module.scss";
 import ComponentContextProvider from "@contexts/componentContext";

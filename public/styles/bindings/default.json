@@ -2,8 +2,14 @@
 	"$schema": "yaspp-bindings.schema.json",
 	"bindings": [
 		{
+			"header": {
+				"classes": [ "hcontainer" ]
+			},
 			"button": {
 				"classes": [ "container-center", "control" ]
+			},
+			"nav": {
+				"classes": [ "rabak" ]
 			},
 			"menu": {
 				"menu-item": {

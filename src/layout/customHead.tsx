@@ -1,13 +1,13 @@
-import { PropsWithChildren } from "react";
 import Head from "next/head";
 
 type HeadProps = Readonly<{
 	readonly title?: string;
 	readonly name?: string;
 	readonly description?: string;
+	readonly style?: string;
 }>;
 
-const CustomHead = ({ title, name, description, children }: PropsWithChildren<HeadProps>) => (
+const CustomHead = ({ title, name, description, style }: HeadProps) => (
 	<Head>
 		<link
 			rel="icon"
@@ -32,7 +32,15 @@ const CustomHead = ({ title, name, description, children }: PropsWithChildren<He
 			/> */}
 		<meta name="og:title" content={title} />
 		<meta name="twitter:card" content="summary_large_image" />
-		{ children }
+		<style>{`
+			.rabak {
+				color: red;
+			}
+			`}
+		</style>
+		{ style && (
+			<style>{style}</style>
+		)}
 	</Head>
 );
 

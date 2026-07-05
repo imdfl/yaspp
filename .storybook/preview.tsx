@@ -1,6 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import type { Preview } from '@storybook/react';
-import '!style-loader!css-loader!sass-loader!./../src/styles/app.scss';
+// import '!style-loader!css-loader!sass-loader!./../src/styles/app.scss';
+import "@styles/app.scss";
 
 const preview: Preview = {
 	decorators: [

@@ -14617,9 +14617,9 @@ __metadata:
   linkType: hard
 
 "yaspp-types@git+https://github.com/imdfl/yaspp-types.git":
-  version: 1.1.0
-  resolution: "yaspp-types@https://github.com/imdfl/yaspp-types.git#commit=a7b0dff8beeb009fa2cd0da8e659bf384ed207be"
-  checksum: 10c0/22972b119cec7b22eb3fe243f6ade59894fbeb598ab0cce5352cfefdb99b9cd4dd3cda84002dc1f2a56b1e6a7047b1fe8519305e89b3501190a5efad0af13890
+  version: 1.1.1
+  resolution: "yaspp-types@https://github.com/imdfl/yaspp-types.git#commit=2086d472e74c74ad24022d5838605d875ba1f832"
+  checksum: 10c0/f4d2799b5424978f0e54b1b1b4a67eca469371b28c625d89ffd92f68eb6276362ffea551d81dc218384565afea591b13c56ec5b30625650be161d1a2af24145a
   languageName: node
   linkType: hard
 

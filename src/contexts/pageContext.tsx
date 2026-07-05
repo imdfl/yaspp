@@ -11,7 +11,7 @@ export interface IPageContextOptions {
 	readonly dynamicContentServer: IDynamicContentServer,
 	readonly documentPath: string,
 	readonly nav: string | NavGroups;
-	readonly styleClassBindings: string | IYasppClassTree[];
+	readonly styleClassBindings: ReadonlyArray<IYasppClassTree>;
 }
 
 export class PageContextClass implements IPageContext {
@@ -63,7 +63,7 @@ const ctx = createContext<IPageContext>(new PageContextClass({
 	dynamicContentServer: null,
 	documentPath: "",
 	nav: "",
-	styleClassBindings: ""
+	styleClassBindings: []
 }));
 
 export const PageContext: Context<IPageContext> = ctx;

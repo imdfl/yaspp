@@ -1,6 +1,7 @@
 import * as fsPath from "path";
 import { fileUtils } from "../fileUtils";
 import i18nconfig from "@root/i18n";
+import defaultBindings from "@root/public/styles/bindings/default.json";
 import styleBindings from "@root/class-bindings.json";
 import type { IStylesheetUrl, IThemeUrl, IYasppApp } from "@src/types/app";
 import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleNamespace } from "@src/types";
@@ -104,7 +105,8 @@ class YasppApp implements IYasppApp {
 				return returnError(dictErr);
 			}
 			const bf = styleBindings as unknown as IYasppBindingsFile;
-			const bres = validateClassBindings(bf.bindings);
+			const df = defaultBindings as unknown as IYasppBindingsFile;
+			const bres = validateClassBindings(defaultBindings.bindings, ...(Array.isArray(bf.bindings) ? bf.bindings : []));
 			if (bres.error) {
 				return returnError(bres.error);
 			}
@@ -129,6 +131,10 @@ class YasppApp implements IYasppApp {
 		catch(err) {
 			return returnError(String(err));
 		}
+	}
+
+	private async _loadGlobals(config: YASPP.IYasppGlobalsConfig | undefined, projectRoot: string): Promise<string> {
+		return "";
 	}
 
 	private async _loadNavItems(config: YASPP.IYasppNavConfig, projectRoot: string): Promise<string> {

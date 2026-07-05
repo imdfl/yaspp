@@ -1,0 +1,16 @@
+.container {
+	padding: calc(var(--ml-font-size-md) * 0.5);
+}
+
+.hcontainer {
+	@extend .container;
+	display: flex;
+	flex-direction: row;
+}
+
+.vcontainer {
+	@extend .container;
+	display: flex;
+	flex-direction: column;
+}
+

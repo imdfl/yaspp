@@ -36,7 +36,6 @@ class CustomDocument extends Document<IStyleProps> {
 	}
 
 	render() {
-		void fontFaceLinks;
 		return (
 			<Html>
 				<Head>

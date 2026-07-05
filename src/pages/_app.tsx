@@ -9,8 +9,7 @@ import MLThemeContextProvider from "@contexts/MLThemeContext";
 import { fontFaceDecls } from "../siteFonts";
 import "normalize.css/normalize.css";
 import "../styles/app.scss";
-import { stringUtils } from "../lib/stringUtils";
-import { IThemeUrl } from "../types/app";
+import "../styles/classes/index.scss";
 
 let _globalStyles: string[] | null = null;
 
@@ -39,15 +38,11 @@ async function loadStyles(styleUrls?: string[]) {
 const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	const [pageStyles, setPageStyles] = useState<string[] | null>(null);
 	useEffect(() => {
-		if (!pageProps.themes?.length) {
-			return;
-		}
-		const { result: themes } = stringUtils.parseJSON<IThemeUrl[]>(pageProps.themes, true);
-
+		// if (!pageProps.themes?.length) {
+		// 	return;
+		// }
 		const allUrls = []; //(themes?.map(r => r.path)) ?? [];
 		allUrls.push(...(pageProps.styleUrls ?? []));
-		// const themeUrls = pageProps.themes?.map(r => r.)
-		// console.log(pageProps.themes);
 		loadStyles(allUrls)
 			.then(styles => setPageStyles(styles))
 			.catch(err => {
@@ -59,6 +54,7 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 		return <>Loading...</>
 	}
 	const globalStyle = [fontFaceDecls, ...pageStyles].join('\n');
+
 	return (
 		<LocaleContextProvider router={router}>
 			<ThemeProvider

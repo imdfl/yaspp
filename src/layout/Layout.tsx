@@ -21,14 +21,16 @@ import { LocaleId } from "@src/types";
 import { useRouter } from "next/router";
 import { NavSectionId } from "./data/nav";
 import classNames from "@lib/class-names";
-import styles from "./Layout.module.scss";
 import type { LocaleOptionProps } from "@src/layout/locale-select/LocaleSelect";
-import { LocaleContext } from "@contexts/localeContext";
+import { ComponentContextProvider, LocaleContext } from "../contexts";
 import useNavItems from "@hooks/useNavItems";
 import { YasppOnload } from "../components/yaspp-components";
 import { MLThemeContext } from "@contexts/MLThemeContext";
 import { useTranslatedString } from "@hooks/useTranslatedString";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
+import useClassNames from "@hooks/useClassNames";
+
+import styles from "./Layout.module.scss";
 
 const IS_DEBUG = process.env.NEXT_PUBLIC_ML_DEBUG;
 const MIN_DESKTOP_WIDTH = 1024;
@@ -66,11 +68,10 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	// const { theme, setTheme } = useTheme();
 	const { t, locale: lang, locales, textDirection } = useContext(LocaleContext);
 	const { width: screenWidth } = useWindowSize();
-	const { theme, setTheme, themes} = useContext(MLThemeContext);
-	const [oppositeTheme, setOppositeTheme] = useState("");
-	const [loadedStyle, setLoadedstyle] = useState<string | null>("");
+	const { theme, setTheme, themes, oppositeTheme } = useContext(MLThemeContext);
+	const [loadedStyle, setLoadedstyle] = useState<string | null>(null);
 
-	const [ themeNames, setThemeNames ] = useState<ReadonlyArray<string>>(themes?.map(u => u.name) ?? []);
+	// const [themeNames, setThemeNames] = useState<ReadonlyArray<string>>(themes?.map(u => u.name) ?? []);
 
 	const isHome = pathname === "/";
 	const isMobile = screenWidth <= MIN_DESKTOP_WIDTH;
@@ -119,9 +120,15 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const { text: siteTitle } = useTranslatedString(siteTitleGen);
 	const { text: siteSubtitle } = useTranslatedString(siteSubtitleGen);
 	const { text: siteLicense } = useTranslatedString(siteLicenseGen);
+	const { componentClass: headerClass, componentPath: headerPath } = useClassNames({
+		classes: [styles.topbar],
+		part: "header",
+	});
 
 	const menuDrawer = useMemo(
-		() => (
+		() => {
+			const themeNames = themes?.map(u => u.name) ?? [];
+			return (
 			<Drawer
 				direction={textDirection === "ltr" ? "right" : "left"}
 				open={drawerOpen}
@@ -136,9 +143,9 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						<Logo mode={oppositeTheme || theme} className={styles.logo} />
 						<TextLink title={siteTitle} linked={!isHome} href="/" variant="h1">
 							{siteTitle}
-					</TextLink>
+						</TextLink>
 					</div>
-				<Strip />
+					<Strip />
 					<div className={styles.panel}>
 						<LocaleSelect
 							defaultValue={lang}
@@ -162,28 +169,25 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 					/>
 				</Scrollbar>
 			</Drawer>
-		),
+		)
+	},
 		[
 			textDirection,
 			setCurrentTheme,
 			drawerOpen,
 			toggleDrawer,
 			oppositeTheme,
-			themeNames,
 			siteTitle,
 			isHome,
 			lang,
 			localeItems,
 			themeLabel,
 			theme,
+			themes,
 			sidebarSections,
 			setLocale,
 		]
 	);
-
-	useEffect(() => {
-		setThemeNames(themes?.map(u => u.name) ?? []);
-	}, [themes]);
 
 	useEffect(() => {
 		const run = async (): Promise<string[]> => {
@@ -201,36 +205,21 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 			.catch
 	}, [themes, theme])
 
-	useEffect(() => {
-		let op = "";
-		const t = theme,
-			ts = themes;
-		if (t && ts?.length) {
-			op = ((t === ts[0].name) ?
-				ts[1]?.name : 
-				(t === ts[1]?.name) ? ts[0].name
-				: "") ?? "";
-		}
-		setOppositeTheme(op);
-	}, [theme, themes])
-
-
 
 	if (loadedStyle === null) {
 		return <></>
 	}
 
+	const themeNames = themes?.map(u => u.name) ?? [];
 	return (
 		<>
 			<CustomHead
 				title={`${siteTitle} – ${siteSubtitle}`}
 				name={siteTitle}
+				style={loadedStyle}
 				description={siteSubtitle}
-			>
-				{loadedStyle && (
-					<style jsx global>{loadedStyle}</style>
-				)}
-				</CustomHead>
+			/>
+
 			<Scrollbar
 				textDirection={textDirection}
 				height="100vh"
@@ -245,53 +234,56 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 					alignItemsCenter
 					horizontalGutter
 					position="top"
-					className={styles.topbar}
+					className={headerClass}
 				>
 					<header data-testid="topbar">
-						<Container alignItemsCenter className={styles.title}>
-							<Logo mode={theme || "light"} className={styles.logo} />
-							<TextLink
-								variant="subtitle1"
-								title={siteTitle}
-								linked={!isHome}
-								href="/"
-							>
-								{siteTitle}
-							</TextLink>
-							<Separator />
-							<Text variant="subtitle4" className={styles.subtitle}>
-								{siteSubtitle}
-							</Text>
-						</Container>
-						{isMobile ? (
-							<Button onClick={toggleDrawer} asChild>
-								{getIcon("hamburger")}
-							</Button>
-						) : (
-							<Container alignItemsCenter>
-								<Container className={styles.panel}>
-									<MenuBar
-										items={topbarSections}
-										textDirection={textDirection}
-									/>
-									<LocaleSelect
-										defaultValue={lang}
-										options={localeItems}
-										onSelect={(id) => void setLocale(id)}
-										className={styles.localeSelect}
-									/>
-									<ThemeSelect
-										label={themeLabel}
-										theme={theme}
-										themes={themeNames}
-										setTheme={setCurrentTheme}
-										className={styles.themeSelect}
-									/>
-								</Container>
+						<ComponentContextProvider parentPath={headerPath}>
+							<Container alignItemsCenter className={styles.title}>
+								<Logo mode={theme || "light"} className={styles.logo} />
+								<TextLink
+									variant="subtitle1"
+									title={siteTitle}
+									linked={!isHome}
+									href="/"
+								>
+									{siteTitle}
+								</TextLink>
+								<Separator />
+								<Text variant="subtitle4" className={styles.subtitle}>
+									{siteSubtitle}
+								</Text>
 							</Container>
-						)}
+							{isMobile ? (
+								<Button onClick={toggleDrawer} asChild>
+									{getIcon("hamburger")}
+								</Button>
+							) : (
+								<Container alignItemsCenter>
+									<Container className={styles.panel}>
+										<MenuBar
+											items={topbarSections}
+											textDirection={textDirection}
+										/>
+										<LocaleSelect
+											defaultValue={lang}
+											options={localeItems}
+											onSelect={(id) => void setLocale(id)}
+											className={styles.localeSelect}
+										/>
+										<ThemeSelect
+											label={themeLabel}
+											theme={theme}
+											themes={themeNames}
+											setTheme={setCurrentTheme}
+											className={styles.themeSelect}
+										/>
+									</Container>
+								</Container>
+							)}
+						</ComponentContextProvider>
 					</header>
 				</Container>
+
 				<Container className={styles.page}>{children}</Container>
 				<Strip />
 				<Container fullWidth asChild className={styles.footer}>

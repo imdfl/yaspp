@@ -33,6 +33,7 @@ const GEN_HEADER = `// *********************************************************
 // ****************************************************************\n`;
 
 type NSRecord = [string, string[]];
+type ErrorMessage = string;
 interface ILoadNamespacesOptions {
 	folder: string;
 	locales: ReadonlyArray<string>;
@@ -112,7 +113,7 @@ function toNSString(namespaces: NSRecord[]): string {
 // }
 
 
-async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfig): Promise<string> {
+async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfig): Promise<ErrorMessage> {
 	const values = {
 		"%LANGS%": [] as ReadonlyArray<string>,
 		"%DEFAULT%": "en",
@@ -207,11 +208,11 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 	return "";
 }
 
-async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<string> {
+async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<ErrorMessage> {
 	const { classBindings } = config ?? {} as Partial<YASPP.IYasppStyleConfig>;
 	try {
-		const stylePaths = [
-			fsPath.resolve(ROOT_FOLDER, "public/styles/bindings/default.json")
+		const stylePaths: string[] = [
+			// fsPath.resolve(ROOT_FOLDER, "public/styles/bindings/default.json")
 		];
 		if (classBindings.length) {
 			const c = stringUtils.toStringArray(classBindings, { unique: true, allowEmpty: false });
@@ -246,7 +247,31 @@ async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConf
 	}
 }
 
-async function verifyThemes(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<string> {
+async function copyGlobals(projectRoot: string, config?: YASPP.IYasppGlobalsConfig): Promise<ErrorMessage> {
+	if (!config?.files) {
+		return;
+	}
+	const f = config!.files;
+
+	if (!Array.isArray(config.files)) {
+		return `Wrong globals type ${typeof config.files}`;
+	}
+	for await (const rec of f) {
+		try {
+			const src = fsPath.resolve(projectRoot, rec.source);
+			const dst = fsPath.resolve(ROOT_FOLDER, rec.dest);
+			await fs.copyFile(src, dst);
+		}
+		catch (err) {
+			return `Error copying ${rec.source} to ${rec.dest}: ${err}`;
+		}
+
+	}
+
+	return "";
+}
+
+async function verifyThemes(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<ErrorMessage> {
 	const { root, themes } = config;
 	try {
 		const t = stringUtils.toStringArray(themes, { unique: true, allowEmpty: false });
@@ -259,7 +284,7 @@ async function verifyThemes(projectRoot: string, config: YASPP.IYasppStyleConfig
 			return `Styles root ${root} not found under ${projectRoot}`;
 		}
 
-		const themeErr = await validateThemes({	themes: t, siteRoot: ROOT_FOLDER, styleRoot })
+		const themeErr = await validateThemes({ themes: t, siteRoot: ROOT_FOLDER, styleRoot })
 		return themeErr.error ?? "";
 	}
 	catch (e) {
@@ -272,7 +297,7 @@ async function verifyThemes(projectRoot: string, config: YASPP.IYasppStyleConfig
  * @param config known to be valid
  * @returns 
  */
-async function createSiteRoot(/*projectRoot: string, config: YASPP.IYasppConfig */): Promise<string> {
+async function createSiteRoot(/*projectRoot: string, config: YASPP.IYasppConfig */): Promise<ErrorMessage> {
 	try {
 		const publicPath = fsPath.resolve(ROOT_FOLDER, YConstants.PUBLIC_PATH);
 		const perr = await fileUtils.mkdir(publicPath);
@@ -285,7 +310,7 @@ async function createSiteRoot(/*projectRoot: string, config: YASPP.IYasppConfig 
 	}
 }
 
-async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> {
+async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<ErrorMessage> {
 	const { locale, style, assets, content, nav } = config;
 	function toPath(relPath: string): string {
 		return relPath; //`${YConstants.PUBLIC_PATH}/${relPath}`;
@@ -326,7 +351,7 @@ async function generateLocalConfig(config: YASPP.IYasppConfig): Promise<string> 
  * Returns an error message, empty if no error
  * @param projectRoot The full path of the folder that contains the site's yaspp.config.json file
  */
-async function run(projectRoot: string): Promise<string> {
+async function run(projectRoot: string): Promise<ErrorMessage> {
 	try {
 		const { project: projectPath, root } = await getYasppProjectPath(projectRoot);
 		if (!projectPath) {
@@ -336,30 +361,25 @@ async function run(projectRoot: string): Promise<string> {
 		if (error) {
 			return error;
 		}
-		const { locale, style } = config;
+		const { locale, style, globals } = config;
 
-		let err = await createSiteRoot(/*projectRoot, config */);
-		if (err) {
-			return err;
+		const inits = [
+			() => createSiteRoot(/*projectRoot, config */),
+			() => generateI18N(projectPath, locale),
+			() => generateStyles(projectPath, style),
+			() => verifyThemes(projectPath, style),
+			() => copyGlobals(projectPath, globals),
+			() => generateLocalConfig(config),
+		];
+		for await (const init of inits) {
+			const err = await init();
+			if (err) {
+				return err;
+			}
 		}
-		err = await generateI18N(projectPath, locale);
-		if (err) {
-			return err;
-		}
-		err = await generateStyles(projectPath, style);
-		if (err) {
-			return err;
-		}
-		err = await verifyThemes(projectPath, style);
-		if (err) {
-			return err;
-		}
-
-		err = await generateLocalConfig(config);
-		return err;
 	}
-	catch (e) {
-		return `Error loading yaspp.json: ${e}`;
+	catch (err) {
+		return `Error loading yaspp.json: ${err}`;
 	}
 }
 

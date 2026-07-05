@@ -1,0 +1,14 @@
+.document-text {
+	font-family: var(--ml-main-font);
+	font-size: var(--ml-font-size-md);
+}
+
+.emph-text {
+	@extend .document-text;
+	font-style: italic;
+}
+
+.title1 {
+	@extend .document-text;
+	font-size: var(--ml-font-size-2xl);
+}

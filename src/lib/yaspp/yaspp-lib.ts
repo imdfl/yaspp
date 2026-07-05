@@ -2,7 +2,7 @@ import { spawn } from "child_process";
 import fsPath from "path";
 import * as zod from "zod";
 import type { YASPP } from "yaspp-types";
-import type { IOperationResult, NotNull, OperationPromise } from "@src/types";
+import type { IOperationResult, Mutable, NotNull, OperationPromise } from "@src/types";
 import { fileUtils } from "../fileUtils";
 import type { IThemeUrl, IYasppNavData } from "@src/types/app";
 import YConstants from "./constants";
@@ -118,6 +118,31 @@ but has a sheets property`)
 	})
 }
 
+async function validateGlobals(projectRoot: string, config?: YASPP.IYasppGlobalsConfig): Promise<IOperationResult<YASPP.IYasppGlobalsConfig>> {
+	if (!config?.files) {
+		return successResult({ files: [] });
+	}
+	if (!Array.isArray(config.files)) {
+		return errorResult(`Incorrect globals.files: ${typeof config.files} `);
+	}
+	const files: YASPP.IYasppGlobalFile[] = [],
+		f = config.files!;
+
+	for (const rec of f) {
+		const path = fsPath.resolve(projectRoot, rec.source);
+		if (await fileUtils.isFile(path)) {
+			files.push({
+				source: rec.source,
+				dest: rec.dest || fsPath.basename(rec.source)
+			});
+		}
+		else {
+			return errorResult(`Global Source file ${rec.source} not found`);
+		}
+	}
+	return successResult({ files });
+}
+
 async function validateNav(projectRoot: string, config?: YASPP.IYasppNavConfig):
 	Promise<IOperationResult<YASPP.IYasppNavConfig>> {
 	if (!config?.index) {
@@ -215,7 +240,8 @@ async function validateConfig(projectRoot: string, siteRoot: string, config?: Pa
 		validLocale = await validateLocale(projectRoot, config?.locale),
 		validStyle = await validateStyle(projectRoot, siteRoot, config?.style),
 		validAsssets = await validateAssets(projectRoot, config?.assets),
-		validNav = await validateNav(projectRoot, config?.nav);
+		validNav = await validateNav(projectRoot, config?.nav),
+		validGlobals = await validateGlobals(projectRoot, config?.globals);
 
 	const errors = [validContent, validLocale, validStyle, validAsssets, validNav].filter(r => r.error).map(r => r.error);
 
@@ -230,7 +256,8 @@ async function validateConfig(projectRoot: string, siteRoot: string, config?: Pa
 				locale: toResult(validLocale),
 				style: toResult(validStyle),
 				assets: toResult(validAsssets),
-				nav: toResult(validNav)
+				nav: toResult(validNav),
+				globals: toResult(validGlobals)
 			}
 		}
 }
@@ -438,17 +465,19 @@ export async function loadYasppConfig(projectRoot: string, siteRoot: string): Pr
 	}
 }
 
-export function validateClassBindings(bindings: ClassBindings): IOperationResult<IYasppClassTree[]> {
+export function validateClassBindings(...bindingData: unknown[]): IOperationResult<IYasppClassTree[]> {
 	const ret = [];
-	const b: IYasppClassTree[] = Array.isArray(bindings) ? bindings : [bindings];
 	const errors: string[] = [];
-	for (const bindings of b) {
-		const res = ClassTreeSchema.safeParse(bindings);
-		if (!res.success) {
-			errors.push(`Binding validation error(${res.error?.message || "unknown"}`)
-		}
-		else if (res.data) {
-			ret.push(res.data);
+	for (const bdata of bindingData) {
+		const b: IYasppClassTree[] = Array.isArray(bdata) ? bdata : [bdata];
+		for (const bindings of b) {
+			const res = ClassTreeSchema.safeParse(bindings);
+			if (!res.success) {
+				errors.push(`Binding validation error(${res.error?.message || "unknown"}`)
+			}
+			else if (res.data) {
+				ret.push(res.data);
+			}
 		}
 	}
 

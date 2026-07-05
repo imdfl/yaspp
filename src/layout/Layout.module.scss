@@ -33,7 +33,9 @@ $gutter: 2em;
 		@include use-height("layout-header");
 
 		.title {
-			@include use-gap("layout-logo");
+			display: flex;
+			gap: var(--ml-font-size-md);
+			// @include use-gap("layout-logo");
 		}
 
 		.panel {

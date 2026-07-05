@@ -9,6 +9,7 @@ export interface IMLThemeProvider {
 	readonly theme: string;
 	readonly setTheme: SetThemeFunc;
 	readonly themes: ReadonlyArray<IThemeUrl>;
+	readonly oppositeTheme: string;
 }
 
 const STOAGE_KEY = "ml:theme";
@@ -26,14 +27,19 @@ class MLThemeContextImpl implements IMLThemeProvider {
 	private readonly _themes: IThemeUrl[] = [];
 	private readonly _setNextTheme: SetThemeFunc;
 	private readonly _setTheme: SetThemeFunc;
+	private _oppositeTheme = "";
 	constructor({ themes, theme, setNextTheme }: IMLThemeContextOptions) {
 		this._theme = theme ?? "";
 		this._setNextTheme = setNextTheme ?? (() => void 0);
 		this._setTheme = (theme: string) => {
 			if (this._isValidTheme(theme)) {
-				this._theme = theme ?? "";
+				this._theme = theme;
 				if (window?.localStorage) {
 					window.localStorage.setItem(STOAGE_KEY, this._theme);
+				}
+				if (this.themes.length > 1) {
+					const ind = this.themes.findIndex(t => t.name === theme);
+					this._oppositeTheme = this.themes[ind === 0 ? 1 : 0].name;
 				}
 				this._setNextTheme(theme);
 			}
@@ -41,10 +47,12 @@ class MLThemeContextImpl implements IMLThemeProvider {
 				console.warn(`setTheme: unknown theme ${theme}`);
 			}
 		};
-		const { result } = stringUtils.parseJSON<IThemeUrl[]>(themes, true);
-		if (result?.length) {
-			this._themes.push(...result);
-		}
+		this._themes.push(...(themes ?? []));
+
+	}
+
+	public get oppositeTheme() {
+		return this._oppositeTheme;
 	}
 
 	public get theme(): string {

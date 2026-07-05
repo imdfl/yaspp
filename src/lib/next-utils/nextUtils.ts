@@ -53,7 +53,7 @@ class MLNextUtils implements IMLNextUtils {
 					content: "",
 					documentPath: folderPath,
 					nav: "",
-					styleClassBindings: "",
+					styleClassBindings: [],
 					theme: "",
 					styleUrls: [],
 					themes: []
@@ -78,7 +78,7 @@ class MLNextUtils implements IMLNextUtils {
 				content: JSON.stringify(docData.pages),
 				documentPath: page?.path || '',
 				nav: JSON.stringify(app.nav),
-				styleClassBindings: JSON.stringify(app.styleClassBindings),
+				styleClassBindings: app.styleClassBindings,
 				theme: app.theme,
 				themes: app.themeUrls.slice(),
 				styleUrls: app.styleUrls.map(r => r.full)

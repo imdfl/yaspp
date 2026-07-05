@@ -12,10 +12,10 @@ export enum NavSectionId {
  * Represents the full data of a single section in a navigation list
  */
 export interface INavSection {
-	id: string;
-	locale: Record<string, string>;
-	items: ReadonlyArray<YASPP.INavItemData>;
-	title: string;
+	readonly id: string;
+	readonly locale: Record<string, string>;
+	readonly items: ReadonlyArray<YASPP.INavItemData>;
+	readonly title: string;
 };
 
 /**

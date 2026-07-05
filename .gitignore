@@ -68,3 +68,4 @@ playwright-report
 .swc
 
 **/*.stories.*
+.storybook

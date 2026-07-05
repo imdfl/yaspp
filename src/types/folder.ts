@@ -1,4 +1,5 @@
 import { IThemeUrl } from "./app";
+import { IYasppClassTree } from "./styles";
 
 export interface IFolderStaticProps {
 	/** Typically the stringified ParsedPageData */
@@ -9,7 +10,7 @@ export interface IFolderStaticProps {
 	/** The path of the first page in the document data */
 	readonly documentPath: string;
 
-	readonly styleClassBindings: string | object;
+	readonly styleClassBindings: ReadonlyArray<IYasppClassTree>;
 
 	readonly theme: string;
 
