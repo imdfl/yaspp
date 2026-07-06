@@ -17,7 +17,7 @@
 
 @each $locale in locales.$index {
 	[data-locale='#{$locale}'] {
-		@include base(locale-#{$locale});
+		// @include base(locale-#{$locale});
 
 		#{refs.use(locale-direction)}: #{refs.compRef(
 				locale-#{$locale},

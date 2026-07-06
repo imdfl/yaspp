@@ -1,8 +1,10 @@
 import React from "react";
-import ToggleGroup from "../../components/toggle/toggle-group/ToggleGroup";
+import ToggleGroup from "@components/toggle/toggle-group/ToggleGroup";
 import classNames from "@lib/class-names";
-import styles from "./LocaleSelect.module.scss";
 import type { LocaleId } from "@src/types/locale";
+import useClassNames from "@hooks/useClassNames";
+
+import styles from "./LocaleSelect.module.scss";
 
 type LocaleOptionProps = {
 	id: LocaleId;
@@ -22,25 +24,33 @@ const LocaleSelect = ({
 	options,
 	onSelect,
 	className,
-}: LocaleSelectProps): React.JSX.Element => options.length > 1 ? (
-	<ToggleGroup
-		type="single"
-		defaultValue={defaultValue}
-		onSelect={onSelect}
-		className={classNames(styles.root, className)}
-	>
-		{options.map(({ id, label, title }) => (
-			<span
-				key={id}
-				title={title}
-				data-value={id}
-				data-locale={id}
+}: LocaleSelectProps): React.JSX.Element => {
+	const { componentClass } = useClassNames({
+		classes: [styles.root],
+		part: "locale-select",
+	});
+	if (options.length > 1) {
+		return (
+			<ToggleGroup
+				type="single"
+				defaultValue={defaultValue}
+				onSelect={onSelect}
+				className={classNames(styles.root, className)}
 			>
-				{label}
-			</span>
-		))}
-	</ToggleGroup>
-) : <></>
+				{options.map(({ id, label, title }) => (
+					<span
+						key={id}
+						title={title}
+						data-value={id}
+						data-locale={id}
+					>
+						{label}
+					</span>
+				))}
+			</ToggleGroup>)
+	}
+	return <></>
+}
 
 export default LocaleSelect;
 export type { LocaleOptionProps, LocaleSelectProps };

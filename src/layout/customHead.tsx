@@ -32,12 +32,6 @@ const CustomHead = ({ title, name, description, style }: HeadProps) => (
 			/> */}
 		<meta name="og:title" content={title} />
 		<meta name="twitter:card" content="summary_large_image" />
-		<style>{`
-			.rabak {
-				color: red;
-			}
-			`}
-		</style>
 		{ style && (
 			<style>{style}</style>
 		)}

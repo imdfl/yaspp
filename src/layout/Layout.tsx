@@ -35,27 +35,39 @@ import styles from "./Layout.module.scss";
 const IS_DEBUG = process.env.NEXT_PUBLIC_ML_DEBUG;
 const MIN_DESKTOP_WIDTH = 1024;
 
-let _globalStyles: string[] | null = null;
+const _globalStyles = new Map<string, string>();
 
-async function loadStyles(styleUrls?: string[]) {
-	if (_globalStyles) {
-		return _globalStyles;
-	}
+async function loadStyles(styleUrls?: string[]): Promise<string[]> {
 	if (!styleUrls?.length) {
 		return [];
 	}
 	const styles: string[] = [];
 
 	for await (const url of styleUrls) {
-		const cssModule = await import(/* webpackIgnore: true */ url, { with: { type: "css" } });
-		const css = (cssModule.default as CSSStyleSheet);
-		if (css?.cssRules?.length) {
-			const cssText = Array.from(css.cssRules).map(rule => rule.cssText).join('\n');
-			styles.push(cssText);
+		if (_globalStyles.has(url)) {
+			const txt = _globalStyles.get(url);
+			if (txt) {
+				styles.push(txt);
+			}
+		}
+		else {
+			let cssText = "";
+			try {
+				const cssModule = await import(/* webpackIgnore: true */ url, { with: { type: "css" } });
+				const css = (cssModule.default as CSSStyleSheet);
+				if (css?.cssRules?.length) {
+					cssText = Array.from(css.cssRules).map(rule => rule.cssText).join('\n');
+				}
+			}
+			catch (e) {
+				console.error(`Error loading css module from ${url}: ${e}`);
+			}
+			finally {
+				_globalStyles.set(url, cssText);
+			}
 		}
 	}
-	_globalStyles = styles;
-	return _globalStyles;
+	return styles;
 }
 
 
@@ -129,48 +141,48 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 		() => {
 			const themeNames = themes?.map(u => u.name) ?? [];
 			return (
-			<Drawer
-				direction={textDirection === "ltr" ? "right" : "left"}
-				open={drawerOpen}
-				onClose={toggleDrawer}
-				className={styles.drawer}
-			>
-				<Scrollbar textDirection={textDirection} height="100vh">
-					<Button onClick={toggleDrawer} asChild>
-						{getIcon("close")}
-					</Button>
-					<div className={styles.menuHeader}>
-						<Logo mode={oppositeTheme || theme} className={styles.logo} />
-						<TextLink title={siteTitle} linked={!isHome} href="/" variant="h1">
-							{siteTitle}
-						</TextLink>
-					</div>
-					<Strip />
-					<div className={styles.panel}>
-						<LocaleSelect
-							defaultValue={lang}
-							options={localeItems}
-							onSelect={(id) => id !== lang && void setLocale(id)}
-							className={styles.localeSelect}
+				<Drawer
+					direction={textDirection === "ltr" ? "right" : "left"}
+					open={drawerOpen}
+					onClose={toggleDrawer}
+					className={styles.drawer}
+				>
+					<Scrollbar textDirection={textDirection} height="100vh">
+						<Button onClick={toggleDrawer} asChild>
+							{getIcon("close")}
+						</Button>
+						<div className={styles.menuHeader}>
+							<Logo mode={oppositeTheme || theme} className={styles.logo} />
+							<TextLink title={siteTitle} linked={!isHome} href="/" variant="h1">
+								{siteTitle}
+							</TextLink>
+						</div>
+						<Strip />
+						<div className={styles.panel}>
+							<LocaleSelect
+								defaultValue={lang}
+								options={localeItems}
+								onSelect={(id) => id !== lang && void setLocale(id)}
+								className={styles.localeSelect}
+							/>
+							<Separator className={styles.separator} />
+							{oppositeTheme && (<ThemeSelect
+								label={themeLabel}
+								theme={theme}
+								themes={themeNames}
+								setTheme={setCurrentTheme}
+								className={styles.themeSelect}
+							/>)}
+						</div>
+						<MenuDrawer
+							items={sidebarSections}
+							onClose={toggleDrawer}
+							className={styles.menu}
 						/>
-						<Separator className={styles.separator} />
-						{oppositeTheme && (<ThemeSelect
-							label={themeLabel}
-							theme={theme}
-							themes={themeNames}
-							setTheme={setCurrentTheme}
-							className={styles.themeSelect}
-						/>)}
-					</div>
-					<MenuDrawer
-						items={sidebarSections}
-						onClose={toggleDrawer}
-						className={styles.menu}
-					/>
-				</Scrollbar>
-			</Drawer>
-		)
-	},
+					</Scrollbar>
+				</Drawer>
+			)
+		},
 		[
 			textDirection,
 			setCurrentTheme,

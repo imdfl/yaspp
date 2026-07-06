@@ -1,16 +1,17 @@
-.container {
-	padding: calc(var(--ml-font-size-md) * 0.5);
-}
+@layer base {
+	.container {
+		padding: calc(var(--ml-font-size-md) * 0.5);
+	}
 
-.hcontainer {
-	@extend .container;
-	display: flex;
-	flex-direction: row;
-}
+	.hcontainer {
+		@extend .container;
+		display: flex;
+		flex-direction: row;
+	}
 
-.vcontainer {
-	@extend .container;
-	display: flex;
-	flex-direction: column;
+	.vcontainer {
+		@extend .container;
+		display: flex;
+		flex-direction: column;
+	}
 }
-
