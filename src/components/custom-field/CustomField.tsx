@@ -74,7 +74,7 @@ const CustomField = ({
 						<span className={styles.label}>
 							{icon && (
 								<span className={styles.icon}>
-									{getIcon(icon, styles.icon)}
+									{getIcon(icon, { className: styles.icon })}
 								</span>
 							)}
 							<span className={styles.text}>

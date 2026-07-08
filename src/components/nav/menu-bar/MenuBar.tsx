@@ -1,22 +1,23 @@
 import React, { useContext } from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { getIcon } from "../../icons";
-import ListItem from "../../list-item/ListItem";
-import Button from "../../button/Button";
-import List from "../../list/List";
+import { getIcon } from "@components/icons";
+import ListItem from "@components/list-item/ListItem";
+import Button from "@components/button/Button";
+import List from "@components/list/List";
 import NavItem from "../nav-item/NavItem";
-import styles from "./MenuBar.module.scss";
 import type { INavSection } from "@src/types/nav";
-import { LocaleContext } from "@contexts/localeContext";
+import { LocaleContext } from "@contexts/index";
 import type { TextDirection } from "@src/types/locale";
 import type { YASPP } from "yaspp-types";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
+import styles from "./MenuBar.module.scss";
+
 interface NavProps {
 	readonly items: ReadonlyArray<INavSection>;
-	textDirection?: TextDirection;
+	readonly textDirection?: TextDirection;
 };
 
 const renderItems = (items: ReadonlyArray<YASPP.INavItemData>) =>
@@ -45,7 +46,7 @@ const renderSections = (sections: ReadonlyArray<INavSection>) =>
 					<Button className={styles.menuSectionTriggerButton} asChild>
 						<NavigationMenu.Trigger>
 							{section.title}
-							{getIcon("caretDown", styles.caret)}
+							{getIcon("caretDown", { className: styles.caret })}
 						</NavigationMenu.Trigger>
 					</Button>
 					<NavigationMenu.Content className={styles.content}>

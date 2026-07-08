@@ -11,17 +11,15 @@ $__stylesheet__: (
 	box-sizing: border-box;
 
 	&[data-fixed-position='true'] {
-		position: fixed;
+		position: sticky;
 		z-index: 1;
 
-		&[data-position-top] {
-			&[data-position='bottom'] {
-				bottom: 0;
-			}
+		&[data-position='bottom'] {
+			bottom: 0;
+		}
 
-			&[data-position-top='top'] {
-				top: 0;
-			}
+		&[data-position='top'] {
+			top: 0;
 		}
 	}
 

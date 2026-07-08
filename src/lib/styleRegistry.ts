@@ -80,6 +80,10 @@ class StyleRegistry implements IStyleRegistry {
 	}
 
 	public getClassNames(part: string, path: ReadonlyArray<string>): string[] {
+		if (/[^\.]\.[^\.]/.test(part)) {
+			const parts = part.split('.');
+			return this.getClassNames(parts.slice(1).join('.'), path.concat(parts[0]));
+		}
 		const b = this._bindings.get(part);
 		if (!b) {
 			return [];
@@ -221,6 +225,26 @@ class StyleRegistry implements IStyleRegistry {
 		}
 		this._bindings.set(part, cur);
 		return ruleId;
+	}
+
+	private _test(): void {
+		// const l = (part: string, path: string[]) => {
+		// 	const c = this.getClassNames(part, path);
+		// 	console.log(`Class names for ${[...path, part]}: ${c}`);
+		// }
+		// l("button", []);
+		// l("button", ["menu"]);
+		// l("button", ["menu", "menu-item"]);
+		// l("button", ["menu-item", "menu"]);
+		// l("button", ["menu-item"]);
+		// l("button", ["site-horizontal-menu"]);
+		// l("button", ["site-horizontal-menu", "menu"]);
+		// l("button", ["site-horizontal-menu", "menu-item"]);
+		// l("button", ["site-horizontal-menu", "menu", "menu-item"]);
+		// l("menu-item", []);
+		// l("menu-item", ["menu"]);
+		// l("menu-item", ["site-horizontal-menu", "menu", "menu-item"]);
+
 	}
 }
 

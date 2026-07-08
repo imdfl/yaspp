@@ -5,19 +5,21 @@
 
 // @use './vars/custom/dark';
 
-[data-ml-theme] {
-	// global assets
-	--ml-logo-light-url: url('/assets/logo/yaspp-logo-light.png');
-	--ml-logo-dark-url: url('/assets/logo/yaspp-logo-dark.png');
-	--ml-loading-indicator-url: url('/assets/logo/yaspp-logo-dark.png');
+@layer base {
+	:root {
+		// global assets
+		--ml-logo-light-url: url('/assets/logo/yaspp-logo-light.png');
+		--ml-logo-dark-url: url('/assets/logo/yaspp-logo-dark.png');
+		--ml-loading-indicator-url: url('/assets/logo/yaspp-logo-dark.png');
 
-	// global vars
-	@include parser.compile(common.$vars, config.$theme-global-prefix);
+		// global vars
+		@include parser.compile(common.$vars, config.$theme-global-prefix);
+		@include parser.compile(light.$vars);
+	}
 }
 
-[data-ml-theme='light'] {
-	@include parser.compile(light.$vars);
-}
+// [data-ml-theme='light'] {
+// }
 
 // [data-ml-theme='dark'] {
 // 	// 	@include parser.compile(dark.$index);

@@ -23,39 +23,48 @@ import {
 	ExclamationTriangleIcon
 } from "@radix-ui/react-icons";
 
+import type { IconProps} from "@radix-ui/react-icons/dist/types";
+
+export interface IGetIconOptions {
+	readonly className: string;
+	readonly varName: string;
+	readonly iconProps: IconProps;
+}
+
 type IconData = typeof CheckIcon;
 const ICON_MAP = new Map<string, IconData>([
-	[ "email", EnvelopeClosedIcon ],
-	[ "?", QuestionMarkCircledIcon ],
-	[ "twitter", TwitterLogoIcon],
-	[ "article", FileIcon ], 
-	[ "list", ListBulletIcon ], 
-	[ "github", GitHubLogoIcon ], 
-	[ "pencil", Pencil1Icon ],
-	[ "light", SunIcon ], 
-	[ "dark", MoonIcon ], 
-	[ "close", Cross2Icon ],
-	[ "hamburger", HamburgerMenuIcon ], 
-	[ "caretDown", CaretDownIcon ], 
-	[ "chevronLeft", ChevronLeftIcon ], 
-	[ "chevronRight", ChevronRightIcon ], 
-[ "arrowLeft", ArrowLeftIcon ], 
-	[ "arrowRight", ArrowRightIcon ], 
-	[ "person", PersonIcon ], 
-	[ "closed-envelope", EnvelopeClosedIcon ], 
-	[ "check", CheckIcon ], 
-	[ "cross", CrossCircledIcon ], 
-	[ "checkbox", CheckboxIcon ], 
-	[ "file-text", FileTextIcon ]
+	["email", EnvelopeClosedIcon],
+	["?", QuestionMarkCircledIcon],
+	["twitter", TwitterLogoIcon],
+	["article", FileIcon],
+	["list", ListBulletIcon],
+	["github", GitHubLogoIcon],
+	["pencil", Pencil1Icon],
+	["light", SunIcon],
+	["dark", MoonIcon],
+	["close", Cross2Icon],
+	["hamburger", HamburgerMenuIcon],
+	["caretDown", CaretDownIcon],
+	["chevronLeft", ChevronLeftIcon],
+	["chevronRight", ChevronRightIcon],
+	["arrowLeft", ArrowLeftIcon],
+	["arrowRight", ArrowRightIcon],
+	["person", PersonIcon],
+	["closed-envelope", EnvelopeClosedIcon],
+	["check", CheckIcon],
+	["cross", CrossCircledIcon],
+	["checkbox", CheckboxIcon],
+	["file-text", FileTextIcon]
 ])
 
-export const getIcon = (icon: string, className?: string) => {
+export const getIcon = (icon: string, options?: Partial<IGetIconOptions>) => {
+	const { className = "", varName, iconProps = {} } = (options ?? {});
 	const Ref = ICON_MAP.get(icon);
 	if (Ref) {
-		return <Ref className={className} />
+		return <Ref className={className} {...iconProps } />
 	}
-	else if (icon?.length <= 2) { // will cover
+	else if (icon?.length <= 2) { // render the text
 		return icon;
 	}
-	return <ExclamationTriangleIcon className={className} />
+	return <ExclamationTriangleIcon className={className} {...iconProps } />
 };

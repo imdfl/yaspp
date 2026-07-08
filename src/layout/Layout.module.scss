@@ -54,7 +54,7 @@ $gutter: 2em;
 
 	.page {
 		@include page-container-mixin(name());
-		@include use-margin-top("layout-page");
+		// @include use-margin-top("layout-page");
 
 		min-height: calc(100vh - $footerMinheight);
 	}

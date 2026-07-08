@@ -52,7 +52,7 @@ const ThemeSelect = ({
 			onClick={toggleTheme}
 			className={classNames(styles.root, className)}
 		>
-			{getIcon(theme)}
+			{getIcon(theme, { varName: `ml-logo-${theme}-url` })}
 		</ToggleButton>
 	);
 };

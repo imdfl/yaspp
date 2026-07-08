@@ -1,5 +1,5 @@
-@use 'colors';
-@use 'locale';
-@use 'components';
+@use './colors';
+@use './locale';
+@use './components';
 
 $vars: locale.$vars, colors.$vars, components.$index;
