@@ -1,5 +1,7 @@
 import { spawn } from "child_process";
+import sassCompiler from "sass";
 import fsPath from "path";
+import { promises as fs } from "fs";
 import * as zod from "zod";
 import type { YASPP } from "yaspp-types";
 import type { IOperationResult, Mutable, NotNull, OperationPromise } from "@src/types";
@@ -13,11 +15,34 @@ export interface IValidateThemesOptions {
 	readonly themes: string | ReadonlyArray<string>;
 	readonly styleRoot: string;
 	readonly siteRoot: string;
+	readonly compile: boolean;
 }
 
 export interface IYasppProjectPath {
 	readonly root: string;
 	readonly project: string;
+}
+
+export interface IValidateStyleOptions {
+	readonly projectRoot: string;
+	readonly siteRoot: string;
+	readonly compile: boolean;
+	readonly style?: Partial<YASPP.IYasppStyleConfig>;
+}
+
+export interface ILoadConfigOptions {
+	readonly projectRoot: string;
+	readonly siteRoot: string;
+	readonly compile: boolean;
+}
+
+export interface IValidateConfigOptions extends ILoadConfigOptions {
+	readonly config?: Partial<YASPP.IYasppConfig>;
+}
+export interface IValidateCSSFileOptions {
+	readonly path: string;
+	readonly mustExist: boolean;
+	readonly compile: boolean | "save";
 }
 
 const ClassesSchema = zod.array(zod.string());
@@ -64,7 +89,7 @@ async function validateContent(projectRoot: string, content?: Partial<YASPP.IYas
 		}
 	}
 }
-async function validateStyle(projectRoot: string, siteRoot: string, style?: Partial<YASPP.IYasppStyleConfig>):
+async function validateStyle({ projectRoot, siteRoot, style, compile }: IValidateStyleOptions):
 	Promise<IOperationResult<YASPP.IYasppStyleConfig>> {
 	const themes = [];
 	if (!style) {
@@ -87,10 +112,20 @@ but has a sheets property`)
 
 	for await (const ss of sheets) {
 		const sheetPath = fsPath.resolve(styleRoot, ss);
-		const targetSheet = fileUtils.ensureFileExtension(sheetPath, "css");
-		if (!await fileUtils.isFile(targetSheet)) {
-			return errorResult(`Stylesheet ${ss} not found in ${styleRoot}`);
+		const { error, result } = await validateCSSFile({
+			path: sheetPath,
+			compile: false,
+			mustExist: true
+		})
+		if (error) {
+			return errorResult(error);
 		}
+
+
+		// const targetSheet = fileUtils.ensureFileExtension(sheetPath, "css");
+		// if (!await fileUtils.isFile(targetSheet)) {
+		// 	return errorResult(`Stylesheet ${ss} not found in ${styleRoot}`);
+		// }
 	}
 	themes.push(...(style.themes?.length ? stringUtils.toStringArray(style.themes, {
 		allowEmpty: false, unique: true
@@ -98,7 +133,8 @@ but has a sheets property`)
 	const themeRes = await validateThemes({
 		themes,
 		siteRoot,
-		styleRoot
+		styleRoot,
+		compile
 	});
 	if (themeRes.error) {
 		return errorResult(themeRes.error);
@@ -234,11 +270,11 @@ async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYaspp
  * @param projectRoot 
  * @param config 
  */
-async function validateConfig(projectRoot: string, siteRoot: string, config?: Partial<YASPP.IYasppConfig>):
+async function validateConfig({ projectRoot, siteRoot, config, compile }: IValidateConfigOptions):
 	Promise<IOperationResult<YASPP.IYasppConfig>> {
 	const validContent = await validateContent(projectRoot, config?.content),
 		validLocale = await validateLocale(projectRoot, config?.locale),
-		validStyle = await validateStyle(projectRoot, siteRoot, config?.style),
+		validStyle = await validateStyle({ projectRoot, siteRoot, style: config?.style, compile }),
 		validAsssets = await validateAssets(projectRoot, config?.assets),
 		validNav = await validateNav(projectRoot, config?.nav),
 		validGlobals = await validateGlobals(projectRoot, config?.globals);
@@ -266,11 +302,94 @@ async function validateConfig(projectRoot: string, siteRoot: string, config?: Pa
 ///////////// Exported members ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
+export async function validateCSSFile({ path, mustExist, compile }: IValidateCSSFileOptions): OperationPromise<string> {
+	if (!path) {
+		return { error: `validate CSS file: no input` };
+	}
+	const ext = fsPath.extname(path);
+	const basePath = path.slice(0, path.length - ext.length);
+	const cssPath = `${basePath}.css`;
+	if (await fileUtils.isFile(cssPath)) {
+		return { result: cssPath };
+	}
+	const scssPath = `${basePath}.scss`;
+	if (await fileUtils.isFile(scssPath)) {
+		if (compile === false) {
+			return { result: cssPath };
+		}
+		try {
+			const res = await sassCompiler.compileAsync(scssPath, {
+				style: "compressed",
+			});
+			if (res.css && compile === "save") {
+				await fs.writeFile(cssPath, res.css);
+			}
+			return { result: cssPath };
+		}
+		catch (e) {
+			return { error: `Error compiling or saving ${scssPath}: ${e}` }
+		}
+	}
+	return { error: mustExist ? `no file found for $path` : "" };
+
+}
+
 /**
  * Returns an error message
  * @param themes array of theme names, can also be a comma separated string
  */
-export async function validateThemes({ themes, styleRoot, siteRoot }: IValidateThemesOptions): OperationPromise<IThemeUrl[]> {
+export async function validateThemes({ themes, styleRoot, siteRoot, compile }: IValidateThemesOptions): OperationPromise<IThemeUrl[]> {
+	const t = stringUtils.toStringArray(themes, { unique: true, allowEmpty: false });
+	const errors = [];
+	const ret = [] as IThemeUrl[];
+	for await (const theme of t) {
+		const tname = fileUtils.ensureFileExtension(theme, "css"),
+			themeName = fileUtils.ensureFileExtension(tname, "");
+		const paths = [] as string[];
+		const opts = {
+			mustExist: false,
+			compile: compile ? "save" as const : false
+		};
+
+		const { error: errS, result: sysUrl } = await validateCSSFile({
+			path: fsPath.resolve(siteRoot, "public/styles/themes", theme),
+			...opts
+		});
+		if (errS) {
+			return { error: errS };
+		}
+		if (sysUrl) {
+			paths.push(`/styles/themes/${tname}`);
+		}
+		const { error: errC, result: url } = await validateCSSFile({
+			path: fsPath.resolve(styleRoot, "themes", theme),
+			...opts
+		});
+		if (errC) {
+			return { error: errC };
+		}
+		if (url) {
+			paths.push(`/${YConstants.STYLES_PATH}/themes/${tname}`);
+		}
+
+
+		if (paths.length) {
+			ret.push({
+				name: themeName,
+				paths
+			})
+		}
+		else {
+			errors.push(`Theme file(s) for ${themeName} not found`);
+		}
+	}
+	return operationResult(errors.join('\n'), ret);
+}
+/**
+ * Returns an error message
+ * @param themes array of theme names, can also be a comma separated string
+ */
+export async function validateThemes1({ themes, styleRoot, siteRoot }: IValidateThemesOptions): OperationPromise<IThemeUrl[]> {
 	const t = stringUtils.toStringArray(themes, { unique: true, allowEmpty: false });
 	const errors = [];
 	const ret = [] as IThemeUrl[];
@@ -278,27 +397,28 @@ export async function validateThemes({ themes, styleRoot, siteRoot }: IValidateT
 		const tname = fileUtils.ensureFileExtension(theme, "css"),
 			themeName = fileUtils.ensureFileExtension(tname, ""),
 			stname = themeName + ".scss";
+
 		const uPath1 = fsPath.resolve(styleRoot, "themes", stname),
 			uPath2 = fsPath.resolve(styleRoot, "themes", tname);
+		const sysPath1 = fsPath.resolve(siteRoot, "public/styles/themes", stname),
+			sysPath2 = fsPath.resolve(siteRoot, "public/styles/themes", tname);
+
+		const paths = [] as string[];
+		if (await fileUtils.isFile(sysPath1) || await fileUtils.isFile(sysPath2)) {
+			paths.push(`/styles/themes/${tname}`);
+		}
 		if (await fileUtils.isFile(uPath1) || await fileUtils.isFile(uPath2)) {
-			ret.push({
-				path: `/${YConstants.STYLES_PATH}/themes/${tname}`,
-				name: themeName
-			})
+			paths.push(`/${YConstants.STYLES_PATH}/themes/${tname}`);
 		}
 
+		if (paths.length) {
+			ret.push({
+				name: themeName,
+				paths
+			})
+		}
 		else {
-			const sysPath1 = fsPath.resolve(siteRoot, "public/styles/themes", stname),
-				sysPath2 = fsPath.resolve(siteRoot, "public/styles/themes", tname);
-			if (await fileUtils.isFile(sysPath1) || await fileUtils.isFile(sysPath2)) {
-				ret.push({
-					path: `/styles/themes/${tname}`,
-					name: themeName
-				})
-			}
-			else {
-				errors.push(`Theme ${themeName} not found`);
-			}
+			errors.push(`Theme file(s) for ${themeName} not found`);
 		}
 	}
 	return operationResult(errors.join('\n'), ret);
@@ -451,14 +571,14 @@ export async function getYasppProjectPath(projectPath?: string): Promise<IYasppP
 	return { root, project: "" };
 }
 
-export async function loadYasppConfig(projectRoot: string, siteRoot: string): Promise<IOperationResult<YASPP.IYasppConfig>> {
+export async function loadYasppConfig({ projectRoot, siteRoot, compile }: ILoadConfigOptions): Promise<IOperationResult<YASPP.IYasppConfig>> {
 	try {
 		const configPath = fsPath.resolve(projectRoot, YConstants.CONFIG_FILE);
 		const { result: userConfig, error } = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
 		if (!userConfig) {
 			return errorResult(`Missing or invalid yaspp configuration file (${configPath}): ${error || "unknown error"}`);
 		}
-		return validateConfig(projectRoot, siteRoot, userConfig);
+		return validateConfig({ projectRoot, siteRoot, config: userConfig, compile });
 	}
 	catch (err) {
 		return errorResult(`Error loading yaspp config ${err}`);

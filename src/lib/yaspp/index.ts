@@ -8,7 +8,7 @@ import type { I18NConfig, LocaleDictionary, LocaleId, LocaleLanguage, LocaleName
 import type { INavSection, NavGroups } from "@src/types/nav";
 import type { IYasppBindingsFile, IYasppClassTree } from "@src/types/styles";
 import type { YASPP } from "yaspp-types";
-import { getYasppProjectPath, IYasppProjectPath, loadYasppConfig, validateClassBindings, validateThemes } from "./yaspp-lib";
+import { getYasppProjectPath, IYasppProjectPath, loadYasppConfig, validateClassBindings, validateCSSFile, validateThemes } from "./yaspp-lib";
 import YConstants from "./constants";
 
 interface ILocaleResult {
@@ -34,7 +34,7 @@ class YasppApp implements IYasppApp {
 		return this._state === "loading";
 	}
 
-	public get error(){
+	public get error() {
 		return this._error;
 	}
 
@@ -79,7 +79,7 @@ class YasppApp implements IYasppApp {
 		}
 		this._state = "loading";
 		const returnError = (err: string) => {
-			this._state  = err ? "error" : "loaded";
+			this._state = err ? "error" : "loaded";
 			this._error = err ? `Yaspp init error: ${err}\ncwd: ${process.cwd()}\nroot: ${root}\nProject root: ${projectRoot}` : "";
 			return err;
 		}
@@ -88,14 +88,14 @@ class YasppApp implements IYasppApp {
 				return returnError(`path ${projectRoot} is not a folder, can't find ${YConstants.CONFIG_FILE}`);
 			}
 			this._root = projectRoot;
-			const { error: configErr, result: yConfig } = await loadYasppConfig(projectRoot, root);
+			const { error: configErr, result: yConfig } = await loadYasppConfig({ projectRoot, siteRoot: root, compile: true });
 			if (configErr) {
 				return returnError(configErr);
 			}
 			const { content, style } = yConfig;
 			this._content = fsPath.resolve(projectRoot, content.root);
 			this._indexPage = yConfig.content.index;
-	
+
 			const styleErr = await this._processStyles(projectRoot, style);
 			if (styleErr) {
 				return returnError(styleErr);
@@ -112,10 +112,11 @@ class YasppApp implements IYasppApp {
 			}
 			const styleRoot = fsPath.resolve(projectRoot, style.root); // must exist
 
-			const { error: themeErr, result: themes} = await validateThemes({
+			const { error: themeErr, result: themes } = await validateThemes({
 				siteRoot: root,
 				styleRoot,
-				themes: style.themes
+				themes: style.themes,
+				compile: true
 			});
 			if (themeErr) {
 				return returnError(themeErr);
@@ -128,7 +129,7 @@ class YasppApp implements IYasppApp {
 
 			return returnError(navErr);
 		}
-		catch(err) {
+		catch (err) {
 			return returnError(String(err));
 		}
 	}
@@ -240,15 +241,25 @@ class YasppApp implements IYasppApp {
 			if (rawSheet.includes("..") || !/^[a-z_]/i.test(rawSheet)) {
 				return `Illegal stylesheet url ${rawSheet}`
 			}
-			const sheet = fileUtils.ensureFileExtension(rawSheet, "css");
-			const sheetPath = fsPath.resolve(styleRoot, sheet);
-			if (!await fileUtils.isFile(sheetPath)) {
-				return `Stylesheet ${sheetPath} not found`;
+			const { error, result } = await validateCSSFile({
+				path: fsPath.resolve(styleRoot, rawSheet),
+				compile: "save",
+				mustExist: true
+			})
+			if (error) {
+				return error;
 			}
-			this._styleUrls.push({
-				base: sheet,
-				full: `/yaspp/styles/${sheet}`
-			});
+			if (result) {
+				const sheet = fileUtils.ensureFileExtension(rawSheet, "css");
+				// const sheetPath = fsPath.resolve(styleRoot, sheet);
+				// if (!await fileUtils.isFile(sheetPath)) {
+				// 	return `Stylesheet ${sheetPath} not found`;
+				// }
+				this._styleUrls.push({
+					base: sheet,
+					full: `/${YConstants.STYLES_PATH}/${sheet}`
+				});
+			}
 		}
 		return "";
 	}

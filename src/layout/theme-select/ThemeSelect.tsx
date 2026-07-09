@@ -25,10 +25,11 @@ const ThemeSelect = ({
 	const { mounted } = useMountGuard();
 
 	const toggleTheme = useCallback(() => {
-		if (themes.length < 2) {
+		const maxInd = themes.length - 1;
+		if (maxInd === 0) {
 			return;
 		}
-		let nextInd = curThemeIndex === 0 ? 1 : 0;
+		const nextInd = curThemeIndex >= maxInd ? 0 : (curThemeIndex + 1);
 		setTheme(themes[nextInd]);
 		
 	}, [curThemeIndex, themes, setTheme])
@@ -40,7 +41,7 @@ const ThemeSelect = ({
 	if (!mounted) {
 		return null;
 	}
-	if (themes.length < 2 || curThemeIndex < 0) {
+	if (themes.length < 2) {
 		return null;
 	}
 

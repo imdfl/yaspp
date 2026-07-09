@@ -23,7 +23,7 @@ export interface IOperationResult<T extends NotNull> {
 	readonly result?: T;
 }
 
-export type OperationPromise<T extends object> = Promise<IOperationResult<T>>;
+export type OperationPromise<T extends object | string> = Promise<IOperationResult<T>>;
 
 
 export * from "./locale";

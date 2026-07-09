@@ -1,10 +1,13 @@
+@use "sass:color";
 @use "../site";
 
 $colors: (
 	background: #FAFAFD,
-	background-hover: darken(#FAFAFC, 20%),
+	background-hover: color.adjust(#FAFAFC, $lightness: 20%),
 	text: #252525,
 	action-color: #55F
 );
 
-@include site.root($colors: $colors);
+@layer theme {
+	@include site.root($colors: $colors);
+}

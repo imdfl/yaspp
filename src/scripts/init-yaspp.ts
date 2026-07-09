@@ -20,6 +20,7 @@ import {
 	validateThemes
 } from "@lib/yaspp/yaspp-lib";
 import YConstants from "../lib/yaspp/constants";
+import { copyYasppContent } from "./copy-content";
 /**
  * The root of the  yaspp module
  */
@@ -247,30 +248,6 @@ async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConf
 	}
 }
 
-async function copyGlobals(projectRoot: string, config?: YASPP.IYasppGlobalsConfig): Promise<ErrorMessage> {
-	if (!config?.files) {
-		return;
-	}
-	const f = config!.files;
-
-	if (!Array.isArray(config.files)) {
-		return `Wrong globals type ${typeof config.files}`;
-	}
-	for await (const rec of f) {
-		try {
-			const src = fsPath.resolve(projectRoot, rec.source);
-			const dst = fsPath.resolve(ROOT_FOLDER, rec.dest);
-			await fs.copyFile(src, dst);
-		}
-		catch (err) {
-			return `Error copying ${rec.source} to ${rec.dest}: ${err}`;
-		}
-
-	}
-
-	return "";
-}
-
 async function verifyThemes(projectRoot: string, config: YASPP.IYasppStyleConfig): Promise<ErrorMessage> {
 	const { root, themes } = config;
 	try {
@@ -284,7 +261,7 @@ async function verifyThemes(projectRoot: string, config: YASPP.IYasppStyleConfig
 			return `Styles root ${root} not found under ${projectRoot}`;
 		}
 
-		const themeErr = await validateThemes({ themes: t, siteRoot: ROOT_FOLDER, styleRoot })
+		const themeErr = await validateThemes({ themes: t, siteRoot: ROOT_FOLDER, styleRoot, compile: false })
 		return themeErr.error ?? "";
 	}
 	catch (e) {
@@ -357,7 +334,7 @@ async function run(projectRoot: string): Promise<ErrorMessage> {
 		if (!projectPath) {
 			return `project folder not found at ${projectRoot}`;
 		}
-		const { error, result: config } = await loadYasppConfig(projectPath, root);
+		const { error, result: config } = await loadYasppConfig({ projectRoot: projectPath, siteRoot: root, compile: false });
 		if (error) {
 			return error;
 		}
@@ -368,7 +345,6 @@ async function run(projectRoot: string): Promise<ErrorMessage> {
 			() => generateI18N(projectPath, locale),
 			() => generateStyles(projectPath, style),
 			() => verifyThemes(projectPath, style),
-			() => copyGlobals(projectPath, globals),
 			() => generateLocalConfig(config),
 		];
 		for await (const init of inits) {
@@ -377,23 +353,29 @@ async function run(projectRoot: string): Promise<ErrorMessage> {
 				return err;
 			}
 		}
+		const copyErr = await copyYasppContent({
+			projectPath, root, clean: true
+		});
+		return copyErr;
 	}
 	catch (err) {
 		return `Error loading yaspp.json: ${err}`;
 	}
 }
 
-const rootArg = yasppUtils.getArg(process.argv, "--project");
-if (!rootArg) {
-	yasppUtils.exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
-}
-else {
-	// void testZod;
-	run(rootArg)
-		.then(err => {
-			yasppUtils.exitWith(err);
-		})
-		.catch(err => {
-			yasppUtils.exitWith(String(err));
-		});
+if (require.main === module) {
+	const rootArg = yasppUtils.getArg(process.argv, "--project");
+	if (!rootArg) {
+		yasppUtils.exitWith(`Please provide the relative or absolute path of your project, e.g.\n--project ../path/to/your/project`);
+	}
+	else {
+		// void testZod;
+		run(rootArg)
+			.then(err => {
+				yasppUtils.exitWith(err);
+			})
+			.catch(err => {
+				yasppUtils.exitWith(String(err));
+			});
+	}
 }

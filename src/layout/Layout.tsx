@@ -37,7 +37,7 @@ const MIN_DESKTOP_WIDTH = 1024;
 
 const _globalStyles = new Map<string, string>();
 
-async function loadStyles(styleUrls?: string[]): Promise<string[]> {
+async function loadStyles(styleUrls?: ReadonlyArray<string>): Promise<string[]> {
 	if (!styleUrls?.length) {
 		return [];
 	}
@@ -207,7 +207,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 			if (!t) {
 				return [];
 			}
-			return await loadStyles([t.path]);
+			return await loadStyles(t.paths);
 		};
 
 		run()

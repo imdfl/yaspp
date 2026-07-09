@@ -13,7 +13,7 @@ export interface IStylesheetUrl {
 
 export interface IThemeUrl {
 	readonly name: string;
-	readonly path: string;
+	readonly paths: ReadonlyArray<string>;
 }
 export interface IYasppApp {
 	/**

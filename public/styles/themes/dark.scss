@@ -8,4 +8,6 @@ $colors: (
 	action-color: #BBF
 );
 
-@include site.root($colors: $colors);
+@layer theme {
+	@include site.root($colors: $colors);
+}
