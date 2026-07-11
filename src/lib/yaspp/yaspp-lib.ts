@@ -1,5 +1,5 @@
 import { spawn } from "child_process";
-import sassCompiler from "sass";
+import * as sassCompiler from "sass";
 import fsPath from "path";
 import { promises as fs } from "fs";
 import * as zod from "zod";

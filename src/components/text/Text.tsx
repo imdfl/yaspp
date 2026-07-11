@@ -5,13 +5,13 @@ import useClassNames from "@hooks/useClassNames";
 import ComponentContextProvider from "@contexts/componentContext";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
-type HeadingVariant = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-type SubtitleVariant = "subtitle1" | "subtitle2" | "subtitle3" | "subtitle4";
-type TextVariant = "body1" | "body2";
+// type HeadingVariant = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+// type SubtitleVariant = "subtitle1" | "subtitle2" | "subtitle3" | "subtitle4";
+// type TextVariant = "body1" | "body2";
 
 interface TextProps {
 	readonly asChild?: boolean;
-	readonly variant?: TextVariant | HeadingVariant | SubtitleVariant;
+	// readonly variant?: TextVariant | HeadingVariant | SubtitleVariant;
 	readonly italics?: boolean;
 	readonly weight?: number;
 	readonly locale?: string;
@@ -19,7 +19,7 @@ interface TextProps {
 
 const Text = ({
 	asChild,
-	variant,
+	// variant,
 	children,
 	className,
 }: YSPComponentPropsWithChildren<TextProps>) => {
@@ -31,7 +31,7 @@ const Text = ({
 
 	return (
 		<ComponentContextProvider parentPath={componentPath}>
-			<Comp data-variant={variant} className={componentClass}>
+			<Comp className={componentClass}>
 				{children}
 			</Comp>
 		</ComponentContextProvider>
@@ -39,4 +39,4 @@ const Text = ({
 };
 
 export default Text;
-export type { TextProps, TextVariant, HeadingVariant, SubtitleVariant };
+export type { TextProps /*, TextVariant, HeadingVariant, SubtitleVariant */};

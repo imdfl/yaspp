@@ -12,7 +12,7 @@ export const Paragraph = ({
 	className,
 }: YSPComponentPropsWithChildren): React.JSX.Element => (
 	<p className={classNames(styles.root, className)}>
-		<Text variant="body1">{children}</Text>
+		<Text>{children}</Text>
 	</p>
 );
 

@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./Logo.module.scss";
 import classNames from "@lib/class-names";
 import { useMountGuard } from "@hooks/useMountGuard";

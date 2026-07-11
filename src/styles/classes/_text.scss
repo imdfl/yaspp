@@ -9,8 +9,23 @@
 		font-style: italic;
 	}
 
-	.title1 {
+	.title1-text {
+		@extend .document-text;
+		font-size: var(--ml-font-size-3xl);
+	}
+
+	.title2-text {
 		@extend .document-text;
 		font-size: var(--ml-font-size-2xl);
+	}
+
+	.title3-text {
+		@extend .document-text;
+		font-size: var(--ml-font-size-xl);
+	}
+
+	.title4-text {
+		@extend .document-text;
+		font-size: var(--ml-font-size-lg);
 	}
 }

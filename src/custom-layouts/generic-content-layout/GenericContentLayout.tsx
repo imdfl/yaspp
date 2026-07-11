@@ -37,7 +37,7 @@ export const GenericContentLayout = ({
 		{title && (
 			<Heading level={1}>
 				<TextLink
-					variant="h1"
+					// variant="h1"
 					linked={!!path}
 					href={path}
 					className={styles.title}
@@ -48,7 +48,9 @@ export const GenericContentLayout = ({
 		)}
 
 		{abstract && (
-			<Text variant="h2" className={styles.abstract}>
+			<Text 
+			// variant="h2" 
+			className={styles.abstract}>
 				{abstract}
 			</Text>
 		)}

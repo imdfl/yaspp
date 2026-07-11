@@ -16,9 +16,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
 	args: {
-		variant: 'h1',
+		// variant: 'h1',
 	},
-	render: function Render({ variant }) {
-		return <Text variant={variant}>Some text</Text>;
+	render: function Render({ /*variant */}) {
+		return <Text 
+		// variant={variant}
+		>Some text</Text>;
 	},
 };

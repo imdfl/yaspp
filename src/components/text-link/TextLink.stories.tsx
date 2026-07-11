@@ -21,11 +21,11 @@ const Desktop: Story = {
 	args: {
 		linked: false,
 		href: 'http://example.com',
-		variant: 'h1',
+		// variant: 'h1',
 	},
-	render: function Render({ href, linked, variant }) {
+	render: function Render({ href, linked }) {
 		return (
-			<TextLink href={href} linked={linked} variant={variant}>
+			<TextLink href={href} linked={linked}>
 				Text Link
 			</TextLink>
 		);

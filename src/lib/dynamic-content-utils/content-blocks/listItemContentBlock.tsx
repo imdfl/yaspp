@@ -8,7 +8,9 @@ export const ListItemContentBlock = ({
 }: ContentComponentProps): React.JSX.Element => {
 	return (
 		<ListItem>
-			<Text variant="body1">
+			<Text 
+			// variant="body1"
+			>
 				<ContentIterator componentData={componentData} />
 			</Text>
 		</ListItem>

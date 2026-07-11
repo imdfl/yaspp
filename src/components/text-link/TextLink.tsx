@@ -1,19 +1,16 @@
 import React, { useMemo } from "react";
-import Text, {
-	HeadingVariant,
-	SubtitleVariant,
-	type TextVariant,
-} from "../text/Text";
+import Text from "../text/Text";
 import Link from "../link/Link";
-import styles from "./TextLink.module.scss";
 import classNames from "@lib/class-names";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
+
+import styles from "./TextLink.module.scss";
 
 export type TextLinkProps = {
 	href: string;
 	title?: string;
 	linked?: boolean;
-	variant?: TextVariant | HeadingVariant | SubtitleVariant;
+	// variant?: TextVariant | HeadingVariant | SubtitleVariant;
 	asChild?: boolean;
 };
 
@@ -21,18 +18,18 @@ const TextLink = ({
 	href,
 	title,
 	linked,
-	variant,
+	// variant,
 	children,
 	asChild,
 	className,
 }: YSPComponentPropsWithChildren<TextLinkProps>): React.JSX.Element => {
 	const text = useMemo(
 		() => (
-			<Text variant={variant} className={styles.label}>
+			<Text className={styles.label}>
 				{children}
 			</Text>
 		),
-		[children, variant]
+		[children]
 	);
 
 	const link = useMemo(
@@ -49,7 +46,7 @@ const TextLink = ({
 			title={title}
 			aria-label={title}
 			className={classNames(styles.root, className)}
-			data-variant={variant}
+			// data-variant={variant}
 		>
 			{linked ? link : text}
 		</span>

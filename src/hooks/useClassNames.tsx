@@ -35,12 +35,6 @@ export const useClassNames = (options: IUserClassNamesOptions): IClassNamesData 
 	const className = useMemo(() => calcClasses(styleRegistry, parentPath, options), [ styleRegistry, parentPath, options]);
 	const componentPath = useMemo<ComponentPath>(() => parentPath?.concat(options.part) ?? [options.part], 
 		[parentPath, options])
-	// If the props changed, due to locale change, reparse the content
-	// useEffect(() => {
-	// 	const more = styleRegistry.getClassNames(options.part, parentPath);
-	// 	const cs = classNames(options.classes, more);
-	// 	setClassName(cs);
-	// }, [ styleRegistry, parentPath, options]);
 
 	return {
 		componentClass: className,

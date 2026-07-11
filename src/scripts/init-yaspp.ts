@@ -338,7 +338,7 @@ async function run(projectRoot: string): Promise<ErrorMessage> {
 		if (error) {
 			return error;
 		}
-		const { locale, style, globals } = config;
+		const { locale, style } = config;
 
 		const inits = [
 			() => createSiteRoot(/*projectRoot, config */),

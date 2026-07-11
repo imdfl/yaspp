@@ -64,6 +64,9 @@ async function loadStyles(styleUrls?: ReadonlyArray<string>): Promise<string[]> 
 			}
 			finally {
 				_globalStyles.set(url, cssText);
+				if (cssText) {
+					styles.push(cssText);
+				}
 			}
 		}
 	}
@@ -153,7 +156,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						</Button>
 						<div className={styles.menuHeader}>
 							<Logo mode={oppositeTheme || theme} className={styles.logo} />
-							<TextLink title={siteTitle} linked={!isHome} href="/" variant="h1">
+							<TextLink title={siteTitle} linked={!isHome} href="/">
 								{siteTitle}
 							</TextLink>
 						</div>
@@ -253,7 +256,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 							<Container alignItemsCenter className={styles.title}>
 								<Logo mode={theme || "light"} className={styles.logo} />
 								<TextLink
-									variant="subtitle1"
+									// variant="subtitle1"
 									title={siteTitle}
 									linked={!isHome}
 									href="/"
@@ -261,7 +264,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 									{siteTitle}
 								</TextLink>
 								<Separator />
-								<Text variant="subtitle4" className={styles.subtitle}>
+								<Text className={styles.subtitle}>
 									{siteSubtitle}
 								</Text>
 							</Container>
@@ -303,7 +306,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						<div className={styles.container}>
 							<div className={styles.columns}>
 								<div className={classNames(styles.column)}>
-									<Text variant="h1" aria-label={siteLicense}>
+									<Text aria-label={siteLicense}>
 										{siteLicense}
 									</Text>
 									<Text>{siteSubtitle}</Text>

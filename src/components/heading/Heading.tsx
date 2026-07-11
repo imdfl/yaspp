@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Heading.module.scss";
 import classNames from "@lib/class-names";
-import Text, { type HeadingVariant } from "../text/Text";
+import Text from "../text/Text";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type HeadingProps = {
@@ -16,7 +16,9 @@ export const Heading = ({
 	const Tag = `h${level}` as keyof React.JSX.IntrinsicElements;
 	return (
 		<Tag role="heading" className={classNames(styles.root, className)}>
-			<Text variant={Tag as HeadingVariant}>{children}</Text>
+			<Text 
+			// variant={Tag as HeadingVariant}
+			>{children}</Text>
 		</Tag>
 	);
 };

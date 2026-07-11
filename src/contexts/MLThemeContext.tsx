@@ -24,12 +24,14 @@ interface IMLThemeContextOptions extends IMLThemeOptions {
 }
 class MLThemeContextImpl implements IMLThemeProvider {
 	private _theme: string;
-	private readonly _themes: IThemeUrl[] = [];
+	private readonly _themes: ReadonlyArray<IThemeUrl>;
 	private readonly _setNextTheme: SetThemeFunc;
 	private readonly _setTheme: SetThemeFunc;
 	private _oppositeTheme = "";
 	constructor({ themes, theme, setNextTheme }: IMLThemeContextOptions) {
-		this._theme = theme ?? "";
+		this._themes = (themes ?? []).slice();
+		this._theme = this._isValidTheme(theme) ? theme : (themes[0]?.name ?? "");
+
 		this._setNextTheme = setNextTheme ?? (() => void 0);
 		this._setTheme = (theme: string) => {
 			if (this._isValidTheme(theme)) {
@@ -47,7 +49,9 @@ class MLThemeContextImpl implements IMLThemeProvider {
 				console.warn(`setTheme: unknown theme ${theme}`);
 			}
 		};
-		this._themes.push(...(themes ?? []));
+		if (this._theme !== theme) {
+			this._setNextTheme(this._theme);
+		}
 
 	}
 
@@ -67,8 +71,12 @@ class MLThemeContextImpl implements IMLThemeProvider {
 		return this._setTheme;
 	}
 
+	private _findThemeIndex(theme: string): number {
+		return theme ? this._themes.findIndex(u => u.name === theme) : -1;
+	}
+
 	private _isValidTheme(theme: string): boolean {
-		return Boolean(theme && this._themes.find(u => u.name === theme));
+		return this._findThemeIndex(theme) >= 0;
 	}
 }
 

@@ -47,7 +47,10 @@ export const ReferenceContentLayout = ({
 									{source.name}
 								</Link>
 							) : (
-								<Text variant="body1">{source.name}</Text>
+								<Text 
+								// variant="body1"
+								>
+									{source.name}</Text>
 							)}
 						</ListItem>
 					))}
