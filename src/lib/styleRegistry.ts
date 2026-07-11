@@ -1,7 +1,8 @@
 
 
 import type { IYasppClassBindings, IYasppClassTree, IYasppClassOverrides } from "@src/types/styles";
-import { Mutable } from "../types";
+import type { ComponentPath } from "../types/components";
+import type { Mutable } from "../types";
 import { stringUtils } from "./stringUtils";
 import { unique } from "@utils/unique";
 
@@ -12,7 +13,7 @@ import { unique } from "@utils/unique";
  */
 export interface IStyleRegistry {
 	registerBindings(bindings: IYasppClassTree): void;
-	getClassNames(part: string, path: ReadonlyArray<string>): string[];
+	getClassNames(part: string, path: ComponentPath): string[];
 }
 
 interface IChainRule {
@@ -79,7 +80,7 @@ class StyleRegistry implements IStyleRegistry {
 		// l("menu-item", ["site-horizontal-menu", "menu", "menu-item"]);
 	}
 
-	public getClassNames(part: string, path: ReadonlyArray<string>): string[] {
+	public getClassNames(part: string, path: ComponentPath): string[] {
 		if (/[^\.]\.[^\.]/.test(part)) {
 			const parts = part.split('.');
 			return this.getClassNames(parts.slice(1).join('.'), path.concat(parts[0]));
@@ -88,7 +89,11 @@ class StyleRegistry implements IStyleRegistry {
 		if (!b) {
 			return [];
 		}
-		const cacheKey = path.join('-');
+		const pathParts = stringUtils.toStringArray(path, {
+			delimiter: '.',
+			unique: false
+		}),
+			cacheKey = pathParts.join('-');
 		const cur = this._cache.get(part)?.get(cacheKey);
 		if (cur) {
 			return cur.slice();
@@ -99,7 +104,7 @@ class StyleRegistry implements IStyleRegistry {
 		}
 		if (path.length) {
 			b.chains.forEach(chain => {
-				if (this._chainsMatch(path, chain.parts)) {
+				if (this._chainsMatch(pathParts, chain.parts)) {
 					classes = this._applyRule(chain.ruleId, classes);
 				}
 			})

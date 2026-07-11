@@ -3,6 +3,7 @@ import type { ComponentPath } from "@src/types/components";
 
 export interface IComponentContext {
 	readonly parentPath: ComponentPath
+	createSubPath(relativePath: string): ComponentPath;
 }
 
 export interface IComponentContextOptions {
@@ -17,6 +18,10 @@ class MLComponentContextImpl implements IComponentContext {
 
 	public get parentPath(): ComponentPath {
 		return this._path;
+	}
+
+	public createSubPath(relativePath: string): ComponentPath {
+		return relativePath ? this._path.concat(relativePath) : this._path.slice();
 	}
 }
 

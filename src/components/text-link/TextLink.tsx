@@ -22,6 +22,7 @@ const TextLink = ({
 	children,
 	asChild,
 	className,
+	currentPath
 }: YSPComponentPropsWithChildren<TextLinkProps>): React.JSX.Element => {
 	const text = useMemo(
 		() => (

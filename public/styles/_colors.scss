@@ -6,8 +6,10 @@
 @function load($overrides: ()) {
 	$default: (
 		background: #FDFDFD,
+		background-inverse: #222,
 		background-hover: #BBB,
 		text: #222,
+		text-inverse: #EEE,
 		text-hover: #000,
 		text-action: #22F,
 		text-action-hover: #11B,

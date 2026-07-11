@@ -4,6 +4,10 @@
 		font-size: var(--ml-font-size-md);
 	}
 
+	.header-text {
+		color: var(--ml-color-text-inverse);
+	}
+
 	.emph-text {
 		@extend .document-text;
 		font-style: italic;

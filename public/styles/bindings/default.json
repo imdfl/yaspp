@@ -2,8 +2,28 @@
 	"$schema": "yaspp-bindings.schema.json",
 	"bindings": [
 		{
+			"text": {
+				"classes": [ "document-text"]
+			},
 			"header": {
-				"classes": [ "hcontainer" ]
+				"classes": [ "hcontainer" ],
+				"text": {
+					"classes": {
+						"remove": ["document-text"],
+						"add": ["header-text"]
+					}
+				},
+				"locale-select": {
+					"classes": {
+						"remove": ["document-text"],
+						"add": ["header-text"]
+					}
+				},
+				"button": {
+					"classes": {
+						"add": ["header-text"]
+					}
+				}
 			},
 			"button": {
 				"classes": [ "container-center", "control" ]

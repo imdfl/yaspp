@@ -1,13 +1,15 @@
-type IMLUnique = {
+export interface IMLUnique {
 	id(prefix?: string): string;
 };
 
+let nextNumber = Math.round(Date.now() % 1000);
+
 class Unique implements IMLUnique {
 	private readonly seed = `mlid-${String(Date.now() % 1000)}`;
-	private nextNumber = Math.round(Date.now() % 1000);
 
-	public id(prefix: string = this.seed): string {
-		return `${prefix}-${this.nextNumber++}`;
+	public id(prefix?: string): string {
+		const p = prefix || this.seed;
+		return `${p}-${nextNumber++}`;
 	}
 }
 

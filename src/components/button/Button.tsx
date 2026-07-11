@@ -18,16 +18,16 @@ const Button = ({
 	disabled,
 	children,
 	className,
-	partName,
+	// partName,
 	title,
 	onClick,
 	...props
 }: YSPComponentPropsWithChildren<ButtonProps>) => {
 
-	const Comp = asChild && typeof children !== "string" ? Slot : "button";
+	const Comp = (asChild && typeof children !== "string") ? Slot : "button";
 	const { componentClass, componentPath } = useClassNames({
 		classes: [styles.root, className],
-		part: partName || "button",
+		part: "button",
 	});
 
 	return (

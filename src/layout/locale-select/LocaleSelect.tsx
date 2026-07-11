@@ -26,7 +26,7 @@ const LocaleSelect = ({
 	className,
 }: LocaleSelectProps): React.JSX.Element => {
 	const { componentClass } = useClassNames({
-		classes: [styles.root],
+		classes: [styles.root, className],
 		part: "locale-select",
 	});
 	if (options.length > 1) {
@@ -35,7 +35,7 @@ const LocaleSelect = ({
 				type="single"
 				defaultValue={defaultValue}
 				onSelect={onSelect}
-				className={classNames(styles.root, className)}
+				className={componentClass}
 			>
 				{options.map(({ id, label, title }) => (
 					<span

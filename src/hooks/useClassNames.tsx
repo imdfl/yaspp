@@ -10,15 +10,16 @@ export interface IClassNamesData {
 	readonly parentPath: ComponentPath;
 }
 
-export interface IUserClassNamesOptions {
+export interface IUseClassNamesOptions {
 	readonly part: string;
 	readonly classes: ReadonlyArray<string>;
+	readonly currentPath?: string;
 }
 
 
-function calcClasses(reg: IStyleRegistry, parentPath: ReadonlyArray<string>, options: IUserClassNamesOptions): string {
-		const more = reg.getClassNames(options.part, parentPath);
-		return classNames(options.classes, more);
+function calcClasses(reg: IStyleRegistry, parentPath: ComponentPath, {part, classes}: IUseClassNamesOptions): string {
+		const more = reg.getClassNames(part, parentPath);
+		return classNames(classes, more);
 
 }
 /**
@@ -28,18 +29,19 @@ function calcClasses(reg: IStyleRegistry, parentPath: ReadonlyArray<string>, opt
  * @param props
  * @returns
  */
-export const useClassNames = (options: IUserClassNamesOptions): IClassNamesData => {
+export const useClassNames = ({ part, currentPath, classes }: IUseClassNamesOptions): IClassNamesData => {
 	const { styleRegistry } = useContext(PageContext);
 	const { parentPath } = useContext(ComponentContext);
+	const myPath = currentPath || parentPath;
 
-	const className = useMemo(() => calcClasses(styleRegistry, parentPath, options), [ styleRegistry, parentPath, options]);
-	const componentPath = useMemo<ComponentPath>(() => parentPath?.concat(options.part) ?? [options.part], 
-		[parentPath, options])
+	const className = useMemo(() => calcClasses(styleRegistry, myPath, { part, classes}), [ styleRegistry, parentPath, part, currentPath]);
+	const componentPath = useMemo<ComponentPath>(() => myPath?.concat(part) ?? [part], 
+		[parentPath, part])
 
 	return {
 		componentClass: className,
 		componentPath,
-		parentPath
+		parentPath: myPath
 	};
 };
 
