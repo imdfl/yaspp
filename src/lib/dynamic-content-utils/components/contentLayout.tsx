@@ -1,10 +1,20 @@
 import React, { PropsWithChildren, useContext } from "react";
 import { DynamicContentTypes } from "@src/types/content";
-import type { ContentLayoutProps } from "@src/custom-layouts/dynamic-content-layout/DynamicContentLayout";
 import NoteContentLayout from "@src/custom-layouts/note-content-layout/NoteContentLayout";
 import ReferenceContentLayout from "@src/custom-layouts/reference-content-layout/ReferenceContentLayout";
-import ContentLayout from "@src/custom-layouts/dynamic-content-layout/DynamicContentLayout";
 import { LocaleContext } from "@contexts/localeContext";
+import type { RefOrSourceProps } from "@src/types/components";
+import type { TextDirection } from "@src/types/locale";
+
+import styles from "@src/custom-layouts/dynamic-content-layout/DynamicContentLayout.module.scss";
+
+type ContentLayoutProps = {
+	type: DynamicContentTypes;
+	textDirection?: TextDirection;
+	term?: string;
+	sources?: RefOrSourceProps[];
+};
+
 
 export const DynamicContentLayout = ({
 	type,
@@ -14,7 +24,7 @@ export const DynamicContentLayout = ({
 }: PropsWithChildren<ContentLayoutProps>): React.JSX.Element => {
 	let dynamicLayout = null;
 
-	const { t, locale, textDirection } = useContext(LocaleContext);
+	const { t, locale } = useContext(LocaleContext);
 
 	switch (type) {
 		case DynamicContentTypes.Annotation:
@@ -44,8 +54,6 @@ export const DynamicContentLayout = ({
 	}
 
 	return (
-		<ContentLayout type={type} textDirection={textDirection}>
-			{dynamicLayout}
-		</ContentLayout>
+		<section className={styles.root}>{dynamicLayout}</section>
 	);
 };

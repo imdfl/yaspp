@@ -243,12 +243,11 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 			>
 				<Container
 					asChild
-					sticky
+					sticky="top"
 					fullWidth
 					spaceBetween
 					alignItemsCenter
 					horizontalGutter
-					position="top"
 					className={headerClass}
 				>
 					<header data-testid="topbar">

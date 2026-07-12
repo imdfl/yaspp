@@ -34,6 +34,11 @@ export interface IStringArrayOptions<TStr extends string = string> {
 }
 
 export interface IStringUtils {
+/**
+ * Guaranteed not null
+ * @param strings 
+ * @param opts 
+ */
 	toStringArray<TString extends string = string>(
 		strings?: TString | ReadonlyArray<TString>,
 		opts?: Partial<IStringArrayOptions<TString>>

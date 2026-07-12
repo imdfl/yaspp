@@ -32,4 +32,8 @@
 		@extend .document-text;
 		font-size: var(--ml-font-size-lg);
 	}
+
+	.control-text {
+		font-variant: var(--ml-font-control);
+	}
 }

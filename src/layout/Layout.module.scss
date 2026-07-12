@@ -12,13 +12,12 @@
 
 
 $footerMinheight: 20vh;
-$gutter: 2em;
 
-@mixin page-container-mixin($var) {
+@mixin page-container-mixin() {
 	margin: 0 auto;
 	max-width: 800px;
 
-	@include use-inner-gutter($var);
+	// @include use-inner-gutter($var);
 }
 
 .root {
@@ -29,8 +28,8 @@ $gutter: 2em;
 	}
 
 	.topbar {
-		@include use-background-color("layout-header");
-		@include use-height("layout-header");
+		// @include use-background-color("layout-header");
+		// @include use-height("layout-header");
 
 		.title {
 			display: flex;
@@ -42,18 +41,18 @@ $gutter: 2em;
 			display: flex;
 			align-items: center;
 
-			.localeSelect {
-				@include locale-select-mixin.button(map.get(toggle-refs.$toggle, default));
-			}
+			// .localeSelect {
+			// 	@include locale-select-mixin.button(map.get(toggle-refs.$toggle, default));
+			// }
 
-			.themeSelect {
-				@include theme-select-mixin.button(map.get(toggle-refs.$toggle, default));
-			}
+			// .themeSelect {
+			// 	@include theme-select-mixin.button(map.get(toggle-refs.$toggle, default));
+			// }
 		}
 	}
 
 	.page {
-		@include page-container-mixin(name());
+		@include page-container-mixin();
 		// @include use-margin-top("layout-page");
 
 		min-height: calc(100vh - $footerMinheight);
@@ -66,7 +65,7 @@ $gutter: 2em;
 		@include use-background-color("layout-footer");
 
 		.container {
-			@include page-container-mixin(name());
+			@include page-container-mixin();
 		}
 
 		.columns {

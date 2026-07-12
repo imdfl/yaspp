@@ -10,17 +10,17 @@ $__stylesheet__: (
 	// display: flex;
 	box-sizing: border-box;
 
-	&[data-fixed-position='true'] {
+	&[data-fixed-position='top'] {
 		position: sticky;
 		z-index: 1;
+		top: 0;
+	}
 
-		&[data-position='bottom'] {
-			bottom: 0;
-		}
+	&[data-fixed-position='bottom'] {
 
-		&[data-position='top'] {
-			top: 0;
-		}
+		position: sticky;
+		z-index: 1;
+		bottom: 0;
 	}
 
 	&[data-flex-direction] {

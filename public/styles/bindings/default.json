@@ -6,7 +6,7 @@
 				"classes": [ "document-text"]
 			},
 			"header": {
-				"classes": [ "hcontainer" ],
+				"classes": [ "hcontainer", "container-inverse-color", "container-inverse-text" ],
 				"text": {
 					"classes": {
 						"remove": ["document-text"],

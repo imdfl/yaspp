@@ -9,6 +9,19 @@
 
 	.container-inverse-color {
 		background-color: var(--ml-color-background-inverse);
+		color: var(--ml-color-text-inverse);
+	}
+
+	.container-controls-color {
+		background-color: var(--ml-color-background-controls);
+	}
+
+	.container-control-color {
+		background-color: var(--ml-color-background-control);
+	}
+
+	.container-controls-color {
+		background-color: var(--ml-color-background-controls);
 	}
 
 }

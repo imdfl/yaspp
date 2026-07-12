@@ -5,11 +5,8 @@ import styles from "./Container.module.scss";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type ContainerProps = {
-	/** Container fixed `position` */
-	sticky?: boolean;
-
 	/** `sticky` position options */
-	position?: "top" | "bottom";
+	sticky?: "top" | "bottom";
 
 	/** Add even space between container elements */
 	spaceBetween?: boolean;
@@ -37,7 +34,6 @@ type ContainerProps = {
 
 const Container = ({
 	sticky,
-	position,
 	spaceBetween,
 	flexDirection,
 	alignItemsCenter,
@@ -55,7 +51,6 @@ const Container = ({
 	return (
 		<Comp
 			data-fixed-position={sticky}
-			data-position={position}
 			data-space-between={spaceBetween}
 			data-align-items-center={alignItemsCenter}
 			data-align-content-right={alignContentRight}

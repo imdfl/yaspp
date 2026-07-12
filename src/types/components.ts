@@ -9,7 +9,7 @@ export type ComponentPath = (ReadonlyArray<string> | string)     ;
 export interface IYSPComponentProps {
 	readonly style?: Record<string, string>;
 	readonly className?: string;
-	readonly currentPath?: string;
+	readonly currentPath?: ComponentPath;
 	// readonly partName?: string;
 }
 

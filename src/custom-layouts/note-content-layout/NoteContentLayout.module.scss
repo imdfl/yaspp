@@ -1,11 +1,4 @@
-@use "../../styles/lib/component" as *;
-
-$__stylesheet__: (
-	name: custom-layout-note,
-);
-
 .root {
-	height: 20em;
 	user-select: text;
 
 	.article {

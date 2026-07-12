@@ -12,8 +12,8 @@ export interface IClassNamesData {
 
 export interface IUseClassNamesOptions {
 	readonly part: string;
-	readonly classes: ReadonlyArray<string>;
-	readonly currentPath?: string;
+	readonly classes: ComponentPath;
+	readonly currentPath?: ComponentPath;
 }
 
 

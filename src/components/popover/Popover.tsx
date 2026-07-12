@@ -2,9 +2,10 @@ import React, { PropsWithChildren, useState } from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { getIcon } from "@components/icons";
 import { Button, ToolbarItem } from "..";
-import styles from "./Popover.module.scss";
 import PopoverTrigger from "./PopoverTrigger";
 import PopoverDialog from "./PopoverDialog";
+
+import styles from "./Popover.module.scss";
 
 type CustomPopoverProps = {
 	trigger: React.ReactNode;
@@ -48,7 +49,7 @@ const Popover = ({
 				>
 					<PopoverDialog>
 						{toolbarItems && (
-							<div role="toolbar" className={styles.toolbar}>
+							<div className={styles.toolbar}>
 								<div className={styles.panel}>{toolbarItems}</div>
 								<div className={styles.closeButton}>
 									<ToolbarItem>

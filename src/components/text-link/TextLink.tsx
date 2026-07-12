@@ -5,6 +5,7 @@ import classNames from "@lib/class-names";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 import styles from "./TextLink.module.scss";
+import useClassNames from "../../hooks/useClassNames";
 
 export type TextLinkProps = {
 	href: string;
@@ -18,19 +19,23 @@ const TextLink = ({
 	href,
 	title,
 	linked,
-	// variant,
 	children,
 	asChild,
 	className,
 	currentPath
 }: YSPComponentPropsWithChildren<TextLinkProps>): React.JSX.Element => {
+	const { componentPath } = useClassNames({
+		part: "link",
+		classes: className,
+		currentPath
+	})
 	const text = useMemo(
 		() => (
-			<Text className={styles.label}>
+			<Text className={styles.label} currentPath={ componentPath }>
 				{children}
 			</Text>
 		),
-		[children]
+		[children, currentPath]
 	);
 
 	const link = useMemo(
