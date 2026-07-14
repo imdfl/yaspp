@@ -255,7 +255,6 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 							<Container alignItemsCenter className={styles.title}>
 								<Logo mode={theme || "light"} className={styles.logo} />
 								<TextLink
-									// variant="subtitle1"
 									title={siteTitle}
 									linked={!isHome}
 									href="/"

@@ -11,7 +11,7 @@ import type { TextDirection } from "@src/types/locale";
 import type { YASPP } from "yaspp-types";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
-import type { YSPComponentPropsWithChildren } from "@src/types/components";
+import type { ComponentPath, YSPComponentPropsWithChildren } from "@src/types/components";
 
 import styles from "./MenuBar.module.scss";
 
@@ -35,29 +35,39 @@ const renderItems = (items: ReadonlyArray<YASPP.INavItemData>) =>
 		</NavigationMenu.Link>
 	));
 
-const renderSections = (sections: ReadonlyArray<INavSection>) =>
-	sections.map((section) => (
+const renderSections = (sections: ReadonlyArray<INavSection>, parentPath: ComponentPath) => {
+	const { componentClass, componentPath } = useClassNames({
+		currentPath: parentPath,
+		part: "menu",
+		classes: styles.content
+	});
+	const { componentClass: triggerClass} = useClassNames({
+		currentPath: componentPath,
+		part: "menu-item.button",
+		classes: []
+	});
+	return sections.map((section) => (
 		<NavigationMenu.Item key={section.id} asChild>
 			<ListItem
+				currentPath={componentPath}
 				className={styles.menuSectionTriggerItem}
 				key={`list-item-${section.id}`}
 			>
-				<>
-					<Button className={styles.menuSectionTriggerButton} asChild>
+					<Button className={triggerClass} asChild currentPath={triggerClass}>
 						<NavigationMenu.Trigger>
 							{section.title}
 							{getIcon("caretDown", { className: styles.caret })}
 						</NavigationMenu.Trigger>
 					</Button>
-					<NavigationMenu.Content className={styles.content}>
+					<NavigationMenu.Content className={componentClass}>
 						<List className={styles.sectionItemsList}>
 							{renderItems(section.items)}
 						</List>
 					</NavigationMenu.Content>
-				</>
 			</ListItem>
 		</NavigationMenu.Item>
 	));
+};
 
 const MenuBar = ({ items, textDirection, className }: YSPComponentPropsWithChildren<NavProps>) => {
 	const locale = useContext(LocaleContext);
@@ -65,6 +75,7 @@ const MenuBar = ({ items, textDirection, className }: YSPComponentPropsWithChild
 		classes: [styles.root, className],
 		part: "site-horizontal-menu",
 	});
+
 	// site-horizontal-menu
 	return <ComponentContextProvider parentPath={componentPath}>
 		<NavigationMenu.Root
@@ -72,7 +83,7 @@ const MenuBar = ({ items, textDirection, className }: YSPComponentPropsWithChild
 			data-direction={textDirection || locale.getTextDirection}
 		>
 			<NavigationMenu.List className={styles.menuSectionTriggers}>
-				{renderSections(items)}
+				{renderSections(items, componentPath)}
 				<NavigationMenu.Indicator className={styles.indicator}>
 					<div className={styles.arrow}></div>
 				</NavigationMenu.Indicator>

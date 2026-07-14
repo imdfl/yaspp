@@ -26,10 +26,12 @@ const Drawer = ({
 	onClose,
 	children,
 	className,
+	currentPath
 }: YSPComponentPropsWithChildren<DrawerProps>) => {
 	const { componentClass, componentPath } = useClassNames({
 		classes: [styles.root, className],
 		part: "drawer",
+		currentPath
 	});
 	return (
 		<ComponentContextProvider parentPath={componentPath}>

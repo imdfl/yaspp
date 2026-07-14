@@ -1,24 +1,76 @@
 @use "sass:map";
 @use "sass:string";
+@use "sass:list";
+@use "sass:color";
+@use "sass:meta";
 @use "lib/_merge" as merge;
 @use "lib/varsblock";
 
-@function load($overrides: ()) {
+@function _mixIt($color, $mix, $by) {
+	@if $mix != null {
+		@return color.mix($color, $mix, $by);
+	}
+	@return color.adjust($color, $lightness: $by);
+}
+
+// add accentDirection
+// merge with overrides
+// then generate computed values
+// finally merge again with overrides
+// options
+@function load($overrides: (), $options: ()) {
+	$colorInc: 10%;
+	$bgInc: -10%;
+	$mixer: meta.get-function(_mixIt);
 	$default: (
 		background: #FDFDFD,
 		background-inverse: #222,
 		background-hover: #BBB,
 		background-control: #AAA,
-		backgrond-controls: #CCC,
+		background-controls: #CCC,
 		text: #111,
 		text-controls: #222,
 		text-inverse: #EEE,
 		text-hover: #000,
 		text-action: #22F,
 		text-action-hover: #11B,
-
 	);
-	@return merge.deep($default, $overrides);
+	$defaultOptions: (
+		background-add: null,
+		text-add: null,
+		text-increment: 10%,
+		background-increment: -10%,
+	);
+	$fullOptions: merge.deep($defaultOptions, $options);
+	$textInc: map.get($fullOptions, "text-increment");
+	$bgInc: map.get($fullOptions, "background-increment");
+	$textAdd: map.get($fullOptions, "text-add"); 
+	$bgAdd: map.get($fullOptions, "background-add"); 
+
+	$base: merge.deep($default, $overrides);
+
+	$textColor: map.get($base, "text");
+	$bgColor: map.get($base, "background");
+	$controlsColor: map.get($base, "text-controls");
+	$controlsBg: map.get($base, "background-controls");
+
+
+	$extra: (
+		level1: $textColor,
+		level2: meta.call($mixer, $textColor, $textAdd, $textInc),
+		level3: meta.call($mixer, $textColor, $textAdd, 2 * $textInc),
+		background-level1: $bgColor,
+		background-level2: meta.call($mixer, $bgColor, $bgAdd, $bgInc),
+		background-level3: meta.call($mixer, $bgColor, $bgAdd, 2 * $bgInc),
+		controls-level1: $controlsColor,
+		controls-level2: meta.call($mixer, $controlsColor, $textAdd, $textInc),
+		controls-level3: meta.call($mixer, $controlsColor, $textAdd, 2 * $textInc),
+		background-controls-level1: $controlsBg,
+		background-controls-level2: meta.call($mixer, $controlsBg, $bgAdd, $bgInc),
+		background-controls-level3: meta.call($mixer, $controlsBg, $bgAdd, 2 * $bgInc)
+	);
+
+	@return merge.deep($extra, $overrides);
 };
 
 @mixin root($colors: ()) {

@@ -23,9 +23,6 @@ $states: merge.deep(
 			list-style: none;
 		}
 
-		.menuSectionTriggerButton {
-			@include mixins.trigger-button-mixin("site-horizontal-menu-trigger", $states);
-		}
 	}
 
 	.sectionItemsList {

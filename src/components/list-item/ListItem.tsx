@@ -16,6 +16,7 @@ const ListItem = (
         // ref,
         children,
         className,
+        currentPath,
         ...rest
     }: YSPComponentPropsWithChildren<ListItemProps> & {
         ref?: React.RefObject<HTMLLIElement>;
@@ -23,6 +24,7 @@ const ListItem = (
 ) => {
     const { componentClass, componentPath } = useClassNames({
         classes: [styles.root, className],
+        currentPath,
         part: "list-item",
     });
     return (

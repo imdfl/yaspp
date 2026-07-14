@@ -18,6 +18,7 @@ const Button = ({
 	disabled,
 	children,
 	className,
+	currentPath,
 	// partName,
 	title,
 	onClick,
@@ -28,6 +29,7 @@ const Button = ({
 	const { componentClass, componentPath } = useClassNames({
 		classes: [styles.root, className],
 		part: "button",
+		currentPath
 	});
 
 	return (

@@ -5,6 +5,14 @@
 			"text": {
 				"classes": [ "document-text"]
 			},
+			"site-horizontal-menu": {
+				"menu": {
+					"classes": [ "container-controls-color"],
+					"button": {
+						"classes": ["container-control-color"]
+					}
+				}
+			},
 			"header": {
 				"classes": [ "hcontainer", "container-inverse-color", "container-inverse-text" ],
 				"text": {
@@ -26,7 +34,7 @@
 				}
 			},
 			"button": {
-				"classes": [ "container-center", "control" ]
+				"classes": [ "container-center", "control", "control-hover" ]
 			},
 			"nav": {
 				"classes": [ "rabak" ]
