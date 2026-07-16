@@ -14,6 +14,8 @@ import { unique } from "@utils/unique";
 export interface IStyleRegistry {
 	registerBindings(bindings: IYasppClassTree): void;
 	getClassNames(part: string, path: ComponentPath): string[];
+	pathToString(path: ComponentPath): string;
+	pathToArray(path: ComponentPath): string[];
 }
 
 interface IChainRule {
@@ -78,6 +80,28 @@ class StyleRegistry implements IStyleRegistry {
 		// l("menu-item", []);
 		// l("menu-item", ["menu"]);
 		// l("menu-item", ["site-horizontal-menu", "menu", "menu-item"]);
+	}
+
+	public pathToArray(path: ComponentPath): string[] {
+		if (!path?.length) {
+			return [];
+		}
+		if (Array.isArray(path)) {
+			return path.slice();
+		}
+		return stringUtils.toStringArray(path, {
+			delimiter: '.',
+			unique: false,
+			allowEmpty: false,
+			trim: true
+		})
+	}
+
+	public pathToString(path: ComponentPath): string {
+		if (!path?.length) {
+			return "";
+		}
+		return Array.isArray(path) ? path.join('.') : String(path);
 	}
 
 	public getClassNames(part: string, path: ComponentPath): string[] {

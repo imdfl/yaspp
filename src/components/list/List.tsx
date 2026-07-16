@@ -2,22 +2,25 @@ import React, { HTMLAttributes, PropsWithChildren } from "react";
 import Link from "../link/Link";
 import Text from "../text/Text";
 import ListItem, { ListItemProps } from "../list-item/ListItem";
-import classNames from "@lib/class-names";
+import useClassNames from "../../hooks/useClassNames";
+import type { ComponentPath } from "@src/types/components";
+
 import styles from "./List.module.scss";
 
-type ListProps = {
+type ListProps = Readonly<{
 	items?: ListItemProps[];
 	label?: string;
 	ordered?: boolean;
 	className?: string;
-};
+	currentPath?: ComponentPath;
+}>;
 
-const renderListItems = (items: ListItemProps[]) =>
+const renderListItems = (items: ListItemProps[], componentPath: ComponentPath) =>
 	items.map(({ label, target, url }) => {
 		return (
-			<ListItem key={label} className={styles.item}>
+			<ListItem key={label} className={styles.item} currentPath={componentPath}>
 				{url ? (
-					<Link href={url} target={target} className={styles.link}>
+					<Link href={url} target={target} className={styles.link} currentPath={componentPath}>
 						{label}
 					</Link>
 				) : (
@@ -33,13 +36,19 @@ const List = ({
 	ordered,
 	children,
 	className,
+	currentPath
 }: PropsWithChildren<ListProps> &
 	HTMLAttributes<HTMLDivElement>): React.JSX.Element => {
+		const { componentClass, componentPath} = useClassNames({
+			part: "list",
+			currentPath,
+			classes: [styles.root, className]
+		});
 	const Tag = ordered ? 'ol' : 'ul';
 	return (
-		<div className={classNames(styles.root, className)}>
+		<div className={componentClass}>
 			{label && <Text className={styles.label}>{label}</Text>}
-			<Tag className={styles.list}>{children || renderListItems(items)}</Tag>
+			<Tag className={styles.list}>{children || renderListItems(items, componentPath)}</Tag>
 		</div>
 	);
 };

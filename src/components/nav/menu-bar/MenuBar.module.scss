@@ -22,12 +22,11 @@ $states: merge.deep(
 		.menuSectionTriggerItem {
 			list-style: none;
 		}
-
 	}
 
 	.sectionItemsList {
-		@include use-inner-gutter("site-horizontal-menu-list");
-		@include use-direction(locale);
+		// @include use-inner-gutter("site-horizontal-menu-list");
+		// @include use-direction(locale);
 
 		ul {
 			display: flex;

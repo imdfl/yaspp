@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { getIcon } from "@components/icons";
 import ListItem from "@components/list-item/ListItem";
@@ -10,7 +10,7 @@ import { LocaleContext } from "@contexts/index";
 import type { TextDirection } from "@src/types/locale";
 import type { YASPP } from "yaspp-types";
 import ComponentContextProvider from "@contexts/componentContext";
-import useClassNames from "@hooks/useClassNames";
+import useClassNames, { IClassNamesInfo } from "@hooks/useClassNames";
 import type { ComponentPath, YSPComponentPropsWithChildren } from "@src/types/components";
 
 import styles from "./MenuBar.module.scss";
@@ -20,10 +20,10 @@ interface NavProps {
 	readonly textDirection?: TextDirection;
 };
 
-const renderItems = (items: ReadonlyArray<YASPP.INavItemData>) =>
+const renderItems = (items: ReadonlyArray<YASPP.INavItemData>, currentPath: ComponentPath) =>
 	items.map((item) => (
 		<NavigationMenu.Link asChild key={item.id}>
-			<ListItem className={styles.menuListItem}>
+			<ListItem className={styles.menuListItem} currentPath={currentPath}>
 				<NavItem
 					{...item}
 					title={item.title}
@@ -35,17 +35,10 @@ const renderItems = (items: ReadonlyArray<YASPP.INavItemData>) =>
 		</NavigationMenu.Link>
 	));
 
-const renderSections = (sections: ReadonlyArray<INavSection>, parentPath: ComponentPath) => {
-	const { componentClass, componentPath } = useClassNames({
-		currentPath: parentPath,
-		part: "menu",
-		classes: styles.content
-	});
-	const { componentClass: triggerClass} = useClassNames({
-		currentPath: componentPath,
-		part: "menu-item.button",
-		classes: []
-	});
+const renderSections = (sections: ReadonlyArray<INavSection>, classInfo: IClassNamesInfo) => {
+	const { componentPath, createSubPath } = classInfo;
+	const buttonPath = createSubPath("main-menu-item");
+	const menuPath = createSubPath("submenu");
 	return sections.map((section) => (
 		<NavigationMenu.Item key={section.id} asChild>
 			<ListItem
@@ -53,28 +46,30 @@ const renderSections = (sections: ReadonlyArray<INavSection>, parentPath: Compon
 				className={styles.menuSectionTriggerItem}
 				key={`list-item-${section.id}`}
 			>
-					<Button className={triggerClass} asChild currentPath={triggerClass}>
-						<NavigationMenu.Trigger>
+					<Button asChild currentPath={buttonPath}>
+						<NavigationMenu.Trigger >
 							{section.title}
 							{getIcon("caretDown", { className: styles.caret })}
 						</NavigationMenu.Trigger>
 					</Button>
-					<NavigationMenu.Content className={componentClass}>
-						<List className={styles.sectionItemsList}>
-							{renderItems(section.items)}
+					{/* <NavigationMenu.Content className={componentClass}> */}
+						<List className={styles.sectionItemsList} currentPath={menuPath}>
+							{renderItems(section.items, menuPath)}
 						</List>
-					</NavigationMenu.Content>
+					{/* </NavigationMenu.Content> */}
 			</ListItem>
 		</NavigationMenu.Item>
 	));
 };
 
-const MenuBar = ({ items, textDirection, className }: YSPComponentPropsWithChildren<NavProps>) => {
+const MenuBar = ({ items, textDirection, className, currentPath }: YSPComponentPropsWithChildren<NavProps>) => {
 	const locale = useContext(LocaleContext);
-	const { componentClass, componentPath } = useClassNames({
+	const classInfo = useClassNames({
 		classes: [styles.root, className],
 		part: "site-horizontal-menu",
+		currentPath
 	});
+	const { componentClass, componentPath } = classInfo;
 
 	// site-horizontal-menu
 	return <ComponentContextProvider parentPath={componentPath}>
@@ -83,7 +78,7 @@ const MenuBar = ({ items, textDirection, className }: YSPComponentPropsWithChild
 			data-direction={textDirection || locale.getTextDirection}
 		>
 			<NavigationMenu.List className={styles.menuSectionTriggers}>
-				{renderSections(items, componentPath)}
+				{renderSections(items, classInfo)}
 				<NavigationMenu.Indicator className={styles.indicator}>
 					<div className={styles.arrow}></div>
 				</NavigationMenu.Indicator>

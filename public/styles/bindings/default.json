@@ -2,50 +2,99 @@
 	"$schema": "yaspp-bindings.schema.json",
 	"bindings": [
 		{
+			"text-container": {},
 			"text": {
-				"classes": [ "document-text"]
-			},
-			"site-horizontal-menu": {
-				"menu": {
-					"classes": [ "container-controls-color"],
-					"button": {
-						"classes": ["container-control-color"]
-					}
-				}
+				"classes": [
+					"document-text"
+				]
 			},
 			"header": {
-				"classes": [ "hcontainer", "container-inverse-color", "container-inverse-text" ],
+				"classes": [
+					"hcontainer",
+					"container-inverse-color",
+					"container-inverse-text"
+				],
+				"site-horizontal-menu": {
+					"classes": [
+						"container-controls-color"
+					],
+					"main-menu-item": {
+						"button": {
+							"classes": {
+								"add": [
+									"container-control-color"
+								]
+							}
+						}
+					},
+					"submenu": {
+						"list": {
+							"classes": [ "container-controls-color" ],
+							"list-item": {
+								"classes": {
+									"add": [ "ml-color-controls-level1"]
+								}
+							}
+						}
+					}
+				},
 				"text": {
 					"classes": {
-						"remove": ["document-text"],
-						"add": ["header-text"]
+						"remove": [
+							"document-text"
+						],
+						"add": [
+							"header-text"
+						]
 					}
 				},
 				"locale-select": {
 					"classes": {
-						"remove": ["document-text"],
-						"add": ["header-text"]
+						"remove": [
+							"document-text"
+						],
+						"add": [
+							"header-text"
+						]
 					}
 				},
 				"button": {
 					"classes": {
-						"add": ["header-text"]
+						"add": [
+							"header-text"
+						]
 					}
 				}
 			},
 			"button": {
-				"classes": [ "container-center", "control", "control-hover" ]
+				"classes": [
+					"container-center",
+					"control",
+					"control-hover"
+				]
 			},
 			"nav": {
-				"classes": [ "rabak" ]
+				"classes": [
+					"rabak"
+				]
 			},
 			"menu": {
+				"classes": [
+					"ml-color-background-controls",
+					"ml-color-controls"
+				],
 				"menu-item": {
-					"classes": [ "vcontainer-left" ],
+					"classes": [
+						"vcontainer-left"
+					],
 					"button": {
 						"classes": {
-							"add": ["control-hover"],
-							"remove": [ "control" ]
+							"add": [
+								"control-hover"
+							],
+							"remove": [
+								"control"
+							]
 						}
 					}
 				}
