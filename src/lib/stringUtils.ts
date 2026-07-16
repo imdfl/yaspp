@@ -31,6 +31,8 @@ export interface IStringArrayOptions<TStr extends string = string> {
 	 * Underscore to avoid silly warnings. If present, allow only strings from this array (case sensitive)
 	 */
 	readonly _enum: ReadonlyArray<TStr>;
+
+	readonly flatten: boolean;
 }
 
 export interface IStringUtils {
@@ -82,13 +84,14 @@ class StringUtils implements IStringUtils {
 			return [];
 		}
 		opts ??= {};
-		const options: IStringArrayOptions = {
+		const options: IStringArrayOptions<TString> = {
 			transform: opts.transform,
 			unique: opts.unique ?? false,
 			delimiter: opts.delimiter ?? ',',
 			trim: opts.trim !== false,
 			_enum: Array.isArray(opts._enum) ? opts._enum : [],
-			allowEmpty: opts.allowEmpty !== false
+			allowEmpty: opts.allowEmpty !== false,
+			flatten: opts.flatten ?? false
 		};
 
 		let ret: TString[];
@@ -107,10 +110,19 @@ class StringUtils implements IStringUtils {
 			console.warn("illegal format of string array");
 			return [];
 		}
+		if (options.flatten && options.delimiter) {
+			ret = ret.reduce((arr: TString[], part) => {
+				if (part.includes(options.delimiter as string)) {
+					return arr.concat(this.toStringArray<TString>(part, options))
+				}
+				return arr.concat(part);
+			}, [])
+		}
 		ret.forEach((s: string, i: number) => {
 			if (s === null || s === undefined) {
 				s = "";
 			}
+			if (Array.isArray(s))
 			s = String(s);
 			if (trim) {
 				s = s.trim();

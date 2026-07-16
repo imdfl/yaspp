@@ -2,16 +2,18 @@ import { useContext, useMemo } from "react";
 import { PageContext, ComponentContext } from "@contexts/index";
 import classNames from "@lib/class-names";
 import { ComponentPath } from "@src/types/components";
-import { IStyleRegistry } from "../lib/styleRegistry";
 
 export type ComponentPathGenerator = (path: ComponentPath) => ComponentPath;
 export type ClassNameGenerator = (part: string, classes: string | ReadonlyArray<string>) => ComponentPath;
+export type ComponentAttributesGenerator = (part: string) => Record<string, string>;
 export interface IClassNamesInfo {
 	readonly componentClass: string;
 	readonly componentPath: ComponentPath;
 	readonly parentPath: ComponentPath;
 	readonly createSubPath: ComponentPathGenerator;
 	readonly createSubClass: ClassNameGenerator;
+	readonly createAttributes: ComponentAttributesGenerator
+	readonly attributes: Record<string, string>;
 }
 
 export interface IUseClassNamesOptions {
@@ -46,25 +48,39 @@ export const useClassNames = ({ part, currentPath, classes }: IUseClassNamesOpti
 	const createSubPath = useMemo(() => {
 		const rootPath = styleRegistry.pathToArray(componentPath);
 		return (subPath: ComponentPath): ComponentPath => {
+			const pathParts = styleRegistry.pathToArray(subPath);
 			if (!rootPath.length) {
-				return styleRegistry.pathToArray(subPath);
+				return pathParts;
 			}
-			const rootArr = styleRegistry.pathToArray(rootPath);
-			return subPath?.length ? rootArr.concat(subPath) : rootArr;
+			return rootPath.concat(pathParts);
 		}
 	}, [ componentPath, styleRegistry ])
 
 	const createSubClass = useMemo(() => (part: string, classes: string | ReadonlyArray<string>) => {
 		const more = styleRegistry.getClassNames(part, currentPath || parentPath);
 		return classNames(classes, more);
-	}, [currentPath, parentPath, styleRegistry])
+	}, [currentPath, parentPath, styleRegistry]);
+
+	const attributes = useMemo((): Record<string, string> => {
+		return {
+			"data-component-path": styleRegistry.pathToString(componentPath)
+		}
+	}, [componentPath])
+
+	const createAttributes = useMemo(() => (part: string): Record<string, string> => {
+		return {
+			"data-component-path": styleRegistry.pathToString(createSubPath(part))
+		}
+	}, [componentPath])
 
 	return {
 		componentClass: className,
 		componentPath,
 		parentPath: myPath,
 		createSubPath,
-		createSubClass
+		createSubClass,
+		createAttributes,
+		attributes
 	};
 };
 

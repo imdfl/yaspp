@@ -6,11 +6,14 @@ $__stylesheet__: (
 	name: list,
 );
 
-.root {
-	display: flex;
-	flex-direction: column;
+@layer base {
 
-	.list {
-		@include use-background-color;
+	.root {
+		display: flex;
+		flex-direction: column;
+
+		.list {
+			@include use-background-color;
+		}
 	}
 }

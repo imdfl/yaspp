@@ -76,7 +76,7 @@
 
 @mixin root($colors: ()) {
 	$vars: load($colors);
-	@debug $vars;
+	// @debug $vars;
 	:root {
 		@include varsblock.vars($map: $vars, $prefix: "ml-color");
 	}
@@ -90,12 +90,12 @@
 		// @debug $cls $var;
 		@if string.index($key, 'background') == 0 {
 			#{$cls} {
-				background-color: #{$var};
+				background-color: var($var);
 			}
 		}
 		@else {
 			#{$cls} {
-				color: #{$var};
+				color: var($var);
 			}
 		}
 	}

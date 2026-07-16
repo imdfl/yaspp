@@ -7,33 +7,35 @@ $__stylesheet__: (
 	name: contact-form,
 );
 
-.root {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-
-	.fieldset {
-		padding: 2em;
+@layer base {
+	.root {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
-		gap: 2em;
-	}
 
-	.panel {
-		display: flex;
-		padding: 2em;
-	}
+		.fieldset {
+			padding: 2em;
+			display: flex;
+			flex-direction: column;
+			gap: 2em;
+		}
 
-	.submitButton {
-		flex: 1;
-		display: flex;
-		justify-content: flex-end;
-	}
+		.panel {
+			display: flex;
+			padding: 2em;
+		}
 
-	.error {
-		display: flex;
-		align-items: center;
-		gap: 0.5em;
-		color: red;
+		.submitButton {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		.error {
+			display: flex;
+			align-items: center;
+			gap: 0.5em;
+			color: red;
+		}
 	}
 }

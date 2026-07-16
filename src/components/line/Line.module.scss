@@ -6,6 +6,8 @@ $__stylesheet__: (
 	name: line,
 );
 
-.root {
-	display: block;
+@layer base {
+	.root {
+		display: block;
+	}
 }

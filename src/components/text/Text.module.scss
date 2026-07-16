@@ -7,6 +7,8 @@ $__stylesheet__: (
 	name: text,
 );
 
-.root {
-	@include variants.variants("text-variants");
+@layer base {
+	.root {
+		@include variants.variants("text-variants");
+	}
 }

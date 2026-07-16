@@ -39,16 +39,21 @@ const List = ({
 	currentPath
 }: PropsWithChildren<ListProps> &
 	HTMLAttributes<HTMLDivElement>): React.JSX.Element => {
-		const { componentClass, componentPath} = useClassNames({
-			part: "list",
+		const { componentClass: contClass } = useClassNames({
+			part: "list-container",
 			currentPath,
 			classes: [styles.root, className]
 		});
+		const { componentClass: listClass, componentPath: listPath, attributes} = useClassNames({
+			part: "list",
+			currentPath,
+			classes: [styles.list, className]
+		});
 	const Tag = ordered ? 'ol' : 'ul';
 	return (
-		<div className={componentClass}>
+		<div className={contClass}>
 			{label && <Text className={styles.label}>{label}</Text>}
-			<Tag className={styles.list}>{children || renderListItems(items, componentPath)}</Tag>
+			<Tag className={listClass} {...attributes}>{children || renderListItems(items, listPath)}</Tag>
 		</div>
 	);
 };

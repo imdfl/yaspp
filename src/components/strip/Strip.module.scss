@@ -6,10 +6,12 @@ $__stylesheet__: (
 	name: gradient-strip,
 );
 
-.root {
-	--background-color: #808080;
-	--height: 6px;
+@layer base {
+	.root {
+		--background-color: #808080;
+		--height: 6px;
 
-	@include use-gradient;
-	@include use-height;
+		@include use-gradient;
+		@include use-height;
+	}
 }

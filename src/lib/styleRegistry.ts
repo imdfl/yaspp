@@ -86,11 +86,9 @@ class StyleRegistry implements IStyleRegistry {
 		if (!path?.length) {
 			return [];
 		}
-		if (Array.isArray(path)) {
-			return path.slice();
-		}
 		return stringUtils.toStringArray(path, {
 			delimiter: '.',
+			flatten: true,
 			unique: false,
 			allowEmpty: false,
 			trim: true
@@ -101,7 +99,7 @@ class StyleRegistry implements IStyleRegistry {
 		if (!path?.length) {
 			return "";
 		}
-		return Array.isArray(path) ? path.join('.') : String(path);
+		return Array.isArray(path) ? this.pathToArray(path).join('.') : String(path);
 	}
 
 	public getClassNames(part: string, path: ComponentPath): string[] {
@@ -113,10 +111,7 @@ class StyleRegistry implements IStyleRegistry {
 		if (!b) {
 			return [];
 		}
-		const pathParts = stringUtils.toStringArray(path, {
-			delimiter: '.',
-			unique: false
-		}),
+		const pathParts = this.pathToArray(path),
 			cacheKey = pathParts.join('-');
 		const cur = this._cache.get(part)?.get(cacheKey);
 		if (cur) {
@@ -140,7 +135,11 @@ class StyleRegistry implements IStyleRegistry {
 	}
 
 	private _chainsMatch(targetPath: ReadonlyArray<string>, matchPath: ReadonlyArray<string>): boolean {
-		for (let ind = 0, partInd = 0; ind < matchPath.length; ++ind) {
+		const matchLen = matchPath.length;
+		for (let ind = 0, partInd = 0; ind < targetPath.length; ++ind) {
+			if (ind >= matchLen) {
+				return false;
+			}
 			partInd = targetPath.indexOf(matchPath[ind], partInd);
 			if (partInd < 0) {
 				return false;

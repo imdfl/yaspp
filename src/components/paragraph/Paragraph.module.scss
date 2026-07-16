@@ -7,7 +7,9 @@ $__stylesheet__: (
 	name: paragraph,
 );
 
-.root {
-	@include use-margin-bottom;
-	@include use-text-color;
+@layer base {
+	.root {
+		@include use-margin-bottom;
+		@include use-text-color;
+	}
 }

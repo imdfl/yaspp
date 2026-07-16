@@ -4,10 +4,12 @@ $__stylesheet__: (
 	name: error-message,
 );
 
-.root {
-	display: flex;
-	align-items: center;
-	gap: 0.5em;
+@layer base {
+	.root {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
 
-	@include use-text-color;
+		@include use-text-color;
+	}
 }

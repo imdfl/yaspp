@@ -16,23 +16,25 @@
 				],
 				"site-horizontal-menu": {
 					"classes": [
-						"container-controls-color"
 					],
-					"main-menu-item": {
-						"button": {
-							"classes": {
-								"add": [
-									"container-control-color"
-								]
+					"main-menu": {
+						"item": {
+							"button": {
+								"classes": {
+									"add": [
+									]
+								}
 							}
 						}
 					},
 					"submenu": {
-						"list": {
-							"classes": [ "container-controls-color" ],
-							"list-item": {
-								"classes": {
-									"add": [ "ml-color-controls-level1"]
+						"item": {
+							"list": {
+								"classes": [ "container-controls-color" ],
+								"list-item": {
+									"classes": {
+										"add": [ "ml-color-controls-level1"]
+									}
 								}
 							}
 						}

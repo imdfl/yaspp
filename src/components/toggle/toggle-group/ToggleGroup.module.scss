@@ -4,14 +4,16 @@
 @use '../mixin' as base;
 @use "./ToggleGroup.meta" as *;
 
-.root {
-	--gap: 4px;
+@layer base {
+	.root {
+		--gap: 4px;
 
-	display: flex;
+		display: flex;
 
-	@include use-gap;
+		@include use-gap;
 
-	.item {
-		@include base.toggle-button("toggle-group-button");
+		.item {
+			@include base.toggle-button("toggle-group-button");
+		}
 	}
 }

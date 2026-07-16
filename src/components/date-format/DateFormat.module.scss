@@ -6,6 +6,10 @@ $__stylesheet__: (
 	name: date-format,
 );
 
-.root {
-	direction: ltr;
+@layer base {
+
+	.root {
+		direction: ltr;
+	}
+
 }

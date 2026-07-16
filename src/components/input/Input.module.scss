@@ -8,6 +8,8 @@ $__stylesheet__: (
 	name: input,
 );
 
-.root {
-	box-sizing: border-box;
+@layer base {
+	.root {
+		box-sizing: border-box;
+	}
 }

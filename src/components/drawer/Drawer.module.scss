@@ -7,9 +7,11 @@ $__stylesheet__: (
 	name: drawer,
 );
 
-.root {
-	display: inherit;
-	// border: 5px solid red;
-	// padding: 2em;
-	// #{varName(nav-item)}-background-color: blue;
+@layer base {
+	.root {
+		display: inherit;
+		// border: 5px solid red;
+		// padding: 2em;
+		// #{varName(nav-item)}-background-color: blue;
+	}
 }

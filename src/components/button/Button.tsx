@@ -26,7 +26,7 @@ const Button = ({
 }: YSPComponentPropsWithChildren<ButtonProps>) => {
 
 	const Comp = (asChild && typeof children !== "string") ? Slot : "button";
-	const { componentClass, componentPath } = useClassNames({
+	const { componentClass, componentPath, attributes } = useClassNames({
 		classes: [styles.root, className],
 		part: "button",
 		currentPath
@@ -39,6 +39,7 @@ const Button = ({
 				onClick={(e: SyntheticEvent) => onClick?.(e)}
 				disabled={disabled}
 				title={title}
+				{...attributes}
 				{...props}
 			>
 				{children}

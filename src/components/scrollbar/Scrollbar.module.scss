@@ -6,46 +6,48 @@ $__stylesheet__: (
 	name: scrollbar,
 );
 
-.root {
-	.viewport {
-		width: 100%;
-		height: 100%;
-		border-radius: inherit;
-	}
-
-	.scrollbar {
-		display: flex;
-		touch-action: none;
-		padding: 2px;
-		transition: background 160ms ease-out;
-		z-index: 1;
-		user-select: none;
-
-		&[data-orientation='vertical'] {
-			@include use-width("scrollbar-thumb-vertical");
-			@include use-margin-right("scrollbar-thumb-vertical");
-			@include use-margin-left("scrollbar-thumb-vertical");
+@layer base {
+	.root {
+		.viewport {
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
 		}
 
-		&[data-orientation='horizontal'] {
-			@include use-width("scrollbar-thumb-horizontal");
-			@include use-margin-right("scrollbar-thumb-horizontal");
-			@include use-margin-left("scrollbar-thumb-horizontal");
+		.scrollbar {
+			display: flex;
+			touch-action: none;
+			padding: 2px;
+			transition: background 160ms ease-out;
+			z-index: 1;
+			user-select: none;
+
+			&[data-orientation='vertical'] {
+				@include use-width("scrollbar-thumb-vertical");
+				@include use-margin-right("scrollbar-thumb-vertical");
+				@include use-margin-left("scrollbar-thumb-vertical");
+			}
+
+			&[data-orientation='horizontal'] {
+				@include use-width("scrollbar-thumb-horizontal");
+				@include use-margin-right("scrollbar-thumb-horizontal");
+				@include use-margin-left("scrollbar-thumb-horizontal");
+			}
 		}
-	}
 
-	.thumb {
-		flex: 1;
-		transition: 75ms background-color ease-in-out;
-		cursor: pointer;
+		.thumb {
+			flex: 1;
+			transition: 75ms background-color ease-in-out;
+			cursor: pointer;
 
-		@include use-background-color;
-		@include use-border-right-size;
-		@include use-border-right-color;
-		@include use-border-right-style;
+			@include use-background-color;
+			@include use-border-right-size;
+			@include use-border-right-color;
+			@include use-border-right-style;
 
-		@include use-border-left-size;
-		@include use-border-left-color;
-		@include use-border-left-style;
+			@include use-border-left-size;
+			@include use-border-left-color;
+			@include use-border-left-style;
+		}
 	}
 }

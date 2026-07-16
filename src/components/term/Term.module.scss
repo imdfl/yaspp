@@ -10,22 +10,24 @@ $__stylesheet__: (
 	name: term,
 );
 
-.root {
-	--content: '*';
-	--offset-y: -0.3em;
-	--decoration-color: #000;
+@layer base {
+	.root {
+		--content: '*';
+		--offset-y: -0.3em;
+		--decoration-color: #000;
 
-	.label {
-		@include use-font-style;
-		@include popover.trigger("popover-trigger");
-	}
+		.label {
+			@include use-font-style;
+			@include popover.trigger("popover-trigger");
+		}
 
-	&::after {
-		position: relative;
-		cursor: pointer;
+		&::after {
+			position: relative;
+			cursor: pointer;
 
-		@include use-text-color("term-suffix");
-		@include use-offset-y("term-suffix");
-		@include annotation.suffix("term");
+			@include use-text-color("term-suffix");
+			@include use-offset-y("term-suffix");
+			@include annotation.suffix("term");
+		}
 	}
 }

@@ -7,35 +7,37 @@ $__stylesheet__: (
 	name: popover,
 );
 
-.trigger {
-	background: none;
-	border: none;
-	padding: 0;
-}
+@layer base {
+	.trigger {
+		background: none;
+		border: none;
+		padding: 0;
+	}
 
-.toolbar {
-	display: flex;
-	position: sticky;
-	top: 0;
-	justify-content: space-between;
+	.toolbar {
+		display: flex;
+		position: sticky;
+		top: 0;
+		justify-content: space-between;
 
-	@include use-inner-gutter(popover-toolbar);
-	@include use-border-size(popover-dialog);
-	@include use-border-style(popover-dialog);
-	@include use-border-color(popover-dialog);
+		@include use-inner-gutter(popover-toolbar);
+		@include use-border-size(popover-dialog);
+		@include use-border-style(popover-dialog);
+		@include use-border-color(popover-dialog);
 
-	// toolbar displays only a bottom-border
-	border-top: none;
-	border-left: none;
-	border-right: none;
+		// toolbar displays only a bottom-border
+		border-top: none;
+		border-left: none;
+		border-right: none;
 
-	// .panel {
-	// }
+		// .panel {
+		// }
 
-	// .closeButton {
-	// }
+		// .closeButton {
+		// }
 
-	.close {
-		@include toolbar-item.toolbar-button-mixin;
+		.close {
+			@include toolbar-item.toolbar-button-mixin;
+		}
 	}
 }

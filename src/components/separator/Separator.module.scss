@@ -4,16 +4,18 @@
 @use "../../styles/lib/hooks/box" as *;
 
 
-.root {
-	@include use-background-color;
+@layer base {
+	.root {
+		@include use-background-color;
 
-	&[data-orientation='vertical'] {
-		width: 1px;
-		height: 16px;
-	}
+		&[data-orientation='vertical'] {
+			width: 1px;
+			height: 16px;
+		}
 
-	&[data-orientation='horizontal'] {
-		width: 16px;
-		height: 1px;
+		&[data-orientation='horizontal'] {
+			width: 16px;
+			height: 1px;
+		}
 	}
 }

@@ -1,6 +1,8 @@
 @use '../mixin' as base;
 @use "./ToggleButton.meta" as *;
 
-.root {
-	@include base.toggle-button("toggle-button");
+@layer base {
+	.root {
+		@include base.toggle-button("toggle-button");
+	}
 }

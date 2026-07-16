@@ -5,6 +5,7 @@
 $__stylesheet__: (
 	name: container,
 );
+@layer base {
 
 .root {
 	// display: flex;
@@ -56,4 +57,5 @@ $__stylesheet__: (
 	&[data-horizontal-gutter='true'] {
 		@include use-horizontal-padding;
 	}
+}
 }

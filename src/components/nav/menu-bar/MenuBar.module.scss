@@ -4,70 +4,71 @@
 @use "../../../styles/lib/hooks/box" as *;
 @use "../../../styles/lib/states" as *;
 
-$states: merge.deep(
-	$COMPONENT_STATES,
-	(
-		opened: open,
-	)
-);
+$states: merge.deep($COMPONENT_STATES,
+		(opened: open,
+		));
 
-.root {
-	@include mixins.caret-mixin("site-horizontal-menu-trigger-caret");
+@layer base {
 
-	.menuSectionTriggers {
-		display: flex;
+	.root {
+		@include mixins.caret-mixin("site-horizontal-menu-trigger-caret");
 
-		@include use-direction(locale);
-
-		.menuSectionTriggerItem {
-			list-style: none;
-		}
-	}
-
-	.sectionItemsList {
-		// @include use-inner-gutter("site-horizontal-menu-list");
-		// @include use-direction(locale);
-
-		ul {
+		.menuSectionTriggers {
 			display: flex;
-			flex-direction: column;
+
+			@include use-direction(locale);
+
+			.menuSectionTriggerItem {
+				list-style: none;
+			}
 		}
 
-		.menuListItem {
-			list-style: none;
+		.sectionItemsList {
+			// @include use-inner-gutter("site-horizontal-menu-list");
+			// @include use-direction(locale);
+
+			ul {
+				display: flex;
+				flex-direction: column;
+			}
+
+			.menuListItem {
+				list-style: none;
+			}
 		}
-	}
 
-	.content {
-		@include mixins.content-mixin("site-horizontal-menu-viewport");
-	}
+		.content {
+			@include mixins.content-mixin("site-horizontal-menu-viewport");
+		}
 
-	.indicator {
-		@include mixins.indicator-mixin("site-horizontal-menu-indicator");
-	}
+		.indicator {
+			@include mixins.indicator-mixin("site-horizontal-menu-indicator");
+		}
 
-	.arrow {
-		@include mixins.arrow-mixin("site-horizontal-menu-arrow-indicator");
-	}
+		.arrow {
+			@include mixins.arrow-mixin("site-horizontal-menu-arrow-indicator");
+		}
 
-	.viewport {
-		@include mixins.viewport-mixin("site-horizontal-menu-viewport");
-	}
+		.viewport {
+			@include mixins.viewport-mixin("site-horizontal-menu-viewport");
+		}
 
-	// stylelint-disable-next-line selector-class-pattern
-	.viewportPosition {
-		@include mixins.viewport-position-mixin("site-horizontal-menu-viewport");
-	}
-
-	&[data-direction='ltr'] {
+		// stylelint-disable-next-line selector-class-pattern
 		.viewportPosition {
-			right: 10em;
+			@include mixins.viewport-position-mixin("site-horizontal-menu-viewport");
+		}
+
+		&[data-direction='ltr'] {
+			.viewportPosition {
+				right: 10em;
+			}
+		}
+
+		&[data-direction='rtl'] {
+			.viewportPosition {
+				left: 10em;
+			}
 		}
 	}
 
-	&[data-direction='rtl'] {
-		.viewportPosition {
-			left: 10em;
-		}
-	}
 }

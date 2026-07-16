@@ -7,16 +7,18 @@ $__stylesheet__: (
 	name: blockquote,
 );
 
-.root {
-	margin: 0;
+@layer base {
+	.root {
+		margin: 0;
 
-	@include use-text-color;
-	@include use-vertical-padding;
-	@include use-horizontal-padding;
+		@include use-text-color;
+		@include use-vertical-padding;
+		@include use-horizontal-padding;
 
-	// todo: implement cite properly
-	cite {
-		@include use-vertical-padding("blockquote-cite");
-		@include use-horizontal-padding("blockquote-cite");
+		// todo: implement cite properly
+		cite {
+			@include use-vertical-padding("blockquote-cite");
+			@include use-horizontal-padding("blockquote-cite");
+		}
 	}
 }

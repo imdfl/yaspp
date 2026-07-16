@@ -7,12 +7,16 @@ $__stylesheet__: (
 	name: css-var-image,
 );
 
-.root {
-	--size: 24px;
-	--url: url('https://placehold.co/40x40');
+@layer base {
 
-	@include use-content-url;
-	@include use-size;
+	.root {
+		--size: 24px;
+		--url: url('https://placehold.co/40x40');
+
+		@include use-content-url;
+		@include use-size;
+	}
+
 }
 
 // Export properties to make them available in JS

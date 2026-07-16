@@ -22,14 +22,14 @@ const ListItem = (
         ref?: React.RefObject<HTMLLIElement>;
     }
 ) => {
-    const { componentClass, componentPath } = useClassNames({
+    const { componentClass, componentPath, attributes } = useClassNames({
         classes: [styles.root, className],
         currentPath,
         part: "list-item",
     });
     return (
         <ComponentContextProvider parentPath={componentPath}>
-            <li className={componentClass} {...rest}>
+            <li className={componentClass} {...rest} {...attributes}>
                 {children}
             </li>
         </ComponentContextProvider>

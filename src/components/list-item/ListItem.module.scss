@@ -6,6 +6,9 @@ $__stylesheet__: (
 	name: list-item,
 );
 
-.root {
-	@include use-text-color(paragraph);
+@layer base {
+	.root {
+		@include use-text-color(paragraph);
+	}
+
 }

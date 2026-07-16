@@ -1,4 +1,3 @@
-
 $stylesheet__: (
 	name: annotation,
 );
@@ -11,31 +10,33 @@ $stylesheet__: (
 @use "../../styles/lib/hooks/position";
 @use "../../styles/lib/hooks/text" as text;
 
-.root {
-	--font-size: 0.75em;
-	--font-weight: normal;
-	--line-height: 1em;
-	--offset-y: -0.5em;
-	--padding-left: 0.15em;
-	--padding-right: 0.15em;
-	--data-content: #{attr(data-prefix-content) attr(data-seq)};
+@layer base {
+	.root {
+		--font-size: 0.75em;
+		--font-weight: normal;
+		--line-height: 1em;
+		--offset-y: -0.5em;
+		--padding-left: 0.15em;
+		--padding-right: 0.15em;
+		--data-content: #{attr(data-prefix-content) attr(data-seq)};
 
-	position: relative;
+		position: relative;
 
-	@include text.use-font-size;
-	@include text.use-line-height;
-	@include position.use-offset-y;
-	@include popover.trigger("popover-trigger");
+		@include text.use-font-size;
+		@include text.use-line-height;
+		@include position.use-offset-y;
+		@include popover.trigger("popover-trigger");
 
-	.content {
-		@include mixin.suffix-content-data("annotation", var(--data-content));
-	}
+		.content {
+			@include mixin.suffix-content-data("annotation", var(--data-content));
+		}
 
-	&::before {
-		@include mixin.prefix("annotation");
-	}
+		&::before {
+			@include mixin.prefix("annotation");
+		}
 
-	&::after {
-		@include mixin.suffix("annotation");
+		&::after {
+			@include mixin.suffix("annotation");
+		}
 	}
 }
