@@ -37,17 +37,17 @@ const renderItems = (items: ReadonlyArray<YASPP.INavItemData>, currentPath: Comp
 
 const renderSections = (sections: ReadonlyArray<INavSection>, classInfo: IClassNamesInfo) => {
 	const { componentPath, createSubPath } = classInfo;
-	const mainButtonPath = createSubPath("main-menu.item");
+	const mainItemPath = createSubPath("main-menu.item");
 	const menuPath = createSubPath("submenu");
 	const subItemPath = createSubPath("submenu.item")
 	return sections.map((section) => (
 		<NavigationMenu.Item key={section.id} asChild>
 			<ListItem
-				currentPath={componentPath}
+				currentPath={mainItemPath}
 				className={styles.menuSectionTriggerItem}
 				key={`list-item-${section.id}`}
 			>
-					<Button asChild currentPath={mainButtonPath}>
+					<Button asChild currentPath={mainItemPath}>
 						<NavigationMenu.Trigger >
 							{section.title}
 							{getIcon("caretDown", { className: styles.caret })}

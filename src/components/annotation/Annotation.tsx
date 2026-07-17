@@ -9,15 +9,18 @@ interface AnnotationProps {
 	readonly hasPrefix?: boolean;
 };
 
-const Annotation = ({ index, hasPrefix = true, className }: YSPComponentPropsWithChildren<AnnotationProps>): React.JSX.Element => (
-	<span className={classNames(styles.root, className)}>
-		<span
-			className={styles.content}
-			data-prefix-content={hasPrefix ? leadingZero(index) : ""}
-			data-seq={index}
-		></span>
-	</span>
-);
+const Annotation = ({ index, hasPrefix = true, className }: YSPComponentPropsWithChildren<AnnotationProps>): React.JSX.Element => {
+	const ind = hasPrefix ? String(index).padStart(2, '0') : String(index);
+	return (
+		<span className={classNames(styles.root, className)}>
+			<span
+				className={styles.content}
+				// data-prefix-content={hasPrefix ? leadingZero(index) : ""}
+				data-seq={index}
+			>{ind}</span>
+		</span>
+	)
+};
 
 export default Annotation;
 export type { AnnotationProps };

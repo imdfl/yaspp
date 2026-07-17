@@ -1,14 +1,14 @@
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use "../../styles/lib/hooks/text" as *;
+// @use '../../styles/lib/component' as *;
+// @use '../../styles/lib/states' as *;
+// @use "../../styles/lib/hooks/text" as *;
 
-$__stylesheet__: (
-	name: list-item,
-);
+// $__stylesheet__: (
+// 	name: list-item,
+// );
 
 @layer base {
-	.root {
-		@include use-text-color(paragraph);
-	}
+	// .root {
+	// 	@include use-text-color(paragraph);
+	// }
 
 }

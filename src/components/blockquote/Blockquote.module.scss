@@ -9,11 +9,11 @@ $__stylesheet__: (
 
 @layer base {
 	.root {
-		margin: 0;
-
-		@include use-text-color;
-		@include use-vertical-padding;
-		@include use-horizontal-padding;
+		margin-left: 1rem;
+		font-size: var(--ml-font-size-sm);
+		/* line-height: 21px; */
+		padding: 0 1rem;
+		border-left: 3px solid var(--ml-color-background-controls);
 
 		// todo: implement cite properly
 		cite {
