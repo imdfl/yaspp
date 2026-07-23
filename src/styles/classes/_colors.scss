@@ -1,31 +1,33 @@
 @layer base {
-	.container-color {
-		background-color: transparent;
-	}
+	:root {
+		.container-color {
+			background-color: transparent;
+		}
 
-	.container-content-color {
-		background-color: var(--ml-color-background);
-	}
+		.container-content-color {
+			background-color: var(--ml-color-background);
+		}
 
-	.container-inverse-color {
-		background-color: var(--ml-color-background-inverse);
-		color: var(--ml-color-text-inverse);
-	}
+		.container-inverse-color {
+			background-color: var(--ml-color-background-inverse);
+			color: var(--ml-color-text-inverse);
+		}
 
-	.container-controls-color {
-		background-color: var(--ml-color-background-controls);
-	}
+		.container-controls-color {
+			background-color: var(--ml-color-background-controls);
+		}
 
-	.container-control-color {
-		background-color: var(--ml-color-background-control);
-	}
+		.container-control-color {
+			background-color: var(--ml-color-background-control);
+		}
 
-	.container-controls-color {
-		background-color: var(--ml-color-background-controls);
-	}
+		.container-controls-color {
+			background-color: var(--ml-color-background-controls);
+		}
 
-	.control-hover:hover {
-		color: var(--ml-color-text-hover);
+		.control-hover:hover {
+			color: var(--ml-color-text-hover);
+		}
 	}
 
 }

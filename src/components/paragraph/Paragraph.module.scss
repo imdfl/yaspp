@@ -8,8 +8,8 @@ $__stylesheet__: (
 );
 
 @layer base {
-	.root {
-		@include use-margin-bottom;
-		@include use-text-color;
-	}
+	// .root {
+	// 	@include use-margin-bottom;
+	// 	@include use-text-color;
+	// }
 }

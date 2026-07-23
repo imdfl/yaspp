@@ -6,7 +6,7 @@ export const _translate = ({ text, locale, dictionary, defaultLocale }: ITransla
 		return text;
 	}
 	function wrapStr() {
-		return `%${locale}_${text}$%`;
+		return text; //`%${locale}_${text}$%`;
 	}
 	function tryDefault(): string {
 		if (defaultLocale && locale !== defaultLocale) {

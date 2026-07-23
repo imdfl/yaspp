@@ -11,12 +11,12 @@ $states: merge.deep($COMPONENT_STATES,
 @layer base {
 
 	.root {
-		@include mixins.caret-mixin("site-horizontal-menu-trigger-caret");
+		// @include mixins.caret-mixin("site-horizontal-menu-trigger-caret");
 
 		.menuSectionTriggers {
 			display: flex;
 
-			@include use-direction(locale);
+			// @include use-direction(locale);
 
 			.menuSectionTriggerItem {
 				list-style: none;
