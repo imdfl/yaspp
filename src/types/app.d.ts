@@ -40,9 +40,14 @@ export interface IYasppApp {
 	readonly dictionary: LocaleDictionary;
 
 	/**
-	 * Default locale to start with and use as fallback in translations
+	 * Default locale to use as fallback in translations
 	 */
 	readonly defaultLocale: LocaleId;
+
+	/**
+	 * Default locale to start with, defaults to `defaultLocale`
+	 */
+	readonly initialLocale: string;
 
 	readonly nav: NavGroups;
 

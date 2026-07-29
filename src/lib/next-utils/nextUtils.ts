@@ -51,6 +51,7 @@ class MLNextUtils implements IMLNextUtils {
 			return {
 				props: {
 					content: "",
+					initialLocale: "",
 					documentPath: folderPath,
 					nav: "",
 					styleClassBindings: [],
@@ -81,7 +82,8 @@ class MLNextUtils implements IMLNextUtils {
 				styleClassBindings: app.styleClassBindings,
 				theme: app.theme,
 				themes: app.themeUrls.slice(),
-				styleUrls: app.styleUrls.map(r => r.full)
+				styleUrls: app.styleUrls.map(r => r.full),
+				initialLocale: app.initialLocale
 			},
 		};
 	}

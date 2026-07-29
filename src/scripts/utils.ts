@@ -44,12 +44,24 @@ export interface IYasppUtils {
 	 */
 	loadTemplate(name: string): Promise<IOperationResult<string>>;
 
+	/**
+	 * Returns the json-parsed result of loadTemplate
+	 * @param name 
+	 */
+	loadJSONTemplate<TRet extends NotNull>(name: string): Promise<IOperationResult<TRet>>;
+
 	toPosixPath(path: string): string;
 
 	/**
 	 * Tries to load environment variables from the root,according to the next conventions
 	 */
 	loadEnv(): Promise<void>;
+
+	/**
+	 * Terminates the process, error aware
+	 * @param err 
+	 */
+	exitWith(err: string): void;
 }
 
 export interface IYasppLoadOptions {
@@ -282,4 +294,4 @@ errors ${cpResult.errors}`;
 }
 
 
-export const yasppUtils = new YasppUtils;
+export const yasppUtils: IYasppUtils = new YasppUtils;

@@ -8,26 +8,32 @@ const { withAxiom } = require('next-axiom');
  * Quick sanity test that yaspp.config.json is available in the configured or default location
  * @returns 
  */
-async function testConfig() {
+async function loadConfig() {
 	try {
-		const projectPath = process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "..";
+		const projectPath = process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "../public/yaspp";
 		const configPath = path.resolve(/*turbopackIgnore: true*/ process.cwd(), projectPath, "yaspp.config.json");
-		const stat = await fs.promises.lstat(configPath);
-		return stat.isFile();
+		const txt = await fs.promises.readFile(configPath);
+		return JSON.parse(txt);
 	}
 	catch (e) {
-		return false;
+		return null;
 	}
 }
 
 /** @type {import('next').NextConfig} */
 const nextConfig = async () => {
-	const haveConfig = await testConfig();
-	if (!haveConfig) {
+	const yasppConfig = await loadConfig();
+	if (!yasppConfig) {
 		throw new Error(`Failed to find yaspp configuration`);
 	}
+	const locale = yasppConfig.locale || {};
 	const config = {
 		reactStrictMode: true,
+		i18n: {
+			defaultLocale: locale.defaultLocale || "en",
+			localeDetection: false,
+			locales: Array.isArray(locale.locales) ? locale.locales : []
+		},
 		// optimizeFonts: true,
 		sassOptions: {
 			includePaths: [/*turbopackIgnore: true*/ path.join(__dirname, 'public/styles')],

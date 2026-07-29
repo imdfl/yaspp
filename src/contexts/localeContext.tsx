@@ -1,14 +1,22 @@
-import { Context, createContext } from "react";
+import { Context, createContext, PropsWithChildren } from "react";
 import useTranslation from "next-translate/useTranslation";
 import type {
 	ILocaleContext,
 	ILocaleContextProps,
 } from "./localeContext.d";
 
-import { NextRouter } from "next/router";
+import { NextRouter, Router } from "next/router";
 import type { LocaleId, TextDirection } from "../types";
 import { Translate } from "next-translate";
 import { isRTL, LocalizeFunction, localizeString } from "@lib/locale";
+
+interface CoreLocaleContextOptions {
+	readonly initialLocale: string;
+	readonly router: Router;
+
+}
+
+export type LocaleContextOptions = PropsWithChildren<CoreLocaleContextOptions>;
 
 class LocaleContextImpl implements ILocaleContext {
 	private _locale: string;
@@ -83,8 +91,8 @@ const ctx = createContext<ILocaleContext>(new LocaleContextImpl(null));
 
 export const LocaleContext: Context<ILocaleContext> = ctx;
 
-export const LocaleContextProvider = ({ children, router }) => {
-	const ut = useTranslation("en");
+export const LocaleContextProvider = ({ children, router, initialLocale }: LocaleContextOptions) => {
+	const ut = useTranslation(initialLocale || "en");
 	const { t, lang } = ut;
 	return (
         (<LocaleContext value={new LocaleContextImpl({ router, locale: lang, translate: t })}>

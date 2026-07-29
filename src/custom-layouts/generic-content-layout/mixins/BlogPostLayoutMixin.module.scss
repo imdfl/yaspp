@@ -1,16 +1,4 @@
-@use '../../../styles/lib/refs';
-@use '../../generic-content-layout/GenericContentLayout.module' as custom-layout;
-@use "../../../styles/lib/component" as *;
-
-$__stylesheet__: (
-	name: custom-layout-blog-post,
-);
-
 .root {
-	&:not(:last-child) {
-		// margin-bottom: 2em;
-	}
-
 	img {
 		max-width: 100%;
 	}

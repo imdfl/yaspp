@@ -244,8 +244,12 @@ async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYaspp
 
 	const langs = Array.isArray(locale.langs) ? locale.langs : ["en"];
 	const defaultLocale = locale.defaultLocale || "en";
+	const initialLocale = locale.initialLocale || "";
 	if (!langs.includes(defaultLocale)) {
 		return errorResult(`default locale ${defaultLocale} not found in locales list ${langs}`);
+	}
+	if (initialLocale && !langs.includes(initialLocale)) {
+		return errorResult(`initial locale ${initialLocale} not found in locales list ${langs}`);
 	}
 	const pages: Record<string, string[]> = {};
 	if (locale.pages) {
@@ -261,6 +265,7 @@ async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYaspp
 		root: locale.root || "",
 		langs,
 		defaultLocale,
+		initialLocale,
 		pages
 	});
 }

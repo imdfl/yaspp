@@ -8,6 +8,10 @@
 	visibility: hidden;
 }
 
+html {
+	line-height: unset;
+}
+
 @layer base {
 	h1,
 	h2,

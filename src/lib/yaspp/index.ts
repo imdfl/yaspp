@@ -26,6 +26,7 @@ class YasppApp implements IYasppApp {
 	private _theme = "";
 	private _dictionary: LocaleDictionary | null = null;
 	private readonly _navItems: Record<string, INavSection[]> = {};
+	private _initialLocale = "";
 	private readonly _styleUrls: IStylesheetUrl[] = [];
 	private readonly _classBindings: Array<IYasppClassTree> = [];
 	private readonly _themes: IThemeUrl[] = [];
@@ -44,6 +45,10 @@ class YasppApp implements IYasppApp {
 
 	public get dictionary(): LocaleDictionary {
 		return this._dictionary;
+	}
+
+	public get initialLocale(): string {
+		return this._initialLocale || i18nconfig.defaultLocale;
 	}
 
 	public get defaultLocale(): string {
@@ -92,7 +97,8 @@ class YasppApp implements IYasppApp {
 			if (configErr) {
 				return returnError(configErr);
 			}
-			const { content, style } = yConfig;
+			const { locale, content, style } = yConfig;
+			this._initialLocale = locale?.initialLocale || "";
 			this._content = fsPath.resolve(projectRoot, content.root);
 			this._indexPage = yConfig.content.index;
 
@@ -105,7 +111,6 @@ class YasppApp implements IYasppApp {
 				return returnError(dictErr);
 			}
 			const bf = styleBindings as unknown as IYasppBindingsFile;
-			const df = defaultBindings as unknown as IYasppBindingsFile;
 			const bres = validateClassBindings(defaultBindings.bindings, ...(Array.isArray(bf.bindings) ? bf.bindings : []));
 			if (bres.error) {
 				return returnError(bres.error);

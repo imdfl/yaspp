@@ -17,4 +17,7 @@ export interface IFolderStaticProps {
 	readonly themes: IThemeUrl[];
 
 	readonly styleUrls: ReadonlyArray<string>;
+
+	/** Locale to use when none is specified in the URL */
+	readonly initialLocale: string;
 }

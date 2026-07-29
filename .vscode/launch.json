@@ -25,7 +25,7 @@
 			"name": "Debug server-side (no pre task)",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "yarn dev-only",
+			"command": "yarn dev",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}

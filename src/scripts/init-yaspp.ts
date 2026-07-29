@@ -16,10 +16,9 @@ import { fileUtils } from "@lib/fileUtils";
 import { stringUtils } from "@lib/stringUtils";
 import {
 	errorResult, getYasppProjectPath, loadClassBindings,
-	loadYasppConfig, successResult,
-	validateThemes
+	loadYasppConfig, successResult, validateThemes
 } from "@lib/yaspp/yaspp-lib";
-import YConstants from "../lib/yaspp/constants";
+import YConstants from "@lib/yaspp/constants";
 import { copyYasppContent } from "./copy-content";
 /**
  * The root of the  yaspp module
@@ -117,7 +116,7 @@ function toNSString(namespaces: NSRecord[]): string {
 async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfig): Promise<ErrorMessage> {
 	const values = {
 		"%LANGS%": [] as ReadonlyArray<string>,
-		"%DEFAULT%": "en",
+		"%DEFAULT%": "",
 		"%PAGES%": "",
 		"%SYSNS%": "",
 		"%USERNS%": "",
@@ -134,7 +133,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 	const outputTmpl = tmplResult.result.replace(/\/\/.+$/mg, ""); // template string without comments
 	try {
 		const localeConfig = configResult.result;
-		function ts(s: string) { return `"${s}"`; }
+		function qts(s: string) { return `"${s}"`; }
 		const sysNS = Object.entries(localeConfig.pages).reduce((ns: Set<string>, [, values]) => {
 			values.forEach(s => ns.add(s));
 			return ns
@@ -159,7 +158,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 			project: {} as Record<string, string>
 		}
 		values["%DEFAULT%"] = config.defaultLocale;
-		values["%LANGS%"] = config.langs.map(ts);
+		values["%LANGS%"] = config.langs.map(qts);
 		const mergedPages = Object.entries(config.pages).reduce((pages, [key, values]) => {
 			const sys = new Set(pages[key] || []);
 			values.forEach(s => sys.add(s));

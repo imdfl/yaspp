@@ -166,15 +166,22 @@ export interface ContentComponentProps {
 
 /** Site page navigation props */
 export interface IPageProps {
-	locale: string;
-	documentPath: string;
-	translate: (key: string) => string;
-	content: string;
-	className?: string;
-	metaData?: string;
-	nav: string;
-	styleClassBindings: ReadonlyArray<IYasppClassTree>;
-	theme: string;
-	themes: IThemeUrl[];
-	styleUrls: string[]
+	readonly locale: string;
+	/**
+	 * Locale to use when the URL doesn't indicate one
+	 */
+	readonly initialLocale: string;
+	readonly documentPath: string;
+	readonly translate: (key: string) => string;
+	readonly content: string;
+	readonly className?: string;
+	readonly metaData?: string;
+	readonly nav: string;
+	readonly styleClassBindings: ReadonlyArray<IYasppClassTree>;
+	readonly theme: string;
+	readonly themes: IThemeUrl[];
+	/**
+	 * styles sheets to load on startup
+	 */
+	readonly styleUrls: string[]
 }
