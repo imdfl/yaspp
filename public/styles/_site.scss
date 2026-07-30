@@ -2,14 +2,14 @@
 @use "colors";
 @use "typography";
 
-@function load($colors: (), $typography: ()) {
+@function load($colors: (), $typography: (), $colorOptions: (), $typographyOptions: ()) {
 	@return (
-		colors: colors.load($colors),
-		typography: typography.load($typography)
+		colors: colors.load($colors, $options: $colorOptions),
+		typography: typography.load($typography, $options: $typographyOptions)
 	)
 };
 
-@mixin root($colors: (), $typography: ()) {
-	@include colors.root($colors);
-	@include typography.root($typography);
+@mixin root($colors: (), $typography: (), $colorOptions: (), $typographyOptions: ()) {
+	@include colors.root($colors, $colorOptions);
+	@include typography.root($typography, $typographyOptions);
 }

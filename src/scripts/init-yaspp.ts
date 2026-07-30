@@ -23,7 +23,7 @@ import { copyYasppContent } from "./copy-content";
 /**
  * The root of the  yaspp module
  */
-const ROOT_FOLDER = fsPath.resolve(__dirname, "../..");
+const ROOT_FOLDER = process.cwd(); //fsPath.resolve(__dirname, "../..");
 /**
  * The projects various resources are linked here
  */
@@ -157,6 +157,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 			system: sysDict,
 			project: {} as Record<string, string>
 		}
+		values["%INITIAL%"] = config.initialLocale || config.defaultLocale;
 		values["%DEFAULT%"] = config.defaultLocale;
 		values["%LANGS%"] = config.langs.map(qts);
 		const mergedPages = Object.entries(config.pages).reduce((pages, [key, values]) => {

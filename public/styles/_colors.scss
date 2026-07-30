@@ -37,14 +37,14 @@
 	);
 	$defaultOptions: (
 		background-add: null,
-		text-add: null,
-		text-increment: 10%,
+		color-add: null,
+		color-increment: 10%,
 		background-increment: -10%,
 	);
 	$fullOptions: merge.deep($defaultOptions, $options);
-	$textInc: map.get($fullOptions, "text-increment");
+	$textInc: map.get($fullOptions, "color-increment");
 	$bgInc: map.get($fullOptions, "background-increment");
-	$textAdd: map.get($fullOptions, "text-add"); 
+	$textAdd: map.get($fullOptions, "color-add"); 
 	$bgAdd: map.get($fullOptions, "background-add"); 
 
 	$base: merge.deep($default, $overrides);
@@ -74,8 +74,8 @@
 	@return merge.deep($full, $overrides);
 };
 
-@mixin root($colors: ()) {
-	$vars: load($colors);
+@mixin root($colors: (), $options: ()) {
+	$vars: load($colors, $options);
 	// @debug $vars;
 	:root {
 		@include varsblock.vars($map: $vars, $prefix: "ml-color");

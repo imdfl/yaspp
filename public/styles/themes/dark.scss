@@ -10,6 +10,11 @@ $colors: (
 	action-color: #BBF
 );
 
+$options: (
+		color-increment: -10%,
+		background-increment: 10%,
+);
+
 @layer theme {
-	@include site.root($colors: $colors);
+	@include site.root($colors: $colors, $colorOptions: $options);
 }

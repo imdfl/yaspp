@@ -34,11 +34,11 @@
   "scripts": {
     "clean": "rm -rf .next",
     "build": "next build",
-    "prebuild": "yarn sass && npx ts-node src/scripts/copy-content --clean",
+    "prebuild": "yarn sass && yarn copy-content --clean",
     "dev-old": "next dev",
     "dev-css": "bash scripts/dev.sh",
-    "sass": "sass public/styles public/yaspp/styles",
-    "sassqwatch": "sass --watch public/styles public/yaspp/styles",
+    "sass": "npx sass public/styles public/yaspp/styles",
+    "sassqwatch": "npx sass --watch public/styles public/yaspp/styles",
     "_predev": "npx ts-node src/scripts/copy-content",
     "dev": "next dev",
     "start": "next start",
@@ -57,7 +57,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "upload": "npx ts-node scripts/upload-files.ts",
-    "init-yaspp": "cd src/scripts && npx ts-node init-yaspp"
+    "init-yaspp": "npx ts-node src/scripts/init-yaspp",
+    "copy-content": "npx ts-node src/scripts/copy-content"
   },
   "dependencies": {
     "@radix-ui/react-form": "^0.1.8",

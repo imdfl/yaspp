@@ -4,7 +4,7 @@
 @use "lib/lookup";
 @use "lib/varsblock";
 
-@function load($overrides: ()) {
+@function load($overrides: (), $options: ()) {
 	$default: (
 		font-family: (
 			font1: 'Roboto Slab, serif',
@@ -49,8 +49,8 @@
     @return merge.deep($default, $overrides);
 };
 
-@mixin root($typography: ()) {
-	$vars: load($typography);
+@mixin root($typography: (), $options: ()) {
+	$vars: load($typography, $options);
 	$fsz: map.get($vars, font-size);
 	$ffml: map.get($vars, font-family);
 	$fw: map.get($vars, font-weight);

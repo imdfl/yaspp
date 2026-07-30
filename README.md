@@ -46,10 +46,15 @@ The recommneded way to create a `yaspp` project is our [create-yaspp](https://ww
 After setup, you should have all the the files and folders required for running yaspp. From here, `cd` to the `yaspp` folder and run or build normally, e.g.
 
     $ yarn dev
+    # Or
     $ yarn build
     $ yarn start
 
-On each development or production run, yaspp runs the script `scripts/build/copy-content` which copies the relevant content from your project to the `/public/yaspp` folder. This means that you _cannot_ hot-reload your content, but you will get the latest version of it in each run.
+On each production build, yaspp runs the script `scripts/build/copy-content` which copies the relevant content from your project to the `/public/yaspp` folder. This means that you _cannot_ hot-reload your content, but you will get the latest version of it in each build.
+
+To use the latest content in development runs, run `yarn copy-content` in the `yaspp` folder.
+
+If you provide your own style or themes and want to experiment with them, it's recommended to run `yarn sassqwatch` during development. This ensures that the development server is serving the latest compiled stylesheets. Note that during development, you'll edit **a copy** of your styles, located under `public/yaspp/styles`. Don't forget to copy your changes back to their sources.
 
 ### Git hooks
 

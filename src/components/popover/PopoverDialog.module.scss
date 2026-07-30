@@ -16,7 +16,7 @@ $__stylesheet__: (
 		--border-color: #808080;
 		--radius: 4px;
 		--shadow: none;
-		--background-color: #e0e0e0;
+		--background-color: var(--ml-color-background-level3);
 
 		overflow: hidden;
 

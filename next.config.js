@@ -10,7 +10,11 @@ const { withAxiom } = require('next-axiom');
  */
 async function loadConfig() {
 	try {
-		const projectPath = process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "../public/yaspp";
+		const projectPath = 
+		// process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT 
+		// || process.env.YASPP_PROJECT_ROOT 
+		// || 
+		"public/yaspp";
 		const configPath = path.resolve(/*turbopackIgnore: true*/ process.cwd(), projectPath, "yaspp.config.json");
 		const txt = await fs.promises.readFile(configPath);
 		return JSON.parse(txt);
@@ -30,8 +34,8 @@ const nextConfig = async () => {
 	const config = {
 		reactStrictMode: true,
 		i18n: {
-			defaultLocale: locale.defaultLocale || "en",
-			localeDetection: false,
+			defaultLocale: locale.initialLocale || undefined,
+			localeDetection: !locale.initialLocale,
 			locales: Array.isArray(locale.locales) ? locale.locales : []
 		},
 		// optimizeFonts: true,
@@ -43,7 +47,7 @@ const nextConfig = async () => {
 			return legacyRedirects;
 		}
 	}
-
+	console.log("**Next config**\n", config);
 	return withAxiom(nextTranslate(config, { turbopack: true }));
 };
 
