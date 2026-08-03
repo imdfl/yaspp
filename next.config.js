@@ -47,7 +47,6 @@ const nextConfig = async () => {
 			return legacyRedirects;
 		}
 	}
-	console.log("**Next config**\n", config);
 	return withAxiom(nextTranslate(config, { turbopack: true }));
 };
 

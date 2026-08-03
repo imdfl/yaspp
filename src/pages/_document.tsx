@@ -7,22 +7,20 @@ import Document, {
 	DocumentContext,
 	DocumentProps,
 } from "next/document";
-import { fontFaceLinks } from "../siteFonts";
-import { initYaspp } from "../lib/yaspp";
+import { initYaspp } from "@lib/yaspp";
+import { IncomingMessage } from "http";
 
 interface IStyleProps {
 	readonly styleUrls: ReadonlyArray<string>;
 }
 
-type YSPDocProps= DocumentProps & IStyleProps;
+type YSPDocProps = DocumentProps & IStyleProps;
 
 type YSPInitDocProps = DocumentInitialProps & IStyleProps;
 
 class CustomDocument extends Document<IStyleProps> {
-	private styleUrls: ReadonlyArray<string>;
 	constructor(props: YSPDocProps) {
 		super(props);
-		this.styleUrls = props.styleUrls ?? []
 	}
 
 	static async getInitialProps(ctx: DocumentContext): Promise<YSPInitDocProps> {

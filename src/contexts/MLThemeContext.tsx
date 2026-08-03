@@ -29,8 +29,8 @@ class MLThemeContextImpl implements IMLThemeProvider {
 	private readonly _setTheme: SetThemeFunc;
 	private _oppositeTheme = "";
 	constructor({ themes, theme, setNextTheme }: IMLThemeContextOptions) {
-		this._themes = (themes ?? []).slice();
-		this._theme = this._isValidTheme(theme) ? theme : (themes[0]?.name ?? "");
+		this._themes = Array.isArray(themes) ? themes.slice() : [];
+		this._theme = this._isValidTheme(theme) ? theme : (this._themes[0]?.name ?? "");
 
 		this._setNextTheme = setNextTheme ?? (() => void 0);
 		this._setTheme = (theme: string) => {
@@ -39,9 +39,9 @@ class MLThemeContextImpl implements IMLThemeProvider {
 				if (window?.localStorage) {
 					window.localStorage.setItem(STOAGE_KEY, this._theme);
 				}
-				if (this.themes.length > 1) {
-					const ind = this.themes.findIndex(t => t.name === theme);
-					this._oppositeTheme = this.themes[ind === 0 ? 1 : 0].name;
+				if (this._themes.length > 1) {
+					const ind = this._themes.findIndex(t => t.name === theme);
+					this._oppositeTheme = this._themes[ind === 0 ? 1 : 0].name;
 				}
 				this._setNextTheme(theme);
 			}

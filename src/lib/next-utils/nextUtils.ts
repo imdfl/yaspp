@@ -39,6 +39,23 @@ class MLNextUtils implements IMLNextUtils {
 		return relative;
 	}
 
+	public async getValidFolderStaticProps(folderPath: string | null,
+		locale: LocaleId,
+		loadMode: LoadFolderModes,
+		mode?: Partial<IContentParseOptions>
+	): Promise<GetStaticPropsResult<IFolderStaticProps> | null> {
+
+		try {
+			const res = await this.getFolderStaticProps(folderPath, locale, loadMode, mode);
+			const props = (res as any).props as IFolderStaticProps;
+			return props?.documentPath ? res : null;
+		}
+		catch {
+			return null;
+		}
+	}
+
+
 	public async getFolderStaticProps(
 		folderPath: string | null,
 		locale: LocaleId,

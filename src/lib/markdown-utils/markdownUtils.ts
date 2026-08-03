@@ -27,6 +27,7 @@ export interface IMarkdownUtils {
 		nodeName: ASTNODE_TYPES,
 		context: MLParseContext
 	): MLNODE_TYPES;
+	processHTMLNode(node: ParsedNode): ParsedNode;
 	extractParseMode(node: ParsedNode, context: MLParseContext): MLParseModes;
 	removeNullChildren(node: IMLParsedNode): IMLParsedNode;
 	/**
@@ -137,6 +138,23 @@ class MarkdownUtils implements IMarkdownUtils {
 		}
 
 		return AST2MLTypeMap.get(nodeName) || (nodeName.toLowerCase() as MLNODE_TYPES);
+	}
+
+
+	public processHTMLNode(
+		node: ParsedNode
+	): ParsedNode {
+		if (node.type !== ASTNODE_TYPES.HTML) {
+			return node;
+		}
+		if (/^a$/i.test(node.tag)) {
+			return {
+				...node,
+				type: ASTNODE_TYPES.LINK,
+				target: node.attributes?.get("href") ?? ""
+			}
+		}
+		return node;
 	}
 
 	/**

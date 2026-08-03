@@ -1,21 +1,16 @@
 import { flattenArray } from "@utils/index";
+import { fontFaceToDecls, IFontFaceRecord } from "@lib/site-fonts";
 import siteFontData from "./layout/data/typography/siteFonts.json";
 
 const fontBasePath = '/assets/fonts';
 
-type IFontFace = {
-	id: string;
-};
 
-interface IFontFaceLink extends IFontFace {
+interface IFontFaceLink {
+	id: string;
 	href: string;
 	format: string;
 }
 
-interface IFontFaceDecl extends IFontFaceLink {
-	name: string;
-	weight: number;
-}
 
 const FontFaceLink = ({ id, href, format }: IFontFaceLink) => (
 	<link
@@ -27,30 +22,8 @@ const FontFaceLink = ({ id, href, format }: IFontFaceLink) => (
 		crossOrigin="anonymous"
 	/>
 );
-
-const FontFaceDecl = ({ name, id, href, weight, format }: IFontFaceDecl) => {
-	const fontFaceProps = [
-		['font-family', `"${name}"`],
-		['src', `url("${fontBasePath}/${id}/${href}") format("${format}")`],
-		['font-weight', weight],
-		['font-display', 'swap'],
-	];
-	return `@font-face{${fontFaceProps
-		.map((keyVal) => `${keyVal[0]}: ${keyVal[1]};`)
-		.join('')}}`;
-};
-
-export const fontFaceDecls = siteFontData
-	.map(({ id, name, family }) => {
-		return family
-			.map(({ weight, format, href }) =>
-				FontFaceDecl({ name, id, href, weight, format })
-			)
-			.join('\n');
-	})
-	.join('\n');
-
-export const fontFaceLinks = flattenArray(
+// TODO support font face options
+export const fontFaceLinks = (siteFontData: IFontFaceRecord[]) => flattenArray(
 	siteFontData.map(({ id, family }) =>
 		family.map(({ href, format }) => FontFaceLink({ id, href, format }))
 	)

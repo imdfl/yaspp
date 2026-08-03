@@ -17,12 +17,12 @@ import {
 import { getIcon } from "@components/icons";
 import CustomHead from "./customHead";
 import { Analytics } from "./analytics";
-import { LocaleId } from "@src/types";
+import { LocaleId, OperationPromise } from "@src/types";
 import { useRouter } from "next/router";
 import { NavSectionId } from "./data/nav";
 import classNames from "@lib/class-names";
 import type { LocaleOptionProps } from "@src/layout/locale-select/LocaleSelect";
-import { ComponentContextProvider, LocaleContext } from "../contexts";
+import { ComponentContextProvider, LocaleContext, PageContext } from "../contexts";
 import useNavItems from "@hooks/useNavItems";
 import { YasppOnload } from "../components/yaspp-components";
 import { MLThemeContext } from "@contexts/MLThemeContext";
@@ -37,11 +37,12 @@ const MIN_DESKTOP_WIDTH = 1024;
 
 const _globalStyles = new Map<string, string>();
 
-async function loadStyles(styleUrls?: ReadonlyArray<string>): Promise<string[]> {
+async function loadStyles(styleUrls?: ReadonlyArray<string>): OperationPromise<string[]> {
 	if (!styleUrls?.length) {
-		return [];
+		return { result: [] };
 	}
 	const styles: string[] = [];
+	const errors: string[] = [];
 
 	for await (const url of styleUrls) {
 		if (_globalStyles.has(url)) {
@@ -60,7 +61,7 @@ async function loadStyles(styleUrls?: ReadonlyArray<string>): Promise<string[]> 
 				}
 			}
 			catch (e) {
-				console.error(`Error loading css module from ${url}: ${e}`);
+				errors.push(`Error loading css module from ${url}: ${e}`);
 			}
 			finally {
 				_globalStyles.set(url, cssText);
@@ -70,12 +71,16 @@ async function loadStyles(styleUrls?: ReadonlyArray<string>): Promise<string[]> 
 			}
 		}
 	}
-	return styles;
+	return {
+		result: styles,
+		error: errors.join('\n')
+	};
 }
 
 
 const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const router = useRouter();
+	const pageCtx = useContext(PageContext);
 
 	useIconAnimator(router);
 
@@ -205,20 +210,28 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	);
 
 	useEffect(() => {
-		const run = async (): Promise<string[]> => {
+		const run = async (): OperationPromise<string[]> => {
 			const t = themes?.find(t => t.name === theme);
 			if (!t) {
-				return [];
+				console.warn(`Theme ${theme} not found`);
+				return { result: [] };
 			}
 			return await loadStyles(t.paths);
 		};
 
 		run()
-			.then(strs => {
-				setLoadedstyle(strs?.length ? strs.join('\n') : "")
+			.then(({ error, result: strs }) => {
+				if (error) {
+					console.error(`Error loading theme ${theme}`);
+					setLoadedstyle("");
+				}
+				else {
+					setLoadedstyle(strs?.length ? strs.join('\n') : "");
+				}
+
 			})
 			.catch
-	}, [themes, theme])
+	}, [themes, theme, pageCtx])
 
 
 	if (loadedStyle === null) {
@@ -252,6 +265,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 				>
 					<header data-testid="topbar">
 						<ComponentContextProvider parentPath={headerPath}>
+							{/* Top logo */}
 							<Container alignItemsCenter className={styles.title}>
 								<Logo mode={theme || "light"} className={styles.logo} />
 								<TextLink
@@ -267,6 +281,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 								</Text>
 							</Container>
 							{isMobile ? (
+								// hamburger menu
 								<Button onClick={toggleDrawer} asChild>
 									{getIcon("hamburger")}
 								</Button>

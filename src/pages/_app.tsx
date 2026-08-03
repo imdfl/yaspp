@@ -6,10 +6,14 @@ import type { IPageProps } from "@src/types/models";
 import { LocaleContextProvider } from "@contexts/localeContext";
 import MLThemeContextProvider from "@contexts/MLThemeContext";
 
-import { fontFaceDecls } from "../siteFonts";
+import siteFontData from "@src/layout/data/typography/siteFonts.json";
+
 import "normalize.css/normalize.css";
 import "../styles/app.scss";
 import "../styles/classes/index.scss";
+import { fontFaceToDecls } from "../lib/site-fonts";
+
+const fontBasePath = '/assets/fonts';
 
 let _globalStyles: string[] | null = null;
 
@@ -38,10 +42,7 @@ async function loadStyles(styleUrls?: string[]) {
 const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	const [pageStyles, setPageStyles] = useState<string[] | null>(null);
 	useEffect(() => {
-		// if (!pageProps.themes?.length) {
-		// 	return;
-		// }
-		const allUrls = []; //(themes?.map(r => r.path)) ?? [];
+		const allUrls = [];
 		allUrls.push(...(pageProps.styleUrls ?? []));
 		loadStyles(allUrls)
 			.then(styles => setPageStyles(styles))
@@ -53,7 +54,8 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	if (!pageStyles) {
 		return <>Loading...</>
 	}
-	const globalStyle = [fontFaceDecls, ...pageStyles].join('\n');
+	const fontDecl = fontFaceToDecls(siteFontData, { basePath: fontBasePath });
+	const globalStyle = [fontDecl, ...pageStyles].join('\n');
 
 	return (
 		<LocaleContextProvider router={router} initialLocale={pageProps.initialLocale}>
@@ -71,13 +73,6 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 						<style jsx global>
 							{globalStyle}
 						</style>
-						{
-							// pageStyles.map((cssText, ind) => (
-							// 	<style jsx global key={ind}>
-							// 		{cssText}
-							// 	</style>
-							// ))
-						}
 						<Component {...pageProps} />
 					</PageProvider>
 				</MLThemeContextProvider>

@@ -39,7 +39,6 @@
     "dev-css": "bash scripts/dev.sh",
     "sass": "npx sass public/styles public/yaspp/styles",
     "sassqwatch": "npx sass --watch public/styles public/yaspp/styles",
-    "_predev": "npx ts-node src/scripts/copy-content",
     "dev": "next dev",
     "start": "next start",
     "build:sitemap": "next-sitemap",

@@ -15,12 +15,12 @@ import type { IFolderStaticProps } from "@src/types/folder";
  * @param type `"folder"`: scan the index in the folder, `"children"`: scan indices in child folders
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-type MLGetStaticProps = (
+type MLGetStaticProps<PropsType = IFolderStaticProps> = (
 	folderRelativePath: string | null,
 	locale: string, //GetStaticPropsContext<ParsedUrlQuery, PreviewData>,
 	loadMode: LoadFolderModes,
 	mode?: Partial<IContentParseOptions>
-) => Promise<GetStaticPropsResult<IFolderStaticProps>>;
+) => Promise<GetStaticPropsResult<PropsType>>;
 
 /**
  * Same as Next's GetStaticProps, parameterized by a content folder relative path
@@ -50,6 +50,9 @@ export interface IMLNextUtils {
 	 * @param parseMode verse or normal (default)
 	 */
 	getFolderStaticProps: MLGetStaticProps;
+
+	getValidFolderStaticProps: MLGetStaticProps<IFolderStaticProps | null>;
+
 	/**
 	 * Same as Next's GetStaticPaths, parameterized by a content folder relative path
 	 */

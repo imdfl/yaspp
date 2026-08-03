@@ -50,11 +50,11 @@ After setup, you should have all the the files and folders required for running 
     $ yarn build
     $ yarn start
 
-On each production build, yaspp runs the script `scripts/build/copy-content` which copies the relevant content from your project to the `/public/yaspp` folder. This means that you _cannot_ hot-reload your content, but you will get the latest version of it in each build.
+The `build` script runs `scripts/build/copy-content` prior to compiling the next app, so the latest content from your project is copied to under `/public/yaspp`. 
 
 To use the latest content in development runs, run `yarn copy-content` in the `yaspp` folder.
 
-If you provide your own style or themes and want to experiment with them, it's recommended to run `yarn sassqwatch` during development. This ensures that the development server is serving the latest compiled stylesheets. Note that during development, you'll edit **a copy** of your styles, located under `public/yaspp/styles`. Don't forget to copy your changes back to their sources.
+If you provide your own style or themes and want to experiment with them, it's recommended to run `yarn sassqwatch` during development. This ensures that the development server is serving the latest compiled stylesheets. Note that during development, you'll edit **a copy** of your styles, located under `public/yaspp/styles`. Don't forget to copy your changes back to their source locations in your project.
 
 ### Git hooks
 

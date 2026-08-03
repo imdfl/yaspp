@@ -13,16 +13,16 @@
 			"outFiles": ["${workspaceFolder}/**/*.js"]
 		},
 		{
-			"name": "Debug server side with pretask",
+			"name": "Debug server side / fresh content",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "yarn predev && yarn dev",
+			"command": "yarn copy-content && yarn sass && yarn dev",
 			"env": {
 				"NODE_OPTIONS": "--inspect"
 			}
 		},
 		{
-			"name": "Debug server-side (no pre task)",
+			"name": "Debug server-side",
 			"type": "node-terminal",
 			"request": "launch",
 			"command": "yarn dev",
@@ -40,22 +40,13 @@
 			}
 		},
 		{
-			"name": "Copy Content",
+			"name": "Copy Mel Content",
 			"type": "node-terminal",
 			"request": "launch",
 			"command": "npx ts-node src/scripts/copy-content --clean --project ../mels-loop-content",
 			"env": {
 				"NODE_OPTIONS": "--inspect",
 				"YASPP_PROJECT_ROOT": "../mels-loop-content"
-			}
-		},
-		{
-			"name": "Init Test Site",
-			"type": "node-terminal",
-			"request": "launch",
-			"command": "npx ts-node ./src/scripts/init-yaspp --project C:\\\\temp\\\\mels-loop",
-			"env": {
-				"NODE_OPTIONS": "--inspect"
 			}
 		},
 		{
@@ -78,19 +69,12 @@
 			}
 		},
 		{
-			"type": "node",
-			"request": "attach",
-			"name": "Attach to Next",
-			"skipFiles": ["<node_internals>/**"],
-			"port": 9229
-		},
-		{
 			"name": "Next.js full stack",
 			"type": "node-terminal",
 			"request": "launch",
 			"command": "yarn dev",
 			"serverReadyAction": {
-				"pattern": "started server on .+, url: (https?://.+)",
+				"pattern": "Local:.+(https?://.+)",
 				"uriFormat": "%s",
 				"action": "debugWithChrome"
 			}

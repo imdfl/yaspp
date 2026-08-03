@@ -1,16 +1,17 @@
-import React from "react";
-import styles from "./PopoverDialog.module.scss";
+import { useContext } from "react";
 import classNames from "@lib/class-names";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
-// import useClassNames from "@hooks/useClassNames";
-// import ComponentContextProvider from "@contexts/componentContext";
+import { LocaleContext } from "@contexts/index";
+
+import styles from "./PopoverDialog.module.scss";
 
 
 const PopoverDialog = ({
 	className,
 	children,
 }: YSPComponentPropsWithChildren) => {
-	return <div className={classNames(styles.root, className)}>{children}</div>;
+	const { textDirection } = useContext(LocaleContext);
+	return <div className={classNames(styles.root, className)} dir={textDirection}>{children}</div>;
 };
 
 export default PopoverDialog;

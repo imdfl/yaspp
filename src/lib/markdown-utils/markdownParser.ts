@@ -216,8 +216,9 @@ class MarkdownParser implements IMarkdownParser {
 					this.processAnchorLinkText(node, target, context);
 				}
 			}
-		} else {
-			(node.children || []).forEach((n) =>
+		}
+		else if (node.children?.length) {
+			node.children.forEach((n) =>
 				this.processIdLinks(n, context, map)
 			);
 		}
@@ -317,15 +318,17 @@ class MarkdownParser implements IMarkdownParser {
 	}
 
 	private parsedNodeToMLNode(
-		node: ParsedNode,
+		_node: ParsedNode,
 		context: MLParseContext
 	): IMLParsedNode {
-		if (this.isIgnoredASTNode(node)) {
+		if (this.isIgnoredASTNode(_node)) {
 			return null;
 		}
 
-		const isHTML = node.type as string=== ASTNODE_TYPES.HTML as string,
-			mlType: MLNODE_TYPES = isHTML ?
+		const wasHTML = _node.type as string=== ASTNODE_TYPES.HTML as string,
+			node = mdUtils.processHTMLNode(_node),
+			isHTML = node.type === ASTNODE_TYPES.HTML,
+			mlType: MLNODE_TYPES = isHTML ? // could change
 				node.tag!.toLowerCase()
 				: mdUtils.nodeTypeToMLType(node.type, context);
 
@@ -366,7 +369,7 @@ class MarkdownParser implements IMarkdownParser {
 			level: mdUtils.toValue(node.level, null),
 			text: typeof node.content === "string" ? node.content : null,
 			attributes:
-				(isHTML && node.attributes && Object.fromEntries(node.attributes)) ||
+				(wasHTML && node.attributes && Object.fromEntries(node.attributes)) ||
 				null,
 		};
 

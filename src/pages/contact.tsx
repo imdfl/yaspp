@@ -21,7 +21,7 @@ const EMAIL_NOT_ALLOWED_REGEXP =
 const fieldLocalePrefix = 'contact:form:fields';
 
 const Contact: NextPage<IPageProps> = () => {
-	const [error, setError] = useState('');
+	const [error, setError] = useState("");
 	const [completed, setCompleted] = useState(false);
 	const { t } = useContext(LocaleContext);
 	const [ issuesLink, setIssuesLink ] = useState("");
