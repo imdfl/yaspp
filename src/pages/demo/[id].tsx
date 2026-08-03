@@ -20,12 +20,12 @@ export const getStaticProps: GetStaticProps = async (
 	if (process.env.NODE_ENV === "production") {
 		return { notFound: true };
 	}
-	return mlNextUtils.getFolderStaticProps(
-		`${ContentTypes.Demo}/${context.params.id as string}`,
-		context.locale,
-		LoadFolderModes.Folder,
-		{
+	return mlNextUtils.getFolderStaticProps({
+		folderRelativePath: `${ContentTypes.Demo}/${context.params.id as string}`,
+		locale: context.locale,
+		loadMode: LoadFolderModes.Folder,
+		mode: {
 			nodeProcessors: [createPopoverLinksNodeProcessor()],
-		}
-	);
+		},
+	});
 };

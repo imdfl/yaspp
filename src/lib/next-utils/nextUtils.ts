@@ -11,7 +11,7 @@ import {
 } from "@src/types/parser/modes";
 import { IFolderStaticProps } from "@src/types/folder";
 import { LocaleId } from "@src/types/locale";
-import type { IMLNextUtils, IStaticPathsParameters } from "./types";
+import type { IMLGetStaticPropsOptions, IMLNextUtils, IStaticPathsParameters } from "./types";
 import { initYaspp } from "../yaspp";
 
 class MLNextUtils implements IMLNextUtils {
@@ -39,14 +39,11 @@ class MLNextUtils implements IMLNextUtils {
 		return relative;
 	}
 
-	public async getValidFolderStaticProps(folderPath: string | null,
-		locale: LocaleId,
-		loadMode: LoadFolderModes,
-		mode?: Partial<IContentParseOptions>
+	public async getValidFolderStaticProps(options: IMLGetStaticPropsOptions
 	): Promise<GetStaticPropsResult<IFolderStaticProps> | null> {
 
 		try {
-			const res = await this.getFolderStaticProps(folderPath, locale, loadMode, mode);
+			const res = await this.getFolderStaticProps(options);
 			const props = (res as any).props as IFolderStaticProps;
 			return props?.documentPath ? res : null;
 		}
@@ -56,11 +53,9 @@ class MLNextUtils implements IMLNextUtils {
 	}
 
 
-	public async getFolderStaticProps(
-		folderPath: string | null,
-		locale: LocaleId,
-		loadMode: LoadFolderModes,
-		mode?: Partial<IContentParseOptions>
+	public async getFolderStaticProps({
+		folderRelativePath: folderPath, locale, loadMode, mode
+	}: IMLGetStaticPropsOptions
 	): Promise<GetStaticPropsResult<IFolderStaticProps>> {
 		const app = await initYaspp();
 		if (!app.isValid) {
@@ -100,7 +95,8 @@ class MLNextUtils implements IMLNextUtils {
 				theme: app.theme,
 				themes: app.themeUrls.slice(),
 				styleUrls: app.styleUrls.map(r => r.full),
-				initialLocale: app.initialLocale
+				initialLocale: app.initialLocale,
+				allowedLocales: []
 			},
 		};
 	}

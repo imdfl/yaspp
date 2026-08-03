@@ -15,8 +15,8 @@ export const getStaticPaths: GetStaticPaths = async (context) =>
 export const getStaticProps: GetStaticProps = async (
 	context: GetStaticPropsContext
 ) =>
-	mlNextUtils.getFolderStaticProps(
-		`${ContentTypes.Contact}/${context.params.id as string}`,
-		context.locale,
-		LoadFolderModes.Folder
-	);
+	mlNextUtils.getFolderStaticProps({
+		folderRelativePath: `${ContentTypes.Contact}/${context.params.id as string}`,
+		locale: context.locale,
+		loadMode: LoadFolderModes.Folder,
+	});

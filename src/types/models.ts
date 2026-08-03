@@ -102,6 +102,8 @@ export interface IPageMetaData {
 	readonly captions: Readonly<Partial<Record<MLNODE_TYPES, ICaptionConfiguration>>>;
 
 	readonly parse_mode?: MLParseModes;
+
+	readonly allowed_locales: readonly string[];
 }
 
 /** Full results of a parsed page */

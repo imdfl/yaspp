@@ -26,13 +26,13 @@ export const getStaticProps: GetStaticProps = async (
 		context.params as { [key: string]: string }
 	);
 
-	return mlNextUtils.getFolderStaticProps(
-		relativePath, //`${CONTENT_TYPES.DOCS}/${context.params.id as string}/resources`,
-		context.locale,
-		LoadFolderModes.Folder,
-		{
+	return mlNextUtils.getFolderStaticProps({
+		folderRelativePath: relativePath, //`${CONTENT_TYPES.DOCS}/${context.params.id as string}/resources`,
+		locale: context.locale,
+		loadMode: LoadFolderModes.Folder,
+		mode: {
 			contentMode: LoadContentModes.Full,
 			nodeProcessors: [createPopoverLinksNodeProcessor()],
 		}
-	);
+	});
 };

@@ -50,20 +50,20 @@ const Glossary: NextPage<IPageProps> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const indexProps = await mlNextUtils.getFolderStaticProps(
-		ContentTypes.Glossary,
-		context.locale,
-		LoadFolderModes.Folder
-	);
+	const indexProps = await mlNextUtils.getFolderStaticProps({
+		folderRelativePath: ContentTypes.Glossary,
+		locale: context.locale,
+		loadMode: LoadFolderModes.Folder,
+	});
 
-	const childrenProps = await mlNextUtils.getFolderStaticProps(
-		ContentTypes.Glossary,
-		context.locale,
-		LoadFolderModes.Children,
-		{
+	const childrenProps = await mlNextUtils.getFolderStaticProps({
+		folderRelativePath: ContentTypes.Glossary,
+		locale: context.locale,
+		loadMode: LoadFolderModes.Children,
+		mode: {
 			contentMode: LoadContentModes.Full,
-		}
-	);
+		},
+	});
 
 	/* eslint-disable @typescript-eslint/no-explicit-any */
 	const props = {

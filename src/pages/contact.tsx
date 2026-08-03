@@ -7,6 +7,9 @@ import type { NextPage, GetStaticProps } from "next";
 import type { IPageProps } from "@src/types/models";
 import type { FormFieldProps } from "@components/form/Form";
 import { LocaleContext } from "@contexts/localeContext";
+import { ContentTypes } from "@src/types/content";
+import { LoadFolderModes } from "@src/types/parser/modes";
+import { mlNextUtils } from "@lib/next-utils/nextUtils";
 
 export const MAX_FULL_NAME_LENGTH = 100;
 export const MAX_EMAIL_LENGTH = 256;
@@ -140,6 +143,12 @@ const Contact: NextPage<IPageProps> = () => {
 	);
 };
 
-export const getStaticProps: GetStaticProps = async () => ({ props: {} });
+// export const getStaticProps: GetStaticProps = async () => ({ props: {} });
+export const getStaticProps: GetStaticProps = async (context) =>
+	mlNextUtils.getFolderStaticProps({
+		folderRelativePath: "",
+		locale: context.locale || "en",
+		loadMode: LoadFolderModes.Folder,
+	});
 
 export default Contact;

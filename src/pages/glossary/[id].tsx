@@ -69,11 +69,11 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 export const getStaticProps: GetStaticProps = async (
 	context: GetStaticPropsContext
 ) =>
-	mlNextUtils.getFolderStaticProps(
-		`${ContentTypes.Glossary}/${context.params.id as string}`,
-		context.locale,
-		LoadFolderModes.Folder,
-		{
-			nodeProcessors: [createPopoverLinksNodeProcessor()],
+	mlNextUtils.getFolderStaticProps({
+		folderRelativePath: `${ContentTypes.Glossary}/${context.params.id as string}`,
+		locale: context.locale,
+		loadMode: LoadFolderModes.Folder,
+		mode: {
+			nodeProcessors: [createPopoverLinksNodeProcessor()]
 		}
-	);
+	});

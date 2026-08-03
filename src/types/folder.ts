@@ -20,4 +20,9 @@ export interface IFolderStaticProps {
 
 	/** Locale to use when none is specified in the URL */
 	readonly initialLocale: string;
+
+	/**
+	 * If not empty, this page is rendered only in the provided locales
+	 */
+	readonly allowedLocales?: readonly string[];
 }

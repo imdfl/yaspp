@@ -16,6 +16,7 @@ import { mdUtils } from "./markdown-utils/markdownUtils";
 import { MLNODE_TYPES } from "../types";
 import { parseDate, safeMerge } from "../utils";
 import { fileUtils } from "./fileUtils";
+import { stringUtils } from "./stringUtils";
 
 /** Options for unspecified parse properties */
 const DEFAULT_PARSE_OPTIONS: IContentParseOptions = {
@@ -199,6 +200,7 @@ class PageMetaData implements IPageMetaData {
 	public source_url = '';
 	public source_name = '';
 	public source_author = '';
+	public allowed_locales: string[];
 	// value must be falsy, so initially it doesn't affect the parse mode computation
 	public parse_mode = MLParseModes.AUTO;
 	public readonly captions: Partial<Record<MLNODE_TYPES, ICaptionConfiguration>> = {
@@ -210,10 +212,15 @@ class PageMetaData implements IPageMetaData {
 		}
 	} as const;
 
-	constructor(data: Partial<IParsedPageData> | string) {
+	constructor(data: Partial<IPageMetaData> | string) {
 		safeMerge(this, data);
 		if (this.date && typeof this.date === 'string') {
 			this.date = parseDate(this.date);
+		}
+		if (this.allowed_locales?.length) {
+			const parts = stringUtils.toStringArray(this.allowed_locales);
+			this.allowed_locales.length = 0;
+			this.allowed_locales.push(...parts);
 		}
 	}
 	public toObject(): IPageMetaData {
