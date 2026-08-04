@@ -39,6 +39,7 @@ const _localeBlockSchema = zod.object({
 })
 
 const _stylesBlockSchema = zod.object({
+	root: zod.string().min(1).max(128),
 	sheets: _stringOrArray.optional(),
 	classBindings: _stringOrArray.optional(),
 	themes: zod.array(_themeNameSchema).optional(),

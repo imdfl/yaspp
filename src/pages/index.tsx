@@ -35,13 +35,14 @@ const Index: NextPage<IPageProps> = (props) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	return mlNextUtils.getFolderStaticProps({
-		folderRelativePath: null, // convention for the default index page, empty string also works
+		folderPath: null, // convention for the default index page, empty string also works
 		locale: context.locale,
 		loadMode: LoadFolderModes.Folder,
 		mode: {
 			contentMode: LoadContentModes.Full,
 			nodeProcessors: [createPopoverLinksNodeProcessor()],
 		},
+		pathParams: context.params
 	});
 }
 

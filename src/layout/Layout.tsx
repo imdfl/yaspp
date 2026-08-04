@@ -85,8 +85,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	useIconAnimator(router);
 
 	const pathname = usePathname();
-	// const { theme, setTheme } = useTheme();
-	const { t, locale: lang, locales, textDirection } = useContext(LocaleContext);
+	const { t, locale: lang, textDirection, allowedLocales } = useContext(LocaleContext);
 	const { width: screenWidth } = useWindowSize();
 	const { theme, setTheme, themes, oppositeTheme } = useContext(MLThemeContext);
 	const [loadedStyle, setLoadedstyle] = useState<string | null>(null);
@@ -124,12 +123,12 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 
 	const localeItems: LocaleOptionProps[] = useMemo(
 		() =>
-			locales.map((id) => ({
+			allowedLocales.map((id) => ({
 				id: id,
 				label: t(`locale:${id}:symbol`, null, { default: id[0] }),
 				title: t(`locale:${id}:label`, null, { default: id }),
 			})),
-		[locales, t]
+		[allowedLocales, t]
 	);
 
 	const siteTitleGen = useCallback(() => t("common:site:title"), [t]);
@@ -213,7 +212,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 		const run = async (): OperationPromise<string[]> => {
 			const t = themes?.find(t => t.name === theme);
 			if (!t) {
-				console.warn(`Theme ${theme} not found`);
+				console.warn(`Theme "${theme}" not found`);
 				return { result: [] };
 			}
 			return await loadStyles(t.paths);

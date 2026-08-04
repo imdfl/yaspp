@@ -205,36 +205,55 @@ async function validateAssets(projectRoot: string, assets?: Partial<YASPP.IYaspp
 }
 
 
-async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYasppLocaleConfig>):
+async function validateLocale(projectRoot: string, config?: Partial<YASPP.IYasppLocaleConfig>):
 	Promise<IOperationResult<YASPP.IYasppLocaleConfig>> {
 	const defaultConfig: YASPP.IYasppLocaleConfig = {
 		langs: ["en"],
 		defaultLocale: "en",
 		pages: {},
-		root: ""
+		root: "",
+		allowedLocales: []
 	}
-	if (!locale) {
+	if (!config) {
 		return successResult(defaultConfig);
 	}
-	if (locale.root) {
-		const localePath = fsPath.resolve(projectRoot, locale.root);
+	const errors = [] as string[];
+	if (config.root) {
+		const localePath = fsPath.resolve(projectRoot, config.root);
 		if (!await fileUtils.isFolder(localePath)) {
-			return errorResult(`Can't find locale root ${locale.root} (${localePath})`);
+			errors.push(`Can't find locale root ${config.root} (${localePath})`);
 		}
 	}
 
-	const langs = Array.isArray(locale.langs) ? locale.langs : ["en"];
-	const defaultLocale = locale.defaultLocale || "en";
-	const initialLocale = locale.initialLocale || "";
+	const langs = Array.isArray(config.langs) ? config.langs : ["en"];
+	const defaultLocale = config.defaultLocale || "en";
+	const initialLocale = config.initialLocale || "";
 	if (!langs.includes(defaultLocale)) {
-		return errorResult(`default locale ${defaultLocale} not found in locales list ${langs}`);
+		errors.push(`default locale ${defaultLocale} not found in locales list ${langs}`);
 	}
 	if (initialLocale && !langs.includes(initialLocale)) {
-		return errorResult(`initial locale ${initialLocale} not found in locales list ${langs}`);
+		errors.push(`initial locale ${initialLocale} not found in locales list ${langs}`);
+	}
+	const allowedLocales = Array.isArray(config.allowedLocales)? config.allowedLocales.slice() : [];
+	allowedLocales.forEach(rec => {
+		const locs = stringUtils.toStringArray(rec.locales);
+		if (!locs.length) {
+			errors.push(`Invalid empty allowed locale configuration for ${rec.path}`);
+		}
+		else {
+			const missing = locs.filter(loc => !langs.includes(loc));
+			if (missing.length) {
+				errors.push(`Unknown locales ${missing} for path ${rec.path}`);
+			}
+		}
+	})
+
+	if (errors.length) {
+		return errorResult(errors.join('\n'));
 	}
 	const pages: Record<string, string[]> = {};
-	if (locale.pages) {
-		Object.entries(locale.pages).forEach(([key, values]) => {
+	if (config.pages) {
+		Object.entries(config.pages).forEach(([key, values]) => {
 			if (key && typeof key === "string") {
 				if (Array.isArray(values) && values.findIndex(s => !(s && typeof s === "string")) === -1) {
 					pages[key] = values;
@@ -243,11 +262,12 @@ async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYaspp
 		})
 	}
 	return successResult({
-		root: locale.root || "",
+		root: config.root || "",
 		langs,
 		defaultLocale,
 		initialLocale,
-		pages
+		pages,
+		allowedLocales
 	});
 }
 

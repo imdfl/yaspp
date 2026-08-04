@@ -1,6 +1,5 @@
-import React, { Context, createContext, PropsWithChildren } from "react";
+import { Context, createContext, PropsWithChildren } from "react";
 import { IThemeUrl } from "@src/types/app";
-import { stringUtils } from "@lib/stringUtils";
 import { useTheme } from "next-themes";
 
 export type SetThemeFunc = (theme: string) => unknown;
@@ -36,9 +35,7 @@ class MLThemeContextImpl implements IMLThemeProvider {
 		this._setTheme = (theme: string) => {
 			if (this._isValidTheme(theme)) {
 				this._theme = theme;
-				if (window?.localStorage) {
-					window.localStorage.setItem(STOAGE_KEY, this._theme);
-				}
+				window?.localStorage?.setItem(STOAGE_KEY, this._theme);
 				if (this._themes.length > 1) {
 					const ind = this._themes.findIndex(t => t.name === theme);
 					this._oppositeTheme = this._themes[ind === 0 ? 1 : 0].name;
@@ -49,8 +46,8 @@ class MLThemeContextImpl implements IMLThemeProvider {
 				console.warn(`setTheme: unknown theme ${theme}`);
 			}
 		};
-		if (this._theme !== theme) {
-			this._setNextTheme(this._theme);
+		if (this._theme && this._theme !== theme) {
+			setTimeout(() => this._setNextTheme(this._theme), 10);
 		}
 
 	}
@@ -91,7 +88,8 @@ export const MLThemeContext: Context<IMLThemeProvider> = ctx;
 type MLThemeProps = PropsWithChildren<IMLThemeOptions>;
 
 export const MLThemeContextProvider = ({ children, themes }: MLThemeProps) => {
-	const { theme, setTheme: setNextTheme } = useTheme();
+	const { theme: nextTheme, setTheme: setNextTheme } = useTheme();
+	const theme = nextTheme || themes[0].name;
 	return (
         <MLThemeContext
             value={

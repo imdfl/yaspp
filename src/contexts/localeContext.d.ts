@@ -6,6 +6,7 @@ import { LocalizeFunction } from "@lib/locale";
 export interface ILocaleContext {
 	readonly locale: string;
 	readonly locales: ReadonlyArray<string>;
+	readonly allowedLocales: readonly string[];
 	readonly textDirection: TextDirection;
 	setLocale: (id: LocaleId) => Promise<boolean>;
 	getTextDirection: (locale?: string) => TextDirection;

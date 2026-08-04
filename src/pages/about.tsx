@@ -34,9 +34,10 @@ const About: NextPage<IPageProps> = (props) => {
 
 export const getStaticProps: GetStaticProps = async (context) =>
 	mlNextUtils.getFolderStaticProps({
-		folderRelativePath: ContentTypes.About,
+		folderPath: ContentTypes.About,
 		locale: context.locale,
-		loadMode: LoadFolderModes.Folder
+		loadMode: LoadFolderModes.Folder,
+		pathParams: context.params
 	});
 
 export default About;

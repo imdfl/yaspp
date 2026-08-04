@@ -22,8 +22,8 @@ export function decodePath(path: string): string {
  */
 export async function pathToRelativePath(path: string): Promise<string> {
 	try {
+		path = decodePath(path);
 		const stat = await fs.promises.lstat(path);
-		const slug = path.match(DYNAMIC_FILENAME_RE);
 
 		const contentFolder = stat.isDirectory()
 			? path
@@ -31,7 +31,8 @@ export async function pathToRelativePath(path: string): Promise<string> {
 		return contentFolder
 			.replace(/\\/g, "/")
 			.replace(/^.*?\/pages\/(.+)$/, "$1");
-	} catch {
+	}
+	catch { 
 		return "";
 	}
 }

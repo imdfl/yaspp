@@ -35,18 +35,20 @@ const Docs: NextPage<IPageProps> = (props) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const indexProps = await mlNextUtils.getFolderStaticProps({
-		folderRelativePath: ContentTypes.Docs,
+		folderPath: ContentTypes.Docs,
 		locale: context.locale,
 		loadMode: LoadFolderModes.Folder,
+		pathParams: context.params
 	});
 
 	const childrenProps = await mlNextUtils.getFolderStaticProps({
-		folderRelativePath: ContentTypes.Docs,
+		folderPath: ContentTypes.Docs,
 		locale: context.locale,
 		loadMode: LoadFolderModes.Children,
 		mode: {
 			contentMode: LoadContentModes.Metadata,
 		},
+		pathParams: context.params
 	});
 
 	/* eslint-disable @typescript-eslint/no-explicit-any */

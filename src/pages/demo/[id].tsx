@@ -21,11 +21,12 @@ export const getStaticProps: GetStaticProps = async (
 		return { notFound: true };
 	}
 	return mlNextUtils.getFolderStaticProps({
-		folderRelativePath: `${ContentTypes.Demo}/${context.params.id as string}`,
+		folderPath: `${ContentTypes.Demo}/${context.params.id as string}`,
 		locale: context.locale,
 		loadMode: LoadFolderModes.Folder,
 		mode: {
 			nodeProcessors: [createPopoverLinksNodeProcessor()],
 		},
+		pathParams: context.params
 	});
 };

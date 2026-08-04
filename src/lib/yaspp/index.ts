@@ -10,6 +10,7 @@ import type { IYasppBindingsFile, IYasppClassTree } from "@src/types/styles";
 import type { YASPP } from "yaspp-types";
 import { getYasppProjectPath, IYasppProjectPath, loadYasppConfig, validateClassBindings, validateCSSFile, validateThemes } from "./yaspp-lib";
 import YConstants from "./constants";
+import { stringUtils } from "../stringUtils";
 
 interface ILocaleResult {
 	ns: string;
@@ -26,10 +27,12 @@ class YasppApp implements IYasppApp {
 	private _theme = "";
 	private _dictionary: LocaleDictionary | null = null;
 	private readonly _navItems: Record<string, INavSection[]> = {};
+	private readonly _locales: string[] = [];
 	private _initialLocale = "";
 	private readonly _styleUrls: IStylesheetUrl[] = [];
 	private readonly _classBindings: Array<IYasppClassTree> = [];
 	private readonly _themes: IThemeUrl[] = [];
+	private readonly _allowedLocales: Map<string, string[]> = new Map();
 
 	public get isLoading() {
 		return this._state === "loading";
@@ -37,6 +40,10 @@ class YasppApp implements IYasppApp {
 
 	public get error() {
 		return this._error;
+	}
+
+	public get locales() {
+		return this._locales.slice();
 	}
 
 	public get isValid(): boolean {
@@ -77,6 +84,12 @@ class YasppApp implements IYasppApp {
 		return this._classBindings.slice();
 	}
 
+	public getAllowedLocalesForPath(path: string): string[] {
+		const locales = (path && this._allowedLocales.get(path)) ?? this._locales;
+		return locales.slice();
+
+	}
+
 	public async init(options: IYasppProjectPath): Promise<string> {
 		const { project: projectRoot, root } = options;
 		if (this._state !== "none") {
@@ -98,10 +111,22 @@ class YasppApp implements IYasppApp {
 				return returnError(configErr);
 			}
 			const { locale, content, style } = yConfig;
+			this._locales.push(...yConfig.locale.langs);
 			this._initialLocale = locale?.initialLocale || "";
 			this._content = fsPath.resolve(projectRoot, content.root);
 			this._indexPage = yConfig.content.index;
+			(yConfig.locale.allowedLocales ?? []).forEach(rec => {
+				const paths = stringUtils.toStringArray(rec.path);
+				paths.forEach(path => {
+					rec.locales.forEach(locale => {
+						const arr = this._allowedLocales.get(path) ?? [];
+						arr.push(locale);
+						this._allowedLocales.set(path, arr);
+					})
+				});
+			})
 
+			
 			const styleErr = await this._processStyles(projectRoot, style);
 			if (styleErr) {
 				return returnError(styleErr);
@@ -139,9 +164,9 @@ class YasppApp implements IYasppApp {
 		}
 	}
 
-	private async _loadGlobals(config: YASPP.IYasppGlobalsConfig | undefined, projectRoot: string): Promise<string> {
-		return "";
-	}
+	// private async _loadGlobals(config: YASPP.IYasppGlobalsConfig | undefined, projectRoot: string): Promise<string> {
+	// 	return "";
+	// }
 
 	private async _loadNavItems(config: YASPP.IYasppNavConfig, projectRoot: string): Promise<string> {
 		const index = config.index;

@@ -23,6 +23,16 @@ const EMAIL_NOT_ALLOWED_REGEXP =
 
 const fieldLocalePrefix = 'contact:form:fields';
 
+// export const getStaticProps: GetStaticProps = async () => ({ props: {} });
+export const getStaticProps: GetStaticProps = async (context) => {
+	return mlNextUtils.getFolderStaticProps({
+		folderPath: __filename,
+		locale: context.locale || "en",
+		loadMode: LoadFolderModes.Folder,
+		pathParams: context.params		
+	});
+};
+
 const Contact: NextPage<IPageProps> = () => {
 	const [error, setError] = useState("");
 	const [completed, setCompleted] = useState(false);
@@ -142,17 +152,5 @@ const Contact: NextPage<IPageProps> = () => {
 		</Layout>
 	);
 };
-
-// export const getStaticProps: GetStaticProps = async () => ({ props: {} });
-export const getStaticProps: GetStaticProps = async (context) =>
-	mlNextUtils.getFolderStaticProps({
-		folderRelativePath: "",
-		locale: context.locale || "en",
-		loadMode: LoadFolderModes.Folder,
-		metaData: {
-			allowed_locales: "en"
-		}
-		
-	});
 
 export default Contact;

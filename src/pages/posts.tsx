@@ -64,18 +64,20 @@ export default function Blog(props: IPageProps) {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const indexProps = await mlNextUtils.getFolderStaticProps({
-		folderRelativePath: ContentTypes.Posts,
+		folderPath: ContentTypes.Posts,
 		locale: context.locale,
 		loadMode: LoadFolderModes.Children,
+		pathParams: context.params
 	});
 
 	const childrenProps = await mlNextUtils.getFolderStaticProps({
-		folderRelativePath: ContentTypes.Posts,
+		folderPath: ContentTypes.Posts,
 		locale: context.locale,
 		loadMode: LoadFolderModes.Children,
 		mode: {
 			contentMode: LoadContentModes.Metadata,
 		},
+		pathParams: context.params
 	});
 
 	/* eslint-disable @typescript-eslint/no-explicit-any */

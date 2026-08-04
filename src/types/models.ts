@@ -152,7 +152,7 @@ export interface IContentComponentData {
 }
 
 export interface IGenericPageProps {
-	content: string;
+	content: string | object;
 }
 
 /** The data structure passed to a content component */

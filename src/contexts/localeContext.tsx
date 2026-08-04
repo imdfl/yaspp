@@ -74,6 +74,10 @@ class LocaleContextImpl implements ILocaleContext {
 		return this._locales;
 	}
 
+	public get allowedLocales() {
+		return this._allowedLocales.length ? this._allowedLocales : this._locales;
+	}
+
 	// public getLocaleLabel = (id: string) =>
 	// 	[localeLabelPrefix, id].join("_").toUpperCase();
 

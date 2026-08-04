@@ -24,17 +24,21 @@ class MLNextUtils implements IMLNextUtils {
 	 */
 	public async populateDynamicPath(
 		path: string,
-		dict:  Record<string, string>
+		dict:  Record<string, unknown>
 	): Promise<string> {
-		let relative = await pathToRelativePath(decodePath(path));
+		// path could be relative already, in which calse the call will return an empty string
+		let relative = await pathToRelativePath(path) || path;
 
 		if (!relative) {
 			return "";
 		}
+		if (!dict || typeof dict !== "object") {
+			return relative
+		}
 
-		Object.entries(dict).forEach(([key, value]) => {
+		Object.entries(dict ?? {}).forEach(([key, value]) => {
 			const re = new RegExp(`\\[${key}\\]`, "g");
-			relative = relative.replace(re, value);
+			relative = relative.replace(re, String(value));
 		});
 
 		return relative;
@@ -55,7 +59,7 @@ class MLNextUtils implements IMLNextUtils {
 
 
 	public async getFolderStaticProps({
-		folderRelativePath: folderPath, locale, loadMode, mode, metaData
+		folderPath: folderPath, locale, loadMode, mode, metaData, pathParams
 	}: IMLGetStaticPropsOptions
 	): Promise<GetStaticPropsResult<IFolderStaticProps>> {
 		const app = await initYaspp();
@@ -93,7 +97,18 @@ class MLNextUtils implements IMLNextUtils {
 			}
 		})) : */ docData.pages;
 		const page = pages[0];
-
+		const pagePath = await this.populateDynamicPath(relativePath, pathParams);
+		const allowedLocales = Array.isArray(page?.metaData.allowed_locales) ?
+			page!.metaData.allowed_locales as string[]
+			: app.getAllowedLocalesForPath(pagePath);
+		if (allowedLocales.length && !allowedLocales.includes(locale)) {
+			return {
+				redirect: {
+					destination: "/en/contact",
+					permanent: true
+				}
+			}
+		}
 		return {
 			props: {
 				// Stringify the result, instead of leaving the job to Next, because
@@ -106,7 +121,7 @@ class MLNextUtils implements IMLNextUtils {
 				themes: app.themeUrls.slice(),
 				styleUrls: app.styleUrls.map(r => r.full),
 				initialLocale: app.initialLocale,
-				allowedLocales: page?.metaData.allowed_locales ?? []
+				allowedLocales
 			},
 		};
 	}

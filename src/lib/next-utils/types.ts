@@ -9,11 +9,15 @@ import type { IFolderStaticProps } from "@src/types/folder";
  **************************************************/
 
 export interface IMLGetStaticPropsOptions {
-	readonly folderRelativePath: string | null,
+	/**
+	 * The path to the requested folder/file, usually relative to the `src/pages` folder
+	 */
+	readonly folderPath: string | null,
 	readonly locale: string, //GetStaticPropsContext<ParsedUrlQuery, PreviewData>,
 	readonly loadMode: LoadFolderModes,
 	readonly mode?: Partial<IContentParseOptions>;
 	readonly metaData?: Readonly<Record<string, string>>;
+	readonly pathParams: Readonly<Record<string, unknown>>;
 
 }
 
@@ -70,7 +74,7 @@ export interface IMLNextUtils {
 
 	populateDynamicPath(
 		path: string,
-		dict: Record<string, string>
+		dict: Record<string, unknown>
 	): Promise<string>;
 }
 

@@ -17,6 +17,10 @@ export interface IThemeUrl {
 }
 export interface IYasppApp {
 	/**
+	 * Locales available to this app
+	 */
+	readonly locales: readonly string[];
+	/**
 	 * The full path of the content folder
 	 */
 	readonly contentPath: string;
@@ -58,6 +62,8 @@ export interface IYasppApp {
 	readonly themeUrls: ReadonlyArray<IThemeUrl>;
 
 	readonly theme: string;
+
+	getAllowedLocalesForPath(path: string): string[];
 }
 
 /**
