@@ -6,7 +6,8 @@ import type { IYasppClassTree } from "../types/styles";
 
 import type { INavSection, NavGroups } from "@src/types/nav";
 import { stringUtils } from "../lib/stringUtils";
-import { createStyleRegistry, type IStyleRegistry } from "../lib/styleRegistry";
+import { createStyleRegistry, type IStyleRegistry } from "@lib/styleRegistry";
+
 export interface IPageContextOptions {
 	readonly dynamicContentServer: IDynamicContentServer,
 	readonly documentPath: string,

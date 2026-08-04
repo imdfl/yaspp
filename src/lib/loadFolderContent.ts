@@ -33,7 +33,7 @@ const FIGURE_ABBR_LOCALE_KEY = "common:markdown:tags:figure:abbr";
 
 
 export const loadContentFolder = async (
-	{ relativePath, mode, loadMode,locale, app }: ILoadContentOptions
+	{ relativePath, mode, loadMode, locale, app, metaData }: ILoadContentOptions
 ): Promise<IFolderContent> => {
 	if (!app?.isValid) {
 		throw new Error(`can't load content folder with an invalid app`);
@@ -113,10 +113,10 @@ export const loadContentFolder = async (
 			// Use gray-matter to parse the post metadata section
 			const { data: matterData, content } = matter(fileContents);
 
-			const metaData = new PageMetaData(matterData);
+			const pageMetaData = new PageMetaData(matterData, metaData);
 
 			const parsedPageData = new ParsedPageData({
-				metaData: metaData.toObject(),
+				metaData: pageMetaData.toObject(),
 				id: name,
 				path: `${relativePath}/${name}`, // don't use path.join, it's os specific
 			});
@@ -127,7 +127,7 @@ export const loadContentFolder = async (
 
 				const tree = markdownParser.processParseTree(
 					mdParse(mdUtils.stripComments(content)) as ParsedNode[],
-					metaData,
+					pageMetaData,
 					parseOptions
 				);
 
@@ -189,7 +189,7 @@ class ParsedPageData implements IParsedPageData {
 }
 
 class PageMetaData implements IPageMetaData {
-	
+
 	public glossary_key = '';
 	public date: Date = null;
 	public title = '';
@@ -208,19 +208,19 @@ class PageMetaData implements IPageMetaData {
 			auto: true,
 			base: 1,
 			template: `[[${FIGURE_ABBR_LOCALE_KEY}]] %index%`,
-			
+
 		}
 	} as const;
 
-	constructor(data: Partial<IPageMetaData> | string) {
-		safeMerge(this, data);
+	constructor(...data: Array<Partial<IPageMetaData> | string>) {
+		Array.from(data).forEach(d => {
+			safeMerge(this, d);
+		});
 		if (this.date && typeof this.date === 'string') {
 			this.date = parseDate(this.date);
 		}
 		if (this.allowed_locales?.length) {
-			const parts = stringUtils.toStringArray(this.allowed_locales);
-			this.allowed_locales.length = 0;
-			this.allowed_locales.push(...parts);
+			this.allowed_locales = stringUtils.toStringArray(this.allowed_locales);
 		}
 	}
 	public toObject(): IPageMetaData {

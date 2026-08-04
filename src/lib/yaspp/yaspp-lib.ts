@@ -2,14 +2,14 @@ import { spawn } from "child_process";
 import * as sassCompiler from "sass";
 import fsPath from "path";
 import { promises as fs } from "fs";
-import * as zod from "zod";
 import type { YASPP } from "yaspp-types";
-import type { IOperationResult, Mutable, NotNull, OperationPromise } from "@src/types";
-import { fileUtils } from "../fileUtils";
+import type { IYasppBindingsFile, IYasppClassOverrides, IYasppClassTree } from "@src/types/styles";
+import type { IOperationResult, NotNull, OperationPromise } from "@src/types";
 import type { IThemeUrl, IYasppNavData } from "@src/types/app";
+import { fileUtils } from "../fileUtils";
+import { yasspConfigSchemas, classBindingSchemas } from "./schemas";
 import YConstants from "./constants";
 import { stringUtils } from "../stringUtils";
-import type { IYasppBindingsFile, IYasppClassOverrides, IYasppClassTree } from "@src/types/styles";
 
 export interface IValidateThemesOptions {
 	readonly themes: string | ReadonlyArray<string>;
@@ -44,25 +44,6 @@ export interface IValidateCSSFileOptions {
 	readonly mustExist: boolean;
 	readonly compile: boolean | "save";
 }
-
-const ClassesSchema = zod.array(zod.string());
-const ChangeSchema: zod.ZodType<Partial<IYasppClassOverrides>> = zod.object({
-	add: zod.array(zod.string()).optional(),
-	remove: zod.array(zod.string()).optional()
-})
-const ClassRecSchema = zod.union([ClassesSchema, ChangeSchema]);
-
-// const ClassConfigSchema = zod.object({
-// 	classes: ClassRecSchema.optional()
-// });
-
-const ClassPartSchema = zod.lazy(() => zod.object({
-	classes: ClassRecSchema.optional()
-}).catchall(ClassPartSchema));
-
-const ClassTreeSchema = zod.record(zod.string(), ClassPartSchema);
-type ClassBindings = ReadonlyArray<IYasppClassTree> | IYasppClassTree;
-
 
 async function validateContent(projectRoot: string, content?: Partial<YASPP.IYasppContentConfig>): Promise<IOperationResult<YASPP.IYasppContentConfig>> {
 	if (!content) {
@@ -275,13 +256,19 @@ async function validateLocale(projectRoot: string, locale?: Partial<YASPP.IYaspp
  * @param projectRoot 
  * @param config 
  */
-async function validateConfig({ projectRoot, siteRoot, config, compile }: IValidateConfigOptions):
+async function validateConfig({ projectRoot, siteRoot, config: userConfig, compile }: IValidateConfigOptions):
 	Promise<IOperationResult<YASPP.IYasppConfig>> {
-	const validContent = await validateContent(projectRoot, config?.content),
-		validLocale = await validateLocale(projectRoot, config?.locale),
+
+	const { success, error, data } = yasspConfigSchemas.Config.safeParse(userConfig);
+	if (!success) {
+		return { error: `Validation error ${error}`};
+	}
+	const config = data!;
+	const validContent = await validateContent(projectRoot, config.content),
+		validLocale = await validateLocale(projectRoot, config.locale as Partial<YASPP.IYasppLocaleConfig>),
 		validStyle = await validateStyle({ projectRoot, siteRoot, style: config?.style, compile }),
 		validAsssets = await validateAssets(projectRoot, config?.assets),
-		validNav = await validateNav(projectRoot, config?.nav),
+		validNav = await validateNav(projectRoot, config.nav),
 		validGlobals = await validateGlobals(projectRoot, config?.globals);
 
 	const errors = [validContent, validLocale, validStyle, validAsssets, validNav].filter(r => r.error).map(r => r.error);
@@ -596,12 +583,12 @@ export function validateClassBindings(...bindingData: unknown[]): IOperationResu
 	for (const bdata of bindingData) {
 		const b: IYasppClassTree[] = Array.isArray(bdata) ? bdata : [bdata];
 		for (const bindings of b) {
-			const res = ClassTreeSchema.safeParse(bindings);
-			if (!res.success) {
-				errors.push(`Binding validation error(${res.error?.message || "unknown"}`)
+			const { error, success, data } = classBindingSchemas.Tree.safeParse(bindings);
+			if (!success) {
+				errors.push(`Binding validation error(${error?.message || "unknown"}`)
 			}
-			else if (res.data) {
-				ret.push(res.data);
+			else if (data) {
+				ret.push(data);
 			}
 		}
 	}

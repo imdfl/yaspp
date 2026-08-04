@@ -12,6 +12,7 @@ export interface ILoadContentOptions {
 	/** If true, iterate over children folders */
 	readonly locale: string;
 	readonly mode?: Partial<IContentParseOptions>;
+	readonly metaData?: Readonly<Record<string, string>>;
 }
 
 

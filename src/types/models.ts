@@ -3,6 +3,7 @@ import { MLParseModes } from "./parser/modes";
 import { ASTNODE_TYPES, MLNODE_TYPES, NODE_DISPLAY_TYPES } from "./nodes";
 import { IThemeUrl } from "./app";
 import { IYasppClassTree } from "./styles";
+import { NavGroups } from "./nav";
 
 /** A single node in a parsed markdown AST */
 export type ParsedNode = {
@@ -166,24 +167,36 @@ export interface ContentComponentProps {
 	className?: string;
 }
 
-/** Site page navigation props */
-export interface IPageProps {
-	readonly locale: string;
+/**
+ * Common page data to server and client
+ */
+export interface IBasePageProps {
+	/** Typically the stringified ParsedPageData */
+	readonly content: string | object;
 	/**
 	 * Locale to use when the URL doesn't indicate one
 	 */
 	readonly initialLocale: string;
+	/** The path of the first page in the document data */
 	readonly documentPath: string;
-	readonly translate: (key: string) => string;
-	readonly content: string;
-	readonly className?: string;
-	readonly metaData?: string;
-	readonly nav: string;
+	readonly nav: NavGroups;
 	readonly styleClassBindings: ReadonlyArray<IYasppClassTree>;
 	readonly theme: string;
-	readonly themes: IThemeUrl[];
+	readonly themes: readonly IThemeUrl[];
 	/**
 	 * styles sheets to load on startup
 	 */
-	readonly styleUrls: string[]
+	readonly styleUrls: readonly string[];
+	readonly metaData?: string | object;
+	/**
+	 * If not empty, this page is rendered only in the provided locales
+	 */
+	readonly allowedLocales?: readonly string[];
+}
+
+/** Site page navigation props */
+export interface IPageProps extends IBasePageProps{
+	readonly translate: (key: string) => string;
+	readonly className?: string;
+	readonly locale: string;
 }

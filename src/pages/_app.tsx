@@ -58,7 +58,7 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	const globalStyle = [fontDecl, ...pageStyles].join('\n');
 
 	return (
-		<LocaleContextProvider router={router} initialLocale={pageProps.initialLocale}>
+		<LocaleContextProvider router={router} initialLocale={pageProps.initialLocale} allowedLocales={pageProps.allowedLocales} >
 			<ThemeProvider
 				defaultTheme={pageProps.theme || "light"}
 				storageKey="ml-theme"

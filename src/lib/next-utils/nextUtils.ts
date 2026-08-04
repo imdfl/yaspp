@@ -13,6 +13,7 @@ import { IFolderStaticProps } from "@src/types/folder";
 import { LocaleId } from "@src/types/locale";
 import type { IMLGetStaticPropsOptions, IMLNextUtils, IStaticPathsParameters } from "./types";
 import { initYaspp } from "../yaspp";
+import { NavGroups } from "../../types/nav";
 
 class MLNextUtils implements IMLNextUtils {
 	/**
@@ -54,7 +55,7 @@ class MLNextUtils implements IMLNextUtils {
 
 
 	public async getFolderStaticProps({
-		folderRelativePath: folderPath, locale, loadMode, mode
+		folderRelativePath: folderPath, locale, loadMode, mode, metaData
 	}: IMLGetStaticPropsOptions
 	): Promise<GetStaticPropsResult<IFolderStaticProps>> {
 		const app = await initYaspp();
@@ -65,7 +66,7 @@ class MLNextUtils implements IMLNextUtils {
 					content: "",
 					initialLocale: "",
 					documentPath: folderPath,
-					nav: "",
+					nav: {} as NavGroups,
 					styleClassBindings: [],
 					theme: "",
 					styleUrls: [],
@@ -80,23 +81,32 @@ class MLNextUtils implements IMLNextUtils {
 			loadMode,
 			locale,
 			mode,
+			metaData
 		});
 
-		const page = docData.pages[0];
+
+		const pages = /*metaData ? docData.pages.map(page => ({
+			...page,
+			metaData: {
+				...page.metaData,
+				...metaData
+			}
+		})) : */ docData.pages;
+		const page = pages[0];
 
 		return {
 			props: {
 				// Stringify the result, instead of leaving the job to Next, because
 				// Next's serializer is picky about objects, won't take class instances, Dates and more
-				content: JSON.stringify(docData.pages),
+				content: JSON.stringify(pages),
 				documentPath: page?.path || '',
-				nav: JSON.stringify(app.nav),
+				nav: app.nav,
 				styleClassBindings: app.styleClassBindings,
 				theme: app.theme,
 				themes: app.themeUrls.slice(),
 				styleUrls: app.styleUrls.map(r => r.full),
 				initialLocale: app.initialLocale,
-				allowedLocales: []
+				allowedLocales: page?.metaData.allowed_locales ?? []
 			},
 		};
 	}

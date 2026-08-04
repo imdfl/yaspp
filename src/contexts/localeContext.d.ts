@@ -2,8 +2,6 @@ import type { NextRouter } from "next/router";
 import type { LocaleId } from "../types";
 import type { Translate } from "next-translate";
 import { LocalizeFunction } from "@lib/locale";
-// import type { ILocaleMetaContext } from "../contexts/locale-meta-context";
-// import type { ILocalePageContext } from "../contexts/locale-page-context";
 
 export interface ILocaleContext {
 	readonly locale: string;
@@ -25,6 +23,7 @@ export interface ILocaleContextProps {
 	readonly router: NextRouter;
 	readonly locale: LocaleId;
 	readonly translate: Translate;
+	readonly allowedLocales: readonly string[];
 }
 
 export type TextDirection = "rtl" | "ltr";

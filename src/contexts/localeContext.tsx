@@ -13,6 +13,7 @@ import { isRTL, LocalizeFunction, localizeString } from "@lib/locale";
 interface CoreLocaleContextOptions {
 	readonly initialLocale: string;
 	readonly router: Router;
+	readonly allowedLocales?: readonly string[];
 
 }
 
@@ -25,6 +26,7 @@ class LocaleContextImpl implements ILocaleContext {
 	private readonly _router: NextRouter;
 	private readonly _t: Translate;
 	private readonly _translate: LocalizeFunction;
+	private readonly _allowedLocales: string[];
 	constructor(props: ILocaleContextProps) {
 		if (!props) {
 			return;
@@ -35,6 +37,7 @@ class LocaleContextImpl implements ILocaleContext {
 		this._router = router;
 		this._locale = props.locale;
 		this._locales = router.locales;
+		this._allowedLocales = props.allowedLocales?.slice() ?? [];
 	}
 
 	public get textDirection(): TextDirection {
@@ -80,22 +83,27 @@ class LocaleContextImpl implements ILocaleContext {
 	// public translate = (key: string, lang?: LocaleId) =>
 	// 	this._translate(key, lang);
 
-	public setLocale = (locale: LocaleId) =>
-		this.router.push(this.asPath, this.asPath, {
+	public async setLocale(locale: LocaleId) {
+		if (this._allowedLocales.length && !this._allowedLocales.includes(locale)) {
+			console.warn(`Cannot navigate this page to locale ${locale}`);
+			return false;
+		}
+		return this.router.push(this.asPath, this.asPath, {
 			locale,
 			scroll: true,
 		});
+	}
 }
 
 const ctx = createContext<ILocaleContext>(new LocaleContextImpl(null));
 
 export const LocaleContext: Context<ILocaleContext> = ctx;
 
-export const LocaleContextProvider = ({ children, router, initialLocale }: LocaleContextOptions) => {
+export const LocaleContextProvider = ({ children, router, initialLocale, allowedLocales }: LocaleContextOptions) => {
 	const ut = useTranslation(initialLocale || "en");
 	const { t, lang } = ut;
 	return (
-        (<LocaleContext value={new LocaleContextImpl({ router, locale: lang, translate: t })}>
+        (<LocaleContext value={new LocaleContextImpl({ router, locale: lang, translate: t, allowedLocales })}>
             {children}
         </LocaleContext>)
     );

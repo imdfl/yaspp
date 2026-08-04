@@ -149,6 +149,10 @@ export const getStaticProps: GetStaticProps = async (context) =>
 		folderRelativePath: "",
 		locale: context.locale || "en",
 		loadMode: LoadFolderModes.Folder,
+		metaData: {
+			allowed_locales: "en"
+		}
+		
 	});
 
 export default Contact;

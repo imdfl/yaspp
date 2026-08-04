@@ -122,6 +122,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 		"%USERNS%": "",
 		"%DICTIONARIES%": ""
 	}
+
 	const tmplResult = await yasppUtils.loadTemplate("i18n.js");
 	if (tmplResult.error) {
 		return tmplResult.error;
@@ -139,7 +140,7 @@ async function generateI18N(projectRoot: string, config: YASPP.IYasppLocaleConfi
 			return ns
 		}, new Set<string>());
 		const nsArray = Array.from(sysNS.keys());
-		const sysLocalePath = fsPath.resolve(__dirname, `../../locales`);
+		const sysLocalePath = fsPath.resolve(ROOT_FOLDER, `locales`);
 		const nsResult = await loadAllNamespaces({
 			folder: sysLocalePath,
 			locales: config.langs,
