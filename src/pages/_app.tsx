@@ -12,6 +12,7 @@ import "normalize.css/normalize.css";
 import "../styles/app.scss";
 import "../styles/classes/index.scss";
 import { fontFaceToDecls } from "../lib/site-fonts";
+import useTranslation from "next-translate/useTranslation";
 
 const fontBasePath = '/assets/fonts';
 
@@ -41,6 +42,8 @@ async function loadStyles(styleUrls?: string[]) {
 
 const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	const [pageStyles, setPageStyles] = useState<string[] | null>(null);
+	const { t, lang } = useTranslation(pageProps.initialLocale || router.locales?.[0] || "en" );
+	
 	useEffect(() => {
 		const allUrls = [];
 		allUrls.push(...(pageProps.styleUrls ?? []));
@@ -56,6 +59,15 @@ const App = ({ Component, pageProps, router }: AppProps<IPageProps>) => {
 	}
 	const fontDecl = fontFaceToDecls(siteFontData, { basePath: fontBasePath });
 	const globalStyle = [fontDecl, ...pageStyles].join('\n');
+
+	if (pageProps.allowedLocales?.length && !pageProps.allowedLocales.includes(lang)) {
+		console.log(`Redirecting from unsupported locale ${lang}`);
+		router.replace(router.asPath, router.asPath, {
+			locale: pageProps.allowedLocales[0],
+			scroll: true,
+		});	
+		return <></>
+	}
 
 	return (
 		<LocaleContextProvider router={router} initialLocale={pageProps.initialLocale} allowedLocales={pageProps.allowedLocales} >

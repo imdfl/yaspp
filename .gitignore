@@ -69,3 +69,4 @@ playwright-report
 
 **/*.stories.*
 .storybook
+next-env.d.ts

@@ -89,18 +89,13 @@ class MLNextUtils implements IMLNextUtils {
 		});
 
 
-		const pages = /*metaData ? docData.pages.map(page => ({
-			...page,
-			metaData: {
-				...page.metaData,
-				...metaData
-			}
-		})) : */ docData.pages;
+		const pages = docData.pages;
 		const page = pages[0];
 		const pagePath = await this.populateDynamicPath(relativePath, pathParams);
 		const allowedLocales = Array.isArray(page?.metaData.allowed_locales) ?
 			page!.metaData.allowed_locales as string[]
 			: app.getAllowedLocalesForPath(pagePath);
+		// This is now allowed in prerendered sites (next build), left here as a warning for posterity
 		// if (allowedLocales.length && !allowedLocales.includes(locale)) {
 		// 	return {
 		// 		redirect: {
