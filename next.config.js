@@ -16,7 +16,7 @@ async function loadConfig() {
 		// || 
 		"public/yaspp";
 		const configPath = path.resolve(/*turbopackIgnore: true*/ process.cwd(), projectPath, "yaspp.config.json");
-		const txt = await fs.promises.readFile(configPath);
+		const txt = await /*turbopackIgnore: true*/ fs.promises.readFile(/*turbopackIgnore: true*/ configPath);
 		return JSON.parse(txt);
 	}
 	catch (e) {
@@ -40,7 +40,7 @@ const nextConfig = async () => {
 		},
 		// optimizeFonts: true,
 		sassOptions: {
-			includePaths: [/*turbopackIgnore: true*/ path.join(__dirname, 'public/styles')],
+			includePaths: [path.join(/*turbopackIgnore: true*/__dirname, 'public/styles')],
 			"silenceDeprecations": ["if-function"]
 		},
 		async redirects() {

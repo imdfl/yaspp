@@ -113,7 +113,7 @@ class YasppApp implements IYasppApp {
 			const { locale, content, style } = yConfig;
 			this._locales.push(...yConfig.locale.langs);
 			this._initialLocale = locale?.initialLocale || "";
-			this._content = fsPath.resolve(projectRoot, content.root);
+			this._content = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, content.root);
 			this._indexPage = yConfig.content.index;
 			(yConfig.locale.allowedLocales ?? []).forEach(rec => {
 				const paths = stringUtils.toStringArray(rec.path);
@@ -140,7 +140,7 @@ class YasppApp implements IYasppApp {
 			if (bres.error) {
 				return returnError(bres.error);
 			}
-			const styleRoot = fsPath.resolve(projectRoot, style.root); // must exist
+			const styleRoot = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, style.root); // must exist
 
 			const { error: themeErr, result: themes } = await validateThemes({
 				siteRoot: root,

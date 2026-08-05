@@ -3,7 +3,7 @@ import Layout from "@src/layout/Layout";
 import * as yup from "yup";
 import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout/GenericContentLayout";
 import { Form, ErrorMessage, Link, Text } from "@components/index";
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import type { IPageProps } from "@src/types/models";
 import type { FormFieldProps } from "@components/form/Form";
 import { LocaleContext } from "@contexts/localeContext";
@@ -23,6 +23,12 @@ const EMAIL_NOT_ALLOWED_REGEXP =
 
 const fieldLocalePrefix = 'contact:form:fields';
 
+// export const getStaticPaths: GetStaticPaths = async (context) => {
+// 	return {
+// 		paths: ["/en/contact", "/contact"],
+// 		fallback: false
+// 	}
+// }
 // export const getStaticProps: GetStaticProps = async () => ({ props: {} });
 export const getStaticProps: GetStaticProps = async (context) => {
 	return mlNextUtils.getFolderStaticProps({

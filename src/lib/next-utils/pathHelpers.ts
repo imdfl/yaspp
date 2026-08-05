@@ -27,7 +27,7 @@ export async function pathToRelativePath(path: string): Promise<string> {
 
 		const contentFolder = stat.isDirectory()
 			? path
-			: fsPath.join(fsPath.dirname(path), fsPath.basename(path, fsPath.extname(path)));
+			: /*turbopackIgnore: true*/ fsPath.join(/*turbopackIgnore: true*/fsPath.dirname(path), fsPath.basename(path, fsPath.extname(path)));
 		return contentFolder
 			.replace(/\\/g, "/")
 			.replace(/^.*?\/pages\/(.+)$/, "$1");
@@ -90,7 +90,7 @@ async function _collectPaths(params: {
 	const folderMatch = top.match(DYNAMIC_ROUTE_RE),
 		fileMatch = top.match(DYNAMIC_FILENAME_RE),
 		isKey = Boolean(folderMatch?.length || fileMatch?.length); // indicates that the path contains a dynamic part, /[XXX]
-	const topFolder = isKey ? params.root : fsPath.join(params.root, top);
+	const topFolder = isKey ? params.root : fsPath.join(/*turbopackIgnore: true*/params.root, top);
 	const isLastPart = parts.length === 0;
 
 	if (isKey) {
@@ -116,9 +116,9 @@ async function _collectPaths(params: {
 					}
 					const subPaths = await _collectPaths({
 						parts: parts.length === 0 ? ["[stub]"] : parts,
-						root: fsPath.join(params.root, folder.name),
+						root: fsPath.join(/*turbopackIgnore: true*/params.root, folder.name),
 						paths: paths.map((rec) => ({
-							path: fsPath.join(rec.path, folder.name),
+							path: fsPath.join(/*turbopackIgnore: true*/rec.path, folder.name),
 							idMap: { ...nextFolder.idMap, [key]: folder.name },
 						})),
 					});
@@ -133,7 +133,7 @@ async function _collectPaths(params: {
 	} else {
 		const newPaths = paths.length
 			? paths.map((rec) => ({
-					path: fsPath.join(rec.path, top),
+					path: fsPath.join(/*turbopackIgnore: true*/rec.path, top),
 					idMap: rec.idMap,
 			  }))
 			: [

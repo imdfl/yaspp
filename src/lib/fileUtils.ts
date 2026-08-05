@@ -132,7 +132,7 @@ class FileUtils implements IFileUtils {
 
 	public async readFile(path: string, options?: { canFail?: boolean }): Promise<string | null> {
 		try {
-			const str = await fs.readFile(path, "utf-8");
+			const str = await fs.readFile(/*turbopackIgnore: true*/path, "utf-8");
 			return str;
 		}
 		catch (err) {
@@ -164,7 +164,7 @@ class FileUtils implements IFileUtils {
 			return errorResult(`symlink: target not a folder ${targetFolder}`);
 		}
 		const linkName = name || fsPath.basename(srcPath),
-			targetPath = fsPath.resolve(targetFolder, linkName);
+			targetPath = fsPath.resolve(/*turbopackIgnore: true*/targetFolder, linkName);
 		// const cwd = process.cwd();
 		try {
 			const curType = await this.getFileType(targetPath);

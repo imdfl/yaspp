@@ -158,13 +158,13 @@ async function collectFSData(root: string, depth: number): Promise<IDirRecord> {
 		folders: {}
 	};
 	try {
-		const lst = await fs.readdir(root, { withFileTypes: true });
+		const lst = await fs.readdir(/*turbopackIgnore: true*/root, { withFileTypes: true });
 		for await (const dirent of lst) {
 			const name = dirent.name;
 			if (dirent.isDirectory()) {
 				if (name !== '.' && name !== '..') {
 					if (depth > 0) {
-						ret.folders[dirent.name] = await collectFSData(fsPath.resolve(root, name), depth - 1);
+						ret.folders[dirent.name] = await collectFSData(fsPath.resolve(/*turbopackIgnore: true*/root, name), depth - 1);
 					}
 					else {
 						ret.files.push(name + '/');
@@ -187,7 +187,7 @@ async function collectFSData(root: string, depth: number): Promise<IDirRecord> {
 
 async function loadContent(path: string, depth: number): Promise<IMLApiResponse<IListFilesResponse>> {
 	try {
-		const root = fsPath.resolve(process.cwd(), path);
+		const root = fsPath.resolve(/*turbopackIgnore: true*/process.cwd(), path);
 		const data = await collectFSData(root, depth);
 		return data.error ? { data: null, error: data.error } : {
 			data: {

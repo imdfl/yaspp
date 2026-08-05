@@ -96,7 +96,7 @@ function getPathError(path: string): string {
 	if (FORBIDDEN_PATHS.findIndex(p => p.test(dir)) >= 0) {
 		return `Forbidden path ${path}`;
 	}
-	const top = fsPath.resolve(process.cwd(), "..");
+	const top = fsPath.resolve(/*turbopackIgnore: true*/ process.cwd(), "..");
 	if (!path.startsWith(top)) {
 		return `Path ${path} not under ${top}`;
 	}
@@ -117,7 +117,7 @@ async function loadContent(path: string): Promise<IMLApiResponse<IShowFileRespon
 		if (err) {
 			return { data: null, error: err };
 		}
-		const data = await fs.readFile(root);
+		const data = await fs.readFile(/*turbopackIgnore: true*/root);
 		return {
 			data: {
 				content: data,

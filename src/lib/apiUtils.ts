@@ -1,5 +1,5 @@
 import * as tempFiles from "tmp";
-import * as fs from "fs";
+import { promises as fs } from "fs";
 import * as nodeUtils from "util";
 
 /**
@@ -35,8 +35,7 @@ class MLApiUtils implements IMLApiUtils {
 		}
 
 		try {
-			const read = nodeUtils.promisify(fs.readFile);
-			const buffer = await read(path);
+			const buffer = await fs.readFile(/*turbopackIgnore: true*/path);
 			if (!buffer || buffer.length < 1) {
 				this._fileMap.delete(key);
 				return null;
@@ -57,8 +56,7 @@ class MLApiUtils implements IMLApiUtils {
 		try {
 			const filePath = await mktemp();
 			if (filePath) {
-				const write = nodeUtils.promisify(fs.writeFile);
-				await write(filePath, JSON.stringify(data));
+				await fs.writeFile(filePath, JSON.stringify(data));
 				this._fileMap.set(key, filePath);
 				return true;
 			}

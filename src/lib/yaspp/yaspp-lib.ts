@@ -52,14 +52,14 @@ async function validateContent(projectRoot: string, content?: Partial<YASPP.IYas
 	if (!content?.root) {
 		return errorResult(`Missing configuration option content.root`);
 	}
-	const contentPath = fsPath.resolve(projectRoot, content.root);
+	const contentPath = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, content.root);
 	if (!await fileUtils.isFolder(contentPath)) {
 		return errorResult(`Can't find content folder ${content.root} (${contentPath})`);
 	}
 	if (!content?.index) {
 		return errorResult(`Missing configuration option content.index`);
 	}
-	const indexPath = fsPath.resolve(contentPath, content.index);
+	const indexPath = fsPath.resolve(/*turbopackIgnore: true*/contentPath, content.index);
 	if (!await fileUtils.isFolder(indexPath)) {
 		return errorResult(`Can't find content index folder at ${content.index} (${indexPath})`);
 	}
@@ -82,7 +82,7 @@ async function validateStyle({ projectRoot, siteRoot, style, compile }: IValidat
 but has a sheets property`)
 			: successResult({ root: "", sheets: [], classBindings, themes });
 	}
-	const styleRoot = fsPath.resolve(projectRoot, style.root);
+	const styleRoot = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, style.root);
 	if (!await fileUtils.isFolder(styleRoot)) {
 		return errorResult(`Can't find style folder ${style.root} (${styleRoot})`);
 	}
@@ -92,7 +92,7 @@ but has a sheets property`)
 	const sheets = stringUtils.toStringArray(rawSheets, { allowEmpty: false, trim: true });
 
 	for await (const ss of sheets) {
-		const sheetPath = fsPath.resolve(styleRoot, ss);
+		const sheetPath = fsPath.resolve(/*turbopackIgnore: true*/styleRoot, ss);
 		const { error, result } = await validateCSSFile({
 			path: sheetPath,
 			compile: false,
@@ -146,7 +146,7 @@ async function validateGlobals(projectRoot: string, config?: YASPP.IYasppGlobals
 		f = config.files!;
 
 	for (const rec of f) {
-		const path = fsPath.resolve(projectRoot, rec.source);
+		const path = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, rec.source);
 		if (await fileUtils.isFile(path)) {
 			files.push({
 				source: rec.source,
@@ -165,7 +165,7 @@ async function validateNav(projectRoot: string, config?: YASPP.IYasppNavConfig):
 	if (!config?.index) {
 		return errorResult(`Missing nav/index in configuration`);
 	}
-	const navPath = fsPath.resolve(projectRoot, config.index);
+	const navPath = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, config.index);
 	if (!await fileUtils.isFile(navPath)) {
 		return errorResult(`Navigation configuration ${config.index} not found at ${navPath}`);
 	}
@@ -195,7 +195,7 @@ async function validateAssets(projectRoot: string, assets?: Partial<YASPP.IYaspp
 		return successResult({ root: "" });
 	}
 
-	const assetPath = fsPath.resolve(projectRoot, assets.root);
+	const assetPath = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, assets.root);
 	if (!await fileUtils.isFolder(assetPath)) {
 		return errorResult(`Can't find assets folder ${assets.root} (${assetPath})`);
 	}
@@ -219,7 +219,7 @@ async function validateLocale(projectRoot: string, config?: Partial<YASPP.IYaspp
 	}
 	const errors = [] as string[];
 	if (config.root) {
-		const localePath = fsPath.resolve(projectRoot, config.root);
+		const localePath = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, config.root);
 		if (!await fileUtils.isFolder(localePath)) {
 			errors.push(`Can't find locale root ${config.root} (${localePath})`);
 		}
@@ -364,7 +364,7 @@ export async function validateThemes({ themes, styleRoot, siteRoot, compile }: I
 		};
 
 		const { error: errS, result: sysUrl } = await validateCSSFile({
-			path: fsPath.resolve(siteRoot, "public/styles/themes", theme),
+			path: fsPath.resolve(/*turbopackIgnore: true*/siteRoot, "public/styles/themes", theme),
 			...opts
 		});
 		if (errS) {
@@ -374,7 +374,7 @@ export async function validateThemes({ themes, styleRoot, siteRoot, compile }: I
 			paths.push(`/styles/themes/${tname}`);
 		}
 		const { error: errC, result: url } = await validateCSSFile({
-			path: fsPath.resolve(styleRoot, "themes", theme),
+			path: fsPath.resolve(/*turbopackIgnore: true*/styleRoot, "themes", theme),
 			...opts
 		});
 		if (errC) {
@@ -410,10 +410,10 @@ export async function validateThemes1({ themes, styleRoot, siteRoot }: IValidate
 			themeName = fileUtils.ensureFileExtension(tname, ""),
 			stname = themeName + ".scss";
 
-		const uPath1 = fsPath.resolve(styleRoot, "themes", stname),
-			uPath2 = fsPath.resolve(styleRoot, "themes", tname);
-		const sysPath1 = fsPath.resolve(siteRoot, "public/styles/themes", stname),
-			sysPath2 = fsPath.resolve(siteRoot, "public/styles/themes", tname);
+		const uPath1 = fsPath.resolve(/*turbopackIgnore: true*/styleRoot, "themes", stname),
+			uPath2 = fsPath.resolve(/*turbopackIgnore: true*/styleRoot, "themes", tname);
+		const sysPath1 = fsPath.resolve(/*turbopackIgnore: true*/siteRoot, "public/styles/themes", stname),
+			sysPath2 = fsPath.resolve(/*turbopackIgnore: true*/siteRoot, "public/styles/themes", tname);
 
 		const paths = [] as string[];
 		if (await fileUtils.isFile(sysPath1) || await fileUtils.isFile(sysPath2)) {
@@ -576,7 +576,7 @@ export function operationResult<TResult extends NotNull>(error?: string, result?
 export async function getYasppProjectPath(projectPath?: string): Promise<IYasppProjectPath> {
 	const root = process.cwd();
 	projectPath = projectPath || process.env.NEXT_PUBLIC_YASPP_PROJECT_ROOT || process.env.YASPP_PROJECT_ROOT || "..";
-	const projectRoot = fsPath.resolve(root, projectPath);
+	const projectRoot = fsPath.resolve(/*turbopackIgnore: true*/root, projectPath);
 	if (await fileUtils.isFolder(projectRoot)) {
 		return { root, project: projectRoot };
 	}
@@ -585,7 +585,7 @@ export async function getYasppProjectPath(projectPath?: string): Promise<IYasppP
 
 export async function loadYasppConfig({ projectRoot, siteRoot, compile }: ILoadConfigOptions): Promise<IOperationResult<YASPP.IYasppConfig>> {
 	try {
-		const configPath = fsPath.resolve(projectRoot, YConstants.CONFIG_FILE);
+		const configPath = fsPath.resolve(/*turbopackIgnore: true*/projectRoot, YConstants.CONFIG_FILE);
 		const { result: userConfig, error } = await fileUtils.readJSON<YASPP.IYasppConfig>(configPath);
 		if (!userConfig) {
 			return errorResult(`Missing or invalid yaspp configuration file (${configPath}): ${error || "unknown error"}`);

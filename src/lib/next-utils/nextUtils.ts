@@ -101,14 +101,14 @@ class MLNextUtils implements IMLNextUtils {
 		const allowedLocales = Array.isArray(page?.metaData.allowed_locales) ?
 			page!.metaData.allowed_locales as string[]
 			: app.getAllowedLocalesForPath(pagePath);
-		if (allowedLocales.length && !allowedLocales.includes(locale)) {
-			return {
-				redirect: {
-					destination: "/en/contact",
-					permanent: true
-				}
-			}
-		}
+		// if (allowedLocales.length && !allowedLocales.includes(locale)) {
+		// 	return {
+		// 		redirect: {
+		// 			destination: "/en/contact",
+		// 			permanent: true
+		// 		}
+		// 	}
+		// }
 		return {
 			props: {
 				// Stringify the result, instead of leaving the job to Next, because

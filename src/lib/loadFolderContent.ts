@@ -44,7 +44,7 @@ export const loadContentFolder = async (
 		locale,
 	};
 
-	const contentDir = fsPath.resolve(
+	const contentDir = fsPath.resolve(/*turbopackIgnore: true*/
 		// getContentRootDir(options.rootFolder),
 		app.contentPath,
 		relativePath
@@ -76,14 +76,14 @@ export const loadContentFolder = async (
 			if (targetFileName !== name) {
 				continue;
 			}
-			fullPath = fsPath.resolve(contentDir, name);
+			fullPath = fsPath.resolve(/*turbopackIgnore: true*/contentDir, name);
 		}
 		else {
 			if (!rec.isDirectory()) {
 				continue;
 			}
 
-			fullPath = fsPath.resolve(contentDir, name, targetFileName);
+			fullPath = fsPath.resolve(/*turbopackIgnore: true*/contentDir, name, targetFileName);
 		}
 
 		if (!await fileUtils.isFile(fullPath)) {
@@ -107,7 +107,7 @@ export const loadContentFolder = async (
 		}
 
 		try {
-			const fileContents = await fs.readFile(fullPath, "utf8");
+			const fileContents = await fs.readFile(/*turbopackIgnore: true*/fullPath, "utf8");
 			//log.info(`parse - parsed "${fullPath}"`);
 
 			// Use gray-matter to parse the post metadata section
