@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext } from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { getIcon } from "@components/icons";
 import ListItem from "@components/list-item/ListItem";

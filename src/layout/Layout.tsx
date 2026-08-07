@@ -146,49 +146,51 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 
 	const menuDrawer = useMemo(
 		() => {
-			const themeNames = themes?.map(u => u.name) ?? [];
-			return (
-				<Drawer
-					direction={textDirection === "ltr" ? "right" : "left"}
-					open={drawerOpen}
-					onClose={toggleDrawer}
-					className={styles.drawer}
-				>
-					<Scrollbar textDirection={textDirection} height="100vh">
-						<Button onClick={toggleDrawer} asChild>
-							{getIcon("close")}
-						</Button>
-						<div className={styles.menuHeader}>
-							<Logo mode={oppositeTheme || theme} className={styles.logo} />
-							<TextLink title={siteTitle} linked={!isHome} href="/">
-								{siteTitle}
-							</TextLink>
-						</div>
-						<Strip />
-						<div className={styles.panel}>
-							<LocaleSelect
-								defaultValue={lang}
-								options={localeItems}
-								onSelect={(id) => id !== lang && void setLocale(id)}
-								className={styles.localeSelect}
+			return () => {
+				const themeNames = themes?.map(u => u.name) ?? [];
+				return (
+					<Drawer
+						direction={textDirection === "ltr" ? "right" : "left"}
+						open={drawerOpen}
+						onClose={toggleDrawer}
+						className={styles.drawer}
+					>
+						<Scrollbar textDirection={textDirection} height="100vh">
+							<Button onClick={toggleDrawer} asChild>
+								{getIcon("close")}
+							</Button>
+							<div className={styles.menuHeader}>
+								<Logo mode={oppositeTheme || theme} className={styles.logo} />
+								<TextLink title={siteTitle} linked={!isHome} href="/">
+									{siteTitle}
+								</TextLink>
+							</div>
+							<Strip />
+							<div className={styles.panel}>
+								<LocaleSelect
+									defaultValue={lang}
+									options={localeItems}
+									onSelect={(id) => id !== lang && void setLocale(id)}
+									className={styles.localeSelect}
+								/>
+								<Separator className={styles.separator} />
+								{oppositeTheme && (<ThemeSelect
+									label={themeLabel}
+									theme={theme}
+									themes={themeNames}
+									setTheme={setCurrentTheme}
+									className={styles.themeSelect}
+								/>)}
+							</div>
+							<MenuDrawer
+								items={sidebarSections}
+								onClose={toggleDrawer}
+								className={styles.menu}
 							/>
-							<Separator className={styles.separator} />
-							{oppositeTheme && (<ThemeSelect
-								label={themeLabel}
-								theme={theme}
-								themes={themeNames}
-								setTheme={setCurrentTheme}
-								className={styles.themeSelect}
-							/>)}
-						</div>
-						<MenuDrawer
-							items={sidebarSections}
-							onClose={toggleDrawer}
-							className={styles.menu}
-						/>
-					</Scrollbar>
-				</Drawer>
-			)
+						</Scrollbar>
+					</Drawer>
+				)
+			}
 		},
 		[
 			textDirection,
@@ -349,7 +351,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						</div>
 					</footer>
 				</Container>
-				{isMobile && menuDrawer}
+				{isMobile && menuDrawer()}
 			</Scrollbar>
 			<YasppOnload />
 			{!IS_DEBUG && <Analytics />}

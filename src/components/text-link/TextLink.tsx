@@ -30,7 +30,7 @@ const TextLink = ({
 		currentPath
 	})
 	const text = useMemo(
-		() => (
+		() => () => (
 			<Text className={styles.label} currentPath={ componentPath }>
 				{children}
 			</Text>
@@ -39,9 +39,9 @@ const TextLink = ({
 	);
 
 	const link = useMemo(
-		() => (
+		() => () => (
 			<Link href={href} className={styles.link} asChild={asChild}>
-				{text}
+				{text()}
 			</Link>
 		),
 		[href, text, asChild]
@@ -54,7 +54,7 @@ const TextLink = ({
 			className={classNames(styles.root, className)}
 			// data-variant={variant}
 		>
-			{linked ? link : text}
+			{linked ? link() : text()}
 		</span>
 	);
 };
