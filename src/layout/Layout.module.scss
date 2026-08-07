@@ -21,8 +21,13 @@ $footerMinheight: 20vh;
 }
 
 .root {
-	@include use-background-color;
-
+	display: flex;
+	flex-direction: column;
+	max-height: 100vh;
+	max-width: 100vw;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 	.logo {
 		width: 20px;
 	}
@@ -51,6 +56,10 @@ $footerMinheight: 20vh;
 		}
 	}
 
+	.content_container {
+		flex-grow: 0;
+		overflow: auto;
+	}
 	.page {
 		@include page-container-mixin();
 		// @include use-margin-top("layout-page");

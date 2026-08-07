@@ -17,3 +17,5 @@ export type IYasppClassBindings = IYasppClassDefinition & IYasppClassTree;
 export interface IYasppBindingsFile {
 	readonly bindings: ReadonlyArray<IYasppClassTree>;
 }
+
+export type ElementSize = "xs" | "sm" | "md" | "lg" | "xl";

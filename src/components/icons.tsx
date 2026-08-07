@@ -24,11 +24,13 @@ import {
 } from "@radix-ui/react-icons";
 
 import type { IconProps} from "@radix-ui/react-icons/dist/types";
+import type { ElementSize } from "@src/types/styles";
 
 export interface IGetIconOptions {
 	readonly className: string;
 	readonly varName: string;
 	readonly iconProps: IconProps;
+	readonly size?: ElementSize;
 }
 
 type IconData = typeof CheckIcon;
@@ -58,13 +60,19 @@ const ICON_MAP = new Map<string, IconData>([
 ])
 
 export const getIcon = (icon: string, options?: Partial<IGetIconOptions>) => {
-	const { className = "", varName, iconProps = {} } = (options ?? {});
+	const { className = "", varName, size = "md", iconProps = {} } = (options ?? {});
 	const Ref = ICON_MAP.get(icon);
 	if (Ref) {
 		return <Ref className={className} {...iconProps } />
 	}
 	else if (icon?.length <= 2) { // render the text
 		return icon;
+	}
+	if (varName) {
+		const style: Record<string, string> = {
+			"background-image": `var(${varName})`
+		};
+		return <div style={style} className={`icon-${size}`}></div>
 	}
 	return <ExclamationTriangleIcon className={className} {...iconProps } />
 };

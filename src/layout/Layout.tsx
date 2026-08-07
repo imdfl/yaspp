@@ -249,12 +249,13 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 				description={siteSubtitle}
 			/>
 
-			<Scrollbar
+			{/* <Scrollbar
 				textDirection={textDirection}
 				height="100vh"
 				className={styles.root}
 				data-locale={lang}
-			>
+			> */}
+			<div className={styles.root}>
 				<Container
 					asChild
 					sticky="top"
@@ -312,47 +313,49 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						</ComponentContextProvider>
 					</header>
 				</Container>
-
-				<Container className={styles.page}>{children}</Container>
-				<Strip />
-				<Container fullWidth asChild className={styles.footer}>
-					<footer className={styles.footer}>
-						<div className={styles.container}>
-							<div className={styles.columns}>
-								<div className={classNames(styles.column)}>
-									<Text aria-label={siteLicense}>
-										{siteLicense}
-									</Text>
-									<Text>{siteSubtitle}</Text>
-									<Text>{t("common:site:shortSiteDescription")}</Text>
-								</div>
-								{footerSections.map((section) => (
-									<Container className={styles.column} key={`container-${section.id}`}>
-										<List className={styles.list} label={section.title}>
-											{section.items.map((item) => (
-												<ListItem
-													key={`footer-links-item-${item.id}`}
-													className={styles.item}
-												>
-													<Link
-														href={item.url}
-														target={item.target}
-														className={styles.link}
-														asChild={true}
+				<div className={styles.content_container}>
+					<Container className={styles.page}>{children}</Container>
+					<Strip />
+					<Container fullWidth asChild className={styles.footer}>
+						<footer className={styles.footer}>
+							<div className={styles.container}>
+								<div className={styles.columns}>
+									<div className={classNames(styles.column)}>
+										<Text aria-label={siteLicense}>
+											{siteLicense}
+										</Text>
+										<Text>{siteSubtitle}</Text>
+										<Text>{t("common:site:shortSiteDescription")}</Text>
+									</div>
+									{footerSections.map((section) => (
+										<Container className={styles.column} key={`container-${section.id}`}>
+											<List className={styles.list} label={section.title}>
+												{section.items.map((item) => (
+													<ListItem
+														key={`footer-links-item-${item.id}`}
+														className={styles.item}
 													>
-														{item.title}
-													</Link>
-												</ListItem>
-											))}
-										</List>
-									</Container>
-								))}
+														<Link
+															href={item.url}
+															target={item.target}
+															className={styles.link}
+															asChild={true}
+														>
+															{item.title}
+														</Link>
+													</ListItem>
+												))}
+											</List>
+										</Container>
+									))}
+								</div>
 							</div>
-						</div>
-					</footer>
-				</Container>
+						</footer>
+					</Container>
+				</div>
 				{isMobile && menuDrawer()}
-			</Scrollbar>
+			</div>
+			{/* </Scrollbar> */}
 			<YasppOnload />
 			{!IS_DEBUG && <Analytics />}
 		</>

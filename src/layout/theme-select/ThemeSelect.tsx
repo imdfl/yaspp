@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
+import type { ElementSize } from "@src/types/styles";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 import { getIcon } from "@components/icons";
 import ToggleButton from "@components/toggle/toggle-button/ToggleButton";
 import classNames from "@lib/class-names";
 import { useMountGuard } from "@hooks/useMountGuard";
-import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 import styles from "./ThemeSelect.module.scss";
 
@@ -12,6 +13,7 @@ type ThemeSelectProps = {
 	readonly theme: string;
 	readonly themes: ReadonlyArray<string>;
 	readonly setTheme: (val: string) => void;
+	readonly size?: ElementSize;
 };
 
 const ThemeSelect = ({
@@ -20,6 +22,7 @@ const ThemeSelect = ({
 	setTheme,
 	themes,
 	className,
+	size
 }: YSPComponentPropsWithChildren<ThemeSelectProps>): React.JSX.Element => {
 	const [curThemeIndex, setCurThemeIndex] = useState<number>(themes.indexOf(theme));
 	const { mounted } = useMountGuard();
@@ -53,7 +56,7 @@ const ThemeSelect = ({
 			onClick={toggleTheme}
 			className={classNames(styles.root, className)}
 		>
-			{getIcon(theme, { varName: `ml-logo-${theme}-url` })}
+			{getIcon(theme, { size, varName: `--ml-logo-${theme}-url` })}
 		</ToggleButton>
 	);
 };
