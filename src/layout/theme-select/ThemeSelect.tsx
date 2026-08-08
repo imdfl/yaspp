@@ -48,7 +48,6 @@ const ThemeSelect = ({
 		return null;
 	}
 
-
 	return (
 		<ToggleButton
 			title={label}
@@ -56,7 +55,7 @@ const ThemeSelect = ({
 			onClick={toggleTheme}
 			className={classNames(styles.root, className)}
 		>
-			{getIcon(theme, { size, varName: `--ml-logo-${theme}-url` })}
+			{getIcon(theme, { size, varName: `--ml-theme-url` })}
 		</ToggleButton>
 	);
 };

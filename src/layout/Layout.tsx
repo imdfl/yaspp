@@ -255,7 +255,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 				className={styles.root}
 				data-locale={lang}
 			> */}
-			<div className={styles.root}>
+			<div className={styles.root} dir={textDirection}>
 				<Container
 					asChild
 					sticky="top"

@@ -52,7 +52,7 @@
 	height: var(--radix-navigation-menu-viewport-height);
 	transition: width, height, 300ms ease;
 
-	@include animations.viewport-animations($var);
+	// @include animations.viewport-animations($var);
 	@include use-background-color($var);
 	@include use-radius($var);
 	@include use-shadow($var);

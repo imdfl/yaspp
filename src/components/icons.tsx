@@ -70,7 +70,7 @@ export const getIcon = (icon: string, options?: Partial<IGetIconOptions>) => {
 	}
 	if (varName) {
 		const style: Record<string, string> = {
-			"background-image": `var(${varName})`
+			"backgroundImage": `var(${varName})`
 		};
 		return <div style={style} className={`icon-${size}`}></div>
 	}

@@ -17,6 +17,7 @@ $__stylesheet__: (
 		--decoration-color: #000;
 
 		.label {
+			color: var(--ml-color-text-action);
 			@include use-font-style;
 			@include popover.trigger("popover-trigger");
 		}

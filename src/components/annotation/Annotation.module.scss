@@ -18,7 +18,9 @@ $stylesheet__: (
 		--offset-y: -0.5em;
 		--padding-left: 0.15em;
 		--padding-right: 0.15em;
-		--data-content: #{attr(data-prefix-content) attr(data-seq)};
+		--data-content: #{attr(data-prefix-content)}#{attr(data-seq)};
+
+		color: var(--ml-color-text-action);
 
 		position: relative;
 
@@ -26,10 +28,6 @@ $stylesheet__: (
 		@include text.use-line-height;
 		@include position.use-offset-y;
 		@include popover.trigger("popover-trigger");
-
-		.content {
-			@include mixin.suffix-content-data("annotation", var(--data-content));
-		}
 
 		&::before {
 			@include mixin.prefix("annotation");
