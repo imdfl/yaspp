@@ -322,42 +322,44 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						<div className={styles.page_sidebar_post}></div>
 					</div>
 					<Strip />
-					<Container fullWidth asChild className={styles.footer}>
-						<footer className={styles.footer}>
-							<div className={styles.container}>
-								<div className={styles.columns}>
-									<div className={classNames(styles.column)}>
-										<Text aria-label={siteLicense}>
-											{siteLicense}
-										</Text>
-										<Text>{siteSubtitle}</Text>
-										<Text>{t("common:site:shortSiteDescription")}</Text>
-									</div>
-									{footerSections.map((section) => (
-										<Container className={styles.column} key={`container-${section.id}`}>
-											<List className={styles.list} label={section.title}>
-												{section.items.map((item) => (
-													<ListItem
-														key={`footer-links-item-${item.id}`}
-														className={styles.item}
-													>
-														<Link
-															href={item.url}
-															target={item.target}
-															className={styles.link}
-															asChild={true}
-														>
-															{item.title}
-														</Link>
-													</ListItem>
-												))}
-											</List>
-										</Container>
-									))}
-								</div>
+					{/* <Container fullWidth asChild className={styles.footer}> */}
+					<footer className={styles.footer}>
+						<div className={styles.container}>
+							{/* 	<div className={styles.columns}> */}
+							<div className={styles.site}>
+								<Text aria-label={siteLicense}>
+									{siteLicense}
+								</Text>
+								<Text>{siteSubtitle}</Text>
+								<Text>{t("common:site:shortSiteDescription")}</Text>
 							</div>
-						</footer>
-					</Container>
+							<div className={styles.sections}>
+							{footerSections.map((section) => (
+								<Container className={styles.column} key={`container-${section.id}`}>
+									<List className={styles.list} label={section.title}>
+										{section.items.map((item) => (
+											<ListItem
+												key={`footer-links-item-${item.id}`}
+												className={styles.item}
+											>
+												<Link
+													href={item.url}
+													target={item.target}
+													className={styles.link}
+													asChild={true}
+												>
+													{item.title}
+												</Link>
+											</ListItem>
+										))}
+									</List>
+								</Container>
+							))}
+							</div>
+						</div>
+						{/* </div> */}
+					</footer>
+					{/* </Container> */}
 				</div>
 				{isMobile && menuDrawer()}
 			</div>
