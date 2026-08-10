@@ -28,6 +28,28 @@ $footerMinheight: 20vh;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+	padding: 0;
+
+	.header_container {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: auto;
+
+		.header_level1 {
+			display: grid;
+			grid-template-columns: max-content max-content 1fr;
+			grid-template-areas: "title subtitle .";
+		}
+
+		@media (orientation: portrait) {
+			.header_level1 {
+				grid-template-columns: max-content 1fr;
+				grid-template-areas: "title ."
+				"subtitle subtitle";
+			}
+		}
+	}
+
 	.logo {
 		width: 20px;
 	}
@@ -38,13 +60,21 @@ $footerMinheight: 20vh;
 
 		.title {
 			display: flex;
+			grid-area: title;
 			gap: calc(var(--ml-font-size-md) * 0.5);
+		}
+
+		.subtitle {
+			grid-area: subtitle;
+			display: flex;
+			align-items: center;
 		}
 
 		.panel {
 			gap: 1em;
 			display: flex;
-			align-items: center;
+			justify-content: flex-end;
+			align-items: baseline;
 
 			// .localeSelect {
 			// 	@include locale-select-mixin.button(map.get(toggle-refs.$toggle, default));
@@ -57,10 +87,16 @@ $footerMinheight: 20vh;
 	}
 
 	.content_container {
+		display: block;
 		flex-grow: 0;
 		overflow: auto;
+
+		.page_container {
+			display: grid;
+			grid-template-columns: max-content 1fr max-content;
+		}
 	}
-	.page {
+	.article {
 		@include page-container-mixin();
 		// @include use-margin-top("layout-page");
 

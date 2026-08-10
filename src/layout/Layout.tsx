@@ -265,56 +265,62 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 					horizontalGutter
 					className={headerClass}
 				>
-					<header data-testid="topbar">
-						<ComponentContextProvider parentPath={headerPath}>
-							{/* Top logo */}
-							<Container alignItemsCenter className={styles.title}>
-								<Logo mode={theme || "light"} className={styles.logo} />
-								<TextLink
-									title={siteTitle}
-									linked={!isHome}
-									href="/"
-								>
-									{siteTitle}
-								</TextLink>
-								<Separator />
+					<div className={styles.header_container}>
+						<header className={styles.header_level1}>
+							<ComponentContextProvider parentPath={headerPath}>
+								{/* Top logo */}
+								<Container alignItemsCenter className={styles.title}>
+									<Logo mode={theme || "light"} className={styles.logo} />
+									<TextLink
+										title={siteTitle}
+										linked={!isHome}
+										href="/"
+									>
+										{siteTitle}
+									</TextLink>
+									<Separator />
+								</Container>
 								<Text className={styles.subtitle}>
 									{siteSubtitle}
 								</Text>
-							</Container>
-							{isMobile ? (
-								// hamburger menu
-								<Button onClick={toggleDrawer} asChild>
-									{getIcon("hamburger")}
-								</Button>
-							) : (
-								<Container alignItemsCenter>
-									<Container className={styles.panel}>
-										<MenuBar
-											items={topbarSections}
-											textDirection={textDirection}
-										/>
-										<LocaleSelect
-											defaultValue={lang}
-											options={localeItems}
-											onSelect={(id) => void setLocale(id)}
-											className={styles.localeSelect}
-										/>
-										<ThemeSelect
-											label={themeLabel}
-											theme={theme}
-											themes={themeNames}
-											setTheme={setCurrentTheme}
-											className={styles.themeSelect}
-										/>
-									</Container>
+								<Container alignContentRight>
+									{isMobile ? (
+										// hamburger menu
+										<Button onClick={toggleDrawer} asChild>
+											{getIcon("hamburger")}
+										</Button>
+									) : (
+										<Container className={styles.panel}>
+											<MenuBar
+												items={topbarSections}
+												textDirection={textDirection}
+											/>
+											<LocaleSelect
+												defaultValue={lang}
+												options={localeItems}
+												onSelect={(id) => void setLocale(id)}
+												className={styles.localeSelect}
+											/>
+											<ThemeSelect
+												label={themeLabel}
+												theme={theme}
+												themes={themeNames}
+												setTheme={setCurrentTheme}
+												className={styles.themeSelect}
+											/>
+										</Container>
+									)}
 								</Container>
-							)}
-						</ComponentContextProvider>
-					</header>
+							</ComponentContextProvider>
+						</header>
+					</div>
 				</Container>
 				<div className={styles.content_container}>
-					<Container className={styles.page}>{children}</Container>
+					<div className={styles.page_container}>
+						<div className={styles.page_sidebar_pre}></div>
+						<Container className={styles.article}>{children}</Container>
+						<div className={styles.page_sidebar_post}></div>
+					</div>
 					<Strip />
 					<Container fullWidth asChild className={styles.footer}>
 						<footer className={styles.footer}>
