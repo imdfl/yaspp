@@ -13,10 +13,14 @@ const useDrawer = (initialState: boolean): DrawerState => {
 	useEffect(() => setDrawerState(false), [initialState, setDrawerState]);
 
 	useEffect(() => {
-		if (!open) return;
+		if (!open) {
+			return;
+		}
 
 		const handleKeydown = ({ key }) => {
-			if (key === "Escape") setDrawerState(false);
+			if (key === "Escape") {
+				setDrawerState(false);
+			}
 		};
 
 		window.addEventListener("keydown", handleKeydown);

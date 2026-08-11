@@ -85,7 +85,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	useIconAnimator(router);
 
 	const pathname = usePathname();
-	const { t, locale: lang, textDirection, allowedLocales } = useContext(LocaleContext);
+	const { t, tryTranslate, locale: lang, textDirection, allowedLocales } = useContext(LocaleContext);
 	const { width: screenWidth } = useWindowSize();
 	const { theme, setTheme, themes, oppositeTheme } = useContext(MLThemeContext);
 	const [loadedStyle, setLoadedstyle] = useState<string | null>(null);
@@ -102,11 +102,6 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const { sections: footerSections } = useNavItems(NavSectionId.FOOTER);
 	const { sections: sidebarSections } = useNavItems(NavSectionId.SIDEBAR);
 	const { sections: topbarSections } = useNavItems(NavSectionId.TOPBAR);
-
-	const setCurrentTheme = useCallback((theme: string) => {
-		setTheme(theme);
-		// setMLTheme(theme);
-	}, [setTheme])
 
 	const setLocale = useCallback(
 		async (id: LocaleId) => {
@@ -178,7 +173,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 									label={themeLabel}
 									theme={theme}
 									themes={themeNames}
-									setTheme={setCurrentTheme}
+									setTheme={setTheme}
 									className={styles.themeSelect}
 								/>)}
 							</div>
@@ -194,7 +189,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 		},
 		[
 			textDirection,
-			setCurrentTheme,
+			setTheme,
 			drawerOpen,
 			toggleDrawer,
 			oppositeTheme,
@@ -240,6 +235,8 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	}
 
 	const themeNames = themes?.map(u => u.name) ?? [];
+	const siteDesc = tryTranslate("common:site:shortSiteDescription");
+	void siteDesc;
 	return (
 		<>
 			<CustomHead
@@ -249,12 +246,6 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 				description={siteSubtitle}
 			/>
 
-			{/* <Scrollbar
-				textDirection={textDirection}
-				height="100vh"
-				className={styles.root}
-				data-locale={lang}
-			> */}
 			<div className={styles.root} dir={textDirection}>
 				<Container
 					asChild
@@ -305,7 +296,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 												label={themeLabel}
 												theme={theme}
 												themes={themeNames}
-												setTheme={setCurrentTheme}
+												setTheme={setTheme}
 												className={styles.themeSelect}
 											/>
 										</Container>
@@ -322,16 +313,21 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						<div className={styles.page_sidebar_post}></div>
 					</div>
 					<Strip />
-					{/* <Container fullWidth asChild className={styles.footer}> */}
 					<footer className={styles.footer}>
 						<div className={styles.container}>
-							{/* 	<div className={styles.columns}> */}
 							<div className={styles.site}>
 								<Text aria-label={siteLicense}>
 									{siteLicense}
 								</Text>
-								<Text>{siteSubtitle}</Text>
-								<Text>{t("common:site:shortSiteDescription")}</Text>
+								{siteDesc ? (
+								<details>
+									<summary>{siteSubtitle}</summary>
+									<Text>{siteDesc}</Text>
+								</details>
+								) : (
+									<Text>{siteSubtitle}</Text>
+								)}
+								{/* <Text>{siteSubtitle}</Text> */}
 							</div>
 							<div className={styles.sections}>
 							{footerSections.map((section) => (
@@ -357,13 +353,10 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 							))}
 							</div>
 						</div>
-						{/* </div> */}
 					</footer>
-					{/* </Container> */}
 				</div>
 				{isMobile && menuDrawer()}
 			</div>
-			{/* </Scrollbar> */}
 			<YasppOnload />
 			{!IS_DEBUG && <Analytics />}
 		</>

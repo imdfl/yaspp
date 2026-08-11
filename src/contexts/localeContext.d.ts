@@ -3,6 +3,8 @@ import type { LocaleId } from "../types";
 import type { Translate } from "next-translate";
 import { LocalizeFunction } from "@lib/locale";
 
+export type MaybeTranslate = (key: string) => string;
+
 export interface ILocaleContext {
 	readonly locale: string;
 	readonly locales: ReadonlyArray<string>;
@@ -14,6 +16,10 @@ export interface ILocaleContext {
 	 * Next translate function
 	 */
 	t: Translate;
+	/**
+	 * Calls Next translate function, returns empty string if not found
+	 */
+	tryTranslate: MaybeTranslate;
 	/**
 	 * Translate one string. Supports embedded keys [[ns:key:list:...]] and next-translate value dictonary
 	 */

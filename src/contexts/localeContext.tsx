@@ -3,6 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import type {
 	ILocaleContext,
 	ILocaleContextProps,
+	MaybeTranslate,
 } from "./localeContext.d";
 
 import { NextRouter, Router } from "next/router";
@@ -27,6 +28,7 @@ class LocaleContextImpl implements ILocaleContext {
 	private readonly _t: Translate;
 	private readonly _translate: LocalizeFunction;
 	private readonly _allowedLocales: string[];
+	public readonly tryTranslate: MaybeTranslate; 
 	constructor(props: ILocaleContextProps) {
 		if (!props) {
 			return;
@@ -34,6 +36,10 @@ class LocaleContextImpl implements ILocaleContext {
 		const { router, translate } = props;
 		this._t = translate;
 		this._translate = (s, arg) => localizeString(s, translate, arg);
+		this.tryTranslate = (key: string) => translate(key, null, {
+			"default": ""
+		});
+
 		this._router = router;
 		this._locale = props.locale;
 		this._locales = router.locales;
@@ -104,7 +110,7 @@ const ctx = createContext<ILocaleContext>(new LocaleContextImpl(null));
 export const LocaleContext: Context<ILocaleContext> = ctx;
 
 export const LocaleContextProvider = ({ children, router, initialLocale, allowedLocales }: LocaleContextOptions) => {
-	const ut = useTranslation(initialLocale || "en");
+	const ut = useTranslation();
 	const { t, lang } = ut;
 	return (
         (<LocaleContext value={new LocaleContextImpl({ router, locale: lang, translate: t, allowedLocales })}>
