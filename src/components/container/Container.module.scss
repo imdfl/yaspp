@@ -8,7 +8,7 @@ $__stylesheet__: (
 @layer base {
 
 .root {
-	// display: flex;
+	display: flex;
 	box-sizing: border-box;
 
 	&[data-fixed-position='top'] {

@@ -38,7 +38,7 @@ $states: merge.deep($COMPONENT_STATES,
 		}
 
 		.content {
-			@include mixins.content-mixin("site-horizontal-menu-viewport");
+			// @include mixins.content-mixin("site-horizontal-menu-viewport");
 		}
 
 		.indicator {

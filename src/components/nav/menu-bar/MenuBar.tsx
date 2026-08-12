@@ -45,7 +45,7 @@ const renderSections = (sections: ReadonlyArray<INavSection>, classInfo: IClassN
 			<ListItem
 				currentPath={mainItemPath}
 				className={styles.menuSectionTriggerItem}
-				key={`list-item-${section.id}`}
+				key={section.id}
 			>
 					<Button asChild currentPath={mainItemPath}>
 						<NavigationMenu.Trigger data-state="open">

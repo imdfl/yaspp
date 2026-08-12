@@ -223,8 +223,7 @@ async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConf
 			}
 			stylePaths.push(...(c.map((s: string) => fsPath.resolve(projectRoot, s))));
 		}
-		const bindings = [] as IYasppClassTree[],
-			outData: IYasppBindingsFile = { bindings };
+		const bindings = [] as IYasppClassTree[];
 		const errors: string[] = [];
 		for await (const fpath of stylePaths) {
 			const loadRes = await loadClassBindings(fpath);
@@ -239,7 +238,7 @@ async function generateStyles(projectRoot: string, config: YASPP.IYasppStyleConf
 			return errors.join('\n');
 		}
 		const outPath = fsPath.resolve(ROOT_FOLDER, "class-bindings.json");
-		await fs.writeFile(outPath, JSON.stringify(outData, null, '\t'));
+		await fs.writeFile(outPath, JSON.stringify({ bindings }, null, '\t'));
 		console.log(`Generated ${outPath}`);
 
 		return "";

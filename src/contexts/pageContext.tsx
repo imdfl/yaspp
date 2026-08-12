@@ -28,7 +28,7 @@ export class PageContextClass implements IPageContext {
 
 		const bindings: IYasppClassTree[] = [];
 		if (options.styleClassBindings) {
-			const { error, result } = stringUtils.parseJSON<IYasppClassTree[]>(options.styleClassBindings, true);
+			const { result } = stringUtils.parseJSON<IYasppClassTree[]>(options.styleClassBindings, true);
 			if (result?.length) {
 				bindings.push(...result);
 			}
