@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "colors";
 @use "typography";
+@use "gutters";
 
 @function load($colors: (), $typography: (), $colorOptions: (), $typographyOptions: ()) {
 	@return (
@@ -9,7 +10,11 @@
 	)
 };
 
-@mixin root($colors: (), $typography: (), $colorOptions: (), $typographyOptions: ()) {
-	@include colors.root($colors, $colorOptions);
-	@include typography.root($typography, $typographyOptions);
+@mixin root($colors: (), $colorOptions: (),
+	$typography: (), $typographyOptions: (),
+	$gutters: (), $gutterOptions: ()
+	) {
+	@include colors.root($colors, $options: $colorOptions);
+	@include typography.root($typography, $options: $typographyOptions);
+	@include gutters.root($gutters, $options: $gutterOptions);
 }

@@ -7,12 +7,12 @@ import { LocaleContextProvider } from "@contexts/localeContext";
 import MLThemeContextProvider from "@contexts/MLThemeContext";
 
 import siteFontData from "@src/layout/data/typography/siteFonts.json";
+import { fontFaceToDecls } from "../lib/site-fonts";
+import useTranslation from "next-translate/useTranslation";
 
 import "normalize.css/normalize.css";
 import "../styles/app.scss";
 import "../styles/classes/index.scss";
-import { fontFaceToDecls } from "../lib/site-fonts";
-import useTranslation from "next-translate/useTranslation";
 
 const fontBasePath = '/assets/fonts';
 

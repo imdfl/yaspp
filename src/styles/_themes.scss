@@ -17,10 +17,3 @@
 		@include parser.compile(light.$vars);
 	}
 }
-
-// [data-ml-theme='light'] {
-// }
-
-// [data-ml-theme='dark'] {
-// 	// 	@include parser.compile(dark.$index);
-// }

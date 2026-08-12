@@ -20,7 +20,6 @@ import { Analytics } from "./analytics";
 import { LocaleId, OperationPromise } from "@src/types";
 import { useRouter } from "next/router";
 import { NavSectionId } from "./data/nav";
-import classNames from "@lib/class-names";
 import type { LocaleOptionProps } from "@src/layout/locale-select/LocaleSelect";
 import { ComponentContextProvider, LocaleContext, PageContext } from "../contexts";
 import useNavItems from "@hooks/useNavItems";

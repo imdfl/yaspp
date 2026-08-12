@@ -29,27 +29,28 @@ const LocaleSelect = ({
 		classes: [styles.root, className],
 		part: "locale-select",
 	});
-	if (options.length > 1) {
-		return (
-			<ToggleGroup
-				type="single"
-				defaultValue={defaultValue}
-				onSelect={onSelect}
-				className={componentClass}
-			>
-				{options.map(({ id, label, title }) => (
-					<span
-						key={id}
-						title={title}
-						data-value={id}
-						data-locale={id}
-					>
-						{label}
-					</span>
-				))}
-			</ToggleGroup>)
+	if (!(options?.length > 1)) {
+		return <></>
 	}
-	return <></>
+
+	return (
+		<ToggleGroup
+			type="single"
+			defaultValue={defaultValue}
+			onSelect={onSelect}
+			className={componentClass}
+		>
+			{options.map(({ id, label, title }) => (
+				<span
+					key={id}
+					title={title}
+					data-value={id}
+					data-locale={id}
+				>
+					{label}
+				</span>
+			))}
+		</ToggleGroup>)
 }
 
 export default LocaleSelect;

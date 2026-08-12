@@ -39,6 +39,7 @@
     "dev-css": "bash scripts/dev.sh",
     "sass": "npx sass public/styles public/yaspp/styles",
     "sassqwatch": "npx sass --watch public/styles public/yaspp/styles",
+    "update-yaspp": "yarn remove yaspp-types && yarn add yaspp-types@git+https://github.com/imdfl/yaspp-types.git",
     "dev": "next dev",
     "start": "next start",
     "build:sitemap": "next-sitemap",

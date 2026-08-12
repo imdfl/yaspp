@@ -1,0 +1,58 @@
+@use "sass:map";
+@use "sass:string";
+@use "sass:list";
+@use "sass:meta";
+@use "lib/_merge" as merge;
+@use "lib/varsblock";
+
+// Gutter vars: text, dialog, menu, control, each xs, sm, md, lg, xl
+
+$_sizes: (xs, sm, md, lg, xl);
+
+@function load($overrides: (), $options: ()) {
+	$default: (
+		text: calc(0.5 * var(--ml-font-size-md)),
+		dialog: calc(0.5 * var(--ml-font-size-md)),
+		menu: calc(0.25 * var(--ml-font-size-md)),
+		control: calc(0.1 * var(--ml-font-size-md))
+	);
+	$defaultOptions: (
+		gutter-inc: 0.1,
+	);
+	$fullOptions: merge.deep($defaultOptions, $options);
+	$gutterInc: map.get($fullOptions, "gutter-inc");
+
+	$base: merge.deep($default, $overrides);
+	$extra: ();
+	$step: -2;
+	@each $size in $_sizes {
+		$factor: 1 + ($step * $gutterInc);
+		@each $type, $val in $base {
+			$extra: map.set($extra, #{$type}-#{$size}, calc($val * $factor));
+			// @debug "added#{$type}-#{$size}/#{$val}";
+		}
+		$step: $step + 1;
+	}
+	// @debug $extra;
+	$full: list.join($base, $extra);
+
+	@return merge.deep($full, $overrides);
+};
+
+@mixin root($gutters: (), $options: ()) {
+	$vars: load($gutters, $options);
+	@debug $vars;
+	:root {
+		@include varsblock.vars($map: $vars, $prefix: "ml-gutter");
+	}
+
+	@each $key, $value in $vars {
+		$var: --ml-gutter-#{$key};
+		$cls: '.ml-gutter-#{$key}'; 
+		// @debug $cls $var;
+		#{$cls} {
+			padding: var($var);
+		}
+	}
+}
+
