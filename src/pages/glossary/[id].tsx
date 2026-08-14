@@ -9,7 +9,7 @@ import { usePageData } from "../../hooks/usePageData";
 import { Link, List } from "@components/index";
 import { ContentIterator } from "@lib/dynamic-content-utils/contentIterator";
 import Layout from "@src/layout/Layout";
-import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
+import { createPopoverLinksNodeProcessor } from "@lib/markdown-utils/createPopoverLinksNodeProcessor";
 import { LocaleContext } from "@contexts/localeContext";
 
 export default function GlossaryTerm(props: IPageProps) {

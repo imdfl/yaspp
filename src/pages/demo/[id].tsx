@@ -4,7 +4,7 @@ import { ContentTypes } from "@src/types/content";
 import { mlNextUtils } from "@lib/next-utils/nextUtils";
 import GenericPage from "@lib/dynamic-content-utils/components/genericPage";
 import { LoadFolderModes } from "@src/types/parser/modes";
-import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
+import { createPopoverLinksNodeProcessor } from "@lib/markdown-utils/createPopoverLinksNodeProcessor";
 
 export default function Doc(props: IPageProps) {
 	return <GenericPage pageProps={props} />;

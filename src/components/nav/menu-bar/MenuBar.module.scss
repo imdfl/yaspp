@@ -15,11 +15,26 @@ $states: merge.deep($COMPONENT_STATES,
 
 		.menuSectionTriggers {
 			display: flex;
+			list-style: none;
 
 			// @include use-direction(locale);
 
 			.menuSectionTriggerItem {
-				list-style: none;
+				position: relative;
+
+				.content {
+					position: absolute;
+					top: 1em;
+					left: 0.5em;
+					display: none;
+				}
+
+				&.open {
+					z-index: 1;
+					.content {
+						display: unset;
+					}
+				}
 			}
 		}
 
@@ -37,9 +52,9 @@ $states: merge.deep($COMPONENT_STATES,
 			}
 		}
 
-		.content {
-			// @include mixins.content-mixin("site-horizontal-menu-viewport");
-		}
+		// .content {
+		// @include mixins.content-mixin("site-horizontal-menu-viewport");
+		// }
 
 		.indicator {
 			@include mixins.indicator-mixin("site-horizontal-menu-indicator");

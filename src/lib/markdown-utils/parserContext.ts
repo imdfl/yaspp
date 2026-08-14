@@ -4,7 +4,7 @@ import { MLParseModes } from "@src/types/parser/modes";
 import type { IContentParseOptions } from "@src/types/parser/parser";
 import type { IMLParsedNode, IPageMetaData } from "@src/types/models";
 import type { IYasppApp } from "@src/types/app";
-import { wrapTranslate } from "./locale/translate";
+import { wrapTranslate } from "@lib/locale/translate";
 
 export class MLParseContext {
 	private _linkDefs: Record<string, IMLParsedNode> = {};
