@@ -1,39 +1,38 @@
-import React, { Context, createContext, PropsWithChildren } from "react";
-import type { ComponentPath } from "@src/types/components";
-import { stringUtils } from "../lib/stringUtils";
+import { Context, createContext, PropsWithChildren } from "react";
+import type { IComponentPath } from "@src/types/components";
+import { createComponentPath } from "@lib/next-runtime-utils/component-path";
 
 export interface IComponentContext {
-	readonly parentPath: ComponentPath
-	createSubPath(relativePath: string): ComponentPath;
-	createSubClass(relativePath: string): string;
+	readonly parentPath: IComponentPath
+	createSubPath(relativePath: string): IComponentPath;
+	// createSubClass(relativePath: string): string;
 }
 
 export interface IComponentContextOptions {
-	readonly parentPath: ComponentPath;
+	readonly parentPath: IComponentPath;
 }
 
 class MLComponentContextImpl implements IComponentContext {
-	private readonly _path: ReadonlyArray<string>;
-	constructor(parentPath: ComponentPath) {
-		const path = stringUtils.toStringArray(parentPath);
-		this._path = path.slice();
+	private readonly _path: IComponentPath;
+	constructor(parentPath?: IComponentPath) {
+		this._path = parentPath?.clone() ?? createComponentPath([]);
 	}
 
-	public get parentPath(): ComponentPath {
+	public get parentPath(): IComponentPath {
 		return this._path;
 	}
 
-	public createSubPath(relativePath: string): ComponentPath {
-		return relativePath ? this._path.concat(relativePath) : this._path.slice();
+	public createSubPath(relativePath: string): IComponentPath {
+		return relativePath ? this._path.add(relativePath) : this._path;
 	}
 
-	public createSubClass(relativePath: string): string {
-		const path =  relativePath ? this._path.concat(relativePath) : this._path.slice();
-		return path.join('.');
-	}
+	// public createSubClass(relativePath: string): string {
+	// 	const path =  relativePath ? this._path.add(relativePath) : this._path;
+	// 	return path.join('.');
+	// }
 }
 
-const ctx = createContext<IComponentContext>(new MLComponentContextImpl([]));
+const ctx = createContext<IComponentContext>(new MLComponentContextImpl());
 
 export const ComponentContext: Context<IComponentContext> = ctx;
 

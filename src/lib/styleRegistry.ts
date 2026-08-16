@@ -5,6 +5,7 @@ import type { ComponentPath } from "../types/components";
 import type { Mutable } from "../types";
 import { stringUtils } from "./stringUtils";
 import { unique } from "@utils/unique";
+import { pathToArray } from "./next-runtime-utils/component-path";
 
 /**
  * The style registry allows components to retrieve the classnames
@@ -14,8 +15,6 @@ import { unique } from "@utils/unique";
 export interface IStyleRegistry {
 	registerBindings(bindings: IYasppClassTree): void;
 	getClassNames(part: string, path: ComponentPath): string[];
-	pathToString(path: ComponentPath): string;
-	pathToArray(path: ComponentPath): string[];
 }
 
 interface IChainRule {
@@ -38,6 +37,7 @@ interface IRuleToggleData {
 
 type IRuleData = IRuleToggleData | IRuleClassData;
 
+const DOT_FORMAT_RE = /^([^.]+)\.(.+)$/;
 class StyleRegistry implements IStyleRegistry {
 	private readonly _cache: Map<string, Map<string, ReadonlyArray<string>>>;
 	private readonly _rules: Map<string, IRuleData>;
@@ -82,36 +82,18 @@ class StyleRegistry implements IStyleRegistry {
 		// l("menu-item", ["site-horizontal-menu", "menu", "menu-item"]);
 	}
 
-	public pathToArray(path: ComponentPath): string[] {
-		if (!path?.length) {
-			return [];
-		}
-		return stringUtils.toStringArray(path, {
-			delimiter: '.',
-			flatten: true,
-			unique: false,
-			allowEmpty: false,
-			trim: true
-		})
-	}
 
-	public pathToString(path: ComponentPath): string {
-		if (!path?.length) {
-			return "";
-		}
-		return Array.isArray(path) ? this.pathToArray(path).join('.') : String(path);
-	}
 
 	public getClassNames(part: string, path: ComponentPath): string[] {
-		if (/[^\.]\.[^\.]/.test(part)) {
-			const parts = part.split('.');
-			return this.getClassNames(parts.slice(1).join('.'), path.concat(parts[0]));
+		const match = DOT_FORMAT_RE.exec(part);
+		if (match?.length === 3) {
+			return this.getClassNames(match[2], pathToArray(path).concat(match[1]));
 		}
 		const b = this._bindings.get(part);
 		if (!b) {
 			return [];
 		}
-		const pathParts = this.pathToArray(path),
+		const pathParts = pathToArray(path),
 			cacheKey = pathParts.join('-');
 		const cur = this._cache.get(part)?.get(cacheKey);
 		if (cur) {

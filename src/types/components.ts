@@ -5,6 +5,17 @@ export type RefOrSourceProps = {
 	readonly url?: string;
 };
 
+export interface IComponentPath {
+	readonly asString: string;
+	readonly asArray: string[];
+	readonly parentPath: IComponentPath;
+	/**
+	 * Returns a new instance
+	 * @param parts 
+	 */
+	add(...parts: string[]): IComponentPath;
+	clone(): IComponentPath;
+}
 export type ComponentPath = (ReadonlyArray<string> | string)     ;
 export interface IYSPComponentProps {
 	readonly style?: Record<string, string>;
