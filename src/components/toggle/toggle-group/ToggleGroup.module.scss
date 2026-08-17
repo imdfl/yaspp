@@ -9,11 +9,12 @@
 		--gap: 4px;
 
 		display: flex;
+		border: 1px solid var(--ml-color-controls-level1);
 
-		@include use-gap;
+		// @include use-gap;
 
 		.item {
-			@include base.toggle-button("toggle-group-button");
+			// @include base.toggle-button("toggle-group-button");
 		}
 	}
 }

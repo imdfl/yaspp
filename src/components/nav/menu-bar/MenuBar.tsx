@@ -66,10 +66,8 @@ const renderSections = (options: {
 		>
 			{/* <> */}
 			<Button currentPath={mainItemPath.asString} onClick={() => toggleSelectedId(section.id)}>
-				{/* <NavigationMenu.Trigger data-state="open"> */}
 				{section.title}
 				{getIcon("caretDown", { className: styles.caret })}
-				{/* </NavigationMenu.Trigger> */}
 			</Button>
 			<div className={contentClass}>
 				<List className={styles.sectionItemsList} currentPath={menuPath.asString}>
@@ -90,7 +88,7 @@ const MenuBar = ({ items, textDirection, className, currentPath }: YSPComponentP
 		part: "site-horizontal-menu",
 		currentPath
 	});
-	const { componentClass, componentPath } = classInfo;
+	const { componentClass, componentPath, createSubClass } = classInfo;
 	const menuRefs = useMemo(() => {
 		const refs = items.map(i => [i.id, createRef<HTMLElement | HTMLDivElement>()] as const);
 		return new Map<string, MenuItemRef>(refs);
@@ -129,7 +127,7 @@ const MenuBar = ({ items, textDirection, className, currentPath }: YSPComponentP
 			className={componentClass}
 			data-direction={textDirection || locale.getTextDirection}
 		>
-			<ul className={styles.menuSectionTriggers}>
+			<ul className={createSubClass("sections", [styles.menuSectionTriggers])}>
 				{renderSections({ sections: items, classInfo, selectedId, toggleSelectedId, refs: menuRefs })}
 				{/* <NavigationMenu.Indicator className={styles.indicator}>
 					<div className={styles.arrow}></div>

@@ -84,24 +84,17 @@ class LocaleContextImpl implements ILocaleContext {
 		return this._allowedLocales.length ? this._allowedLocales : this._locales;
 	}
 
-	// public getLocaleLabel = (id: string) =>
-	// 	[localeLabelPrefix, id].join("_").toUpperCase();
-
-	// public getLocaleSymbol = (id: string) =>
-	// 	this.translate(this.getLocaleLabel(id));
-
-	// public translate = (key: string, lang?: LocaleId) =>
-	// 	this._translate(key, lang);
-
 	public async setLocale(locale: LocaleId) {
 		if (this._allowedLocales.length && !this._allowedLocales.includes(locale)) {
 			console.warn(`Cannot navigate this page to locale ${locale}`);
 			return false;
 		}
-		return this.router.push(this.asPath, this.asPath, {
-			locale,
-			scroll: true,
-		});
+		if (locale !== this.router.locale) {
+			return this.router.push(this.asPath, this.asPath, {
+				locale,
+				scroll: true,
+			});
+		}
 	}
 }
 

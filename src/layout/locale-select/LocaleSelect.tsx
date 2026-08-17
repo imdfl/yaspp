@@ -13,14 +13,14 @@ type LocaleOptionProps = {
 };
 
 type LocaleSelectProps = {
-	defaultValue: string;
+	initialValue: string;
 	options: LocaleOptionProps[];
 	onSelect: (id: LocaleId) => void;
 	className?: string;
 };
 
 const LocaleSelect = ({
-	defaultValue,
+	initialValue,
 	options,
 	onSelect,
 	className,
@@ -36,7 +36,7 @@ const LocaleSelect = ({
 	return (
 		<ToggleGroup
 			type="single"
-			defaultValue={defaultValue}
+			initialValue={initialValue}
 			onSelect={onSelect}
 			className={componentClass}
 		>

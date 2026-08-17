@@ -13,21 +13,27 @@
 			color: var(--ml-color-text-inverse);
 		}
 
-		.container-controls-color {
+		.controls-hcontainer, .controls-vcontainer {
 			background-color: var(--ml-color-background-controls);
+			color: var(--ml-color-controls);
 		}
 
-		.container-control-color {
-			background-color: var(--ml-color-background-control);
+		@for $i from 1 through 3 {
+			.controls-hcontainer-level#{$i}, .controls-vcontainer-level#{$i} {
+				background-color: var(--ml-color-background-controls-level#{$i});
+				color: var(--ml-color-controls-level#{$i});
+			}
 		}
 
-		.container-controls-color {
-			background-color: var(--ml-color-background-controls);
-		}
 
 		.control-hover:hover {
 			color: var(--ml-color-text-hover);
 		}
+
+		.header-text {
+			color: var(--ml-color-text-inverse);
+		}
+
 	}
 
 }

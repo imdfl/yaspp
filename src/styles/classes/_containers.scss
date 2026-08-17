@@ -1,74 +1,21 @@
-@layer base {
-	.container {
-		padding: calc(var(--ml-font-size-md) * 0.5);
-	}
+// High level container classes
 
-	.hcontainer {
-		@extend .container;
+@layer base {
+
+	.controls-container {
 		display: flex;
 		flex-direction: row;
-	}
-
-	.vcontainer {
-		@extend .container;
-		display: flex;
-		flex-direction: column;
+		padding: calc(var(--ml-font-size-md) * 0.5);
+		gap: calc(var(--ml-font-size-md) * 0.5);
 	}
 
 	.controls-hcontainer {
-		@extend .hcontainer;
-		align-items: baseline;
+		@extend .controls-container;
 	}
 
 	.controls-vcontainer {
-		@extend .vcontainer;
-		align-items: flex-start;
-	}
-
-	.align-start {
-		align-items: flex-start;
-	}
-	.align-end {
-		align-items: flex-end;
-	}
-	.align-center {
-		align-items: center;
-	}
-	.align-between {
-		align-items: space-between;
-	}
-
-	.align-stretch {
-		align-items: stretch;
-	}
-
-	.align-baseline {
-		align-items: baseline;
-	}
-
-	.justify-start {
-		justify-content: flex-start;
-	}
-	.justify-end {
-		justify-content: flex-end;
-	}
-	.justify-center {
-		justify-content: center;
-	}
-	.justify-between {
-		justify-content: space-between;
-	}
-
-	.justify-evenly {
-		justify-content: space-evenly;
-	}
-
-	.justify-baseline {
-		justify-content: baseline;
-	}
-
-	.nowrap {
-		flex-wrap: nowrap;
+		@extend .controls-container;
+		flex-direction: column;
 	}
 
 

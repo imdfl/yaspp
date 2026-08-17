@@ -1,5 +1,5 @@
 @use './colors';
-@use './locale';
+// @use './locale';
 @use './components';
 
-$vars: locale.$vars, colors.$vars, components.$index;
+$vars: /*locale.$vars,*/ colors.$vars, components.$index;

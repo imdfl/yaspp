@@ -6,14 +6,14 @@ import styles from "./ToggleGroup.module.scss";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type ToggleGroupProps = {
-	defaultValue: string;
+	initialValue: string;
 	// options?: ToggleGroupItemProps[];
 	onSelect?: (val: string) => void;
 	type: 'single';
 };
 
 const ToggleGroup = ({
-	defaultValue,
+	initialValue,
 	type,
 	onSelect,
 	children,
@@ -41,7 +41,7 @@ const ToggleGroup = ({
 	return (
 		<ToggleGroupPrimitives.Root
 			type={type}
-			defaultValue={defaultValue}
+			defaultValue={initialValue}
 			onValueChange={onSelect}
 			className={classNames(styles.root, className)}
 		>
