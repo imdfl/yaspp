@@ -19,7 +19,7 @@
 					],
 					"main-menu": {
 						"sections": {
-							"classes": [ "controls-hcontainer", "transparent" ]
+							"classes": [ "hcontainer" ]
 					},
 						"item": {
 							"button": {

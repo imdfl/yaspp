@@ -162,7 +162,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 							<Strip />
 							<div className={styles.panel}>
 								<LocaleSelect
-									initialValue={lang}
+									currentLocale={lang}
 									options={localeItems}
 									onSelect={(id) => id !== lang && void setLocale(id)}
 									className={styles.localeSelect}
@@ -286,7 +286,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 												textDirection={textDirection}
 											/>
 											<LocaleSelect
-												initialValue={lang}
+												currentLocale={lang}
 												options={localeItems}
 												onSelect={(id) => void setLocale(id)}
 												className={styles.localeSelect}

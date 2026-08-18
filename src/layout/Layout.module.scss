@@ -38,7 +38,7 @@ $footerMinheight: 20vh;
 
 		.header_level1 {
 			display: grid;
-			grid-template-columns: max-content max-content 1fr;
+			grid-template-columns: max-content 1fr;
 			grid-template-areas: "title subtitle .";
 		}
 
@@ -56,13 +56,12 @@ $footerMinheight: 20vh;
 	}
 
 	.topbar {
-		// @include use-background-color("layout-header");
-		// @include use-height("layout-header");
 
 		.title {
 			display: flex;
 			grid-area: title;
 			gap: calc(var(--ml-font-size-md) * 0.5);
+			padding: 0 var(--ml-gutter-text-md);
 		}
 
 		.subtitle {
@@ -115,7 +114,7 @@ $footerMinheight: 20vh;
 		display: flex;
 		margin: 0 auto;
 		justify-content: center;
-		@include use-background-color("layout-footer");
+		// @include use-background-color("layout-footer");
 
 		.container {
 			display: flex;
@@ -208,7 +207,7 @@ $footerMinheight: 20vh;
 
 
 	.drawer {
-		@include sidebar-mixins.background-color;
+		// @include sidebar-mixins.background-color;
 
 		.menuHeader {
 			padding: 1em;
@@ -221,16 +220,16 @@ $footerMinheight: 20vh;
 			// @include sidebar-mixins.panel;
 
 			.localeSelect {
-				@include locale-select-mixin.button(map.get(toggle-refs.$toggle, sidebar-menu));
+				// @include locale-select-mixin.button(map.get(toggle-refs.$toggle, sidebar-menu));
 			}
 
 			.themeSelect {
-				@include theme-select-mixin.button(map.get(toggle-refs.$toggle, sidebar-menu));
+				// @include theme-select-mixin.button(map.get(toggle-refs.$toggle, sidebar-menu));
 			}
 		}
 
 		.menu {
-			@include nav-item-mixin.item(map.get(nav-item-refs.$nav-item, sidebar-menu));
+			// @include nav-item-mixin.item(map.get(nav-item-refs.$nav-item, sidebar-menu));
 		}
 	}
 }

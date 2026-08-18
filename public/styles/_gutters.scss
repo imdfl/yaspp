@@ -14,10 +14,11 @@ $_sizes: (xs, sm, md, lg, xl);
 		text: calc(0.5 * var(--ml-font-size-md)),
 		dialog: calc(0.5 * var(--ml-font-size-md)),
 		menu: calc(0.25 * var(--ml-font-size-md)),
-		control: calc(0.1 * var(--ml-font-size-md))
+		control: calc(0.1 * var(--ml-font-size-md)),
+		controls: calc(0.3 * var(--ml-font-size-md))
 	);
 	$defaultOptions: (
-		gutter-inc: 0.1,
+		gutter-inc: 0.2,
 	);
 	$fullOptions: merge.deep($defaultOptions, $options);
 	$gutterInc: map.get($fullOptions, "gutter-inc");
@@ -41,7 +42,7 @@ $_sizes: (xs, sm, md, lg, xl);
 
 @mixin root($gutters: (), $options: ()) {
 	$vars: load($gutters, $options);
-	@debug $vars;
+	// @debug $vars;
 	:root {
 		@include varsblock.vars($map: $vars, $prefix: "ml-gutter");
 	}
