@@ -2,7 +2,7 @@ import { GetStaticProps, GetStaticPaths, GetStaticPropsContext } from "next";
 import { mlNextUtils } from "@lib/next-utils/nextUtils";
 import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
 import { IPageProps } from "@src/types/models";
-import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
+import { createPopoverLinksNodeProcessor } from "@lib/markdown-utils/createPopoverLinksNodeProcessor";
 import GenericPage from "@lib/dynamic-content-utils/components/genericPage";
 import styles from "@src/custom-layouts/generic-content-layout/mixins/CodexArticleLayoutMixin.module.scss";
 

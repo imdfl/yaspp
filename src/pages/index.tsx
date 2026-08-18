@@ -1,12 +1,11 @@
-import React, { useCallback, useContext } from "react";
+import { useCallback, useContext } from "react";
 import { GetStaticProps, NextPage } from "next";
 import { mlNextUtils } from "../lib/next-utils/nextUtils";
 import { usePageData } from "../hooks/usePageData";
 import Head from "next/head";
 import Layout from "@src/layout/Layout";
 import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout/GenericContentLayout";
-// import { ContentTypes } from "../types/content";
-import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
+import { createPopoverLinksNodeProcessor } from "@lib/markdown-utils/createPopoverLinksNodeProcessor";
 import { renderElements, usePageMetadata } from "@lib/dynamicContentHelpers";
 import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
 import type { IPageProps } from "@src/types/models";

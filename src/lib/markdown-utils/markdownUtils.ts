@@ -1,5 +1,5 @@
-import { MLParseContext } from "@lib/parserContext";
-import { VALID_PARSE_MODES } from "@lib/parseModes";
+import { MLParseContext } from "./parserContext";
+import { VALID_PARSE_MODES } from "./parseModes";
 import * as mdParser from "simple-markdown";
 import { ASTNODE_TYPES, MLNODE_TYPES } from "@src/types/nodes";
 import {

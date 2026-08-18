@@ -1,19 +1,19 @@
 import React, { useMemo } from "react";
 import * as ToggleGroupPrimitives from "@radix-ui/react-toggle-group";
 // import { ToggleGroupItemProps } from "./toggle-group-item/ToggleGroupItem";
-import classNames from "@lib/class-names";
+import cx from "@lib/class-names";
 import styles from "./ToggleGroup.module.scss";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 type ToggleGroupProps = {
-	defaultValue: string;
+	initialValue: string;
 	// options?: ToggleGroupItemProps[];
 	onSelect?: (val: string) => void;
 	type: 'single';
 };
 
 const ToggleGroup = ({
-	defaultValue,
+	initialValue,
 	type,
 	onSelect,
 	children,
@@ -23,27 +23,28 @@ const ToggleGroup = ({
 		() =>
 			React.Children.map(children, (child) => {
 				if (React.isValidElement(child)) {
+					const value = child.props['data-value'];
 					return (
 						<ToggleGroupPrimitives.Item
-							className={styles.item}
-							value={child.props['data-value']}
+							className={cx(styles.item, { [styles.selected]: value === initialValue})}
+							value={value}
 							asChild
 						>
-							{React.cloneElement(child, {})}
+							{child}
 						</ToggleGroupPrimitives.Item>
 					);
 				}
 				return child;
 			}),
-		[children]
+		[children, initialValue]
 	);
 
 	return (
 		<ToggleGroupPrimitives.Root
 			type={type}
-			defaultValue={defaultValue}
+			defaultValue={initialValue}
 			onValueChange={onSelect}
-			className={classNames(styles.root, className)}
+			className={cx(styles.root, className)}
 		>
 			{childrenWithProps}
 		</ToggleGroupPrimitives.Root>

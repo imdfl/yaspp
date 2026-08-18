@@ -10,7 +10,7 @@ import type {
 } from "@src/types/api";
 import * as fsPath from "path";
 import { promises as fs } from "fs";
-import { createPopoverLinksNodeProcessor } from "@lib/processors/createPopoverLinksNodeProcessor";
+import { createPopoverLinksNodeProcessor } from "@lib/markdown-utils/createPopoverLinksNodeProcessor";
 import { initYaspp } from "../../lib/yaspp";
 import type { IYasppApp } from "@src/types/app";
 

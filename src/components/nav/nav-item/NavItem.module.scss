@@ -16,39 +16,42 @@
 		text-decoration: none;
 		display: block;
 
-		@include use-background-color;
-		@include use-radius;
+		// @include use-background-color;
+		// @include use-radius;
 
 		.content {
 			display: flex;
 			flex-direction: row;
+			gap: var(--ml-font-size);
 
-			@include use-gap("nav-item-item");
-			@include use-padding-top("nav-item-item");
-			@include use-padding-bottom("nav-item-item");
-			@include use-padding-right("nav-item-item");
-			@include use-padding-left("nav-item-item");
+			// @include use-gap("nav-item-item");
+			// @include use-padding-top("nav-item-item");
+			// @include use-padding-bottom("nav-item-item");
+			// @include use-padding-right("nav-item-item");
+			// @include use-padding-left("nav-item-item");
 
 			.icon {
 				position: relative;
 				top: 0.1em; // todo: use offset
 
-				@include use-text-color("nav-item-icon");
+				// @include use-text-color("nav-item-icon");
 			}
 
 			.meta {
 				display: flex;
 				flex-direction: column;
 
-				@include use-gap("nav-item-content");
+				// @include use-gap("nav-item-content");
 
 				.title {
-					@include mixins.text-hooks-mixin("nav-item-title");
+					white-space: nowrap;
+					// @include mixins.text-hooks-mixin("nav-item-title");
 				}
 
 				.author,
 				.description {
-					@include mixins.text-hooks-mixin("nav-item-subtitle");
+					font-size: var(--ml-font-size-sm);
+					color: var(--ml-color-controls-level2);
 				}
 			}
 		}

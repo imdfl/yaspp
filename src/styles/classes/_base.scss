@@ -1,0 +1,76 @@
+@layer base {
+	:root {
+		.container {
+			padding: 0; //calc(var(--ml-font-size-md) * 0.5);
+		}
+
+		.hcontainer {
+			@extend .container;
+			display: flex;
+			flex-direction: row;
+		}
+
+		.vcontainer {
+			@extend .container;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.align-start {
+			align-items: flex-start;
+		}
+
+		.align-end {
+			align-items: flex-end;
+		}
+
+		.align-center {
+			align-items: center;
+		}
+
+		.align-between {
+			align-items: space-between;
+		}
+
+		.align-stretch {
+			align-items: stretch;
+		}
+
+		.align-baseline {
+			align-items: baseline;
+		}
+
+		.justify-start {
+			justify-content: flex-start;
+		}
+
+		.justify-end {
+			justify-content: flex-end;
+		}
+
+		.justify-center {
+			justify-content: center;
+		}
+
+		.justify-between {
+			justify-content: space-between;
+		}
+
+		.justify-evenly {
+			justify-content: space-evenly;
+		}
+
+		.justify-baseline {
+			justify-content: baseline;
+		}
+
+		.nowrap {
+			flex-wrap: nowrap;
+		}
+
+		.transparent {
+			background-color: transparent;
+		}
+
+	}
+}

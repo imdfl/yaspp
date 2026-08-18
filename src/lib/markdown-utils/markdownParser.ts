@@ -1,6 +1,6 @@
 import { CaseInsensitiveMap } from "../caseInsensitiveCollections";
 import { NodeProcessorContext } from "../nodeProcessorContext";
-import { MLParseContext } from "../parserContext";
+import { MLParseContext } from "./parserContext";
 import { ASTNODE_TYPES, MLNODE_TYPES } from "@src/types/nodes";
 import type { IMLParsedNode, ParsedNode, IPageMetaData } from "@src/types/models";
 import type {

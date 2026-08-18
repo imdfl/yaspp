@@ -9,11 +9,25 @@
 		--gap: 4px;
 
 		display: flex;
+		overflow: hidden;
+		background: var(--ml-color-background-controls-level2);
+		border: 1px solid var(--ml-color-controls-level1);
+		border-radius: 6px;
+		padding: 0;
 
-		@include use-gap;
+		// @include use-gap;
 
 		.item {
-			@include base.toggle-button("toggle-group-button");
+			padding: var(--ml-gutter-controls-xs) var(--ml-gutter-controls-md);
+			min-width: 1em;
+			text-align: center;
+			cursor: pointer;
+			&.selected {
+				background: var(--ml-color-background-controls-level1);
+				cursor: default;
+				text-decoration: underline;
+			}
+			// @include base.toggle-button("toggle-group-button");
 		}
 	}
 }

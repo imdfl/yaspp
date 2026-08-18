@@ -18,6 +18,9 @@
 					"classes": [
 					],
 					"main-menu": {
+						"sections": {
+							"classes": [ "hcontainer" ]
+					},
 						"item": {
 							"button": {
 								"classes": {

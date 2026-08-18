@@ -1,8 +1,9 @@
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 import { getIcon } from "@components/icons";
-import styles from "./NavItem.module.scss";
 import classNames from "@lib/class-names";
 import Link from "@components/link/Link";
-import type { YSPComponentPropsWithChildren } from "@src/types/components";
+
+import styles from "./NavItem.module.scss";
 
 interface NavItemContentProps {
 	readonly title: string;

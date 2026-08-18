@@ -10,7 +10,7 @@ import { promises as fs } from "fs";
 import type { I18NConfig } from "@src/types/locale";
 import type { YASPP } from "yaspp-types";
 import type { IOperationResult } from "@src/types";
-import type { IYasppBindingsFile, IYasppClassTree } from "@src/types/styles";
+import type { IYasppClassTree } from "@src/types/styles";
 import { yasppUtils } from "./utils";
 import { fileUtils } from "@lib/fileUtils";
 import { stringUtils } from "@lib/stringUtils";
