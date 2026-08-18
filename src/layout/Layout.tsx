@@ -133,7 +133,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const { text: siteTitle } = useTranslatedString(siteTitleGen);
 	const { text: siteSubtitle } = useTranslatedString(siteSubtitleGen);
 	const { text: siteLicense } = useTranslatedString(siteLicenseGen);
-	const { componentClass: headerClass, componentPath: headerPath } = useClassNames({
+	const { componentClass: headerClass, componentPath: headerPath, createSubClass } = useClassNames({
 		classes: [styles.topbar],
 		part: "header",
 	});
@@ -142,40 +142,43 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 		() => {
 			return () => {
 				const themeNames = themes?.map(u => u.name) ?? [];
+				const menuClass = createSubClass("drawer.menu", [styles.drawer]);
 				return (
 					<Drawer
 						direction={textDirection === "ltr" ? "right" : "left"}
 						open={drawerOpen}
 						onClose={toggleDrawer}
-						className={styles.drawer}
+						className={menuClass}
 					>
 						<Scrollbar textDirection={textDirection} height="100vh">
-							<Button onClick={toggleDrawer} asChild>
-								{getIcon("close")}
-							</Button>
-							<div className={styles.menuHeader}>
-								<Logo mode={oppositeTheme || theme} className={styles.logo} />
-								<TextLink title={siteTitle} linked={!isHome} href="/">
-									{siteTitle}
-								</TextLink>
+							<div className={styles.menuHeaderContainer}>
+								<Button onClick={toggleDrawer} asChild>
+									{getIcon("close")}
+								</Button>
+								<div className={styles.menuHeader}>
+									<Logo mode={oppositeTheme || theme} className={styles.logo} />
+									<TextLink title={siteTitle} linked={!isHome} href="/">
+										{siteTitle}
+									</TextLink>
+								</div>
+								<div className={styles.panel}>
+									<LocaleSelect
+										currentLocale={lang}
+										options={localeItems}
+										onSelect={(id) => id !== lang && void setLocale(id)}
+										className={styles.localeSelect}
+									/>
+									<Separator className={styles.separator} />
+									{<ThemeSelect
+										label={themeLabel}
+										theme={theme}
+										themes={themeNames}
+										setTheme={setTheme}
+										className={styles.themeSelect}
+									/>}
+								</div>
 							</div>
-							<Strip />
-							<div className={styles.panel}>
-								<LocaleSelect
-									currentLocale={lang}
-									options={localeItems}
-									onSelect={(id) => id !== lang && void setLocale(id)}
-									className={styles.localeSelect}
-								/>
-								<Separator className={styles.separator} />
-								{oppositeTheme && (<ThemeSelect
-									label={themeLabel}
-									theme={theme}
-									themes={themeNames}
-									setTheme={setTheme}
-									className={styles.themeSelect}
-								/>)}
-							</div>
+							{/* <Strip /> */}
 							<MenuDrawer
 								items={sidebarSections}
 								onClose={toggleDrawer}
@@ -276,7 +279,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 								<Container alignContentRight>
 									{isMobile ? (
 										// hamburger menu
-										<Button onClick={toggleDrawer} asChild>
+										<Button onClick={toggleDrawer} asChild className={styles["menu-button"]}>
 											{getIcon("hamburger")}
 										</Button>
 									) : (
@@ -319,37 +322,37 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 									{siteLicense}
 								</Text>
 								{siteDesc ? (
-								<details>
-									<summary>{siteSubtitle}</summary>
-									<Text>{siteDesc}</Text>
-								</details>
+									<details>
+										<summary>{siteSubtitle}</summary>
+										<Text>{siteDesc}</Text>
+									</details>
 								) : (
 									<Text>{siteSubtitle}</Text>
 								)}
 								{/* <Text>{siteSubtitle}</Text> */}
 							</div>
 							<div className={styles.sections}>
-							{footerSections.map((section) => (
-								<Container className={styles.column} key={`container-${section.id}`}>
-									<List className={styles.list} label={section.title}>
-										{section.items.map((item) => (
-											<ListItem
-												key={`footer-links-item-${item.id}`}
-												className={styles.item}
-											>
-												<Link
-													href={item.url}
-													target={item.target}
-													className={styles.link}
-													asChild={true}
+								{footerSections.map((section) => (
+									<Container className={styles.column} key={`container-${section.id}`}>
+										<List className={styles.list} label={section.title}>
+											{section.items.map((item) => (
+												<ListItem
+													key={`footer-links-item-${item.id}`}
+													className={styles.item}
 												>
-													{item.title}
-												</Link>
-											</ListItem>
-										))}
-									</List>
-								</Container>
-							))}
+													<Link
+														href={item.url}
+														target={item.target}
+														className={styles.link}
+														asChild={true}
+													>
+														{item.title}
+													</Link>
+												</ListItem>
+											))}
+										</List>
+									</Container>
+								))}
 							</div>
 						</div>
 					</footer>

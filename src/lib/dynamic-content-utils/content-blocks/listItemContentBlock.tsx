@@ -1,11 +1,11 @@
 import React from "react";
-import { ContentComponentProps } from "@src/types/models";
+import { IContentComponentProps } from "@src/types/models";
 import { ContentIterator } from "../contentIterator";
 import { ListItem, Text } from "@components/index";
 
 export const ListItemContentBlock = ({
 	componentData,
-}: ContentComponentProps): React.JSX.Element => {
+}: IContentComponentProps): React.JSX.Element => {
 	return (
 		<ListItem>
 			<Text 

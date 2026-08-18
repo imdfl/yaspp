@@ -1,10 +1,10 @@
 import React from "react";
 import CodeBlock from "@components/code-block/CodeBlock";
-import { ContentComponentProps } from "@src/types/models";
+import { IContentComponentProps } from "@src/types/models";
 
 export const CodeBlockContentBlock = ({
 	componentData,
-}: ContentComponentProps): React.JSX.Element => {
+}: IContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	return <CodeBlock key={node.key}>{node.text}</CodeBlock>;
 };

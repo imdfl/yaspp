@@ -69,7 +69,20 @@ $footerMinheight: 20vh;
 			display: flex;
 			align-items: center;
 		}
+		
+		@media (orientation: portrait) {
+			.title {
+				padding-top: var(--ml-gutter-text-md);
+			}
 
+			.subtitle {
+				padding: 0 var(--ml-gutter-text-md);
+			}
+
+			.menu-button {
+				padding: var(--ml-gutter-text-md) var(--ml-gutter-text-md);
+			}
+		}
 		.panel {
 			gap: 1em;
 			display: flex;
@@ -80,9 +93,9 @@ $footerMinheight: 20vh;
 			// 	@include locale-select-mixin.button(map.get(toggle-refs.$toggle, default));
 			// }
 
-			// .themeSelect {
-			// 	@include theme-select-mixin.button(map.get(toggle-refs.$toggle, default));
-			// }
+			.themeSelect {
+				margin-right: var(--ml-gutter-text-md);
+			}
 		}
 	}
 
@@ -209,14 +222,25 @@ $footerMinheight: 20vh;
 	.drawer {
 		// @include sidebar-mixins.background-color;
 
+		.menuHeaderContainer {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			padding: var(--ml-gutter-controls-md);
+			border-bottom: 1px solid var(--ml-color-controls-level3);
+		}
+
 		.menuHeader {
-			padding: 1em;
+			// padding: 1em;
 			display: flex;
 			align-items: center;
 			gap: 1em;
 		}
 
 		.panel {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
 			// @include sidebar-mixins.panel;
 
 			.localeSelect {
@@ -224,6 +248,7 @@ $footerMinheight: 20vh;
 			}
 
 			.themeSelect {
+				margin-right: 0;
 				// @include theme-select-mixin.button(map.get(toggle-refs.$toggle, sidebar-menu));
 			}
 		}

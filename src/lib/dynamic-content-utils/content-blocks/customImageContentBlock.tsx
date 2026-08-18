@@ -1,10 +1,10 @@
 import React from "react";
-import { ContentComponentProps } from "@src/types/models";
+import { IContentComponentProps } from "@src/types/models";
 import { CustomImage } from "@components/index";
 
 export const CustomImageContentBlock = ({
 	componentData,
-}: ContentComponentProps): React.JSX.Element => (
+}: IContentComponentProps): React.JSX.Element => (
 	<CustomImage src={componentData.node.target} />
 );
 

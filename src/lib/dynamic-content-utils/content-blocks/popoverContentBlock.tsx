@@ -10,7 +10,7 @@ import { DynamicContentTypes } from "@src/types/content";
 // import glossaryEN from "../../../../locales/en/glossary.json";
 import { Popover } from "@components/index";
 import type {
-	ContentComponentProps,
+	IContentComponentProps,
 	IContentComponentInitData,
 } from "@src/types/models";
 import { LocaleContext } from "@contexts/localeContext";
@@ -42,7 +42,7 @@ export const PopoverContentBlock = ({
 	type,
 	className,
 	"data-testid": dataTestId,
-}: PopoverContentBlockProps & ContentComponentProps): React.JSX.Element => {
+}: PopoverContentBlockProps & IContentComponentProps): React.JSX.Element => {
 	const toolbar = useToolbar();
 	const { locale, textDirection } = useContext(LocaleContext);
 	const { node } = componentData;

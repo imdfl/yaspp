@@ -44,6 +44,11 @@
 						}
 					}
 				},
+				"drawer": {
+					"menu": {
+						"classes": ["controls-vcontainer"]
+					}
+				},
 				"text": {
 					"classes": {
 						"remove": [

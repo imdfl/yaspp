@@ -1,11 +1,11 @@
 import React from "react";
-import { ContentComponentProps } from "@src/types/models";
+import { IContentComponentProps } from "@src/types/models";
 import { ContentIterator } from "../contentIterator";
 import { Heading } from "@components/index";
 
 export const HeadingContentBlock = ({
 	componentData,
-}: ContentComponentProps): React.JSX.Element => {
+}: IContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	return (
 		<Heading level={node.level || 1} key={node.key}>

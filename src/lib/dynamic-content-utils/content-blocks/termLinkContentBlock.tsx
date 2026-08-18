@@ -1,11 +1,11 @@
 import React from "react";
 import { ContentIterator } from "../contentIterator";
-import type { ContentComponentProps } from "@src/types/models";
+import type { IContentComponentProps } from "@src/types/models";
 import { Term } from "@components/index";
 
 export const TermLinkContentBlock = ({
 	componentData,
-}: ContentComponentProps): React.JSX.Element => {
+}: IContentComponentProps): React.JSX.Element => {
 	return (
 		<Term>
 			<ContentIterator componentData={componentData} />

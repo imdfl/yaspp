@@ -162,7 +162,7 @@ export interface IContentComponentInitData {
 	style?: string;
 }
 
-export interface ContentComponentProps {
+export interface IContentComponentProps {
 	componentData: IContentComponentInitData;
 	className?: string;
 }
