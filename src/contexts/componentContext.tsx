@@ -1,4 +1,4 @@
-import { Context, createContext, PropsWithChildren } from "react";
+import { Context, createContext, PropsWithChildren, useContext } from "react";
 import type { IComponentPath } from "@src/types/components";
 import { createComponentPath } from "@lib/next-runtime-utils/component-path";
 
@@ -9,7 +9,8 @@ export interface IComponentContext {
 }
 
 export interface IComponentContextOptions {
-	readonly parentPath: IComponentPath;
+	readonly parentPath?: IComponentPath;
+	readonly relativePath?: string;
 }
 
 class MLComponentContextImpl implements IComponentContext {
@@ -39,11 +40,14 @@ export const ComponentContext: Context<IComponentContext> = ctx;
 type ComponentContextProps = PropsWithChildren<IComponentContextOptions>;
 
 export const ComponentContextProvider = (props: ComponentContextProps) => {
-	const { children } = props;
+	const { children, relativePath } = props;
+	const ctx = useContext(ComponentContext);
+	const newPath = (relativePath && ctx) ?
+		ctx.parentPath.add(relativePath) : props.parentPath;
 	return (
         <ComponentContext
             value={
-                new MLComponentContextImpl(props.parentPath)
+                new MLComponentContextImpl(newPath)
             }
         >
             {children}

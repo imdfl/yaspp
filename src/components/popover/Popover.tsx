@@ -4,6 +4,8 @@ import { getIcon } from "@components/icons";
 import { Button, ToolbarItem } from "..";
 import PopoverTrigger from "./PopoverTrigger";
 import PopoverDialog from "./PopoverDialog";
+import useClassNames from "../../hooks/useClassNames";
+import { ComponentContextProvider } from "@contexts/index";
 
 import styles from "./Popover.module.scss";
 
@@ -26,6 +28,10 @@ const Popover = ({
 	'data-testid': dataTestId,
 }: PropsWithChildren<CustomPopoverProps>) => {
 	const [visible, setVisible] = useState(false);
+	const { createSubClass, componentClass, componentPath } = useClassNames({
+		part: "dialog",
+		classes: [styles.dialog],
+	})
 
 	const isOpen = open || visible;
 
@@ -45,25 +51,28 @@ const Popover = ({
 				<PopoverPrimitive.Content
 					side={side}
 					data-locale={locale}
-					className={styles.dialog}
+					className={componentClass}
 				>
 					<PopoverDialog>
 						{toolbarItems && (
-							<div className={styles.toolbar}>
-								<div className={styles.panel}>{toolbarItems}</div>
-								<div className={styles.closeButton}>
-									<ToolbarItem>
-										<PopoverPrimitive.Close asChild>
-											<Button
-												onClick={() => setVisible(false)}
-												className={styles.close}
-											>
-												{getIcon('close')}
-											</Button>
-										</PopoverPrimitive.Close>
-									</ToolbarItem>
+							<ComponentContextProvider relativePath="toolbar" >
+
+								<div className={createSubClass("toolbar", [styles.toolbar])}>
+									<div className={styles.panel}>{toolbarItems}</div>
+									<div className={styles.closeButton}>
+										<ToolbarItem>
+											<PopoverPrimitive.Close asChild>
+												<Button
+													onClick={() => setVisible(false)}
+													className={styles.close}
+												>
+													{getIcon('close')}
+												</Button>
+											</PopoverPrimitive.Close>
+										</ToolbarItem>
+									</div>
 								</div>
-							</div>
+							</ComponentContextProvider>
 						)}
 						{children}
 					</PopoverDialog>

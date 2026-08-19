@@ -24,17 +24,15 @@ const Text = ({
 	className,
 }: YSPComponentPropsWithChildren<TextProps>) => {
 	const Comp = asChild ? Slot : "span";
-	const { componentClass, componentPath } = useClassNames({
+	const { componentClass, attributes } = useClassNames({
 		classes: [styles.root, className],
 		part: "text",
 	});
 
 	return (
-		<ComponentContextProvider parentPath={componentPath}>
-			<Comp className={componentClass}>
+			<Comp className={componentClass} {...attributes}>
 				{children}
 			</Comp>
-		</ComponentContextProvider>
 	);
 };
 

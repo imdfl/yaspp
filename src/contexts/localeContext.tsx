@@ -28,7 +28,7 @@ class LocaleContextImpl implements ILocaleContext {
 	private readonly _t: Translate;
 	private readonly _translate: LocalizeFunction;
 	private readonly _allowedLocales: string[];
-	public readonly tryTranslate: MaybeTranslate; 
+	public readonly tryTranslate: MaybeTranslate;
 	constructor(props: ILocaleContextProps) {
 		if (!props) {
 			return;
@@ -36,9 +36,14 @@ class LocaleContextImpl implements ILocaleContext {
 		const { router, translate } = props;
 		this._t = translate;
 		this._translate = (s, arg) => localizeString(s, translate, arg);
-		this.tryTranslate = (key: string) => translate(key, null, {
-			"default": ""
-		});
+		this.tryTranslate = (key: string) => {
+			if (! /[^:]:[^:]/.test(key)) {
+				return key;
+			}
+			return translate(key, null, {
+				"default": ""
+			})
+		};
 
 		this._router = router;
 		this._locale = props.locale;
@@ -106,8 +111,8 @@ export const LocaleContextProvider = ({ children, router, initialLocale, allowed
 	const ut = useTranslation();
 	const { t, lang } = ut;
 	return (
-        (<LocaleContext value={new LocaleContextImpl({ router, locale: lang, translate: t, allowedLocales })}>
-            {children}
-        </LocaleContext>)
-    );
+		(<LocaleContext value={new LocaleContextImpl({ router, locale: lang, translate: t, allowedLocales })}>
+			{children}
+		</LocaleContext>)
+	);
 };

@@ -315,7 +315,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						<div className={styles.page_sidebar_post}></div>
 					</div>
 					<Strip />
-					<footer className={styles.footer}>
+					<footer className={createSubClass("footer", [styles.footer])}>
 						<div className={styles.container}>
 							<div className={styles.site}>
 								<Text aria-label={siteLicense}>

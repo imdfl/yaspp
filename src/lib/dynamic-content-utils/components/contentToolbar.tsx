@@ -16,7 +16,7 @@ export default function DynamicContentToolbar({
 	pages,
 }: IDynamicContentToolbarProps): React.JSX.Element {
 	const [prevPageId, setPrevPageId] = useState('');
-	const { t, textDirection } = useContext(LocaleContext);
+	const { tryTranslate, textDirection } = useContext(LocaleContext);
 	const popoverContext = useContext(PopoverContext);
 	const dynamicContentContext = useContext(DynamicContentContext);
 
@@ -42,7 +42,7 @@ export default function DynamicContentToolbar({
 					key={`back-button-key-${prevPage.metaData.glossary_key}`}
 					title={
 						prevPage.metaData.title ||
-						t(prevPage.metaData.glossary_key) ||
+						tryTranslate(prevPage.metaData.glossary_key) ||
 						prevPage.id
 					}
 					onClick={() => dynamicContentContext.setPageIndex(idx)}
@@ -59,7 +59,7 @@ export default function DynamicContentToolbar({
 		dynamicContentContext,
 		popoverContext,
 		textDirection,
-		t,
+		tryTranslate
 	]);
 
 	return <></>;

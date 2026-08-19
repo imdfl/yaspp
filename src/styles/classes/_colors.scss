@@ -13,13 +13,13 @@
 			color: var(--ml-color-text-inverse);
 		}
 
-		.controls-hcontainer, .controls-vcontainer {
+		.controls-container, .controls-hcontainer, .controls-vcontainer {
 			background-color: var(--ml-color-background-controls);
 			color: var(--ml-color-controls);
 		}
 
 		@for $i from 1 through 3 {
-			.controls-hcontainer-level#{$i}, .controls-vcontainer-level#{$i} {
+			.controls-container-level#{$i}, .controls-hcontainer-level#{$i}, .controls-vcontainer-level#{$i} {
 				background-color: var(--ml-color-background-controls-level#{$i});
 				color: var(--ml-color-controls-level#{$i});
 			}

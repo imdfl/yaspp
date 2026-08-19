@@ -116,17 +116,22 @@ class StyleRegistry implements IStyleRegistry {
 		return classes;
 	}
 
+	/**
+	 * 
+	 * @param targetPath The actual element path e.g. dialog.text
+	 * @param matchPath The rule path, e.g. dialog.toolbar.text
+	 * @returns 
+	 */
 	private _chainsMatch(targetPath: ReadonlyArray<string>, matchPath: ReadonlyArray<string>): boolean {
-		const matchLen = matchPath.length;
-		for (let ind = 0, partInd = 0; ind < targetPath.length; ++ind) {
-			if (ind >= matchLen) {
+		const targetLen = matchPath.length;
+		for (let ind = 0, partInd = 0; ind < matchPath.length; ++ind) {
+			if (ind >= targetLen) {
 				return false;
 			}
-			partInd = targetPath.indexOf(matchPath[ind], partInd);
-			if (partInd < 0) {
+			partInd = targetPath.indexOf(matchPath[ind], partInd) + 1;
+			if (partInd < 1) {
 				return false;
 			}
-			++partInd;			
 		}
 		return true;
 	}

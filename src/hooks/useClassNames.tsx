@@ -66,7 +66,7 @@ export const useClassNames = ({ part, currentPath, classes }: IUseClassNamesOpti
 	}, [componentPath])
 
 	const attributes = useMemo((): Record<string, string> => {
-		return createAttributes(part);
+		return createAttributes("");
 	}, [componentPath])
 
 	return {

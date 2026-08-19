@@ -15,12 +15,13 @@
 					"container-inverse-text"
 				],
 				"site-horizontal-menu": {
-					"classes": [
-					],
+					"classes": [],
 					"main-menu": {
 						"sections": {
-							"classes": [ "hcontainer" ]
-					},
+							"classes": [
+								"hcontainer"
+							]
+						},
 						"item": {
 							"button": {
 								"classes": {
@@ -34,10 +35,14 @@
 					"submenu": {
 						"item": {
 							"list": {
-								"classes": [ "container-controls-color" ],
+								"classes": [
+									"container-controls-color"
+								],
 								"list-item": {
 									"classes": {
-										"add": [ "ml-color-controls-level1"]
+										"add": [
+											"ml-color-controls-level1"
+										]
 									}
 								}
 							}
@@ -46,7 +51,9 @@
 				},
 				"drawer": {
 					"menu": {
-						"classes": ["controls-vcontainer"]
+						"classes": [
+							"controls-vcontainer"
+						]
 					}
 				},
 				"text": {
@@ -77,9 +84,14 @@
 					}
 				}
 			},
+			"footer": {
+				"classes": [
+					"controls-container"
+				]
+			},
 			"button": {
 				"classes": [
-					"container-center",
+					"hcontainer justify-center",
 					"control",
 					"control-hover"
 				]
@@ -105,6 +117,27 @@
 							],
 							"remove": [
 								"control"
+							]
+						}
+					}
+				}
+			},
+			"dialog": {
+				"toolbar": {
+					"classes": [
+						"container-inverse-color"
+					],
+					"text": {
+						"classes": {
+							"add": [
+								"ml-color-text-inverse"
+							]
+						}
+					},
+					"button": {
+						"classes": {
+							"add": [
+								"ml-color-text-inverse"
 							]
 						}
 					}
