@@ -3,7 +3,6 @@
 @use '../../styles/lib/component' as *;
 @use '../../styles/lib/states' as *;
 @use '../../styles/lib/hooks/text' as *;
-@use '../../styles/lib/hooks/position' as *;
 
 $__stylesheet__: (
 	name: term,
@@ -25,9 +24,10 @@ $__stylesheet__: (
 			position: relative;
 			cursor: pointer;
 			content: var(--ml-content-term-suffix);
+			top: -0.3em;
 
-			@include use-text-color("term-suffix");
-			@include use-offset-y("term-suffix");
+			// @include use-text-color("term-suffix");
+			// @include use-offset-y("term-suffix");
 			// @include annotation.suffix("term");
 		}
 	}

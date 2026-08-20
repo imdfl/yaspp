@@ -57,7 +57,7 @@ const Popover = ({
 						{toolbarItems && (
 							<ComponentContextProvider relativePath="toolbar" >
 
-								<div className={createSubClass("toolbar", [styles.toolbar])}>
+								<div className={createSubClass("toolbar", styles.toolbar)}>
 									<div className={styles.panel}>{toolbarItems}</div>
 									<div className={styles.closeButton}>
 										<ToolbarItem>

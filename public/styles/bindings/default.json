@@ -10,9 +10,7 @@
 			},
 			"header": {
 				"classes": [
-					"hcontainer",
-					"container-inverse-color",
-					"container-inverse-text"
+					"header-container"
 				],
 				"site-horizontal-menu": {
 					"classes": [],
@@ -49,10 +47,15 @@
 						}
 					}
 				},
+				"theme": {
+					"classes": [
+						"ml-color-text-inverse"
+					]
+				},
 				"drawer": {
 					"menu": {
 						"classes": [
-							"controls-vcontainer"
+							"vcontainer", "menu-container"
 						]
 					}
 				},
@@ -86,7 +89,7 @@
 			},
 			"footer": {
 				"classes": [
-					"controls-container"
+					"footer-container"
 				]
 			},
 			"button": {
@@ -103,12 +106,11 @@
 			},
 			"menu": {
 				"classes": [
-					"ml-color-background-controls",
-					"ml-color-controls"
+					"menu-container"
 				],
 				"menu-item": {
 					"classes": [
-						"vcontainer-left"
+						"vcontainer", "justify-start"
 					],
 					"button": {
 						"classes": {

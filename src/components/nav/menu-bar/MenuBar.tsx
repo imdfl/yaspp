@@ -26,7 +26,7 @@ interface NavProps {
 
 type MenuItemRef = RefObject<HTMLElement | HTMLDivElement | HTMLLIElement>;
 
-const renderItems = (items: ReadonlyArray<YASPP.INavItemData>, currentPath: IComponentPath) => {
+const renderItems = (items: ReadonlyArray<YASPP.INavItemData>, currentPath: IComponentPath, onSelect: () => unknown) => {
 	const cp = currentPath.asString;
 	return items.map((item) => (
 		// <NavigationMenu.Link asChild key={item.id}>
@@ -37,6 +37,7 @@ const renderItems = (items: ReadonlyArray<YASPP.INavItemData>, currentPath: ICom
 				description={item.locale.description}
 				author={item.locale.author}
 				icon={item.icon}
+				onClick={onSelect}
 			/>
 		</ListItem>
 		// </NavigationMenu.Link>
@@ -47,8 +48,9 @@ const renderSections = (options: {
 	refs: Map<string, MenuItemRef>,
 	selectedId: string, toggleSelectedId: (s: string) => unknown,
 	sections: ReadonlyArray<INavSection>, classInfo: IClassNamesInfo
+	onSelect: () => unknown
 }) => {
-	const { sections, classInfo, selectedId, toggleSelectedId, refs } = options;
+	const { sections, classInfo, selectedId, toggleSelectedId, refs, onSelect } = options;
 	const { componentPath, createSubClass } = classInfo;
 	const mainItemPath = componentPath.add("main-menu.item");
 	const menuPath = componentPath.add("submenu");
@@ -71,7 +73,7 @@ const renderSections = (options: {
 			</Button>
 			<div className={contentClass}>
 				<List className={styles.sectionItemsList} currentPath={menuPath.asString}>
-					{renderItems(section.items, subItemPath)}
+					{renderItems(section.items, subItemPath, onSelect)}
 				</List>
 			</div>
 			{/* </> */}
@@ -108,7 +110,7 @@ const MenuBar = ({ items, textDirection, className, currentPath }: YSPComponentP
 
 
 	useEffect(() => {
-		clickMonitor?.clear();
+		clickMonitor.clear();
 		if (selectedId) {
 			const el = menuRefs.get(selectedId).current;
 			if (el) {
@@ -117,7 +119,7 @@ const MenuBar = ({ items, textDirection, className, currentPath }: YSPComponentP
 
 		}
 		return () => {
-			clickMonitor?.clear();
+			clickMonitor.clear();
 		}
 	}, [selectedId, clickMonitor])
 
@@ -127,15 +129,9 @@ const MenuBar = ({ items, textDirection, className, currentPath }: YSPComponentP
 			className={componentClass}
 			data-direction={textDirection || locale.getTextDirection}
 		>
-			<ul className={createSubClass("sections", [styles.menuSectionTriggers])}>
-				{renderSections({ sections: items, classInfo, selectedId, toggleSelectedId, refs: menuRefs })}
-				{/* <NavigationMenu.Indicator className={styles.indicator}>
-					<div className={styles.arrow}></div>
-				</NavigationMenu.Indicator> */}
+			<ul className={createSubClass("sections", styles.menuSectionTriggers)}>
+				{renderSections({ sections: items, classInfo, selectedId, toggleSelectedId, refs: menuRefs, onSelect: () => setSelectedId("") })}
 			</ul>
-			{/* <div className={styles.viewportPosition}>
-				<NavigationMenu.Viewport className={styles.viewport} />
-			</div> */}
 		</div>
 	</ComponentContextProvider>
 }

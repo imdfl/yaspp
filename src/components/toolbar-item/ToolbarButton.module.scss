@@ -1,14 +1,5 @@
-@use './ToolbarItem.module' as toolbar-item;
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use '../../styles/lib/hooks' as *;
-
-$__stylesheet__: (
-	name: toolbar-item,
-);
-
 @layer base {
 	.root {
-		@include toolbar-item.toolbar-button-mixin;
+
 	}
 }

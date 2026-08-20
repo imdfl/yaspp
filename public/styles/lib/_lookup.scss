@@ -27,3 +27,17 @@
 	// }
 	// @return null;
 }
+
+@function findFirst($map, $keys...) {
+	@if meta.type-of($map) != map {
+			@debug "lookup.find map type is #{meta.type-of($map)}, returning null";
+			@return null;
+		}
+	@each $key in $keys {
+		$val: map.get($map, $key);
+		@if $val {
+			@return $val;
+		}
+	}
+	@return null;
+}

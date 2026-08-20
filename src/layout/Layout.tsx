@@ -142,7 +142,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 		() => {
 			return () => {
 				const themeNames = themes?.map(u => u.name) ?? [];
-				const menuClass = createSubClass("drawer.menu", [styles.drawer]);
+				const menuClass = createSubClass("drawer.menu", styles.drawer);
 				return (
 					<Drawer
 						direction={textDirection === "ltr" ? "right" : "left"}
@@ -174,7 +174,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 										theme={theme}
 										themes={themeNames}
 										setTheme={setTheme}
-										className={styles.themeSelect}
+										className={createSubClass("theme", styles.themeSelect)}
 									/>}
 								</div>
 							</div>
@@ -196,6 +196,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 			toggleDrawer,
 			oppositeTheme,
 			siteTitle,
+			createSubClass,
 			isHome,
 			lang,
 			localeItems,
@@ -238,7 +239,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 
 	const themeNames = themes?.map(u => u.name) ?? [];
 	const siteDesc = tryTranslate("common:site:shortSiteDescription");
-	void siteDesc;
+
 	return (
 		<>
 			<CustomHead
@@ -299,7 +300,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 												theme={theme}
 												themes={themeNames}
 												setTheme={setTheme}
-												className={styles.themeSelect}
+												className={createSubClass("theme", styles.themeSelect)}
 											/>
 										</Container>
 									)}
@@ -315,7 +316,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						<div className={styles.page_sidebar_post}></div>
 					</div>
 					<Strip />
-					<footer className={createSubClass("footer", [styles.footer])}>
+					<footer className={createSubClass("footer", styles.footer)}>
 						<div className={styles.container}>
 							<div className={styles.site}>
 								<Text aria-label={siteLicense}>

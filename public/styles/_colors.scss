@@ -4,6 +4,7 @@
 @use "sass:color";
 @use "sass:meta";
 @use "lib/_merge" as merge;
+@use "lib/_lookup" as lookup;
 @use "lib/varsblock";
 
 @function _mixIt($color, $mix, $by) {
@@ -53,7 +54,10 @@
 	$bgColor: map.get($base, "background");
 	$controlsColor: map.get($base, "text-controls");
 	$controlsBg: map.get($base, "background-controls");
-
+	$menuBG: lookup.findFirst($base, "background-menu", "background-controls");
+	$headerBG: lookup.findFirst($base, "background-header", "background-inverse");
+	$footerBG: lookup.findFirst($base, "background-footer", "background-controls");
+	
 
 	$extra: (
 		level1: $textColor,
@@ -67,7 +71,16 @@
 		controls-level3: meta.call($mixer, $controlsColor, $textAdd, 2 * $textInc),
 		background-controls-level1: $controlsBg,
 		background-controls-level2: meta.call($mixer, $controlsBg, $bgAdd, $bgInc),
-		background-controls-level3: meta.call($mixer, $controlsBg, $bgAdd, 2 * $bgInc)
+		background-controls-level3: meta.call($mixer, $controlsBg, $bgAdd, 2 * $bgInc),
+		background-menu: $menuBG,
+		background-menu-level1: $menuBG,
+		background-menu-level2: meta.call($mixer, $menuBG, $bgAdd, $bgInc),
+		background-menu-level3: meta.call($mixer, $menuBG, $bgAdd, 2 * $bgInc),
+		background-header: $headerBG,
+		background-header-level1: $headerBG,
+		background-header-level2: meta.call($mixer, $headerBG, $bgAdd, $bgInc),
+		background-header-level3: meta.call($mixer, $headerBG, $bgAdd, 2 * $bgInc),
+		background-footer: $footerBG
 	);
 	$full: list.join($base, $extra);
 

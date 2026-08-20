@@ -1,12 +1,3 @@
-@use '../toolbar-item/ToolbarItem.module' as toolbar-item;
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use '../../styles/lib/hooks/box' as *;
-
-$__stylesheet__: (
-	name: popover,
-);
-
 @layer base {
 	.trigger {
 		background: none;
@@ -20,24 +11,9 @@ $__stylesheet__: (
 		top: 0;
 		justify-content: space-between;
 
-		@include use-inner-gutter(popover-toolbar);
-		@include use-border-size(popover-dialog);
-		@include use-border-style(popover-dialog);
-		@include use-border-color(popover-dialog);
-
 		// toolbar displays only a bottom-border
 		border-top: none;
 		border-left: none;
 		border-right: none;
-
-		// .panel {
-		// }
-
-		// .closeButton {
-		// }
-
-		.close {
-			@include toolbar-item.toolbar-button-mixin;
-		}
 	}
 }

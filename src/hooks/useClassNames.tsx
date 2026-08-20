@@ -5,7 +5,7 @@ import { ComponentPath, IComponentPath } from "@src/types/components";
 import { createComponentPath } from "@lib/next-runtime-utils/component-path";
 
 export type ComponentPathGenerator = (path: ComponentPath) => ComponentPath;
-export type ClassNameGenerator = (part: string, classes?: string | ReadonlyArray<string>) => string;
+export type ClassNameGenerator = (part: string, ...classes: ReadonlyArray<string>) => string;
 export type ComponentAttributesGenerator = (part: string) => Record<string, string>;
 export interface IClassNamesInfo {
 	readonly componentClass: string;
@@ -54,9 +54,9 @@ export const useClassNames = ({ part, currentPath, classes }: IUseClassNamesOpti
 	// 	}
 	// }, [componentPath, styleRegistry])
 
-	const createSubClass = useMemo(() => (part: string, classes?: string | ReadonlyArray<string>) => {
+	const createSubClass = useMemo(() => (part: string, ...classes: ReadonlyArray<string>) => {
 		const more = styleRegistry.getClassNames(part, componentPath.asArray);
-		return classes ? classNames(classes, more) : more.join(' ');
+		return classes.length ? classNames(classes, more) : more.join(' ');
 	}, [currentPath, parentPath, styleRegistry]);
 
 	const createAttributes = useMemo(() => (part: string): Record<string, string> => {

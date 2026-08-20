@@ -1,5 +1,27 @@
+@use "sass:string";
+
+@mixin useColors($cls, $type, $levels: null) {
+	$ts: $type;
+	@if string.length($type) > 0 {
+		$ts: "-#{$type}";
+	}
+	.#{$cls} {
+		background-color: var(--ml-color-background#{$ts});
+		color: var(--ml-color#{$ts});
+	}
+	@if $levels {
+		@debug "running levels #{$levels} for #{$cls}";
+		@for $i from 1 through $levels {
+			.#{$cls}-level#{$i} {
+				background-color: var(--ml-color-background#{$ts}-level#{$i});
+				color: var(--ml-color#{$ts}-level#{$i});
+			}
+		}
+	}
+}
+
 @layer base {
-	:root {
+	// :root {
 		.container-color {
 			background-color: transparent;
 		}
@@ -8,22 +30,33 @@
 			background-color: var(--ml-color-background);
 		}
 
-		.container-inverse-color {
-			background-color: var(--ml-color-background-inverse);
-			color: var(--ml-color-text-inverse);
-		}
+		@include useColors($cls: "container-inverse-color", $type: "inverse");
+		// .container-inverse-color {
+		// 	background-color: var(--ml-color-background-inverse);
+		// 	color: var(--ml-color-text-inverse);
+		// }
 
-		.controls-container, .controls-hcontainer, .controls-vcontainer {
-			background-color: var(--ml-color-background-controls);
-			color: var(--ml-color-controls);
-		}
+		@include useColors($cls: "controls-container", $type: "controls", $levels: 3);
+		@include useColors($cls: "controls-hcontainer", $type: "controls", $levels: 3);
+		@include useColors($cls: "controls-vcontainer", $type: "controls", $levels: 3);
 
-		@for $i from 1 through 3 {
-			.controls-container-level#{$i}, .controls-hcontainer-level#{$i}, .controls-vcontainer-level#{$i} {
-				background-color: var(--ml-color-background-controls-level#{$i});
-				color: var(--ml-color-controls-level#{$i});
-			}
-		}
+		@include useColors($cls: "article-container", $type: "", $levels: 3);
+
+		@include useColors($cls: "menu-container", $type: "menu", $levels: 3);
+		@include useColors($cls: "footer-container", $type: "footer", $levels: 3);
+		@include useColors($cls: "header-container", $type: "header", $levels: 3);
+
+		// .controls-container, .controls-hcontainer, .controls-vcontainer {
+		// 	background-color: var(--ml-color-background-controls);
+		// 	color: var(--ml-color-controls);
+		// }
+
+		// @for $i from 1 through 3 {
+		// 	.controls-container-level#{$i}, .controls-hcontainer-level#{$i}, .controls-vcontainer-level#{$i} {
+		// 		background-color: var(--ml-color-background-controls-level#{$i});
+		// 		color: var(--ml-color-controls-level#{$i});
+		// 	}
+		// }
 
 
 		.control-hover:hover {
@@ -34,6 +67,6 @@
 			color: var(--ml-color-text-inverse);
 		}
 
-	}
+	// }
 
 }

@@ -7,7 +7,7 @@ $sizes: ("xs", "sm", "md", "lg", "xl", "2xl");
 		background-position: center;
 	}
 	@each $size in $sizes {
-		@debug "icon size {$size}";
+		// @debug "icon size #{$size}";
 		.icon-#{$size} {
 			@extend .ml-icon;
 			width: var(--ml-font-size-#{$size});
