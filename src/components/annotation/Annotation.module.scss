@@ -4,7 +4,6 @@ $stylesheet__: (
 
 @use '../popover/Popover.mixin' as popover;
 @use '../popover/PopoverTrigger.module' as trigger;
-@use './Annotation.mixin' as mixin;
 // @use '../component' as component2;
 @use "../../styles/lib/component";
 @use "../../styles/lib/hooks/position";
@@ -30,11 +29,13 @@ $stylesheet__: (
 		@include popover.trigger("popover-trigger");
 
 		&::before {
-			@include mixin.prefix("annotation");
+			content: var(--ml-content-annotation-prefix);
+			// @include mixin.prefix("annotation");
 		}
 
 		&::after {
-			@include mixin.suffix("annotation");
+			content: var(--ml-content-annotation-suffix);
+			// @include mixin.suffix("annotation");
 		}
 	}
 }

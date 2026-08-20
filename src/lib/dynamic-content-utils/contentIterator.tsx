@@ -1,5 +1,5 @@
 import React from "react";
-import { IContentComponentProps, IMLParsedNode } from "@src/types/models";
+import { ContentComponentProps, IMLParsedNode } from "@src/types/models";
 import { useComponentAttrs } from "../../hooks/useComponentAttrs";
 import { unique } from "@utils/unique";
 import { renderNodes } from "@lib/dynamicContentHelpers";
@@ -13,7 +13,7 @@ import { renderNodes } from "@lib/dynamicContentHelpers";
 export const ContentIterator = ({
 	componentData,
 	className,
-}: IContentComponentProps): React.JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { attributes, style } = useComponentAttrs(node);
 	const { children, text } = node ?? {};

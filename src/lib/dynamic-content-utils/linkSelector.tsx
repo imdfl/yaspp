@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import type { IContentComponentProps } from "@src/types/models";
+import type { ContentComponentProps } from "@src/types/models";
 import { LinkContentBlock } from "./content-blocks";
 import { DynamicContentContext } from "@contexts/contentContext";
 import { PopoverContentBlock } from "./content-blocks/popoverContentBlock";
@@ -7,7 +7,7 @@ import { NODE_DISPLAY_TYPES } from "@src/types/nodes";
 
 export const LinkSelector = ({
 	componentData,
-}: IContentComponentProps): React.JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { displayType, key } = node;
 	const ctx = useContext(DynamicContentContext);

@@ -15,7 +15,6 @@ export const Line = ({
 
 	return (
 		<span className={styles.root} data-line-index={index}>
-			<a id={`line${index + 1}`}></a>
 			{children}
 		</span>
 	);

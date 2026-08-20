@@ -1,12 +1,12 @@
 import React from "react";
-import type { IContentComponentProps } from "@src/types/models";
+import type { ContentComponentProps } from "@src/types/models";
 import { ContentComponent } from "../contentComponent";
 import { Line } from "@components/index";
 import { MLNODE_TYPES } from "@src/types/nodes";
 
 export const LineContentBlock = ({
 	componentData,
-}: IContentComponentProps): React.JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { line, children } = node;
 	const anchor = <a id={`line${line + 1}`}></a>;

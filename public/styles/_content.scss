@@ -1,0 +1,41 @@
+@use "sass:map";
+@use "sass:string";
+@use "sass:list";
+@use "sass:color";
+@use "sass:meta";
+@use "lib/_merge" as merge;
+@use "lib/varsblock";
+
+// add accentDirection
+// merge with overrides
+// then generate computed values
+// finally merge again with overrides
+// options
+@function load($overrides: (), $options: ()) {
+	$default: (
+		term-prefix: "''",
+		term-suffix: "'\203B'",
+		annotation-prefix: "'['",
+		annotation-suffix: "']'",
+	);
+	$defaultOptions: (
+	);
+	$fullOptions: merge.deep($defaultOptions, $options);
+
+	$base: merge.deep($default, $overrides);
+
+	$extra: (
+	);
+	$full: list.join($base, $extra);
+
+	@return merge.deep($full, $overrides);
+};
+
+@mixin root($content: (), $options: ()) {
+	$vars: load($content, $options);
+	// @debug $vars;
+	:root {
+		@include varsblock.vars($map: $vars, $prefix: "ml-content");
+	}
+}
+

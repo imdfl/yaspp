@@ -1,4 +1,3 @@
-@use '../annotation/Annotation.mixin' as annotation;
 @use '../popover/Popover.mixin' as popover;
 @use '../popover/PopoverTrigger.module' as trigger;
 @use '../../styles/lib/component' as *;
@@ -25,10 +24,11 @@ $__stylesheet__: (
 		&::after {
 			position: relative;
 			cursor: pointer;
+			content: var(--ml-content-term-suffix);
 
 			@include use-text-color("term-suffix");
 			@include use-offset-y("term-suffix");
-			@include annotation.suffix("term");
+			// @include annotation.suffix("term");
 		}
 	}
 }

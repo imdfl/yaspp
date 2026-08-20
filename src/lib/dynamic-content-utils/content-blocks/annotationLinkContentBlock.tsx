@@ -1,9 +1,9 @@
 import React from "react";
-import { IContentComponentProps } from "@src/types/models";
+import { ContentComponentProps } from "@src/types/models";
 import { Annotation } from "../../../components";
 
 export const AnnotationContentBlock = ({
 	componentData,
-}: IContentComponentProps): React.JSX.Element => (
+}: ContentComponentProps): React.JSX.Element => (
 	<Annotation index={componentData.node.sequence} />
 );

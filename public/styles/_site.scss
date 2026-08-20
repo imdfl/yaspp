@@ -2,6 +2,7 @@
 @use "colors";
 @use "typography";
 @use "gutters";
+@use "content";
 
 @function load($colors: (), $typography: (), $colorOptions: (), $typographyOptions: ()) {
 	@return (
@@ -12,9 +13,11 @@
 
 @mixin root($colors: (), $colorOptions: (),
 	$typography: (), $typographyOptions: (),
-	$gutters: (), $gutterOptions: ()
+	$gutters: (), $gutterOptions: (),
+	$content: (), $contentOptions: ()
 	) {
 	@include colors.root($colors, $options: $colorOptions);
 	@include typography.root($typography, $options: $typographyOptions);
 	@include gutters.root($gutters, $options: $gutterOptions);
+	@include content.root($content, $options: $contentOptions);
 }

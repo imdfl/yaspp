@@ -16,7 +16,7 @@ import {
 	ListContentBlock,
 	TextContentBlock,
 } from "./content-blocks";
-import type { IContentComponentProps } from "@src/types/models";
+import type { ContentComponentProps } from "@src/types/models";
 import { ErrorMessage } from "@components/index";
 import { CaseInsensitiveMap } from "../caseInsensitiveCollections";
 
@@ -26,7 +26,7 @@ const HTMLTypeMap = new CaseInsensitiveMap<MLNODE_TYPES>([
 
 export const ContentComponent = ({
 	componentData,
-}: IContentComponentProps): React.JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { key, type } = node;
 

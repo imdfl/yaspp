@@ -1,11 +1,11 @@
 import React from "react";
-import { IContentComponentProps } from "@src/types/models";
+import { ContentComponentProps } from "@src/types/models";
 import { List } from "@components/index";
 import { renderNodes } from "@lib/dynamicContentHelpers";
 
 export const ListContentBlock = ({
 	componentData,
-}: IContentComponentProps): React.JSX.Element => {
+}: ContentComponentProps): React.JSX.Element => {
 	const { node } = componentData;
 	const { key, children, ordered } = node;
 	return (

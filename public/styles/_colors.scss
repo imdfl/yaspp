@@ -89,7 +89,7 @@
 		$cls: '.ml-color-#{$key}'; 
 		// @debug $cls $var;
 		@if string.index($key, 'background') != null {
-			@debug "key: #{$key} index: #{string.index($key, 'background')}";
+			// @debug "key: #{$key} index: #{string.index($key, 'background')}";
 			#{$cls} {
 				background-color: var($var);
 			}

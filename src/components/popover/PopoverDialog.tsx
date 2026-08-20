@@ -17,7 +17,6 @@ const PopoverDialog = ({
 		currentPath
 	});
 
-
 	return (
 		<ComponentContextProvider parentPath={componentPath}>
 			<div className={componentClass} dir={textDirection}>{children}</div>
