@@ -53,7 +53,7 @@ const List = ({
 	return (
 		<div className={contClass}>
 			{label && <Text className={styles.label}>{label}</Text>}
-			<Tag className={listClass} {...attributes}>{children || renderListItems(items, listPath)}</Tag>
+			<Tag className={listClass} {...attributes}>{children || renderListItems(items, listPath.asArray)}</Tag>
 		</div>
 	);
 };

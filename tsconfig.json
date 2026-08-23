@@ -79,6 +79,7 @@
   "exclude": [
     "node_modules",
     "**/*.stories.*",
+    "**/*.spec.ts",
     "**/*.ignore.*",
     "scripts",
     "temp"

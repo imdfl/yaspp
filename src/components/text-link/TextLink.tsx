@@ -31,7 +31,7 @@ const TextLink = ({
 	})
 	const text = useMemo(
 		() => () => (
-			<Text className={styles.label} currentPath={ componentPath }>
+			<Text className={styles.label} currentPath={ componentPath.asArray }>
 				{children}
 			</Text>
 		),

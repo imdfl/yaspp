@@ -1,4 +1,4 @@
-import { MLParseContext } from "./parserContext";
+import { MLParseContext } from "./markdown-utils/parserContext";
 import { MLNODE_TYPES } from "@src/types/nodes";
 import type {
 	IContentParseOptions,
