@@ -16,7 +16,7 @@ type VerticalNavProps = {
 const MenuDrawer = ({ items, onClose, className }: YSPComponentPropsWithChildren<VerticalNavProps>) => {
 	const { componentClass, componentPath } = useClassNames({
 		classes: [styles.root, className],
-		part: "menu-drawer",
+		part: "menu",
 	});
 	// return (
 	// 	<ComponentContextProvider parentPath={componentPath}>

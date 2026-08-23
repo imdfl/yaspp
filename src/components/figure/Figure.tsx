@@ -1,7 +1,7 @@
-import React from "react";
-import classNames from "@lib/class-names";
-import styles from "./Figure.module.scss";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
+import { ComponentContextProvider } from "@contexts/index";
+import useClassNames from "@hooks/useClassNames";
+import styles from "./Figure.module.scss";
 
 type FigureProps = {
 	elementId: string;
@@ -13,12 +13,25 @@ const Figure = ({
 	className,
 	style = {},
 	...rest
-}: YSPComponentPropsWithChildren<FigureProps>) => (
-	<figure className={classNames(styles.root, className)} {...rest} style={style}>
-		{elementId && <a id={elementId}></a>}
-		<div className={styles.figureContent}>{children}</div>
-	</figure>
-);
+}: YSPComponentPropsWithChildren<FigureProps>) => {
+	const dataType = rest["data-type"];
+	const part = (dataType && typeof dataType === "string") ?
+		`figure-${dataType}`
+		: "figure";
+		const { componentClass, componentPath } = useClassNames({
+		part,
+		classes: [styles.root, className]
+	})
+
+	return (
+		<ComponentContextProvider parentPath={componentPath}>
+			<figure className={componentClass} {...rest} style={style}>
+				{elementId && <a id={elementId}></a>}
+				<div className={styles.figureContent}>{children}</div>
+			</figure>
+		</ComponentContextProvider>
+	);
+};
 
 export default Figure;
 export type { FigureProps };

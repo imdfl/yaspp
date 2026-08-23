@@ -1,5 +1,4 @@
 @use '../../../styles/lib/refs';
-@use '../../button/Button.variants' as buttons;
 @use './menuBarAnimationMixin' as animations;
 @use "../../../styles/lib/hooks/animation" as *;
 @use "../../../styles/lib/hooks/text" as *;
@@ -87,18 +86,3 @@
 	margin: 0;
 }
 
-@mixin trigger-button-mixin($module, $states) {
-	@include buttons.topbar-menu-trigger;
-
-	// // this `hover` state aims to fix the slight delay in applying
-	// // background-color to the menu trigger which his based on its
-	// // `open` state
-	// &[data-state='open'],
-	// &:hover {
-	// 	// @include use-background-color($module, state(opened, $states));
-
-	// 	// .caret {
-	// 	// 	// @include use-text-color(#{$module}-caret, state(hovered, $states));
-	// 	// }
-	// }
-}

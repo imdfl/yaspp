@@ -1,24 +1,14 @@
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use '../../styles/lib/hooks/text' as *;
-@use '../../styles/lib/hooks/box' as *;
-
-$__stylesheet__: (
-	name: blockquote,
-);
-
 @layer base {
 	.root {
 		margin-left: 1rem;
 		font-size: var(--ml-font-size-sm);
 		/* line-height: 21px; */
 		padding: 0 1rem;
-		border-left: 3px solid var(--ml-color-background-controls);
+		border-inline-start: 3px solid var(--ml-color-background-controls);
 
 		// todo: implement cite properly
 		cite {
-			@include use-vertical-padding("blockquote-cite");
-			@include use-horizontal-padding("blockquote-cite");
+			padding: 0;
 		}
 	}
 }

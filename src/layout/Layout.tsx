@@ -133,7 +133,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const { text: siteTitle } = useTranslatedString(siteTitleGen);
 	const { text: siteSubtitle } = useTranslatedString(siteSubtitleGen);
 	const { text: siteLicense } = useTranslatedString(siteLicenseGen);
-	const { componentClass: headerClass, componentPath: headerPath, createSubClass } = useClassNames({
+	const { componentClass: headerClass, createSubClass } = useClassNames({
 		classes: [styles.topbar],
 		part: "header",
 	});
@@ -142,13 +142,13 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 		() => {
 			return () => {
 				const themeNames = themes?.map(u => u.name) ?? [];
-				const menuClass = createSubClass("drawer.menu", styles.drawer);
+				const drawerClass = createSubClass("drawer", styles.drawer);
 				return (
 					<Drawer
 						direction={textDirection === "ltr" ? "right" : "left"}
 						open={drawerOpen}
 						onClose={toggleDrawer}
-						className={menuClass}
+						className={drawerClass}
 					>
 						<Scrollbar textDirection={textDirection} height="100vh">
 							<div className={styles.menuHeaderContainer}>
@@ -261,7 +261,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 				>
 					<div className={styles.header_container}>
 						<header className={styles.header_level1}>
-							<ComponentContextProvider parentPath={headerPath}>
+							<ComponentContextProvider relativePath="header">
 								{/* Top logo */}
 								<Container alignItemsCenter className={styles.title}>
 									<Logo mode={theme || "light"} className={styles.logo} />
@@ -358,7 +358,11 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 						</div>
 					</footer>
 				</div>
-				{isMobile && menuDrawer()}
+				{isMobile && (
+					<ComponentContextProvider relativePath="header">
+						{menuDrawer()}
+					</ComponentContextProvider>
+				)}
 			</div>
 			<YasppOnload />
 			{!IS_DEBUG && <Analytics />}

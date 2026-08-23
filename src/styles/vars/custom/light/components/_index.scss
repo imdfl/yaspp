@@ -4,7 +4,7 @@
 @use '../../../../../components/text/Text.module' as text;
 @use '../../../../../components/link/Link.module' as link;
 @use '../../../../../components/text-link/TextLink.module' as textlink;
-@use '../../../../../components/code-inline/CodeInline.module' as codeinline;
+// @use '../../../../../components/code-inline/CodeInline.module' as codeinline;
 @use '../../../../../components/code-block/CodeBlock.module' as codeblock;
 @use '../../../../../components/term/Term.module' as term;
 @use '../../../../../components/annotation/Annotation.module' as annotation;
@@ -53,7 +53,7 @@
 @use 'text' as text-theme;
 @use 'annotation' as annotation-theme;
 @use 'term' as term-theme;
-@use 'codeInline' as code-inline-theme;
+// @use 'codeInline' as code-inline-theme;
 @use 'codeBlock' as code-block-theme;
 @use 'listItem' as list-item-theme;
 @use 'errorMessage' as error-message-theme;
@@ -75,7 +75,7 @@ $index: (
 	"blockquote": blockquote-theme.$vars,
 	"annotation": annotation-theme.$vars,
 	"term": term-theme.$vars,
-	"code-inline": code-inline-theme.$vars,
+	// "code-inline": code-inline-theme.$vars,
 	"code-block": code-block-theme.$vars,
 	"error-message": error-message-theme.$vars,
 	// boxes content

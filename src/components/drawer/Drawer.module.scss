@@ -1,11 +1,11 @@
-@use "../../styles/lib/refs" as *;
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use '../../styles/lib/hooks' as *;
+// @use "../../styles/lib/refs" as *;
+// @use '../../styles/lib/component' as *;
+// @use '../../styles/lib/states' as *;
+// @use '../../styles/lib/hooks' as *;
 
-$__stylesheet__: (
-	name: drawer,
-);
+// $__stylesheet__: (
+// 	name: drawer,
+// );
 
 @layer base {
 	.root {

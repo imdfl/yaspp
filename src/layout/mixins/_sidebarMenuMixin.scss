@@ -5,10 +5,9 @@
 
 @use '../../components/nav/nav-item/NavItem.mixin' as nav-item-mixin;
 @use '../../components/separator/Separator.mixin' as separator-mixin;
-@use '../../components/nav/menu-drawer/MenuDrawer.mixin' as drawer-mixin;
 
 @mixin background-color {
-	@include use-background-color("layout-drawer");
+	// @include use-background-color("layout-drawer");
 
 	// @include drawer-mixin.list-item(
 	// 	$border-size: 1px,

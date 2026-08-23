@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:string";
 @use "sass:list";
 @use "lib/merge";
 @use "lib/lookup";
@@ -9,7 +10,8 @@
 		font-family: (
 			font1: 'Roboto Slab, serif',
 			font2: 'Assistant, sans-serif',
-			control: "sans-serif"
+			control: "sans-serif",
+			code: "monospace"
 		),
 		font-size: (
 			base: 14px,
@@ -64,12 +66,31 @@
 		spacing: "ml-line-spacing"
 	);
 
+	$classMap: map.remove($prefixmap, spacing);
+
 	:root {
 		--ml-main-font: var(--ml-font-font1);
 		--ml-aux-font: var(--ml-font-font2);
 		--ml-font-size: var(--ml-font-size-base);
 		@each $key, $prefix in $prefixmap {
-			@include varsblock.vars($map: map.get($vars, $key), $prefix: $prefix);
+			$block: map.get($vars, $key);
+			@include varsblock.vars($map: $block, $prefix: $prefix);
+			// @each $prop in $block {
+			// 	@if string.index($prop, "font") == 0 {
+			// 		.ml-#{$prop}
+			// 	}
+			// }
+		}
+		@each $key, $prefix in $classMap {
+			$block: map.get($vars, $key);
+			// @debug $block;
+			@each $value, $_ in $block {
+				.ml-#{$key}-#{$value} {
+					#{$key}: var(--#{$prefix}-#{$value});
+					// @debug "#{$key}: var(--#{$prefix}-#{$value})";
+
+				}
+			}
 		}
 		// @include varsblock.vars($map: $fsz, $prefix: "ml-font");
 		// @each $size in $fsz {

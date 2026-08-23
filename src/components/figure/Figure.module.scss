@@ -1,4 +1,4 @@
-@use './Figure.variants' as variants;
+// @use './Figure.variants' as variants;
 @use '../../styles/lib/component' as *;
 @use '../../styles/lib/states' as *;
 @use "../../styles/lib/hooks/box" as *;
@@ -33,8 +33,5 @@ $__stylesheet__: (
 		@include use-border-color;
 		@include use-radius;
 
-		// variants
-		@include variants.no-border;
-		@include variants.code-block;
 	}
 }

@@ -10,6 +10,6 @@ $__stylesheet__: (
 		align-items: center;
 		gap: 0.5em;
 
-		@include use-text-color;
+		color: var(--ml-color-error, #F00);
 	}
 }

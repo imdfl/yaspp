@@ -25,7 +25,7 @@ const Scrollbar = ({
 	});
 
 	return (
-		<ComponentContextProvider parentPath={componentPath}>
+		// <ComponentContextProvider parentPath={componentPath}>
 			<ScrollAreaPrimitive.Root
 				className={componentClass}
 				type="always"
@@ -49,7 +49,7 @@ const Scrollbar = ({
 				</ScrollAreaPrimitive.Scrollbar>
 				<ScrollAreaPrimitive.Corner className={styles.scrollAreaCorner} />
 			</ScrollAreaPrimitive.Root>
-		</ComponentContextProvider>
+		// </ComponentContextProvider>
 	);
 }
 

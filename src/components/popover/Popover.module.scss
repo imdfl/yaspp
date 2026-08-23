@@ -3,6 +3,11 @@
 		background: none;
 		border: none;
 		padding: 0;
+		cursor: pointer;
+
+		&[data-state='open'] {
+			cursor: default;
+		}
 	}
 
 	.toolbar {

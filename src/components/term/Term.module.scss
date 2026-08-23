@@ -17,7 +17,9 @@ $__stylesheet__: (
 		.label {
 			color: var(--ml-color-text-action);
 			@include use-font-style;
-			@include popover.trigger("popover-trigger");
+			&:active {
+				user-select: none;
+			}
 		}
 
 		&::after {

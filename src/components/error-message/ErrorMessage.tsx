@@ -1,9 +1,8 @@
-import React from "react";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 import { getIcon } from "@components/icons";
 import classNames from "@lib/class-names";
-import styles from "./ErrorMessage.module.scss";
 import { Link } from "..";
-import type { YSPComponentPropsWithChildren } from "@src/types/components";
+import styles from "./ErrorMessage.module.scss";
 
 type ErrorMessageProps = {
 	message?: string;

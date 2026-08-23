@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Annotation.module.scss";
-import { leadingZero } from "./helpers";
 import classNames from "@lib/class-names";
 import { YSPComponentPropsWithChildren } from "@src/types/components";
 
@@ -15,7 +14,6 @@ const Annotation = ({ index, hasPrefix = true, className }: YSPComponentPropsWit
 		<span className={classNames(styles.root, className)}>
 			<span
 				className={styles.content}
-				// data-prefix-content={hasPrefix ? leadingZero(index) : ""}
 				data-seq={index}
 			>{ind}</span>
 		</span>

@@ -39,6 +39,7 @@
     "dev-css": "bash scripts/dev.sh",
     "sass": "npx sass public/styles public/yaspp/styles",
     "sassqwatch": "npx sass --watch public/styles public/yaspp/styles",
+    "swatch": "yarn sassqwatch",
     "update-yaspp": "yarn remove yaspp-types && yarn add yaspp-types@git+https://github.com/imdfl/yaspp-types.git",
     "dev": "next dev",
     "start": "next start",
@@ -54,8 +55,6 @@
     "test:e2e:ci:local": "circleci local execute e2e",
     "sass:debug": "sass --load-path=src -wc .",
     "sass:clean": "find src -type f \\( -name \"*.css\" -o -name \"*.css.map\" \\) -exec rm {} +",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
     "upload": "npx ts-node scripts/upload-files.ts",
     "init-yaspp": "npx ts-node src/scripts/init-yaspp",
     "copy-content": "npx ts-node src/scripts/copy-content"

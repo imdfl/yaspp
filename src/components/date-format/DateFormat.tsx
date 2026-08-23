@@ -1,8 +1,10 @@
 import classNames from "@lib/class-names";
-import styles from "./DateFormat.module.scss";
 import { useContext, useEffect, useState } from "react";
 import { LocaleContext } from "../../contexts/localeContext";
 import { YSPComponentPropsWithChildren } from "../../types/components";
+import useClassNames from "@hooks/useClassNames";
+
+import styles from "./DateFormat.module.scss";
 
 interface DateFormatProps {
 	readonly date: Date;
@@ -16,6 +18,10 @@ const DateFormat = ({
 }: YSPComponentPropsWithChildren<DateFormatProps>): React.JSX.Element => {
 	const ctx = useContext(LocaleContext);
 	const [label, setLabel] = useState("");
+	const { componentClass } = useClassNames({
+		part: "date-format",
+		classes: [styles.root, className]
+	})
 
 	useEffect(() => {
 		let dt: Date;
@@ -47,7 +53,7 @@ const DateFormat = ({
 	}, [ctx, locale, date]);
 
 	return label ? (
-		<time className={classNames(styles.root, className)}>
+		<time className={componentClass}>
 			{label}
 		</time>
 	) : (<></>);

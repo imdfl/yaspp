@@ -1,8 +1,9 @@
 import { default as ModernDrawer } from "react-modern-drawer";
-import styles from "./Drawer.module.scss";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
 import ComponentContextProvider from "@contexts/componentContext";
 import useClassNames from "@hooks/useClassNames";
-import type { YSPComponentPropsWithChildren } from "@src/types/components";
+import cx from "@lib/class-names";
+import styles from "./Drawer.module.scss";
 
 type DrawerProps = {
 	open: boolean;
@@ -26,15 +27,9 @@ const Drawer = ({
 	onClose,
 	children,
 	className,
-	currentPath
 }: YSPComponentPropsWithChildren<DrawerProps>) => {
-	const { componentClass, componentPath } = useClassNames({
-		classes: [styles.root, className],
-		part: "drawer",
-		currentPath
-	});
 	return (
-		<ComponentContextProvider parentPath={componentPath}>
+		<ComponentContextProvider relativePath="drawer">
 			<ModernDrawer
 				direction={direction}
 				open={open}
@@ -42,7 +37,7 @@ const Drawer = ({
 				duration={duration}
 				overlayOpacity={overlayOpacity}
 				onClose={onClose}
-				className={componentClass}
+				className={cx(styles.root, className)}
 			>
 				{children}
 			</ModernDrawer>

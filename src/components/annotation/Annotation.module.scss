@@ -1,13 +1,9 @@
-$stylesheet__: (
-	name: annotation,
-);
+// $stylesheet__: (
+// 	name: annotation,
+// );
 
-@use '../popover/Popover.mixin' as popover;
-@use '../popover/PopoverTrigger.module' as trigger;
-// @use '../component' as component2;
-@use "../../styles/lib/component";
-@use "../../styles/lib/hooks/position";
-@use "../../styles/lib/hooks/text" as text;
+// @use "../../styles/lib/component";
+// @use "../../styles/lib/hooks/text" as text;
 
 @layer base {
 	.root {
@@ -23,10 +19,12 @@ $stylesheet__: (
 
 		position: relative;
 
-		@include text.use-font-size;
-		@include text.use-line-height;
-		@include position.use-offset-y;
-		@include popover.trigger("popover-trigger");
+		font-size: var(--ml-font-size-xs);
+		// @include text.use-line-height;
+		top: -0.3em;
+		&:active {
+			user-select: none;
+		}
 
 		&::before {
 			content: var(--ml-content-annotation-prefix);

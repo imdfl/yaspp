@@ -53,6 +53,9 @@
 					]
 				},
 				"drawer": {
+					"classes": [
+						"ml-color-background-controls"
+					],
 					"menu": {
 						"classes": [
 							"vcontainer", "menu-container"
@@ -144,6 +147,25 @@
 						}
 					}
 				}
+			},
+			"code": {
+				"classes": ["ml-font-family-code"]
+			},
+			"code-block": {
+				"classes": ["ml-font-family-code", "ml-color-background-level2"]
+			},
+			"figure-codeblock": {
+				"classes": {
+					"add": [ "no-border"]
+				}
+			},
+			"figure-no-border": {
+				"classes": {
+					"add": [ "no-border"]
+				}
+			},
+			"date-format": {
+				"classes": [ "ml-font-size-sm"]
 			}
 		}
 	]

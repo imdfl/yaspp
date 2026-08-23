@@ -7,7 +7,6 @@ import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import type { IPageProps } from "@src/types/models";
 import type { FormFieldProps } from "@components/form/Form";
 import { LocaleContext } from "@contexts/localeContext";
-import { ContentTypes } from "@src/types/content";
 import { LoadFolderModes } from "@src/types/parser/modes";
 import { mlNextUtils } from "@lib/next-utils/nextUtils";
 
@@ -39,12 +38,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	});
 };
 
-const Contact: NextPage<IPageProps> = () => {
+const Contact: NextPage<IPageProps> = (props: IPageProps) => {
 	const [error, setError] = useState("");
 	const [completed, setCompleted] = useState(false);
 	const { t } = useContext(LocaleContext);
 	const [ issuesLink, setIssuesLink ] = useState("");
 
+	void props;
 
 	useEffect(() => {
 		setIssuesLink(t("nav:links:issues"))
