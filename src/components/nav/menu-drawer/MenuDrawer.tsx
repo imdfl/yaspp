@@ -4,7 +4,7 @@ import List from "../../list/List";
 import ListItem from "../../list-item/ListItem";
 import styles from "./MenuDrawer.module.scss";
 import type { INavSection } from "@src/types/nav";
-import ComponentContextProvider from "@contexts/componentContext";
+import { ComponentContextProvider  } from "@contexts";
 import useClassNames from "@hooks/useClassNames";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 

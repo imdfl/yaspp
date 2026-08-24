@@ -1,13 +1,4 @@
-@use '../../styles/lib/refs';
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use '../../styles/lib/hooks' as *;
-
-$__stylesheet__: (
-	name: contact-form,
-);
-
-@layer base {
+@layer component {
 	.root {
 		width: 100%;
 		display: flex;

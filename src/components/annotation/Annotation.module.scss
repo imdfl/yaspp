@@ -5,7 +5,7 @@
 // @use "../../styles/lib/component";
 // @use "../../styles/lib/hooks/text" as text;
 
-@layer base {
+@layer component {
 	.root {
 		--font-size: 0.75em;
 		--font-weight: normal;

@@ -7,7 +7,7 @@ import { SHOW_LOADING_INDICATOR_AFTER_MSEC } from "../consts";
 import { RefOrSourceProps } from "@src/types/components";
 import { contentUtils } from "@lib/contentUtils";
 import { renderNodes } from "@lib/dynamicContentHelpers";
-import { LocaleContext } from "@contexts/localeContext";
+import { LocaleContext } from "@contexts";
 
 type DynamicContentViewerProps = {
 	url: string;

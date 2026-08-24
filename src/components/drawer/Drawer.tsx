@@ -1,8 +1,8 @@
 import { default as ModernDrawer } from "react-modern-drawer";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
-import ComponentContextProvider from "@contexts/componentContext";
-import useClassNames from "@hooks/useClassNames";
+import { ComponentContextProvider } from "@contexts";
 import cx from "@lib/class-names";
+
 import styles from "./Drawer.module.scss";
 
 type DrawerProps = {

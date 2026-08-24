@@ -2,7 +2,7 @@ import React, { PropsWithChildren, useContext } from "react";
 import { DynamicContentTypes } from "@src/types/content";
 import NoteContentLayout from "@src/custom-layouts/note-content-layout/NoteContentLayout";
 import ReferenceContentLayout from "@src/custom-layouts/reference-content-layout/ReferenceContentLayout";
-import { LocaleContext } from "@contexts/localeContext";
+import { LocaleContext } from "@contexts";
 import type { RefOrSourceProps } from "@src/types/components";
 import type { TextDirection } from "@src/types/locale";
 

@@ -1,19 +1,5 @@
-// @use './Figure.variants' as variants;
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use "../../styles/lib/hooks/box" as *;
-
-$__stylesheet__: (
-	name: figure,
-);
-
-@layer base {
+@layer component {
 	.root {
-		--border-size: 2px;
-		--border-color: #000;
-		--border-style: solid;
-		--radius: 4px;
-
 		max-width: 100%;
 		text-align: center;
 		margin: 0;
@@ -24,14 +10,5 @@ $__stylesheet__: (
 		img {
 			max-width: 100%;
 		}
-
-		// .figureContent {
-		// }
-
-		@include use-border-size;
-		@include use-border-style;
-		@include use-border-color;
-		@include use-radius;
-
 	}
 }

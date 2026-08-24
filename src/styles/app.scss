@@ -8,8 +8,9 @@
 	visibility: hidden;
 }
 
-html {
+html, body {
 	line-height: unset;
+	margin: 0;
 }
 
 @layer base {

@@ -154,6 +154,11 @@
 			"code-block": {
 				"classes": ["ml-font-family-code", "ml-color-background-level2"]
 			},
+			"figure": {
+				"classes": [
+					"ml-color-background-level2"
+				]	
+			},
 			"figure-codeblock": {
 				"classes": {
 					"add": [ "no-border"]

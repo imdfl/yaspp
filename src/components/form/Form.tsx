@@ -10,7 +10,10 @@ import {
 	CustomField,
 } from "@components/index";
 import { handleSubmit } from "@components/recaptcha/Recaptcha";
-import { ApiRoutes } from "../../apiRoutes";
+import { ApiRoutes } from "@src/apiRoutes";
+import useClassNames from "@hooks/useClassNames";
+import { ComponentContextProvider  } from "@contexts";
+
 import styles from "./Form.module.scss";
 
 type FormFieldProps = {
@@ -47,6 +50,10 @@ const Form = ({
 	onError,
 }: FormProps) => {
 	const [submitting, setSubmitting] = useState(false);
+	const { componentClass, componentPath } = useClassNames({
+		classes: [styles.root],
+		part: "form",
+	});
 
 	const initialValues = Object.fromEntries(
 		fields.map(({ name, initialValue }) => [name, initialValue])
@@ -57,83 +64,85 @@ const Form = ({
 	);
 
 	return (
-		<div className={styles.root}>
-			<Formik
-				initialValues={initialValues}
-				validationSchema={yup.object().shape(validationSchema)}
-				onSubmit={(values: Record<string, unknown>, { resetForm }) => {
-					setSubmitting(true);
-					handleSubmit({
-						siteKey: recaptchaSiteKey,
-						path: ApiRoutes.forms.contact,
-						action: 'submit',
-						values,
-						onResponseSuccess: () => {
-							setSubmitting(false);
-							resetForm();
-							onSuccess?.();
-						},
-						onError: (e) =>
-							onError((e as Error)?.message || 'Form submit error'),
-					});
-				}}
-			>
-				{({ dirty, isValid, touched, errors }) => (
-					<FormikForm>
-						<div className={styles.fieldset}>
-							{fields.map(
-								({
-									name,
-									label,
-									placeholder,
-									icon,
-									required,
-									type,
-									component,
-								}) => (
-									<CustomField
-										key={name}
-										name={name}
-										label={label}
-										icon={icon}
-										placeholder={placeholder}
-										type={type}
-										isInvalid={!!touched[name] && !!errors[name]?.length}
-										isValid={touched[name] && !errors[name]?.length}
-										errorMessage={errors[name]}
-										required={required}
-									>
-										<Field name={name} type={type} component={component} />
-									</CustomField>
-								)
-							)}
-						</div>
-						<Container
-							className={styles.panel}
-							spaceBetween
-							fullWidth
-							alignContentRight
-						>
-							<Button
-								className={styles.submitButton}
-								type="submit"
-								disabled={!dirty || (dirty && !isValid)}
-							>
-								{submitting ? (
-									<LoadingIndicator delay={0} label={submitButtonLabelActive} />
-								) : (
-									<>
-										{submitButtonIcon && getIcon(submitButtonIcon)}
-										{submitButtonLabel}
-									</>
+		<div className={componentClass}>
+			<ComponentContextProvider parentPath={componentPath}>
+				<Formik
+					initialValues={initialValues}
+					validationSchema={yup.object().shape(validationSchema)}
+					onSubmit={(values: Record<string, unknown>, { resetForm }) => {
+						setSubmitting(true);
+						handleSubmit({
+							siteKey: recaptchaSiteKey,
+							path: ApiRoutes.forms.contact,
+							action: 'submit',
+							values,
+							onResponseSuccess: () => {
+								setSubmitting(false);
+								resetForm();
+								onSuccess?.();
+							},
+							onError: (e) =>
+								onError((e as Error)?.message || 'Form submit error'),
+						});
+					}}
+				>
+					{({ dirty, isValid, touched, errors }) => (
+						<FormikForm>
+							<div className={styles.fieldset}>
+								{fields.map(
+									({
+										name,
+										label,
+										placeholder,
+										icon,
+										required,
+										type,
+										component,
+									}) => (
+										<CustomField
+											key={name}
+											name={name}
+											label={label}
+											icon={icon}
+											placeholder={placeholder}
+											type={type}
+											isInvalid={!!touched[name] && !!errors[name]?.length}
+											isValid={touched[name] && !errors[name]?.length}
+											errorMessage={errors[name]}
+											required={required}
+										>
+											<Field name={name} type={type} component={component} />
+										</CustomField>
+									)
 								)}
-							</Button>
-						</Container>
-					</FormikForm>
-				)}
-			</Formik>
+							</div>
+							<Container
+								className={styles.panel}
+								spaceBetween
+								fullWidth
+								alignContentRight
+							>
+								<Button
+									className={styles.submitButton}
+									type="submit"
+									disabled={!dirty || (dirty && !isValid)}
+								>
+									{submitting ? (
+										<LoadingIndicator delay={0} label={submitButtonLabelActive} />
+									) : (
+										<>
+											{submitButtonIcon && getIcon(submitButtonIcon)}
+											{submitButtonLabel}
+										</>
+									)}
+								</Button>
+							</Container>
+						</FormikForm>
+					)}
+				</Formik>
 
-			{recaptchaSiteKey && <Recaptcha siteKey={recaptchaSiteKey} />}
+				{recaptchaSiteKey && <Recaptcha siteKey={recaptchaSiteKey} />}
+			</ComponentContextProvider>
 		</div>
 	);
 };

@@ -8,7 +8,7 @@ import { usePageData } from "../hooks/usePageData";
 import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
 import { Link, Text } from "@components/index";
 import Layout from "@src/layout/Layout";
-import { LocaleContext } from "@contexts/index";
+import { LocaleContext } from "@contexts";
 import { useTranslatedString } from "../hooks/useTranslatedString";
 
 const Glossary: NextPage<IPageProps> = (props) => {

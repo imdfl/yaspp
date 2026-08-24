@@ -4,7 +4,7 @@
 @use "../../styles/lib/hooks/box" as *;
 
 
-@layer base {
+@layer component {
 	.root {
 		@include use-background-color;
 

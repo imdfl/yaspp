@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
-import { ComponentContextProvider, LocaleContext } from "@contexts/index";
+import { ComponentContextProvider, LocaleContext } from "@contexts";
 import useClassNames from "@hooks/useClassNames";
 
 import styles from "./PopoverDialog.module.scss";

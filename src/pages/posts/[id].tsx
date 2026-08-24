@@ -9,8 +9,8 @@ import Layout from "@src/layout/Layout";
 import { getIcon } from "@components/icons";
 import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout/GenericContentLayout";
 import { renderElements, usePageMetadata } from "@lib/dynamicContentHelpers";
-import styles from "../../custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss";
-import { LocaleContext } from "@contexts/localeContext";
+import styles from "@src/custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss";
+import { LocaleContext } from "@contexts";
 import { useContext } from "react";
 
 export default function Doc(props: IPageProps) {

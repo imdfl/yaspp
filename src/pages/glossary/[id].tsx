@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { GetStaticProps, GetStaticPaths, GetStaticPropsContext } from "next";
+import type { IMLParsedNode, IPageProps } from "@src/types/models";
 import { ContentTypes } from "@src/types/content";
-import { mlNextUtils } from "../../lib/next-utils/nextUtils";
+import { mlNextUtils } from "@lib/next-utils/nextUtils";
 import { LoadFolderModes } from "@src/types/parser/modes";
 import { MLNODE_TYPES } from "@src/types/nodes";
-import type { IMLParsedNode, IPageProps } from "@src/types/models";
-import { usePageData } from "../../hooks/usePageData";
+import { usePageData } from "@hooks/usePageData";
 import { Link, List } from "@components/index";
 import { ContentIterator } from "@lib/dynamic-content-utils/contentIterator";
 import Layout from "@src/layout/Layout";
 import { createPopoverLinksNodeProcessor } from "@lib/markdown-utils/createPopoverLinksNodeProcessor";
-import { LocaleContext } from "@contexts/localeContext";
+import { LocaleContext } from "@contexts";
 
 export default function GlossaryTerm(props: IPageProps) {
 	const { pageData } = usePageData(props);

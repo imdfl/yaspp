@@ -11,7 +11,7 @@
 @use "../../../styles/lib/hooks/direction" as *;
 @use "../../../styles/lib/hooks/display" as *;
 
-@layer base {
+@layer component {
 	.root {
 		text-decoration: none;
 		display: block;

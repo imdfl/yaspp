@@ -24,7 +24,7 @@ import type { LocaleOptionProps } from "@src/layout/locale-select/LocaleSelect";
 import { ComponentContextProvider, LocaleContext, PageContext } from "../contexts";
 import useNavItems from "@hooks/useNavItems";
 import { YasppOnload } from "../components/yaspp-components";
-import { MLThemeContext } from "@contexts/MLThemeContext";
+import { MLThemeContext } from "@contexts";
 import { useTranslatedString } from "@hooks/useTranslatedString";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 import useClassNames from "@hooks/useClassNames";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DynamicContentContext } from "@contexts/contentContext";
+import { DynamicContentContext } from "@contexts";
 import { ContentStack } from "../contentStack";
 import { DynamicContentViewer } from "./contentViewer";
 import DynamicContentToolbar from "./contentToolbar";

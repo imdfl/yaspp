@@ -5,7 +5,7 @@ import type { TextDirection } from "@src/types/locale";
 import type { IYSPComponentProps } from "@src/types/components";
 import styles from "./Scrollbar.module.scss";
 import useClassNames from "@hooks/useClassNames";
-import ComponentContextProvider from "@contexts/componentContext";
+import { ComponentContextProvider  } from "@contexts";
 
 type ScrollbarProps = {
 	height?: string;

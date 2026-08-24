@@ -1,8 +1,8 @@
 import React from "react";
-import Button from "../button/Button";
+import type { YSPComponentPropsWithChildren } from "@src/types/components";
+import Button from "@components/button/Button";
 import PopoverToolbarItem from "./ToolbarItem";
 import styles from "./ToolbarButton.module.scss";
-import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 interface ToolbarButtonProps {
 	readonly title: string;

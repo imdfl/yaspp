@@ -1,18 +1,21 @@
-import React, { useCallback, useContext } from "react";
+import { useCallback, useContext } from "react";
+import Head from "next/head";
+
+import type { IPageProps, IParsedPageData } from "@src/types/models";
+
 import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
 import { GetStaticProps } from "next";
 import { ContentTypes } from "@src/types/content";
 import { mlNextUtils } from "../lib/next-utils/nextUtils";
-import type { IPageProps, IParsedPageData } from "@src/types/models";
 import { usePageData } from "../hooks/usePageData";
 import orderBy from "lodash.orderby";
 import Layout from "@src/layout/Layout";
-import Head from "next/head";
 import { getMetadata, renderElements } from "@lib/dynamicContentHelpers";
 import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout/GenericContentLayout";
-import styles from "../custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss";
-import { LocaleContext } from "@contexts/localeContext";
+import { LocaleContext } from "@contexts";
 import { useTranslatedString } from "@hooks/useTranslatedString";
+
+import styles from "@src/custom-layouts/generic-content-layout/mixins/BlogPostLayoutMixin.module.scss";
 
 export default function Blog(props: IPageProps) {
 	const { pageData } = usePageData(props);

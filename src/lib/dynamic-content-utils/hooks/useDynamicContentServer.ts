@@ -1,15 +1,15 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { PageContext } from "@contexts/pageContext";
+import { PageContext } from "@contexts";
 import { DynamicContentTypes } from "@src/types/content";
-import { DynamicContentContext } from "@contexts/contentContext";
+import { DynamicContentContext } from "@contexts";
 import {
 	LOADING_INDICATOR_MIN_DISPLAY_TIME_MSEC,
 	SHOW_LOADING_INDICATOR_AFTER_MSEC,
 } from "../consts";
 import type { IParsedPageData } from "@src/types/models";
 import { contentUtils } from "@lib/contentUtils";
-import { LocaleContext } from "@contexts/localeContext";
+import { LocaleContext } from "@contexts";
 
 export type DynamicContentViewerProps = {
 	url: string;

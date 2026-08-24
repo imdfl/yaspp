@@ -2,18 +2,15 @@ import React, { useContext } from "react";
 import DynamicContentBrowser from "../components/contentBrowser";
 import { AnnotationContentBlock } from "./annotationLinkContentBlock";
 import { TermLinkContentBlock } from "./termLinkContentBlock";
-import { PopoverProvider } from "@contexts/popoverContext";
+import { PopoverProvider, LocaleContext } from "@contexts";
 import { useToolbar } from "../hooks/useToolbar";
 import { IPopoverContext } from "../types";
-// import I18nProvider from "next-translate/I18nProvider";
 import { DynamicContentTypes } from "@src/types/content";
-// import glossaryEN from "../../../../locales/en/glossary.json";
 import { Popover } from "@components/index";
 import type {
 	ContentComponentProps,
 	IContentComponentInitData,
 } from "@src/types/models";
-import { LocaleContext } from "@contexts/localeContext";
 
 type PopoverContentBlockProps = {
 	type: DynamicContentTypes;

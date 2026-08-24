@@ -1,17 +1,17 @@
-import React, { useCallback, useContext } from "react";
+import { useCallback, useContext } from "react";
+import Head from "next/head";
+import type { IPageProps } from "@src/types/models";
 import { GetStaticProps, NextPage } from "next";
 import { ContentTypes } from "../types/content";
 import { mlNextUtils } from "../lib/next-utils/nextUtils";
 import { usePageData } from "../hooks/usePageData";
 import { LoadFolderModes } from "@src/types/parser/modes";
-import type { IPageProps } from "@src/types/models";
 import Layout from "@src/layout/Layout";
 import { renderElements, usePageMetadata } from "@lib/dynamicContentHelpers";
-import Head from "next/head";
-import { GenericContentLayout } from "../custom-layouts/generic-content-layout/GenericContentLayout";
+import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout/GenericContentLayout";
 import { Container } from "@components/index";
-import { LocaleContext } from "@contexts/localeContext";
-import { useTranslatedString } from "../hooks/useTranslatedString";
+import { LocaleContext } from "@contexts";
+import { useTranslatedString } from "@hooks/useTranslatedString";
 
 const About: NextPage<IPageProps> = (props) => {
 	const { pageData } = usePageData(props);

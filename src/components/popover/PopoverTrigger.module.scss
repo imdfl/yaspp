@@ -21,7 +21,7 @@ $color: to-css-var(popover-trigger-text-color);
 $bgColor: to-css-var(popover-trigger-background-color);
 $suffixColor: to-css-var(term-suffix-text-color);
 
-@layer base {
+@layer component {
 	.root {
 		&[data-popover-state='closed'] {
 			#{$suffixColor}: -suffix-color();

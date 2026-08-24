@@ -6,7 +6,7 @@ $__stylesheet__: (
 	name: table,
 );
 
-@layer base {
+@layer component {
 	.root {
 		--border-top-size: 1px;
 		--border-top-style: solid;

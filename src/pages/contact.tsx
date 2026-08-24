@@ -6,7 +6,7 @@ import { Form, ErrorMessage, Link, Text } from "@components/index";
 import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import type { IPageProps } from "@src/types/models";
 import type { FormFieldProps } from "@components/form/Form";
-import { LocaleContext } from "@contexts/localeContext";
+import { LocaleContext } from "@contexts";
 import { LoadFolderModes } from "@src/types/parser/modes";
 import { mlNextUtils } from "@lib/next-utils/nextUtils";
 

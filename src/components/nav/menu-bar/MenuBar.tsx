@@ -11,8 +11,8 @@ import ListItem from "@components/list-item/ListItem";
 import Button from "@components/button/Button";
 import List from "@components/list/List";
 import NavItem from "../nav-item/NavItem";
-import { LocaleContext } from "@contexts/index";
-import ComponentContextProvider from "@contexts/componentContext";
+import { LocaleContext } from "@contexts";
+import { ComponentContextProvider  } from "@contexts";
 import useClassNames from "@hooks/useClassNames";
 import cx from "@lib/class-names";
 

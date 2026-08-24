@@ -8,7 +8,7 @@ $states: merge.deep($COMPONENT_STATES,
 		(opened: open,
 		));
 
-@layer base {
+@layer component {
 
 	.root {
 		// @include mixins.caret-mixin("site-horizontal-menu-trigger-caret");
@@ -58,13 +58,13 @@ $states: merge.deep($COMPONENT_STATES,
 		// @include mixins.content-mixin("site-horizontal-menu-viewport");
 		// }
 
-		.indicator {
-			@include mixins.indicator-mixin("site-horizontal-menu-indicator");
-		}
+		// .indicator {
+		// 	@include mixins.indicator-mixin("site-horizontal-menu-indicator");
+		// }
 
-		.arrow {
-			@include mixins.arrow-mixin("site-horizontal-menu-arrow-indicator");
-		}
+		// .arrow {
+		// 	@include mixins.arrow-mixin("site-horizontal-menu-arrow-indicator");
+		// }
 
 		.viewport {
 			@include mixins.viewport-mixin("site-horizontal-menu-viewport");
@@ -84,6 +84,30 @@ $states: merge.deep($COMPONENT_STATES,
 		&[data-direction='rtl'] {
 			.viewportPosition {
 				left: 10em;
+			}
+		}
+	}
+
+}
+
+@layer base {
+
+	.root {
+		// @include mixins.caret-mixin("site-horizontal-menu-trigger-caret");
+
+		.menuSectionTriggers {
+
+			.menuSectionTriggerItem {
+				.content {
+					display: none;
+				}
+
+				&.open {
+					z-index: 1;
+					.content {
+						display: flex;
+					}
+				}
 			}
 		}
 	}

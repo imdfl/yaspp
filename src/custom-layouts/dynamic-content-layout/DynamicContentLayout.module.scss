@@ -1,11 +1,8 @@
-@use "../../styles/lib/component" as *;
+@layer component {
+	.root {
+		max-height: 20em;
+		min-height: 5em;
+		overflow: auto;
+	}
 
-$__stylesheet__: (
-	name: dynamic-content-layout,
-);
-
-.root {
-	max-height: 20em;
-	min-height: 5em;
-	overflow: auto;
 }

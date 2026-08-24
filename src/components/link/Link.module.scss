@@ -9,7 +9,7 @@ $__stylesheet__: (
 	name: link,
 );
 
-@layer base {
+@layer component {
 	.root {
 		--color#{state(hovered)}: #00a;
 		--color#{state(clicked)}: #a00;

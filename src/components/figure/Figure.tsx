@@ -1,6 +1,7 @@
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
-import { ComponentContextProvider } from "@contexts/index";
+import { ComponentContextProvider } from "@contexts";
 import useClassNames from "@hooks/useClassNames";
+
 import styles from "./Figure.module.scss";
 
 type FigureProps = {
@@ -15,10 +16,10 @@ const Figure = ({
 	...rest
 }: YSPComponentPropsWithChildren<FigureProps>) => {
 	const dataType = rest["data-type"];
-	const part = (dataType && typeof dataType === "string") ?
+	const part = (typeof dataType === "string" && dataType.length) ?
 		`figure-${dataType}`
 		: "figure";
-		const { componentClass, componentPath } = useClassNames({
+	const { componentClass, componentPath, createSubClass } = useClassNames({
 		part,
 		classes: [styles.root, className]
 	})
@@ -27,7 +28,7 @@ const Figure = ({
 		<ComponentContextProvider parentPath={componentPath}>
 			<figure className={componentClass} {...rest} style={style}>
 				{elementId && <a id={elementId}></a>}
-				<div className={styles.figureContent}>{children}</div>
+				<div className={createSubClass("content", styles.figureContent)}>{children}</div>
 			</figure>
 		</ComponentContextProvider>
 	);

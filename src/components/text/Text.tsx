@@ -2,7 +2,7 @@ import React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import styles from "./Text.module.scss";
 import useClassNames from "@hooks/useClassNames";
-import ComponentContextProvider from "@contexts/componentContext";
+import { ComponentContextProvider  } from "@contexts";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 
 // type HeadingVariant = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";

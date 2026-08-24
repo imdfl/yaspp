@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { PageContext, ComponentContext } from "@contexts/index";
+import { PageContext, ComponentContext } from "@contexts";
 import classNames from "@lib/class-names";
 import { ComponentPath, IComponentPath } from "@src/types/components";
 import { createComponentPath } from "@lib/next-runtime-utils/component-path";

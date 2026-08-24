@@ -8,7 +8,7 @@ $__stylesheet__: (
 	name: loading-indicator,
 );
 
-@layer base {
+@layer component {
 	.root {
 		--size: 24px;
 		--height: 20em;

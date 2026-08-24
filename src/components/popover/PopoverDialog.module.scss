@@ -5,7 +5,7 @@ $__stylesheet__: (
 	name: popover-dialog,
 );
 
-@layer base {
+@layer component {
 	.root {
 		--animation-type: fade-in;
 		--animation-duration: 250ms;

@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { AppProps } from "next/app";
 import { ThemeProvider } from "next-themes";
-import { PageProvider } from "@contexts/pageContext";
+import { PageProvider, LocaleContextProvider } from "@contexts";
 import type { IPageProps } from "@src/types/models";
-import { LocaleContextProvider } from "@contexts/localeContext";
-import MLThemeContextProvider from "@contexts/MLThemeContext";
+import { MLThemeContextProvider } from "@contexts";
 
 import siteFontData from "@src/layout/data/typography/siteFonts.json";
-import { fontFaceToDecls } from "../lib/site-fonts";
+import { fontFaceToDecls } from "@lib/site-fonts";
 import useTranslation from "next-translate/useTranslation";
 
-import "normalize.css/normalize.css";
+// import "normalize.css/normalize.css";
 import "../styles/app.scss";
 import "../styles/classes/index.scss";
 

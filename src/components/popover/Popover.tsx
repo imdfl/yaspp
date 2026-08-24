@@ -5,7 +5,7 @@ import { Button, ToolbarItem } from "..";
 import PopoverTrigger from "./PopoverTrigger";
 import PopoverDialog from "./PopoverDialog";
 import useClassNames from "../../hooks/useClassNames";
-import { ComponentContextProvider } from "@contexts/index";
+import { ComponentContextProvider } from "@contexts";
 
 import styles from "./Popover.module.scss";
 

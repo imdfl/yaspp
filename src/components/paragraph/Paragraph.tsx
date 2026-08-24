@@ -4,7 +4,7 @@ import styles from "./Paragraph.module.scss";
 import classNames from "@lib/class-names";
 import type { YSPComponentPropsWithChildren } from "@src/types/components";
 // import useClassNames from "@hooks/useClassNames";
-// import ComponentContextProvider from "@contexts/componentContext";
+// import { ComponentContextProvider  } from "@contexts";
 
 
 export const Paragraph = ({

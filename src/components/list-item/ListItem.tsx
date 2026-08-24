@@ -1,9 +1,10 @@
 import React from "react";
-import styles from "./ListItem.module.scss";
-import type { LinkTargetProps } from "../link/Link";
-import ComponentContextProvider from "@contexts/componentContext";
+import type { LinkTargetProps } from "@components/link/Link";
+import { ComponentContextProvider } from "@contexts";
 import useClassNames from "@hooks/useClassNames";
 import { YSPComponentPropsWithChildren } from "@src/types/components";
+
+import styles from "./ListItem.module.scss";
 
 type ListItemProps = {
 	label?: string;

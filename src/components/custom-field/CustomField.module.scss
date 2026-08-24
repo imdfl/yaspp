@@ -64,7 +64,7 @@ $states: merge.deep($COMPONENT_STATES,
 	}
 }
 
-@layer base {
+@layer component {
 
 	.root {
 		display: inline-block;

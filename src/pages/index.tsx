@@ -1,16 +1,18 @@
 import { useCallback, useContext } from "react";
 import { GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+
+import type { IPageProps } from "@src/types/models";
+
 import { mlNextUtils } from "../lib/next-utils/nextUtils";
 import { usePageData } from "../hooks/usePageData";
-import Head from "next/head";
 import Layout from "@src/layout/Layout";
 import { GenericContentLayout } from "@src/custom-layouts/generic-content-layout/GenericContentLayout";
 import { createPopoverLinksNodeProcessor } from "@lib/markdown-utils/createPopoverLinksNodeProcessor";
 import { renderElements, usePageMetadata } from "@lib/dynamicContentHelpers";
 import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
-import type { IPageProps } from "@src/types/models";
-import { LocaleContext } from "@contexts/localeContext";
-import { useTranslatedString } from "../hooks/useTranslatedString";
+import { LocaleContext } from "@contexts";
+import { useTranslatedString } from "@hooks/useTranslatedString";
 
 const Index: NextPage<IPageProps> = (props) => {
 	const { t } = useContext(LocaleContext);

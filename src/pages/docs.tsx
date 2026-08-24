@@ -7,7 +7,7 @@ import { usePageData } from "../hooks/usePageData";
 import { LoadContentModes, LoadFolderModes } from "@src/types/parser/modes";
 import { Link } from "@components/index";
 import Layout from "@src/layout/Layout";
-import { LocaleContext } from "@contexts/localeContext";
+import { LocaleContext } from "@contexts";
 
 const Docs: NextPage<IPageProps> = (props) => {
 	const { metaData } = usePageData(props);
