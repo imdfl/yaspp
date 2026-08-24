@@ -133,7 +133,7 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 	const { text: siteTitle } = useTranslatedString(siteTitleGen);
 	const { text: siteSubtitle } = useTranslatedString(siteSubtitleGen);
 	const { text: siteLicense } = useTranslatedString(siteLicenseGen);
-	const { componentClass: headerClass, createSubClass } = useClassNames({
+	const { componentClass: topBarClass, createSubClass } = useClassNames({
 		classes: [styles.topbar],
 		part: "header",
 	});
@@ -257,11 +257,11 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 					spaceBetween
 					alignItemsCenter
 					horizontalGutter
-					className={headerClass}
+					className={topBarClass}
 				>
 					<div className={styles.header_container}>
-						<header className={styles.header_level1}>
-							<ComponentContextProvider relativePath="header">
+						<ComponentContextProvider relativePath="header">
+							<header className={styles.header_level1}>
 								{/* Top logo */}
 								<Container alignItemsCenter className={styles.title}>
 									<Logo mode={theme || "light"} className={styles.logo} />
@@ -305,8 +305,8 @@ const Layout = ({ children }: YSPComponentPropsWithChildren) => {
 										</Container>
 									)}
 								</Container>
-							</ComponentContextProvider>
-						</header>
+							</header>
+						</ComponentContextProvider>
 					</div>
 				</Container>
 				<div className={styles.content_container}>

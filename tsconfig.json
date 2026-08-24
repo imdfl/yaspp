@@ -36,6 +36,9 @@
       "@hooks/*": [
         "./src/hooks/*"
       ],
+      "@hooks": [
+        "./src/hooks/index"
+      ],
       "@components/*": [
         "./src/components/*"
       ],
@@ -56,6 +59,9 @@
       ],
       "@contexts/*": [
         "./src/contexts/*"
+      ],
+      "@contexts": [
+        "./src/contexts/index"
       ],
       "@root/*": [
         "./*"

@@ -1,17 +1,15 @@
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use '../../styles/lib/hooks/box' as *;
-
-$__stylesheet__: (
-	name: gradient-strip,
-);
 
 @layer base {
 	.root {
-		--background-color: #808080;
-		--height: 6px;
+		background: var(--ml-color-background-separator);
 
-		@include use-gradient;
-		@include use-height;
+
+		&.horizontal {
+			height: var(--ml-gutter-text-xs);			
+		}
+
+		&.vertical {
+			width: var(--ml-gutter-text-xs);			
+		}
 	}
 }

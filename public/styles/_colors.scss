@@ -80,9 +80,15 @@
 		background-header-level1: $headerBG,
 		background-header-level2: meta.call($mixer, $headerBG, $bgAdd, $bgInc),
 		background-header-level3: meta.call($mixer, $headerBG, $bgAdd, 2 * $bgInc),
-		background-footer: $footerBG
+		background-footer: $footerBG,
 	);
-	$full: list.join($base, $extra);
+	$final: list.join($extra, (
+		background-separator: lookup.firstNotNull(
+			map.get($overrides, "background-separator"),
+			map.get($extra, "background-controls-level2"))
+		)
+	);
+	$full: list.join($base, $final);
 
 	@return merge.deep($full, $overrides);
 };

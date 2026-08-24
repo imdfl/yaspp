@@ -30,13 +30,22 @@
 
 @function findFirst($map, $keys...) {
 	@if meta.type-of($map) != map {
-			@debug "lookup.find map type is #{meta.type-of($map)}, returning null";
+			@debug "lookup.findFirst map type is #{meta.type-of($map)}, returning null";
 			@return null;
 		}
 	@each $key in $keys {
 		$val: map.get($map, $key);
 		@if $val {
 			@return $val;
+		}
+	}
+	@return null;
+}
+
+@function firstNotNull($list...) {
+	@each $item in $list {
+		@if $item {
+			@return $item;
 		}
 	}
 	@return null;
