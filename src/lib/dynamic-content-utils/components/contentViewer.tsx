@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { DynamicContentLayout } from "./contentLayout";
 import { Text, LoadingIndicator } from "@components/index";
 import { DynamicContentTypes } from "@src/types/content";
@@ -18,16 +18,18 @@ export const DynamicContentViewer = ({
 }: DynamicContentViewerProps): React.JSX.Element => {
 	const { error, isLoading, item } = useDynamicContentServer(url);
 	const { t } = useContext(LocaleContext);
+	const [debug] = useState(false);
 
 	if (error) {
 		return <Text>{error}</Text>;
 	}
 
-	if (isLoading) {
+	if (isLoading || debug) {
 		return (
 			<LoadingIndicator
 				label={t('common:caption:loading')}
 				delay={SHOW_LOADING_INDICATOR_AFTER_MSEC}
+				size="lg"
 			/>
 		);
 	}

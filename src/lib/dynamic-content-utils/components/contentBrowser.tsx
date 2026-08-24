@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { DynamicContentContext } from "@contexts";
 import { ContentStack } from "../contentStack";
 import { DynamicContentViewer } from "./contentViewer";
@@ -17,10 +17,10 @@ export default function DynamicContentBrowser(
 	const [currentPage, setCurrentPage] = useState<IParsedPageData>(null);
 	// always one less than the contentstack's length, which starts at 0
 	const [currentIndex, setCurrentIndex] = useState(-1);
-	const [contentStack] = useState(new ContentStack<IMLParsedNode>());
-	const [pageStack] = useState(new ContentStack<IParsedPageData>('id'));
 	const [pages, setPages] = useState<Array<IParsedPageData>>([]);
 	const [url, setUrl] = useState('');
+	const contentStack = useMemo(() => new ContentStack<IMLParsedNode>(), []);
+	const pageStack = useMemo(() => new ContentStack<IParsedPageData>(), []);
 
 	useEffect(() => {
 		contentStack.push(currentNode);

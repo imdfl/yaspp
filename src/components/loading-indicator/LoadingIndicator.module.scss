@@ -1,4 +1,5 @@
-@use '../../styles/mixins/animations' as keyframes;
+@use '../../styles/mixins/animations' as animations;
+@use '../../styles/mixins/keyframes' as keyframes;
 @use '../../styles/lib/component' as *;
 @use '../../styles/lib/states' as *;
 @use '../../styles/lib/hooks/box' as *;
@@ -10,30 +11,49 @@ $__stylesheet__: (
 
 @layer component {
 	.root {
-		--size: 24px;
-		--height: 20em;
-		--label-margin: 1em;
+		$size: 24px;
+		$sizes: "xs" , "sm" , "md" , "lg" , "xl" , "2xl" , "3xl" , "4xl" , "5xl";
+
+		// @each $sz in $sizes {
+		// 	&.size-#{$sz} {
+		// 		height: calc(3 * var(--ml-font-size-#{$sz}));
+		// 	}
+		// };
+
 
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
 
-		@include use-height;
+		// @include use-height;
 
 		.image {
-			@include keyframes.rotation("loading-indicator");
-
+			@include keyframes.rotation;
+			animation-name: rotation;
 			animation-iteration-count: infinite;
 			animation-timing-function: linear;
 			animation-duration: 2s;
 
-			@include use-size;
-			@include use-content-url;
+			height: $size;
+			width: auto;
+
+			content: var(--ml-logo-dark-url);
+			@each $sz in $sizes {
+				&.size-#{$sz} {
+					height: var(--ml-font-size-#{$sz});
+				}
+			};
 		}
 
 		.label {
-			--margin-top: var(--label-margin);
+			margin-top: 1em;
+			@each $sz in $sizes {
+				&.size-#{$sz} {
+					font-size: var(--ml-font-size-#{$sz});
+					margin-top: var(--ml-font-size-#{$sz});
+				}
+			};
 
 			display: block;
 

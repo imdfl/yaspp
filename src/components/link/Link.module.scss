@@ -1,43 +1,24 @@
-// stylelint-disable selector-no-vendor-prefix
-
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use "../../styles/lib/hooks/box" as *;
-@use "../../styles/lib/hooks/text" as *;
-
-$__stylesheet__: (
-	name: link,
-);
 
 @layer component {
 	.root {
-		--color#{state(hovered)}: #00a;
-		--color#{state(clicked)}: #a00;
-
+		color: var(--ml-color-text-action);
 		cursor: pointer;
 
-		@include use-text-color;
+		// @include use-text-color;
 
-		a:-webkit-any-link {
-			@include use-text-color;
-		}
-
-		&:link,
-		&:visited,
-		a:-webkit-any-link:link,
-		a:-webkit-any-link:visited {
-			@include use-text-color;
-			@include use-background-color;
+		a:any-link {
+			text-decoration: none;
+			color: var(--ml-color-text-action);
 		}
 
 		&:hover,
-		a:-webkit-any-link:hover {
-			@include use-text-color("link", state(hovered));
+		a:any-link:hover {
+			color: var(--ml-color-text-action-hover);
 		}
 
 		&:active,
-		a:-webkit-any-link:active {
-			@include use-text-color("link", state(clicked));
+		a:any-link:active {
+			color: var(--ml-color-text-action-active);
 		}
 	}
 }

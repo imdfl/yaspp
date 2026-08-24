@@ -1,19 +1,19 @@
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use "../../styles/lib/hooks/box" as *;
+// @use '../../styles/lib/component' as *;
+// @use '../../styles/lib/states' as *;
+// @use "../../styles/lib/hooks/box" as *;
 
-$__stylesheet__: (
-	name: list,
-);
+// $__stylesheet__: (
+// 	name: list,
+// );
 
 @layer component {
 
 	.root {
 		display: flex;
 		flex-direction: column;
+		margin-bottom: var(--ml-gutter-text-md);
 
 		.list {
-			@include use-background-color;
 		}
 	}
 }

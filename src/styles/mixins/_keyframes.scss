@@ -106,8 +106,8 @@
 	}
 }
 
-@mixin rotation {
-	@keyframes rotation {
+@mixin rotation($name: "rotation") {
+	@keyframes #{$name} {
 		from {
 			transform: rotate(0deg);
 		}
