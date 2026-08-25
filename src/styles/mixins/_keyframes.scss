@@ -54,8 +54,8 @@
 	}
 }
 
-@mixin fade-in {
-	@keyframes fade-in {
+@mixin fade-in($name: fade-in) {
+	@keyframes #{$name} {
 		0% {
 			opacity: 0;
 		}

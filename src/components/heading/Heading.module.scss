@@ -17,7 +17,7 @@ $levels: (
 @layer component {
 	.root {
 		@for $level from 1 through 6 {
-			&.level#{$level} {
+			&.level-#{$level} {
 				margin: calc(1 / #{$level} * var(--ml-font-size-xl)) 0;
 			}
 		}

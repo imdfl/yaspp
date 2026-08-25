@@ -1,4 +1,3 @@
-@use '../../styles/mixins/animations' as animations;
 @use '../../styles/mixins/keyframes' as keyframes;
 @use "../../styles/lib/hooks/box" as *;
 
@@ -28,10 +27,10 @@ $__stylesheet__: (
 		@include use-border-style;
 		@include use-border-color;
 		@include use-radius;
-		@include animations.fade-in("popover-dialog");
 
-		// .content {
-		// 	@include use-background-color;
-		// }
+		@include keyframes.fade-in;
+		animation-name: fade-in;
+		animation-duration:  .25s;
+		animation-timing-function:  ease-in;
 	}
 }
