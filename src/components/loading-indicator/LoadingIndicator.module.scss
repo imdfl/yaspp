@@ -13,6 +13,7 @@ $__stylesheet__: (
 	.root {
 		$size: 24px;
 		$sizes: "xs" , "sm" , "md" , "lg" , "xl" , "2xl" , "3xl" , "4xl" , "5xl";
+		min-height: 5em;
 
 		// @each $sz in $sizes {
 		// 	&.size-#{$sz} {
@@ -51,7 +52,6 @@ $__stylesheet__: (
 			@each $sz in $sizes {
 				&.size-#{$sz} {
 					font-size: var(--ml-font-size-#{$sz});
-					margin-top: var(--ml-font-size-#{$sz});
 				}
 			};
 

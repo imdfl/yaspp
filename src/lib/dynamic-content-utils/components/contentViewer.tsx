@@ -29,7 +29,7 @@ export const DynamicContentViewer = ({
 			<LoadingIndicator
 				label={t('common:caption:loading')}
 				delay={SHOW_LOADING_INDICATOR_AFTER_MSEC}
-				size="lg"
+				size="xl"
 			/>
 		);
 	}

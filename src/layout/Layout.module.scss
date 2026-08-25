@@ -1,14 +1,4 @@
 @use 'sass:map';
-// @use '../styles/lib/refs';
-// @use './locale-select/LocaleSelectMixin' as locale-select-mixin;
-// @use './theme-select/ThemeSelectMixin' as theme-select-mixin;
-// @use './mixins/sidebarMenuMixin' as sidebar-mixins;
-// @use './mixins/navItemMixin' as nav-item-mixin;
-// @use './refs/toggleRefs' as toggle-refs;
-// @use './refs/navItemRefs' as nav-item-refs;
-// @use '../styles/lib/component' as *;
-// @use '../styles/lib/hooks/box' as *;
-// @use "../styles/lib/hooks/flex" as *;
 
 
 $footerMinheight: 20vh;
@@ -84,7 +74,8 @@ $footerMinheight: 20vh;
 			}
 		}
 		.panel {
-			gap: 1em;
+			gap: .5em;
+			margin: 2px 0;
 			display: flex;
 			justify-content: flex-end;
 			align-items: baseline;
@@ -241,20 +232,17 @@ $footerMinheight: 20vh;
 			display: flex;
 			justify-content: flex-end;
 			align-items: center;
-			// @include sidebar-mixins.panel;
+			gap: .4em;
 
 			.localeSelect {
-				// @include locale-select-mixin.button(map.get(toggle-refs.$toggle, sidebar-menu));
 			}
 
 			.themeSelect {
 				margin-right: 0;
-				// @include theme-select-mixin.button(map.get(toggle-refs.$toggle, sidebar-menu));
 			}
 		}
 
 		.menu {
-			// @include nav-item-mixin.item(map.get(nav-item-refs.$nav-item, sidebar-menu));
 		}
 	}
 }

@@ -1,12 +1,12 @@
-@use './menuBarMixins' as mixins;
-@use '../../../styles/lib/merge' as merge;
-@use "../../../styles/lib/hooks/direction" as *;
-@use "../../../styles/lib/hooks/box" as *;
-@use "../../../styles/lib/states" as *;
+// @use './menuBarMixins' as mixins;
+// @use '../../../styles/lib/merge' as merge;
+// @use "../../../styles/lib/hooks/direction" as *;
+// @use "../../../styles/lib/hooks/box" as *;
+// @use "../../../styles/lib/states" as *;
 
-$states: merge.deep($COMPONENT_STATES,
-		(opened: open,
-		));
+// $states: merge.deep($COMPONENT_STATES,
+// 		(opened: open,
+// 		));
 
 @layer component {
 
@@ -66,26 +66,26 @@ $states: merge.deep($COMPONENT_STATES,
 		// 	@include mixins.arrow-mixin("site-horizontal-menu-arrow-indicator");
 		// }
 
-		.viewport {
-			@include mixins.viewport-mixin("site-horizontal-menu-viewport");
-		}
+		// .viewport {
+		// 	@include mixins.viewport-mixin("site-horizontal-menu-viewport");
+		// }
 
-		// stylelint-disable-next-line selector-class-pattern
-		.viewportPosition {
-			@include mixins.viewport-position-mixin("site-horizontal-menu-viewport");
-		}
+		// // stylelint-disable-next-line selector-class-pattern
+		// .viewportPosition {
+		// 	@include mixins.viewport-position-mixin("site-horizontal-menu-viewport");
+		// }
 
-		&[data-direction='ltr'] {
-			.viewportPosition {
-				right: 10em;
-			}
-		}
+		// &[data-direction='ltr'] {
+		// 	.viewportPosition {
+		// 		right: 10em;
+		// 	}
+		// }
 
-		&[data-direction='rtl'] {
-			.viewportPosition {
-				left: 10em;
-			}
-		}
+		// &[data-direction='rtl'] {
+		// 	.viewportPosition {
+		// 		left: 10em;
+		// 	}
+		// }
 	}
 
 }

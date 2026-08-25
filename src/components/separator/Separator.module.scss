@@ -1,20 +1,16 @@
-@use "./Separator.meta" as *;
-@use '../../styles/lib/component' as *;
-@use '../../styles/lib/states' as *;
-@use "../../styles/lib/hooks/box" as *;
-
 
 @layer component {
 	.root {
-		@include use-background-color;
+		background-color: var(--ml-color-controls-level2);
+		align-self: stretch;
+		justify-self: center;
+		margin: 4px;
 
 		&[data-orientation='vertical'] {
 			width: 1px;
-			height: 16px;
 		}
 
 		&[data-orientation='horizontal'] {
-			width: 16px;
 			height: 1px;
 		}
 	}
