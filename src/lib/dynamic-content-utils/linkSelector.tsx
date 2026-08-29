@@ -37,7 +37,6 @@ export const LinkSelector = ({
 		<PopoverContentBlock
 			type={node.linkType}
 			componentData={componentData}
-			data-testid={`${node.linkType}_${node.target.split(`/`)[1]}`}
 		/>
 	);
 };

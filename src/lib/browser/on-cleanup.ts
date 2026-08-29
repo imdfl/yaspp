@@ -40,7 +40,6 @@ class OnCleanup implements IOnCleanup {
 	private readonly _namedCallbacks: Map<string, number> = new Map();
 
 	public run(): void {
-		console.log(`Running cleanup, number of callbacks ${this._callbacks.length}`);
 		const fs = this._callbacks.filter(c => Boolean(c)); // remove nulls
 		this.clear();
 		const errors = [] as string[];
@@ -97,7 +96,6 @@ class OnCleanup implements IOnCleanup {
 					return false;
 				}
 				if (this._namedCallbacks.has(id)) {
-					console.log(`Overwriting oncleanup callback for id ${id}`);
 					const ind = this._namedCallbacks.get(id)!;
 					this._callbacks[ind] = func;
 				}

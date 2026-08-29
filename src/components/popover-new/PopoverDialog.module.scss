@@ -1,0 +1,48 @@
+@use '../../styles/mixins/keyframes' as keyframes;
+@use "../../styles/lib/hooks/box" as *;
+
+$__stylesheet__: (
+	name: popover-dialog,
+);
+
+@layer component {
+	.root {
+		--width: 20em;
+		--border-width: 1px;
+		--border-style: solid;
+		--border-color: #808080;
+		--radius: 4px;
+		--shadow: none;
+		--background-color: var(--ml-color-background-level3);
+
+		overflow: hidden;
+
+		@include use-width;
+		@include use-background-color;
+		@include use-shadow;
+		@include use-border-size;
+		@include use-border-style;
+		@include use-border-color;
+		@include use-radius;
+
+		@include keyframes.fade-in;
+
+		.modal {
+			/* margin: 0; */
+			padding: 0;
+			max-width: 450px;
+
+			&.open {
+				animation-name: fade-in;
+				animation-timing-function: ease-in;
+				animation-duration: .5s;
+				animation-iteration-count: 1;
+			}
+
+			&::backdrop {
+				background-color: #CCF9;
+				pointer-events: all;
+			}
+		}
+	}
+}

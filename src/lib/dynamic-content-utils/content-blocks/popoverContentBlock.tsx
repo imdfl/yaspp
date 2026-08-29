@@ -6,7 +6,7 @@ import { PopoverProvider, LocaleContext } from "@contexts";
 import { useToolbar } from "../hooks/useToolbar";
 import { IPopoverContext } from "../types";
 import { DynamicContentTypes } from "@src/types/content";
-import { Popover } from "@components/index";
+import Popover from "@components/popover-new/Popover";
 import type {
 	ContentComponentProps,
 	IContentComponentInitData,

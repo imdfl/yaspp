@@ -47,7 +47,6 @@ function positionWithoutMargin(el: HTMLElement) {
 	const newLeft = Math.round(rect.x - postRect.x + left);
 	el.style.setProperty("top", newTop ? `${newTop}px` : "0");
 	el.style.setProperty("left", newLeft ? `${newLeft}px` : "0");
-	// console.log("pre rect", rect, "post rect", postRect);
 }
 
 function addTranslate(el: HTMLElement, options: { dx: number, dy: number, current?: string }) {
@@ -61,19 +60,23 @@ function addTranslate(el: HTMLElement, options: { dx: number, dy: number, curren
 	}
 }
 
-function positionRelative(anchor: HTMLElement, target: HTMLElement, direction: "left" | "right" | "center") {
+function positionRelative(anchor: HTMLElement, target: HTMLElement, { h: hDirection, v: vDirection }: DialogRelativePosition) {
 	const anchorRect = anchor.getBoundingClientRect();
 	const targetRect = target.getBoundingClientRect();
 	const anchorMiddleX = anchorRect.left + anchorRect.width * 0.5;
 	const anchorMiddleY = anchorRect.top + anchorRect.height * 0.5;
-	const targetEdgeX = direction === "left" ?
+	const targetEdgeX = hDirection === "left" ?
 		targetRect.right
-		: direction === "center" ? targetRect.left + (targetRect.width / 2)
+		: hDirection === "center" ? targetRect.left + (targetRect.width / 2)
 			: targetRect.left;
+	const targetEdgeY = vDirection === "top" ?
+		targetRect.bottom
+		: vDirection === "center" ? targetRect.top + (targetRect.height / 2)
+			: targetRect.top;
 
 	addTranslate(target, {
 		dx: anchorMiddleX - targetEdgeX,
-		dy: anchorMiddleY - targetRect.top
+		dy: anchorMiddleY - targetEdgeY
 	});
 }
 
@@ -137,11 +140,7 @@ function attachDialogHandlers(dlg: HTMLDialogElement,
 				const handler = () => {
 					close();
 				};
-				el.addEventListener("click", handler);
-				onCleanup.add({
-					func: () => el.removeEventListener("click", handler),
-					id: null
-				});
+				onCleanup.add(attachEventListener(el, "click", handler));
 			})
 		}
 		else {
@@ -166,6 +165,7 @@ function attachDialogHandlers(dlg: HTMLDialogElement,
 	const dragHandler = (evt: DragEvent) => {
 		evt.preventDefault();
 		evt.stopPropagation();
+		const onDragCleanup = createOnCleanup();
 
 		positionWithoutMargin(dlg);
 		const resets = [
@@ -181,30 +181,24 @@ function attachDialogHandlers(dlg: HTMLDialogElement,
 				}
 
 			})
-		]
+		];
+		resets.forEach(reset => onDragCleanup.add(reset));
 
 		const curX = evt.clientX, curY = evt.clientY;
 		const curTransform = dlg.style.getPropertyValue("transform");
 		let lastDX: number | null = null,
 			lastDY: number | null = null;
 
-		const trackMouse = (event: MouseEvent) => {
+		const trackMousePosition = (event: MouseEvent) => {
 			lastDX = event.clientX - curX;
 			lastDY = event.clientY - curY;
 			addTranslate(dlg, {
 				dx: lastDX, dy: lastDY, current: curTransform
 			});
-			// dlg.style.transform = `translate(${lastDX}px, ${lastDY}px)`
-			// dlg.style.top = `${top + dy}px`;
-			// dlg.style.left = `${left + dx}px`;
-			// event.preventDefault();
-			// event.stopImmediatePropagation();
-			// console.log(position);
 		}
 
 		const stopTracking = () => {
-			window.document.removeEventListener("mousemove", trackMouse);
-			resets.forEach(reset => reset());
+			onDragCleanup.run();
 			if (lastDX !== null) {
 				const { top, left } = getTopLeft(dlg);
 				dlg.style.top = `${top + lastDY!}px`;
@@ -212,48 +206,31 @@ function attachDialogHandlers(dlg: HTMLDialogElement,
 			}
 		}
 
-		window.document.addEventListener("mousemove", trackMouse);
-
-		window.document.addEventListener("mouseup", () => {
+		onDragCleanup.add(attachEventListener<Document>(window.document, "mousemove", trackMousePosition));
+		onDragCleanup.add(attachEventListener(window.document, "pointerup", () => {
 			stopTracking();
-		}, { once: true });
+		}, { once: true }));
 	};
 
 	const downHandler = (evt: MouseEvent) => {
-		console.log(evt.target, evt.currentTarget, evt.relatedTarget);
+		const downCleanup = createOnCleanup();
+		toolbar.addEventListener("pointerup", () => {
+			downCleanup.run();
+		}, { once: true })
 		if (looseDragging || evt.target === toolbar) {
-			toolbar.addEventListener("dragstart", dragHandler, { once: true });
-			toolbar.addEventListener("pointerup", () => {
-				// console.log("pointer up");
-				toolbar.removeEventListener("dragstart", dragHandler);
-			}, { once: true })
+			downCleanup.add(attachEventListener(toolbar, "dragstart", dragHandler, { once: true }));
 		}
 		else {
 			const abort = (evt: DragEvent) => {
 				evt.preventDefault();
 				evt.stopPropagation();
 			}
-			toolbar.addEventListener("dragstart", abort, { once: true });
-			toolbar.addEventListener("pointerup", () => {
-				// console.log("pointer up");
-				toolbar.removeEventListener("dragstart", abort);
-			}, { once: true })
-
+			downCleanup.add(attachEventListener(toolbar, "dragstart", abort, { once: true }));
 		}
 	}
 
-	toolbar.addEventListener("pointerdown", downHandler);
-	onCleanup.add(() => {
-		toolbar.removeEventListener("pointerdown", downHandler);
-	})
+	onCleanup.add(attachEventListener(toolbar, "pointerdown", downHandler));
 
-	// toolbar.addEventListener("dragstart", dragHandler);
-	// onCleanup.add({
-	// 	func: () => {
-	// 		toolbar.removeEventListener("dragstart", dragHandler);
-	// 	},
-	// 	id: null
-	// });
 	return onCleanup;
 }
 
@@ -308,13 +285,8 @@ class DialogHandler implements IDialogHandler {
 						onClose();
 					}
 				}
-				el.addEventListener("close", onClose);
-				el.addEventListener("toggle", onToggle);
-
-				this._onCleanup.add(() => {
-					el.removeEventListener("close", onClose);
-					el.removeEventListener("toggle", onToggle);
-				})
+				this._onCleanup.add(attachEventListener(el, "close", onClose));
+				this._onCleanup.add(attachEventListener(el, "toggle", onToggle));
 			}
 		}
 		return this;
@@ -387,11 +359,26 @@ class DialogHandler implements IDialogHandler {
 		dlg.showPopover({
 			// source: anchor
 		})
-		positionRelative(anchor, dlg, pos.h);
+		positionRelative(anchor, dlg, pos);
 		fixScreenPosition(dlg, this._options.screenMargin);
 	}
 }
 
+
+
 export const createDialogHandler = (options: Partial<IDialogOptions>): IDialogHandler => {
 	return new DialogHandler(options);
 }
+
+export function attachEventListener<TTarget extends EventTarget = EventTarget>(
+	el: TTarget,
+	type: string,
+	listener: AnyFunction,
+	options?: boolean | AddEventListenerOptions
+): AnyFunction {
+	el.addEventListener(type, listener, options);
+	return () => {
+		el.removeEventListener(type, listener, options);
+	};
+}
+
