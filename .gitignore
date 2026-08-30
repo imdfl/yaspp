@@ -13,6 +13,7 @@ node_modules
 # useful ignore pattern for temp files
 **/*.ignore.*
 **/*.temp.*
+**/*.ignore
 
 # artifacts
 **/*.js.map

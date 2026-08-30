@@ -13,8 +13,6 @@ export const LinkSelector = ({
 	const ctx = useContext(DynamicContentContext);
 
 	const isPopover = (displayType === NODE_DISPLAY_TYPES.POPOVER);
-	// 	return <LinkContentBlock key={key} componentData={componentData} />;
-	// }
 
 	if (ctx || !isPopover) {
 		const onClick = isPopover ? (evt: React.MouseEvent) => {
@@ -37,6 +35,7 @@ export const LinkSelector = ({
 		<PopoverContentBlock
 			type={node.linkType}
 			componentData={componentData}
+			position={{v: "bottom"}}
 		/>
 	);
 };

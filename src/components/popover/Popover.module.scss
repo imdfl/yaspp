@@ -20,5 +20,9 @@
 		border-top: none;
 		border-left: none;
 		border-right: none;
+
+		&.dragging {
+			cursor: grabbing;
+		}
 	}
 }
