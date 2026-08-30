@@ -7,9 +7,6 @@ $__stylesheet__: (
 
 @layer component {
 	.root {
-		--animation-type: fade-in;
-		--animation-duration: 250ms;
-		--animation-easing: ease-out forwards;
 		--width: 20em;
 		--border-width: 1px;
 		--border-style: solid;
@@ -19,6 +16,7 @@ $__stylesheet__: (
 		--background-color: var(--ml-color-background-level3);
 
 		overflow: hidden;
+		padding: 0;
 
 		@include use-width;
 		@include use-background-color;
@@ -29,8 +27,24 @@ $__stylesheet__: (
 		@include use-radius;
 
 		@include keyframes.fade-in;
-		animation-name: fade-in;
-		animation-duration:  .25s;
-		animation-timing-function:  ease-in;
+
+
+
+		.modal {
+			/* margin: 0; */
+			max-width: 450px;
+
+			&.open {
+				animation-name: fade-in;
+				animation-timing-function: ease-in;
+				animation-duration: .5s;
+				animation-iteration-count: 1;
+			}
+
+			&::backdrop {
+				background-color: #CCF9;
+				pointer-events: all;
+			}
+		}
 	}
 }

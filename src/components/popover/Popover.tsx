@@ -1,85 +1,108 @@
-import React, { PropsWithChildren, useState } from "react";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
+import React, { PropsWithChildren, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { getIcon } from "@components/icons";
-import { Button, ToolbarItem } from "..";
+import { Button } from "..";
 import PopoverTrigger from "./PopoverTrigger";
 import PopoverDialog from "./PopoverDialog";
-import useClassNames from "../../hooks/useClassNames";
+import useClassNames from "@hooks/useClassNames";
 import { ComponentContextProvider } from "@contexts";
+import type { IDialogRelativePosition } from "@lib/browser/dialog-utils";
+import { createDialogHandler } from "@lib/browser/dialog-utils";
 
 import styles from "./Popover.module.scss";
 
 type CustomPopoverProps = {
 	trigger: React.ReactNode;
-	side: 'top' | 'right' | 'bottom' | 'left';
-	locale: string;
 	toolbarItems?: React.ReactNode[];
-	open?: boolean;
-	'data-testid'?: string;
+	// open?: boolean;
+	position?: Partial<IDialogRelativePosition>;
 };
 
 const Popover = ({
-	open,
+	// open,
 	trigger,
-	side,
-	locale,
+	position,
 	toolbarItems,
 	children,
-	'data-testid': dataTestId,
 }: PropsWithChildren<CustomPopoverProps>) => {
-	const [visible, setVisible] = useState(false);
-	const { createSubClass, componentClass, componentPath } = useClassNames({
+	const [isOpen, setIsOpen] = useState(false);
+	const { createSubClass } = useClassNames({
 		part: "dialog",
 		classes: [styles.dialog],
 	})
+	const buttonRef = useRef<HTMLButtonElement>(null);
+	const dialogRef = useRef<HTMLDialogElement>(null);
 
-	const isOpen = open || visible;
+	const onDialogClose = useCallback(() => {
+		setIsOpen(false);
+	}, [])
+
+
+	const dialogHandler = useMemo(() => {
+		return createDialogHandler({
+			closeSelector: "",
+			dragSelector: `.${styles.toolbar}`,
+			dragClass: styles.dragging,
+			openClass: styles.open,
+			onClose: onDialogClose
+		})
+	}, []);
+
+	const openDialog = useCallback(() => {
+		setIsOpen(true);
+	}, []);
+
+
+	useEffect(() => {
+		if (isOpen && dialogRef.current) {
+			dialogHandler.attach(dialogRef.current);
+			dialogHandler.show({
+				anchor: buttonRef.current,
+				modal: true,
+				position
+			})
+		}
+		return () => {
+			console.log(`Popover cleanup: detaching dialog`);
+			dialogHandler.close();
+			dialogHandler.detach();
+		}
+
+	}, [isOpen, dialogRef])
 
 	return (
-		<PopoverPrimitive.Root
-			onOpenChange={(opened) => setVisible(opened)}
-			open={isOpen}
-		>
-			<PopoverPrimitive.Trigger
-				data-testid={dataTestId}
+		<>
+			<button
+				ref={buttonRef}
+				onClick={() => openDialog()}
 				className={styles.trigger}
 			>
 				<PopoverTrigger opened={isOpen}>{trigger}</PopoverTrigger>
-			</PopoverPrimitive.Trigger>
+			</button>
 
-			<PopoverPrimitive.Portal>
-				<PopoverPrimitive.Content
-					side={side}
-					data-locale={locale}
-					className={componentClass}
-				>
-					<PopoverDialog>
-						{toolbarItems && (
-							<ComponentContextProvider relativePath="toolbar" >
+			{isOpen && (<PopoverDialog dialogRef={dialogRef} className={styles.root}>
+				{toolbarItems && (
+					<ComponentContextProvider relativePath="toolbar" >
 
-								<div className={createSubClass("toolbar", styles.toolbar)}>
-									<div className={styles.panel}>{toolbarItems}</div>
-									<div className={styles.closeButton}>
-										<ToolbarItem>
-											<PopoverPrimitive.Close asChild>
-												<Button
-													onClick={() => setVisible(false)}
-													className={styles.close}
-												>
-													{getIcon('close')}
-												</Button>
-											</PopoverPrimitive.Close>
-										</ToolbarItem>
-									</div>
-								</div>
-							</ComponentContextProvider>
-						)}
-						{children}
-					</PopoverDialog>
-					<PopoverPrimitive.Arrow />
-				</PopoverPrimitive.Content>
-			</PopoverPrimitive.Portal>
-		</PopoverPrimitive.Root>
+						<div className={createSubClass("toolbar", styles.toolbar)}>
+							<div className={styles.panel}>{toolbarItems}</div>
+							<div className={styles.closeButton}>
+								{/* <ToolbarItem> */}
+									<Button
+										onClick={() => setIsOpen(false)}
+										className={styles.close}
+									>
+										{getIcon('close')}
+									</Button>
+								{/* </ToolbarItem> */}
+							</div>
+						</div>
+					</ComponentContextProvider>
+				)}
+				{children}
+			</PopoverDialog>)
+			}
+			{/* <PopoverPrimitive.Arrow /> */}
+		</>
 	);
 };
 

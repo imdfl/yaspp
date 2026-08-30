@@ -1,4 +1,10 @@
 import React, { useContext } from "react";
+
+import type {
+	ContentComponentProps,
+	IContentComponentInitData,
+} from "@src/types/models";
+
 import DynamicContentBrowser from "../components/contentBrowser";
 import { AnnotationContentBlock } from "./annotationLinkContentBlock";
 import { TermLinkContentBlock } from "./termLinkContentBlock";
@@ -6,15 +12,11 @@ import { PopoverProvider, LocaleContext } from "@contexts";
 import { useToolbar } from "../hooks/useToolbar";
 import { IPopoverContext } from "../types";
 import { DynamicContentTypes } from "@src/types/content";
-import { Popover } from "@components/index";
-import type {
-	ContentComponentProps,
-	IContentComponentInitData,
-} from "@src/types/models";
-
-type PopoverContentBlockProps = {
+import Popover from "@components/popover/Popover";
+import { IDialogRelativePosition } from "@lib/browser/dialog-utils";
+interface IPopoverContentBlockProps {
 	type: DynamicContentTypes;
-	"data-testid"?: string;
+	position?: Partial<IDialogRelativePosition>;
 };
 
 const getContentBlock = (
@@ -37,11 +39,11 @@ const getContentBlock = (
 export const PopoverContentBlock = ({
 	componentData,
 	type,
+	position,
 	className,
-	"data-testid": dataTestId,
-}: PopoverContentBlockProps & ContentComponentProps): React.JSX.Element => {
+}: IPopoverContentBlockProps & ContentComponentProps): React.JSX.Element => {
 	const toolbar = useToolbar();
-	const { locale, textDirection } = useContext(LocaleContext);
+	const { textDirection } = useContext(LocaleContext);
 	const { node } = componentData;
 	const context: IPopoverContext = {
 		toolbar: toolbar.items,
@@ -49,18 +51,20 @@ export const PopoverContentBlock = ({
 		removeToolbarItems: toolbar.removeItemsById,
 	};
 
+	const pos: Partial<IDialogRelativePosition> = {
+		h: position?.h ?? (textDirection === "ltr" ?
+			"right" : "left"
+		),
+		v: position?.v
+	}
 	return (
 		<PopoverProvider value={context}>
 			<Popover
 				trigger={getContentBlock(type, componentData, className)}
 				toolbarItems={toolbar.items.map((item) => item.element)}
-				side={textDirection === "ltr" ? "right" : "left"}
-				locale={locale}
-				data-testid={dataTestId}
+				position={pos}
 			>
-				{/* <I18nProvider namespaces={{ glossaryEN }}> */}
 					<DynamicContentBrowser node={node} />
-				{/* </I18nProvider> */}
 			</Popover>
 		</PopoverProvider>
 	);

@@ -18,13 +18,16 @@ export const DynamicContentViewer = ({
 }: DynamicContentViewerProps): React.JSX.Element => {
 	const { error, isLoading, item } = useDynamicContentServer(url);
 	const { t } = useContext(LocaleContext);
-	const [debug] = useState(false);
+	/**
+	 * Set to true if you want to debug the loading animation
+	 */
+	const [debugLoading] = useState(false);
 
 	if (error) {
-		return <Text>{error}</Text>;
+		return <Text className="error">{error}</Text>;
 	}
 
-	if (isLoading || debug) {
+	if (isLoading || debugLoading) {
 		return (
 			<LoadingIndicator
 				label={t('common:caption:loading')}
