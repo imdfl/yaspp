@@ -19,8 +19,8 @@ export default function DynamicContentBrowser(
 	const [currentIndex, setCurrentIndex] = useState(-1);
 	const [pages, setPages] = useState<Array<IParsedPageData>>([]);
 	const [url, setUrl] = useState('');
-	const contentStack = useMemo(() => new ContentStack<IMLParsedNode>(), []);
-	const pageStack = useMemo(() => new ContentStack<IParsedPageData>(), []);
+	const contentStack = useMemo(() => new ContentStack<IMLParsedNode>(), [props.node]);
+	const pageStack = useMemo(() => new ContentStack<IParsedPageData>("id"), []);
 
 	useEffect(() => {
 		contentStack.push(currentNode);
@@ -28,8 +28,10 @@ export default function DynamicContentBrowser(
 	}, [currentNode, contentStack]);
 
 	useEffect(() => {
-		pageStack.push(currentPage);
-		setCurrentIndex(contentStack.count - 1);
+		if (currentPage) {
+			pageStack.push(currentPage);
+			setCurrentIndex(contentStack.count - 1);
+		}
 	}, [currentPage, pageStack, contentStack]);
 
 	useEffect(() => {
