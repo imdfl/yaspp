@@ -134,11 +134,10 @@
     "stylelint-config-standard-scss": "^17.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "5.3.3"
+    "typescript": "6"
   },
   "eslintConfig": {
-    "extends": [
-    ]
+    "extends": []
   },
   "resolutions": {
     "@types/react": "19.2.15",

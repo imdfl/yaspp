@@ -48,9 +48,6 @@
       "@public/*": [
         "./public/*"
       ],
-      "@types/*": [
-        "./public/*"
-      ],
       "@locales/*": [
         "./locales/*"
       ],

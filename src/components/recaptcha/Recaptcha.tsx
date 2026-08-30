@@ -1,10 +1,12 @@
 // eslint-disable @typescript-eslint/no-floating-promises
-import Script from "next/script";
-import React from "react";
 
+/// <reference types="@types/grecaptcha" />
+
+import Script from "next/script";
 type RecaptchaProps = {
 	siteKey: string;
 };
+
 
 type RecaptchaHandleSubmitProps = {
 	siteKey: string;

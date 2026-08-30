@@ -387,9 +387,9 @@ class DialogHandler implements IDialogHandler {
 			h: position?.h ?? "right",
 			v: position?.v ?? "bottom"
 		};
-		const dlg = this._dialog!;
+		const dlg = this._dialog! as HTMLElement;
 		this._close = () => {
-			(dlg as HTMLElement).hidePopover();
+			dlg.hidePopover();
 			this._onShowCleanup.run();
 		}
 		dlg.showPopover({

@@ -1,0 +1,9 @@
+{
+    "easysass.compileAfterSave": false,
+    "css.lint.emptyRules": "warning",
+    "scss.lint.emptyRules": "ignore",
+    "js/ts.tsdk.path": "./node_modules/typescript/lib",
+    "js/ts.preferences.preferTypeOnlyAutoImports": true,
+    "js/ts.preferences.quoteStyle": "double",
+    "js/ts.tsdk.promptToUseWorkspaceVersion": true
+}
